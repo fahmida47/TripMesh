@@ -1,0 +1,581 @@
+:root {
+  --explore-primary: #0767f2;
+  --explore-primary-dark: #004fca;
+  --explore-navy: #031b46;
+  --explore-text: #101b35;
+  --explore-muted: #65708a;
+  --explore-border: #dce3ef;
+  --explore-background: #f7f9fc;
+  --explore-card: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.explore-page {
+  min-height: 100vh;
+  background: var(--explore-background);
+  color: var(--explore-text);
+}
+
+.explore-top-section {
+  min-height: 238px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.explore-hero-content {
+  width: min(100% - 80px, 1440px);
+  margin: 0 auto;
+  padding-top: 35px;
+  color: #ffffff;
+}
+
+.explore-hero-content h1 {
+  max-width: 850px;
+  margin: 0 0 12px;
+  font-size: clamp(32px, 3vw, 44px);
+  line-height: 1.15;
+  font-weight: 750;
+}
+
+.explore-hero-content p {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.explore-main {
+  width: min(100% - 80px, 1440px);
+  margin: 0 auto;
+  padding: 22px 0 42px;
+  display: grid;
+  grid-template-columns: 292px minmax(0, 1fr);
+  gap: 34px;
+  align-items: start;
+}
+
+.explore-filter-sidebar {
+  padding: 22px;
+  background: var(--explore-card);
+  border: 1px solid var(--explore-border);
+  border-radius: 14px;
+  box-shadow: 0 6px 22px rgba(18, 48, 90, 0.06);
+}
+
+.explore-filter-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+}
+
+.explore-filter-header h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.explore-reset-button {
+  border: 0;
+  background: transparent;
+  color: var(--explore-primary);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.explore-filter-group {
+  padding: 18px 0;
+  border-bottom: 1px solid #e5e9f1;
+}
+
+.explore-filter-group:last-of-type {
+  border-bottom: 0;
+}
+
+.explore-filter-group h3 {
+  margin: 0 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.explore-collapse-icon {
+  margin-left: auto;
+  font-size: 16px;
+}
+
+.explore-filter-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.explore-checkbox-label,
+.explore-radio-label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #202941;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.explore-checkbox-label input,
+.explore-radio-label input {
+  width: 17px;
+  height: 17px;
+  margin: 0;
+  accent-color: var(--explore-primary);
+  cursor: pointer;
+}
+
+.explore-apply-filter-button {
+  width: 100%;
+  margin-top: 15px;
+  padding: 13px 16px;
+  border: 0;
+  border-radius: 7px;
+  background: var(--explore-primary);
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 650;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.explore-apply-filter-button:hover {
+  background: var(--explore-primary-dark);
+  transform: translateY(-1px);
+}
+
+.explore-listing-section {
+  min-width: 0;
+}
+
+.explore-search-sort-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 46px;
+}
+
+.explore-search-form {
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  padding-left: 18px;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid var(--explore-border);
+  border-radius: 12px;
+  box-shadow: 0 5px 16px rgba(26, 50, 89, 0.07);
+}
+
+.explore-search-icon {
+  margin-right: 12px;
+  color: #15294e;
+  font-size: 27px;
+  line-height: 1;
+}
+
+.explore-search-form input {
+  min-width: 0;
+  flex: 1;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #1c2942;
+  font: inherit;
+}
+
+.explore-search-form input::placeholder {
+  color: #8a94a8;
+}
+
+.explore-search-form button {
+  align-self: stretch;
+  min-width: 92px;
+  margin: 4px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--explore-primary);
+  color: white;
+  font-size: 15px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.explore-sort-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+
+.explore-sort-control label {
+  font-size: 14px;
+  font-weight: 650;
+}
+
+.explore-sort-control select {
+  min-width: 174px;
+  padding: 11px 38px 11px 14px;
+  border: 1px solid var(--explore-border);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--explore-text);
+  font: inherit;
+  outline: none;
+}
+
+.explore-listing-header {
+  min-height: 63px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.explore-listing-header p {
+  margin: 0;
+  color: #3e4861;
+  font-size: 14px;
+}
+
+.explore-view-buttons {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.explore-view-buttons button {
+  width: 31px;
+  height: 31px;
+  border: 1px solid var(--explore-border);
+  border-radius: 6px;
+  background: #ffffff;
+  color: #0d244c;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.explore-view-buttons button.active {
+  border-color: var(--explore-primary);
+  background: var(--explore-primary);
+  color: #ffffff;
+}
+
+.explore-guide-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.explore-guide-card {
+  min-width: 0;
+  overflow: hidden;
+  background: var(--explore-card);
+  border: 1px solid var(--explore-border);
+  border-radius: 13px;
+  box-shadow: 0 7px 20px rgba(22, 49, 85, 0.08);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.explore-guide-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(22, 49, 85, 0.14);
+}
+
+.explore-guide-image-wrapper {
+  position: relative;
+  height: 155px;
+  overflow: hidden;
+}
+
+.explore-guide-image {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.explore-favorite-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #ffffff;
+  font-size: 34px;
+  line-height: 1;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.55);
+  cursor: pointer;
+}
+
+.explore-guide-content {
+  padding: 0 14px 13px;
+}
+
+.explore-company-heading {
+  position: relative;
+  min-height: 63px;
+  display: grid;
+  grid-template-columns: 55px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+}
+
+.explore-company-logo {
+  width: 55px;
+  height: 55px;
+  margin-top: -22px;
+  display: grid;
+  place-items: center;
+  border: 5px solid white;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #0470f9, #00398d);
+  color: white;
+  font-size: 22px;
+  font-weight: 800;
+  box-shadow: 0 3px 11px rgba(26, 49, 82, 0.17);
+}
+
+.explore-company-title-wrapper {
+  min-width: 0;
+}
+
+.explore-company-title-wrapper h3 {
+  margin: 0 0 5px;
+  overflow: hidden;
+  color: #131d34;
+  font-size: 17px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.explore-location {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #34415d;
+  font-size: 12px;
+}
+
+.explore-tour-badge {
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.explore-tour-badge.single-tour {
+  background: #deedff;
+  color: #0063d9;
+}
+
+.explore-tour-badge.dual-tour {
+  background: #dff5e6;
+  color: #08753b;
+}
+
+.explore-tour-badge.group-tour {
+  background: #ece5ff;
+  color: #5730c4;
+}
+
+.explore-guide-description {
+  min-height: 49px;
+  margin: 3px 0 12px;
+  color: #2c354c;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.explore-guide-meta {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.explore-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #5f687b;
+  font-size: 11px;
+}
+
+.explore-rating strong {
+  color: #15213a;
+  font-size: 13px;
+}
+
+.explore-star {
+  color: #ffae00;
+  font-size: 18px;
+}
+
+.explore-price {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  color: #6b7488;
+  font-size: 11px;
+}
+
+.explore-price strong {
+  color: #0061d8;
+  font-size: 16px;
+}
+
+.explore-card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 11px;
+}
+
+.explore-card-actions button {
+  min-height: 34px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.explore-secondary-button {
+  border: 1px solid var(--explore-primary);
+  background: #ffffff;
+  color: var(--explore-primary);
+}
+
+.explore-primary-button {
+  border: 1px solid var(--explore-primary);
+  background: var(--explore-primary);
+  color: #ffffff;
+}
+
+@media (max-width: 1200px) {
+  .explore-main,
+  .explore-hero-content {
+    width: min(100% - 40px, 1200px);
+  }
+
+  .explore-main {
+    grid-template-columns: 250px minmax(0, 1fr);
+    gap: 24px;
+  }
+
+  .explore-guide-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 860px) {
+  .explore-top-section {
+    min-height: 220px;
+  }
+
+  .explore-main {
+    grid-template-columns: 1fr;
+  }
+
+  .explore-filter-sidebar {
+    position: static;
+  }
+
+  .explore-search-sort-row {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .explore-sort-control {
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 620px) {
+  .explore-main,
+  .explore-hero-content {
+    width: min(100% - 24px, 100%);
+  }
+
+  .explore-hero-content {
+    padding-top: 28px;
+  }
+
+  .explore-hero-content p br {
+    display: none;
+  }
+
+  .explore-guide-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .explore-search-form {
+    min-height: 48px;
+  }
+
+  .explore-search-form button {
+    min-width: 78px;
+  }
+
+  .explore-sort-control {
+    justify-content: stretch;
+  }
+
+  .explore-sort-control select {
+    flex: 1;
+  }
+
+  .explore-listing-header {
+    gap: 10px;
+  }
+}.explore-tour-badges {
+  min-height: 28px;
+  margin: 2px 0 8px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 5px;
+}
+
+.explore-tour-badge {
+  padding: 5px 9px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.explore-tour-badge.single-tour {
+  background: #deedff;
+  color: #0063d9;
+}
+
+.explore-tour-badge.dual-tour {
+  background: #dff5e6;
+  color: #08753b;
+}
+
+.explore-tour-badge.group-tour {
+  background: #ece5ff;
+  color: #5730c4;
+}
