@@ -1,4 +1,4 @@
-import AboutNavbar from "./components/AboutNavbar";
+import Navbar from "../../components/Navbar/Navbar";
 import Hero from "./components/Hero";
 import HeroFeatures from "./components/HeroFeatures";
 import Mission from "./components/Mission";
@@ -11,7 +11,7 @@ function AboutUs() {
   return (
     <main className="tm-about-page">
       <div className="tm-hero-banner">
-        <AboutNavbar />
+        <Navbar />
         <Hero />
         <HeroFeatures />
       </div>

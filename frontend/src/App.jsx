@@ -1,11 +1,13 @@
 import { Routes, Route, Link, BrowserRouter } from "react-router-dom";
 import GlobalLandingPage from "./pages/GlobalLandingPage/GlobalLandingPage";
+import AboutUs from "./pages/AboutUs/AboutUs";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<GlobalLandingPage />} />
+        <Route path="/about" element={<AboutUs />} />
 
         <Route
           path="*"

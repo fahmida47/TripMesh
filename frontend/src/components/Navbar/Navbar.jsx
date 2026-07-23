@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "./Navbar.css";
 
 const LogoIcon = () => (
@@ -16,6 +16,8 @@ const LogoIcon = () => (
 );
 
 function Navbar() {
+  const { pathname } = useLocation();
+
   return (
     <header className="tm-navbar">
       <Link className="tm-navbar__brand" to="/">
@@ -27,12 +29,19 @@ function Navbar() {
       </Link>
 
       <nav className="tm-navbar__links" aria-label="Main navigation">
-        <Link className="active" to="/">
+        <Link className={pathname === "/" ? "active" : ""} to="/">
           Home
         </Link>
 
         <a href="#explore">Explore</a>
-        <a href="#about">About Us</a>
+
+        <Link
+          className={pathname === "/about" ? "active" : ""}
+          to="/about"
+        >
+          About Us
+        </Link>
+
         <a href="#contact">Contact Us</a>
       </nav>
 
