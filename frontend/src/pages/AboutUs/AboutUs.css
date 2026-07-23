@@ -1,0 +1,466 @@
+.tm-about-page {
+  background: #f6f8fc;
+  overflow: hidden;
+}
+
+/* ---------- Eyebrow / shared bits ---------- */
+.tm-eyebrow {
+  color: #2e7dfb;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin: 0 0 10px;
+}
+
+.tm-eyebrow-light {
+  color: #6fa4ff;
+}
+
+/* ================= HERO BANNER ================= */
+.tm-hero-banner {
+  background: linear-gradient(180deg, #06173f 0%, #0b245f 100%);
+  border-radius: 0 0 40px 40px;
+  padding-bottom: 60px;
+}
+
+.tm-about-hero {
+  position: relative;
+  max-width: 1350px;
+  margin: auto;
+  padding: 70px 60px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* soft color glow sitting behind the text, echoing the image's
+   tones, so the text side doesn't feel like a separate block */
+.tm-about-hero::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 55%;
+  height: 90%;
+  background: radial-gradient(
+    ellipse at left,
+    rgba(46, 125, 251, 0.16),
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.tm-about-left {
+  position: relative;
+  z-index: 1;
+  width: 46%;
+}
+
+.tm-about-small {
+  color: #4c8cff;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.tm-about-left h1 {
+  color: white;
+  font-size: 54px;
+  font-weight: 800;
+  line-height: 1.15;
+  margin: 18px 0 22px;
+}
+
+.tm-highlight {
+  color: #4d9dff;
+}
+
+.tm-about-left p {
+  color: #c9d6f5;
+  font-size: 17px;
+  line-height: 1.8;
+  margin: 0 0 14px;
+}
+
+.tm-about-right {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.tm-image-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 660px;
+  margin-left: -60px;
+}
+
+.tm-image-card img {
+  width: 100%;
+  height: 460px;
+  object-fit: cover;
+  border-radius: 22px;
+  display: block;
+  /* fade the left edge gradually into the text side so the photo
+     and copy read as one continuous scene instead of two blocks */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0, 0, 0, 0.35) 12%,
+    black 45%,
+    black 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0, 0, 0, 0.35) 12%,
+    black 45%,
+    black 100%
+  );
+}
+
+/* ---------- hero feature strip ---------- */
+.tm-hero-features {
+  max-width: 1250px;
+  margin: 10px auto 0;
+  padding: 0 40px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 28px 40px;
+}
+
+.tm-hero-feature-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.tm-hero-feature-icon {
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2e7dfb, #1a4fc4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.tm-hero-feature-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.tm-hero-feature-card h4 {
+  color: white;
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+
+.tm-hero-feature-card p {
+  color: #b9c6e8;
+  font-size: 13.5px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ================= MISSION SECTION ================= */
+.tm-mission-section {
+  max-width: 1350px;
+  margin: auto;
+  padding: 80px 60px;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+.tm-mission-col {
+  border-right: 1px solid #e3e8f4;
+  padding-right: 50px;
+}
+
+.tm-mission-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: #e9f0ff;
+  color: #2e7dfb;
+  margin-bottom: 22px;
+}
+
+.tm-mission-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.tm-mission-col h2 {
+  font-size: 32px;
+  font-weight: 800;
+  color: #0b1730;
+  margin: 0 0 16px;
+}
+
+.tm-mission-text {
+  color: #5b6478;
+  font-size: 16px;
+  line-height: 1.8;
+  margin: 0 0 40px;
+}
+
+.tm-stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  border-top: 1px solid #e3e8f4;
+  padding-top: 32px;
+}
+
+.tm-stat {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.tm-stat-icon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #e9f0ff;
+  color: #2e7dfb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tm-stat-icon svg {
+  width: 20px;
+  height: 20px;
+}
+
+.tm-stat h3 {
+  font-size: 24px;
+  font-weight: 800;
+  color: #0b1730;
+  margin: 0;
+}
+
+.tm-stat p {
+  font-size: 13px;
+  color: #6b7488;
+  margin: 4px 0 0;
+}
+
+/* ---------- Why choose card ---------- */
+.tm-why-card {
+  background: #eef3fb;
+  border-radius: 22px;
+  padding: 36px;
+}
+
+.tm-why-list {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.tm-why-list li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: #263049;
+  font-size: 15.5px;
+  font-weight: 500;
+}
+
+.tm-why-check {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  color: #2e7dfb;
+}
+
+.tm-why-check svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ================= TEAM / TRUST BANNER ================= */
+.tm-team-banner {
+  background: linear-gradient(180deg, #0b1c47 0%, #06133a 100%);
+  border-radius: 40px 40px 0 0;
+  max-width: 1350px;
+  margin: 0 auto;
+  padding: 70px 60px;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.tm-team-col h2,
+.tm-trust-col h2 {
+  color: white;
+  font-size: 28px;
+  font-weight: 800;
+  margin: 0 0 16px;
+}
+
+.tm-team-text,
+.tm-trust-text {
+  color: #b9c6e8;
+  font-size: 15.5px;
+  line-height: 1.8;
+  margin: 0 0 34px;
+}
+
+.tm-team-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.tm-team-member {
+  text-align: center;
+}
+
+.tm-team-avatar {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 20px;
+  margin: 0 auto 14px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+.tm-team-member h4 {
+  color: white;
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.tm-team-member p {
+  color: #9fb0da;
+  font-size: 13px;
+  margin: 0;
+}
+
+/* ---------- Trust & security ---------- */
+.tm-trust-col {
+  position: relative;
+}
+
+.tm-shield {
+  width: 130px;
+  height: 130px;
+  margin: 20px auto 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(46, 125, 251, 0.25),
+    rgba(46, 125, 251, 0) 70%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4d9dff;
+}
+
+.tm-shield svg {
+  width: 64px;
+  height: 64px;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 992px) {
+  .tm-about-hero {
+    flex-direction: column;
+    text-align: center;
+    padding: 50px 24px 40px;
+  }
+
+  .tm-about-left {
+    width: 100%;
+  }
+
+  .tm-about-left h1 {
+    font-size: 38px;
+  }
+
+  .tm-image-card {
+    margin-left: 0;
+    max-width: 100%;
+  }
+
+  .tm-hero-features {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 24px;
+  }
+
+  .tm-mission-section {
+    grid-template-columns: 1fr;
+    padding: 60px 24px;
+  }
+
+  .tm-mission-col {
+    border-right: none;
+    padding-right: 0;
+    padding-bottom: 40px;
+    border-bottom: 1px solid #e3e8f4;
+  }
+
+  .tm-stats-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tm-team-banner {
+    grid-template-columns: 1fr;
+    padding: 50px 24px;
+    text-align: center;
+  }
+
+  .tm-team-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tm-shield {
+    margin-top: 30px;
+  }
+}
+
+@media (max-width: 560px) {
+  .tm-hero-features {
+    grid-template-columns: 1fr;
+  }
+
+  .tm-stats-row {
+    grid-template-columns: 1fr;
+  }
+
+  .tm-team-grid {
+    grid-template-columns: 1fr;
+  }
+}
