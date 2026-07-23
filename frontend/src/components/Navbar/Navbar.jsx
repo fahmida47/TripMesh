@@ -1,6 +1,4 @@
-
-import { Link, useLocation } from "react-router-dom";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import "./Navbar.css";
 
 const LogoIcon = () => (
@@ -19,11 +17,14 @@ const LogoIcon = () => (
   </svg>
 );
 
+
 function Navbar() {
+
   const location = useLocation();
 
   return (
     <header className="tm-navbar">
+
       <Link className="tm-navbar__brand" to="/">
         <span className="tm-navbar__logo">
           <LogoIcon />
@@ -34,21 +35,16 @@ function Navbar() {
 
 
       <nav className="tm-navbar__links" aria-label="Main navigation">
-        <Link
-          className={location.pathname === "/" ? "active" : ""}
-          to="/"
-
-       <nav className="tm-navbar__links" aria-label="Main navigation">
 
         <NavLink
           to="/"
           className={({ isActive }) =>
             isActive ? "active" : ""
           }
-
         >
           Home
         </NavLink>
+
 
         <Link
           className={location.pathname === "/explore" ? "active" : ""}
@@ -57,6 +53,7 @@ function Navbar() {
           Explore
         </Link>
 
+
         <Link
           className={location.pathname === "/about" ? "active" : ""}
           to="/about"
@@ -64,23 +61,30 @@ function Navbar() {
           About Us
         </Link>
 
+
         <Link
           className={location.pathname === "/contact" ? "active" : ""}
           to="/contact"
         >
           Contact Us
         </Link>
+
       </nav>
 
+
       <div className="tm-navbar__actions">
+
         <Link className="tm-navbar__login" to="/login">
           Log In
         </Link>
 
+
         <Link className="tm-navbar__signup" to="/signup">
           Sign Up
         </Link>
+
       </div>
+
     </header>
   );
 }
