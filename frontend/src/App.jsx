@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 
 import GlobalLandingPage from "./pages/GlobalLandingPage/GlobalLandingPage";
+
 import Explore from "./pages/Explore/Explore";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
@@ -28,6 +29,9 @@ function App() {
         />
 
         <Route path="/" element={<GlobalLandingPage />} />
+
+        <Route path="/about" element={<AboutUs />} />
+
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
