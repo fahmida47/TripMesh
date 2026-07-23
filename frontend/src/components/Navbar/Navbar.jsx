@@ -1,4 +1,8 @@
+
+import { Link, useLocation } from "react-router-dom";
+
 import { Link, NavLink, useLocation } from "react-router-dom";
+
 import "./Navbar.css";
 
 const LogoIcon = () => (
@@ -20,6 +24,9 @@ const LogoIcon = () => (
 
 function Navbar() {
 
+  const { pathname } = useLocation();
+
+
   const location = useLocation();
 
   return (
@@ -36,12 +43,16 @@ function Navbar() {
 
       <nav className="tm-navbar__links" aria-label="Main navigation">
 
+        <Link className={pathname === "/" ? "active" : ""} to="/">
+
+
         <NavLink
           to="/"
           className={({ isActive }) =>
             isActive ? "active" : ""
           }
         >
+
           Home
         </NavLink>
 
@@ -68,6 +79,18 @@ function Navbar() {
         >
           Contact Us
         </Link>
+
+
+        <a href="#explore">Explore</a>
+
+        <Link
+          className={pathname === "/about" ? "active" : ""}
+          to="/about"
+        >
+          About Us
+        </Link>
+
+        <a href="#contact">Contact Us</a>
 
       </nav>
 
