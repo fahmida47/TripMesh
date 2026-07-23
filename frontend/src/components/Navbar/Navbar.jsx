@@ -1,4 +1,6 @@
+
 import { Link, useLocation } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "./Navbar.css";
 
 const LogoIcon = () => (
@@ -30,13 +32,23 @@ function Navbar() {
         <span>TripMesh</span>
       </Link>
 
+
       <nav className="tm-navbar__links" aria-label="Main navigation">
         <Link
           className={location.pathname === "/" ? "active" : ""}
           to="/"
+
+       <nav className="tm-navbar__links" aria-label="Main navigation">
+
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            isActive ? "active" : ""
+          }
+
         >
           Home
-        </Link>
+        </NavLink>
 
         <Link
           className={location.pathname === "/explore" ? "active" : ""}
