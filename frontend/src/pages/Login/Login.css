@@ -1,0 +1,352 @@
+.auth-container {
+  display: flex;
+  min-height: 100vh;
+  background: #f5f7ff;
+  overflow: hidden;
+}
+
+/* ================= LEFT SECTION ================= */
+
+.auth-left {
+  width: 50%;
+
+  background-size: cover;
+  background-position: center;
+
+  color: white;
+
+  padding: 40px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  position: relative;
+
+  animation: slideLeft 0.8s ease;
+}
+
+.logo {
+  position: absolute;
+
+  top: 35px;
+  left: 40px;
+
+  font-size: 30px;
+  font-weight: 700;
+
+  letter-spacing: 1px;
+
+  animation: fadeDown 1s ease;
+}
+
+/* Hero Text */
+
+.hero-text {
+  margin-top: 80px;
+
+  animation: fadeUp 1s ease;
+}
+
+.hero-text h1 {
+  font-size: 48px;
+
+  line-height: 1.2;
+
+  font-weight: 700;
+
+  margin-bottom: 20px;
+}
+
+.hero-text p {
+  font-size: 18px;
+
+  line-height: 1.6;
+
+  opacity: 0.9;
+}
+
+/* Left Bottom Footer */
+
+.left-footer {
+  position: absolute;
+
+  bottom: 30px;
+
+  left: 40px;
+
+  font-size: 14px;
+
+  opacity: 0.9;
+}
+
+/* ================= RIGHT SECTION ================= */
+
+.auth-right {
+  width: 50%;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  background: #f5f7ff;
+
+  animation: slideRight 0.8s ease;
+}
+
+/* Login Card */
+
+.auth-card {
+  width: 420px;
+
+  background: white;
+
+  padding: 45px;
+
+  border-radius: 25px;
+
+  text-align: center;
+
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+
+  animation: scaleIn 0.7s ease;
+
+  transition: 0.3s ease;
+}
+
+.auth-card:hover {
+  transform: translateY(-8px);
+
+  box-shadow: 0 25px 60px rgba(23, 101, 216, 0.18);
+}
+
+.auth-card h2 {
+  font-size: 35px;
+
+  color: #03143d;
+
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  color: #666;
+
+  font-size: 16px;
+
+  margin-bottom: 30px;
+}
+
+/* ================= INPUT ================= */
+
+.auth-card input {
+  width: 100%;
+
+  padding: 15px 18px;
+
+  margin: 12px 0;
+
+  border-radius: 10px;
+
+  border: 1px solid #ddd;
+
+  font-size: 16px;
+
+  outline: none;
+
+  transition: 0.3s ease;
+}
+
+.auth-card input:focus {
+  border-color: #1765d8;
+
+  box-shadow: 0 0 10px rgba(23, 101, 216, 0.25);
+}
+
+/* Forgot Password */
+
+.forgot-password {
+  text-align: right;
+
+  margin: 8px 0 20px;
+}
+
+.forgot-password a {
+  color: #1765d8;
+
+  font-size: 14px;
+
+  text-decoration: none;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}
+
+/* ================= BUTTON ================= */
+
+.auth-card button {
+  width: 100%;
+
+  padding: 15px;
+
+  margin-top: 10px;
+
+  background: #1765d8;
+
+  color: white;
+
+  border: none;
+
+  border-radius: 10px;
+
+  font-size: 17px;
+
+  cursor: pointer;
+
+  transition: 0.3s ease;
+}
+
+.auth-card button:hover {
+  background: #0f4fb5;
+
+  transform: translateY(-3px);
+
+  box-shadow: 0 10px 20px rgba(23, 101, 216, 0.3);
+}
+
+/* Footer Text */
+
+.footer-text {
+  margin-top: 25px;
+
+  color: #555;
+}
+
+.footer-text a {
+  color: #1765d8;
+
+  font-weight: 600;
+
+  margin-left: 5px;
+
+  text-decoration: none;
+}
+
+.footer-text a:hover {
+  text-decoration: underline;
+}
+
+/* ================= ANIMATION ================= */
+
+@keyframes slideLeft {
+  from {
+    transform: translateX(-80px);
+
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+
+    opacity: 1;
+  }
+}
+
+@keyframes slideRight {
+  from {
+    transform: translateX(80px);
+
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+
+    opacity: 1;
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    transform: translateY(40px);
+
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+
+    opacity: 1;
+  }
+}
+
+@keyframes fadeDown {
+  from {
+    transform: translateY(-30px);
+
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.85);
+
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+
+    opacity: 1;
+  }
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 768px) {
+  .auth-container {
+    flex-direction: column;
+  }
+
+  .auth-left,
+  .auth-right {
+    width: 100%;
+  }
+
+  .auth-left {
+    min-height: 400px;
+  }
+
+  .hero-text {
+    margin-top: 100px;
+  }
+
+  .hero-text h1 {
+    font-size: 36px;
+  }
+
+  .auth-card {
+    width: 90%;
+
+    padding: 30px;
+  }
+
+  .logo {
+    left: 25px;
+  }
+
+  .left-footer {
+    left: 25px;
+
+    font-size: 12px;
+  }
+}

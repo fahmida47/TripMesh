@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "./Navbar.css";
 
 const LogoIcon = () => (
@@ -26,10 +26,16 @@ function Navbar() {
         <span>TripMesh</span>
       </Link>
 
-      <nav className="tm-navbar__links" aria-label="Main navigation">
-        <Link className="active" to="/">
+       <nav className="tm-navbar__links" aria-label="Main navigation">
+
+        <NavLink
+          to="/"
+          className={({ isActive }) =>
+            isActive ? "active" : ""
+          }
+        >
           Home
-        </Link>
+        </NavLink>
 
         <a href="#explore">Explore</a>
         <a href="#about">About Us</a>
@@ -37,13 +43,13 @@ function Navbar() {
       </nav>
 
       <div className="tm-navbar__actions">
-        <a className="tm-navbar__login" href="#login">
+        <Link className="tm-navbar__login" to="/login">
           Log In
-        </a>
+        </Link>
 
-        <a className="tm-navbar__signup" href="#signup">
+        <Link className="tm-navbar__signup" to="/signup">
           Sign Up
-        </a>
+        </Link>
       </div>
     </header>
   );
