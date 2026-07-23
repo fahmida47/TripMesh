@@ -6,9 +6,7 @@ import {
 } from "react-router-dom";
 
 import GlobalLandingPage from "./pages/GlobalLandingPage/GlobalLandingPage";
-
 import Explore from "./pages/Explore/Explore";
-
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 
