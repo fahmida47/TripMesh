@@ -131,10 +131,7 @@ function GuideCard({ guide }) {
 
       <div className="explore-guide-content">
         <div className="explore-company-heading">
-          <div
-            className="explore-company-logo"
-            aria-hidden="true"
-          >
+          <div className="explore-company-logo" aria-hidden="true">
             {guide.logoText}
           </div>
 
@@ -160,23 +157,17 @@ function GuideCard({ guide }) {
 
         <div className="explore-guide-meta">
           <div className="explore-rating">
-            <span
-              className="explore-star"
-              aria-hidden="true"
-            >
+            <span className="explore-star" aria-hidden="true">
               ★
             </span>
 
             <strong>{guide.rating}</strong>
-
             <span>({guide.reviews} reviews)</span>
           </div>
 
           <div className="explore-price">
             <span>From</span>
-            <strong>
-              ৳{guide.price.toLocaleString()}
-            </strong>
+            <strong>৳{guide.price.toLocaleString()}</strong>
           </div>
         </div>
 
@@ -201,6 +192,10 @@ function GuideCard({ guide }) {
 }
 
 function Explore() {
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+  };
+
   return (
     <div className="explore-page">
       <section
@@ -220,13 +215,10 @@ function Explore() {
         <Navbar />
 
         <div className="explore-hero-content">
-          <h1>
-            Explore Guide Services in Bangladesh
-          </h1>
+          <h1>Explore Guide Services in Bangladesh</h1>
 
           <p>
-            Find and connect with professional local
-            guide companies
+            Find and connect with professional local guide companies
             <br />
             for your next unforgettable journey.
           </p>
@@ -265,7 +257,6 @@ function Explore() {
 
                   <span>
                     {location.name}
-
                     {location.count !== null
                       ? ` (${location.count})`
                       : ""}
@@ -279,27 +270,21 @@ function Explore() {
             <h3>
               <span aria-hidden="true">♧</span>
               Tour Type
-
-              <span className="explore-collapse-icon">
-                ⌃
-              </span>
+              <span className="explore-collapse-icon">⌃</span>
             </h3>
 
             <div className="explore-filter-options">
-              {[
-                "Group Tour",
-                "Dual Tour",
-                "Single Tour",
-              ].map((tourType) => (
-                <label
-                  className="explore-checkbox-label"
-                  key={tourType}
-                >
-                  <input type="checkbox" />
-
-                  <span>{tourType}</span>
-                </label>
-              ))}
+              {["Group Tour", "Dual Tour", "Single Tour"].map(
+                (tourType) => (
+                  <label
+                    className="explore-checkbox-label"
+                    key={tourType}
+                  >
+                    <input type="checkbox" />
+                    <span>{tourType}</span>
+                  </label>
+                ),
+              )}
             </div>
           </section>
 
@@ -307,10 +292,7 @@ function Explore() {
             <h3>
               <span aria-hidden="true">◉</span>
               Price Range
-
-              <span className="explore-collapse-icon">
-                ⌃
-              </span>
+              <span className="explore-collapse-icon">⌃</span>
             </h3>
 
             <div className="explore-filter-options">
@@ -320,16 +302,11 @@ function Explore() {
                   name="priceOrder"
                   defaultChecked
                 />
-
                 <span>Low to High</span>
               </label>
 
               <label className="explore-radio-label">
-                <input
-                  type="radio"
-                  name="priceOrder"
-                />
-
+                <input type="radio" name="priceOrder" />
                 <span>High to Low</span>
               </label>
             </div>
@@ -339,22 +316,17 @@ function Explore() {
             <h3>
               <span aria-hidden="true">☆</span>
               Guide Rating
-
-              <span className="explore-collapse-icon">
-                ⌃
-              </span>
+              <span className="explore-collapse-icon">⌃</span>
             </h3>
 
             <div className="explore-filter-options">
               <label className="explore-checkbox-label">
                 <input type="checkbox" />
-
                 <span>4 Stars and Above</span>
               </label>
 
               <label className="explore-checkbox-label">
                 <input type="checkbox" />
-
                 <span>3 Stars and Above</span>
               </label>
             </div>
@@ -372,9 +344,7 @@ function Explore() {
           <div className="explore-search-sort-row">
             <form
               className="explore-search-form"
-              onSubmit={(event) =>
-                event.preventDefault()
-              }
+              onSubmit={handleSearchSubmit}
             >
               <span
                 className="explore-search-icon"
@@ -389,35 +359,20 @@ function Explore() {
                 aria-label="Search guide services"
               />
 
-              <button type="submit">
-                Search
-              </button>
+              <button type="submit">Search</button>
             </form>
 
             <div className="explore-sort-control">
-              <label htmlFor="guide-sort">
-                Sort by:
-              </label>
+              <label htmlFor="guide-sort">Sort by:</label>
 
               <select
                 id="guide-sort"
                 defaultValue="popular"
               >
-                <option value="popular">
-                  Most Popular
-                </option>
-
-                <option value="rating">
-                  Highest Rated
-                </option>
-
-                <option value="low-price">
-                  Lowest Price
-                </option>
-
-                <option value="high-price">
-                  Highest Price
-                </option>
+                <option value="popular">Most Popular</option>
+                <option value="rating">Highest Rated</option>
+                <option value="low-price">Lowest Price</option>
+                <option value="high-price">Highest Price</option>
               </select>
             </div>
           </div>
@@ -425,13 +380,9 @@ function Explore() {
           <div className="explore-listing-header">
             <p>
               Showing{" "}
-              <strong>
-                {guideCompanies.length}
-              </strong>{" "}
+              <strong>{guideCompanies.length}</strong>{" "}
               of{" "}
-              <strong>
-                {guideCompanies.length}
-              </strong>{" "}
+              <strong>{guideCompanies.length}</strong>{" "}
               guide services
             </p>
 
