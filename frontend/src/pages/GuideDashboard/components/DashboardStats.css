@@ -12,6 +12,12 @@
   border-radius: 8px;
   box-shadow: 0 2px 7px rgba(15, 31, 68, 0.04);
   display: flex;
+  flex-direction: column; 
+  justify-content: space-between; 
+}
+
+.stat-card__header {
+  display: flex;
   gap: 9px;
   align-items: flex-start;
 }

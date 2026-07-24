@@ -21,21 +21,23 @@ const StatCard = ({
 
   return (
     <article className="stat-card">
-      <div className={`stat-card__icon stat-card__icon--${tone}`}>
-        <Icon aria-hidden="true" />
-      </div>
+      <div className="stat-card__header">
+        <div className={`stat-card__icon stat-card__icon--${tone}`}>
+          <Icon aria-hidden="true" />
+        </div>
 
-      <div className="stat-card__content">
-        <p className="stat-card__label">{label}</p>
-        <p className="stat-card__value">
+        <div className="stat-card__content">
+          <p className="stat-card__label">{label}</p>
+          <p className="stat-card__value">
           {formattedValue}
           {format === "rating" && <FiStar className="stat-card__star" aria-label="star" />}
-        </p>
-        <p className={`stat-card__change stat-card__change--${trend}`}>
-          <TrendIcon aria-hidden="true" />
-          {changeText}
-        </p>
+          </p>
+        </div>
       </div>
+      <p className={`stat-card__change stat-card__change--${trend}`}>
+        <TrendIcon aria-hidden="true" />
+        {changeText}
+      </p>
     </article>
   );
 };
