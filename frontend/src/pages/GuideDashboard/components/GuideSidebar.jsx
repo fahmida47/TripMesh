@@ -1,14 +1,15 @@
 import "./GuideSidebar.css";
 
 import {
-    FiGrid,
-    FiUser,
-    FiClipboard,
-    FiCalendar,
-    FiDollarSign,
-    FiMessageSquare,
-    FiLogOut,
-    FiStar
+  FiGrid,
+  FiUser,
+  FiMap,
+  FiInbox,
+  FiCalendar,
+  FiDollarSign,
+  FiMessageSquare,
+  FiLogOut,
+  FiStar,
 } from "react-icons/fi";
 
 import logo from "../../../assets/logo.png";
@@ -57,8 +58,8 @@ const GuideSidebar = () => {
 
                     <a href="#">
 
-                        <FiClipboard />
-
+                        <FiMap />
+                        
                         Tour Services
 
                     </a>
@@ -66,9 +67,9 @@ const GuideSidebar = () => {
 
                     <a href="#">
 
-                        <FiCalendar />
+                        <FiInbox />
 
-                        Booking Request
+                        Requests
 
                     </a>
 
@@ -77,7 +78,7 @@ const GuideSidebar = () => {
 
                         <FiCalendar />
 
-                        Booking History
+                        Bookings 
 
                     </a>
 
