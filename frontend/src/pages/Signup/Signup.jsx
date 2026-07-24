@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import "./Signup.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import signupBg from "../../assets/login-bg.jpeg";
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -19,9 +20,16 @@ const Signup = () => {
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(data);
-  };
+  e.preventDefault();
+
+  console.log(data);
+
+  if (data.role === "Guide") {
+    navigate("/guide-dashboard");
+  } else {
+    navigate("/");
+  }
+};
 
   return (
     <div className="signup-container">
