@@ -7,7 +7,8 @@ import {
     FiCalendar,
     FiDollarSign,
     FiMessageSquare,
-    FiLogOut
+    FiLogOut,
+    FiStar
 } from "react-icons/fi";
 
 import logo from "../../../assets/logo.png";
@@ -44,6 +45,7 @@ const GuideSidebar = () => {
 
                     </a>
 
+
                     <a href="#">
 
                         <FiUser />
@@ -52,29 +54,51 @@ const GuideSidebar = () => {
 
                     </a>
 
+
                     <a href="#">
 
                         <FiClipboard />
 
-                        Requests
+                        Tour Services
 
                     </a>
+
 
                     <a href="#">
 
                         <FiCalendar />
 
-                        Bookings
+                        Booking Request
 
                     </a>
+
+
+                    <a href="#">
+
+                        <FiCalendar />
+
+                        Booking History
+
+                    </a>
+
 
                     <a href="#">
 
                         <FiDollarSign />
 
-                        Earnings
+                        Payments
 
                     </a>
+
+
+                    <a href="#">
+
+                        <FiStar />
+
+                        Reviews and Ratings
+
+                    </a>
+
 
                     <a href="#">
 
@@ -83,6 +107,7 @@ const GuideSidebar = () => {
                         Messages
 
                     </a>
+
 
                 </nav>
                 <div
