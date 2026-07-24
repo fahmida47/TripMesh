@@ -13,7 +13,7 @@ const StatCard = ({
   const TrendIcon = isUpward ? FiArrowUpRight : FiArrowDownRight;
   const formattedValue =
     format === "currency"
-      ? `৳ ${new Intl.NumberFormat("en-BD").format(value)}`
+      ? `BDT ${new Intl.NumberFormat("en-BD").format(value)}`
       : value;
 
   const changeText =
