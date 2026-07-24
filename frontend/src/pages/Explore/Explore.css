@@ -750,3 +750,23 @@
     height: 185px;
   }
 }
+.explore-no-results {
+  grid-column: 1 / -1;
+  padding: 70px 24px;
+  text-align: center;
+  background: #ffffff;
+  border: 1px solid var(--explore-border);
+  border-radius: 14px;
+}
+
+.explore-no-results h3 {
+  margin: 0 0 10px;
+  color: var(--explore-text);
+  font-size: 22px;
+}
+
+.explore-no-results p {
+  margin: 0;
+  color: var(--explore-muted);
+  font-size: 14px;
+}

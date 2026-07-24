@@ -1,7 +1,9 @@
+import { useState } from "react";
 import "./Explore.css";
-import Navbar from "../../components/Navbar/Navbar";
 
-import exploreHero from "../../assets/explore-hero.png";
+import ExploreHero from "./ExploreHero";
+import ExploreSearch from "./ExploreSearch";
+
 import dhakaImage from "../../assets/dhaka.jpg";
 import dhakaCityImage from "../../assets/dhaka-city.jpg";
 import coxsBazarImage from "../../assets/coxsbazar.jpg";
@@ -24,12 +26,14 @@ const guideCompanies = [
     id: 1,
     companyName: "PathPilot",
     location: "Dhaka",
+    destination: "Dhaka Historical Places",
     tourTypes: ["Single Tour", "Dual Tour", "Group Tour"],
     description:
       "Experience the rich history, culture and hidden gems with our expert local guides.",
     rating: 4.8,
     reviews: 120,
     price: 2500,
+    popularity: 95,
     image: dhakaImage,
     logoText: "P",
   },
@@ -37,12 +41,14 @@ const guideCompanies = [
     id: 2,
     companyName: "WanderMate",
     location: "Cox's Bazar",
+    destination: "Cox's Bazar Beach",
     tourTypes: ["Single Tour", "Dual Tour", "Group Tour"],
     description:
       "Enjoy the sea breeze and explore the best attractions with our professional local team.",
     rating: 4.7,
     reviews: 98,
     price: 2800,
+    popularity: 90,
     image: coxsBazarImage,
     logoText: "W",
   },
@@ -50,12 +56,14 @@ const guideCompanies = [
     id: 3,
     companyName: "JourneyRoot",
     location: "Sundarbans",
+    destination: "Sundarbans Mangrove Forest",
     tourTypes: ["Group Tour"],
     description:
       "Discover the wild side of the Sundarbans with our experienced and trusted guides.",
     rating: 4.9,
     reviews: 145,
     price: 4000,
+    popularity: 98,
     image: sundarbansImage,
     logoText: "J",
   },
@@ -63,12 +71,14 @@ const guideCompanies = [
     id: 4,
     companyName: "Horizon Link",
     location: "Sylhet",
+    destination: "Sylhet Tea Gardens",
     tourTypes: ["Single Tour", "Dual Tour", "Group Tour"],
     description:
       "Explore lush tea gardens, waterfalls and the peaceful natural beauty of Sylhet.",
     rating: 4.6,
     reviews: 85,
     price: 2600,
+    popularity: 84,
     image: sylhetImage,
     logoText: "H",
   },
@@ -76,12 +86,14 @@ const guideCompanies = [
     id: 5,
     companyName: "Local Lens",
     location: "Paharpur",
+    destination: "Paharpur Heritage Site",
     tourTypes: ["Single Tour", "Dual Tour", "Group Tour"],
     description:
       "Step into history with guided tours of ancient heritage sites and nearby attractions.",
     rating: 4.6,
     reviews: 65,
     price: 2200,
+    popularity: 78,
     image: paharpurImage,
     logoText: "L",
   },
@@ -89,12 +101,14 @@ const guideCompanies = [
     id: 6,
     companyName: "RoamBridge",
     location: "Dhaka",
+    destination: "Old Dhaka City",
     tourTypes: ["Single Tour", "Dual Tour", "Group Tour"],
     description:
       "Explore vibrant city life and heritage locations with friendly and knowledgeable guides.",
     rating: 4.8,
     reviews: 110,
     price: 2700,
+    popularity: 92,
     image: dhakaCityImage,
     logoText: "R",
   },
@@ -131,7 +145,10 @@ function GuideCard({ guide }) {
 
       <div className="explore-guide-content">
         <div className="explore-company-heading">
-          <div className="explore-company-logo" aria-hidden="true">
+          <div
+            className="explore-company-logo"
+            aria-hidden="true"
+          >
             {guide.logoText}
           </div>
 
@@ -147,7 +164,10 @@ function GuideCard({ guide }) {
 
         <div className="explore-tour-badges">
           {guide.tourTypes.map((type) => (
-            <TourTypeBadge key={type} type={type} />
+            <TourTypeBadge
+              key={type}
+              type={type}
+            />
           ))}
         </div>
 
@@ -157,17 +177,24 @@ function GuideCard({ guide }) {
 
         <div className="explore-guide-meta">
           <div className="explore-rating">
-            <span className="explore-star" aria-hidden="true">
+            <span
+              className="explore-star"
+              aria-hidden="true"
+            >
               ★
             </span>
 
             <strong>{guide.rating}</strong>
+
             <span>({guide.reviews} reviews)</span>
           </div>
 
           <div className="explore-price">
             <span>From</span>
-            <strong>৳{guide.price.toLocaleString()}</strong>
+
+            <strong>
+              ৳{guide.price.toLocaleString()}
+            </strong>
           </div>
         </div>
 
@@ -192,38 +219,45 @@ function GuideCard({ guide }) {
 }
 
 function Explore() {
-  const handleSearchSubmit = (event) => {
-    event.preventDefault();
+  const [searchInput, setSearchInput] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = () => {
+    setSearchTerm(searchInput.trim().toLowerCase());
   };
+
+  const filteredCompanies = guideCompanies.filter((company) => {
+    if (!searchTerm) {
+      return true;
+    }
+
+    const matchesCompanyName = company.companyName
+      .toLowerCase()
+      .includes(searchTerm);
+
+    const matchesLocation = company.location
+      .toLowerCase()
+      .includes(searchTerm);
+
+    const matchesDestination = company.destination
+      .toLowerCase()
+      .includes(searchTerm);
+
+    const matchesTourType = company.tourTypes.some((tourType) =>
+      tourType.toLowerCase().includes(searchTerm),
+    );
+
+    return (
+      matchesCompanyName ||
+      matchesLocation ||
+      matchesDestination ||
+      matchesTourType
+    );
+  });
 
   return (
     <div className="explore-page">
-      <section
-        className="explore-top-section"
-        style={{
-          backgroundImage: `
-            linear-gradient(
-              90deg,
-              rgba(2, 20, 55, 0.96) 0%,
-              rgba(2, 29, 70, 0.82) 42%,
-              rgba(3, 39, 79, 0.22) 100%
-            ),
-            url(${exploreHero})
-          `,
-        }}
-      >
-        <Navbar />
-
-        <div className="explore-hero-content">
-          <h1>Explore Guide Services in Bangladesh</h1>
-
-          <p>
-            Find and connect with professional local guide companies
-            <br />
-            for your next unforgettable journey.
-          </p>
-        </div>
-      </section>
+      <ExploreHero />
 
       <main className="explore-main">
         <aside className="explore-filter-sidebar">
@@ -257,6 +291,7 @@ function Explore() {
 
                   <span>
                     {location.name}
+
                     {location.count !== null
                       ? ` (${location.count})`
                       : ""}
@@ -270,21 +305,26 @@ function Explore() {
             <h3>
               <span aria-hidden="true">♧</span>
               Tour Type
-              <span className="explore-collapse-icon">⌃</span>
+
+              <span className="explore-collapse-icon">
+                ⌃
+              </span>
             </h3>
 
             <div className="explore-filter-options">
-              {["Group Tour", "Dual Tour", "Single Tour"].map(
-                (tourType) => (
-                  <label
-                    className="explore-checkbox-label"
-                    key={tourType}
-                  >
-                    <input type="checkbox" />
-                    <span>{tourType}</span>
-                  </label>
-                ),
-              )}
+              {[
+                "Group Tour",
+                "Dual Tour",
+                "Single Tour",
+              ].map((tourType) => (
+                <label
+                  className="explore-checkbox-label"
+                  key={tourType}
+                >
+                  <input type="checkbox" />
+                  <span>{tourType}</span>
+                </label>
+              ))}
             </div>
           </section>
 
@@ -292,7 +332,10 @@ function Explore() {
             <h3>
               <span aria-hidden="true">◉</span>
               Price Range
-              <span className="explore-collapse-icon">⌃</span>
+
+              <span className="explore-collapse-icon">
+                ⌃
+              </span>
             </h3>
 
             <div className="explore-filter-options">
@@ -302,11 +345,16 @@ function Explore() {
                   name="priceOrder"
                   defaultChecked
                 />
+
                 <span>Low to High</span>
               </label>
 
               <label className="explore-radio-label">
-                <input type="radio" name="priceOrder" />
+                <input
+                  type="radio"
+                  name="priceOrder"
+                />
+
                 <span>High to Low</span>
               </label>
             </div>
@@ -316,7 +364,10 @@ function Explore() {
             <h3>
               <span aria-hidden="true">☆</span>
               Guide Rating
-              <span className="explore-collapse-icon">⌃</span>
+
+              <span className="explore-collapse-icon">
+                ⌃
+              </span>
             </h3>
 
             <div className="explore-filter-options">
@@ -342,37 +393,36 @@ function Explore() {
 
         <section className="explore-listing-section">
           <div className="explore-search-sort-row">
-            <form
-              className="explore-search-form"
-              onSubmit={handleSearchSubmit}
-            >
-              <span
-                className="explore-search-icon"
-                aria-hidden="true"
-              >
-                ⌕
-              </span>
-
-              <input
-                type="search"
-                placeholder="Search by guide company, destination, location or tour type..."
-                aria-label="Search guide services"
-              />
-
-              <button type="submit">Search</button>
-            </form>
+            <ExploreSearch
+              searchInput={searchInput}
+              onSearchInputChange={setSearchInput}
+              onSearch={handleSearch}
+            />
 
             <div className="explore-sort-control">
-              <label htmlFor="guide-sort">Sort by:</label>
+              <label htmlFor="guide-sort">
+                Sort by:
+              </label>
 
               <select
                 id="guide-sort"
                 defaultValue="popular"
               >
-                <option value="popular">Most Popular</option>
-                <option value="rating">Highest Rated</option>
-                <option value="low-price">Lowest Price</option>
-                <option value="high-price">Highest Price</option>
+                <option value="popular">
+                  Most Popular
+                </option>
+
+                <option value="rating">
+                  Highest Rated
+                </option>
+
+                <option value="low-price">
+                  Lowest Price
+                </option>
+
+                <option value="high-price">
+                  Highest Price
+                </option>
               </select>
             </div>
           </div>
@@ -380,9 +430,13 @@ function Explore() {
           <div className="explore-listing-header">
             <p>
               Showing{" "}
-              <strong>{guideCompanies.length}</strong>{" "}
+              <strong>
+                {filteredCompanies.length}
+              </strong>{" "}
               of{" "}
-              <strong>{guideCompanies.length}</strong>{" "}
+              <strong>
+                {guideCompanies.length}
+              </strong>{" "}
               guide services
             </p>
 
@@ -405,12 +459,23 @@ function Explore() {
           </div>
 
           <div className="explore-guide-grid">
-            {guideCompanies.map((guide) => (
-              <GuideCard
-                key={guide.id}
-                guide={guide}
-              />
-            ))}
+            {filteredCompanies.length > 0 ? (
+              filteredCompanies.map((guide) => (
+                <GuideCard
+                  key={guide.id}
+                  guide={guide}
+                />
+              ))
+            ) : (
+              <div className="explore-no-results">
+                <h3>No guide companies found</h3>
+
+                <p>
+                  Try searching by another company,
+                  destination, location, or tour type.
+                </p>
+              </div>
+            )}
           </div>
         </section>
       </main>
