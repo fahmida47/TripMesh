@@ -4,17 +4,16 @@
 
 // Destination photos live in src/assets, so they must be imported (not
 // referenced as plain string paths) — that's how Vite bundles them and
-// gives you back a usable URL. Adjust the filenames below to match what
-// you actually saved in src/assets.
-import coxsBazarImg from "/src/assets/Cox's-bazar.jpg";
-import sylhetImg from "/src/assets/Sylhet.jpg";
-import sundarbansImg from "/src/assets/Sundarbans.jpg";
-import paharpurImg from "/src/assets/Paharpur.jpg";
-import dhakaImg from "/src/assets/Dhaka.jpg";
+// gives you back a usable URL. Filenames below match src/assets exactly,
+// including capitalization — Vite/Rollup is case-sensitive on build.
+import coxsBazarImg from "../../assets/Cox's-bazar.jpg";
+import sylhetImg from "../../assets/Sylhet.jpg";
+import sundarbansImg from "../../assets/Sundarbans.jpg";
+import paharpurImg from "../../assets/Paharpur.jpg";
+import dhakaImg from "../../assets/Dhaka.jpg";
 
-// Sidebar "Discover Bangladesh" promo card photo — same import rule as
-// above. Adjust the filename to match what you save in src/assets.
-//import discoverBangladeshImg from "../../assets/discover-bangladesh.jpg";
+// Sidebar "Discover Bangladesh" promo card photo.
+import discoverBangladeshImg from "../../assets/discover-bangladesh.jpg";
 
 export const touristProfile = {
   id: 1,
@@ -59,7 +58,7 @@ export const DESTINATION_IMAGES = {
 };
 
 // Used by the sidebar's "Discover Bangladesh" promo card.
-export const PROMO_IMAGE = "/src/assets/discover-bangladesh.jpg"; // Adjust the filename to match what you save in src/assets.
+export const PROMO_IMAGE = discoverBangladeshImg;
 
 export const TOUR_TYPE_OPTIONS = ["Single Tour", "Dual Tour", "Group Tour"];
 

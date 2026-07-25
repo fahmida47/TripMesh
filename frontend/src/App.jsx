@@ -11,32 +11,21 @@ import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import AboutUs from "./pages/AboutUs/AboutUs";
 import Contact from "./pages/Contact/Contact";
+import ProfileSettings from "./pages/TouristDashboard/ProfileSettingsPage";
 import GuideDashboard from "./pages/GuideDashboard/GuideDashboard";
-
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-
-        <Route
-          path="/"
-          element={<GlobalLandingPage />}
-        />
-
-        <Route
-          path="/explore"
-          element={<Explore />}
-        />
-
-       // <Route path="/profile-settings" element={<ProfileSettings />} />
+        <Route path="/" element={<GlobalLandingPage />} />
+        <Route path="/explore" element={<Explore />} />
+        <Route path="/profile-settings" element={<ProfileSettings />} />
         <Route path="/about" element={<AboutUs />} />
         <Route path="/contact" element={<Contact />} />
-
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/guide-dashboard" element={<GuideDashboard />} />
-
 
         <Route
           path="*"
