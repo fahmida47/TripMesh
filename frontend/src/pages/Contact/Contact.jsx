@@ -10,6 +10,7 @@ import {
   Send,
   ShieldCheck,
 } from "lucide-react";
+import ContactInformation from "./components/ContactInformation";
 
 const Contact = () => {
   return (
@@ -39,72 +40,8 @@ const Contact = () => {
 
       {/* Main Contact Layout */}
       <section className="contact-container">
-        {/* Left Contact Info */}
-        <div className="contact-info">
-          <h2>Get in Touch</h2>
-          <div className="title-line"></div>
-
-          <div className="info-item">
-            <div className="icon-box">
-              <Mail size={24} />
-            </div>
-
-            <div>
-              <h3>Email</h3>
-              <p>
-                support@tripmesh.com
-                <br />
-                info@tripmesh.com
-              </p>
-            </div>
-          </div>
-
-          <div className="info-item">
-            <div className="icon-box">
-              <Phone size={24} />
-            </div>
-
-            <div>
-              <h3>Phone</h3>
-              <p>
-                +880 1700 123456
-                <br />
-                (Sun - Thu, 9:00 AM - 6:00 PM)
-              </p>
-            </div>
-          </div>
-
-          <div className="info-item">
-            <div className="icon-box">
-              <MessageCircle size={24} />
-            </div>
-
-            <div>
-              <h3>Live Chat</h3>
-              <p>
-                Chat with our support team
-                <br />
-                during business hours.
-              </p>
-            </div>
-          </div>
-
-          <div className="info-item">
-            <div className="icon-box">
-              <Clock3 size={24} />
-            </div>
-
-            <div>
-              <h3>Response Time</h3>
-              <p>
-                We usually respond
-                <br />
-                within 24 hours.
-              </p>
-            </div>
-          </div>
-        </div>
-
+        {/* Left Contact Information */}
+        <ContactInformation />
         {/* Right Form */}
         <div className="contact-form">
           <h2>Send Us a Message</h2>
