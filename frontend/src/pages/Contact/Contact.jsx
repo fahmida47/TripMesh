@@ -11,6 +11,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import ContactInformation from "./components/ContactInformation";
+import ContactForm from "./components/ContactForm";
 
 const Contact = () => {
   return (
@@ -43,32 +44,7 @@ const Contact = () => {
         {/* Left Contact Information */}
         <ContactInformation />
         {/* Right Form */}
-        <div className="contact-form">
-          <h2>Send Us a Message</h2>
-          <div className="title-line"></div>
-
-          <form>
-            <div className="form-row">
-              <input type="text" placeholder="Full Name *" />
-
-              <input type="email" placeholder="Email Address *" />
-            </div>
-
-            <input type="text" placeholder="Subject *" />
-
-            <textarea placeholder="Your Message *"></textarea>
-
-            <button>
-              <Send size={18} />
-              Send Message
-            </button>
-
-            <p className="privacy">
-              <ShieldCheck size={16} />
-              We respect your privacy. Your information is safe with us.
-            </p>
-          </form>
-        </div>
+        <ContactForm />
       </section>
     </div>
   );
