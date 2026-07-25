@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 
 const LogoIcon = () => (
@@ -7,16 +7,23 @@ const LogoIcon = () => (
       d="M20 2C10.6 2 3 9.6 3 19c0 12.7 17 28.5 17 28.5S37 31.7 37 19C37 9.6 29.4 2 20 2Z"
       fill="currentColor"
     />
+
     <circle cx="20" cy="18" r="10" fill="#03143d" />
-    <path
-      d="m13 18 5-2 5-6 3 2-4 7 4 3-2 3-5-3-3 4-2-1 1-6-2-1Z"
-      fill="currentColor"
-    />
   </svg>
 );
 
 function Navbar() {
   const { pathname } = useLocation();
+
+  const navigate = useNavigate();
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+
+    navigate("/");
+  };
 
   return (
     <header className="tm-navbar">
@@ -24,44 +31,52 @@ function Navbar() {
         <span className="tm-navbar__logo">
           <LogoIcon />
         </span>
+
         <span>TripMesh</span>
       </Link>
 
-      <nav className="tm-navbar__links" aria-label="Main navigation">
+      <nav className="tm-navbar__links">
         <Link className={pathname === "/" ? "active" : ""} to="/">
           Home
         </Link>
 
-        <Link
-          className={pathname === "/explore" ? "active" : ""}
-          to="/explore"
-        >
+        <Link className={pathname === "/explore" ? "active" : ""} to="/explore">
           Explore
         </Link>
 
-        <Link
-          className={pathname === "/about" ? "active" : ""}
-          to="/about"
-        >
+        <Link className={pathname === "/about" ? "active" : ""} to="/about">
           About Us
         </Link>
 
-        <Link
-          className={pathname === "/contact" ? "active" : ""}
-          to="/contact"
-        >
+        <Link className={pathname === "/contact" ? "active" : ""} to="/contact">
           Contact Us
         </Link>
+
+        {user?.role === "Tourist" && (
+          <Link to="/tourist-dashboard">Tourist Dashboard</Link>
+        )}
+
+        {user?.role === "Guide" && (
+          <Link to="/guide-dashboard">Guide Dashboard</Link>
+        )}
       </nav>
 
       <div className="tm-navbar__actions">
-        <Link className="tm-navbar__login" to="/login">
-          Log In
-        </Link>
+        {user ? (
+          <button className="tm-navbar__signup" onClick={handleLogout}>
+            Logout
+          </button>
+        ) : (
+          <>
+            <Link className="tm-navbar__login" to="/login">
+              Log In
+            </Link>
 
-        <Link className="tm-navbar__signup" to="/signup">
-          Sign Up
-        </Link>
+            <Link className="tm-navbar__signup" to="/signup">
+              Sign Up
+            </Link>
+          </>
+        )}
       </div>
     </header>
   );

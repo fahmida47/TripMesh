@@ -1,0 +1,180 @@
+.loading-screen {
+  position: fixed;
+
+  inset: 0;
+
+  background: radial-gradient(circle at center, #0b1f45, #020617);
+
+  z-index: 9999;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  align-items: center;
+
+  color: white;
+}
+
+/* Loader */
+
+.tripmesh-loader {
+  width: 120px;
+
+  height: 120px;
+
+  position: relative;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+}
+
+.orbit {
+  position: absolute;
+
+  width: 120px;
+
+  height: 120px;
+
+  border-radius: 50%;
+
+  border: 3px solid transparent;
+
+  border-top-color: #38bdf8;
+
+  border-right-color: #2563eb;
+
+  box-shadow: 0 0 20px #38bdf8;
+
+  animation: rotateOrbit 1.2s linear infinite;
+}
+
+.orbit::before {
+  content: "";
+
+  position: absolute;
+
+  width: 12px;
+
+  height: 12px;
+
+  background: #67e8f9;
+
+  border-radius: 50%;
+
+  top: -6px;
+
+  left: 50%;
+
+  box-shadow: 0 0 20px #38bdf8;
+}
+
+.loader-logo {
+  width: 65px;
+
+  height: 65px;
+
+  border-radius: 20px;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  font-size: 32px;
+
+  background: linear-gradient(135deg, #2563eb, #06b6d4);
+
+  box-shadow: 0 0 30px rgba(56, 189, 248, 0.8);
+
+  animation: logoPulse 2s infinite;
+}
+
+.loading-screen h2 {
+  margin-top: 35px;
+
+  font-size: 32px;
+
+  font-weight: 800;
+
+  background: linear-gradient(90deg, white, #38bdf8);
+
+  background-clip: text;
+
+  -webkit-background-clip: text;
+
+  color: transparent;
+
+  -webkit-text-fill-color: transparent;
+}
+
+.loading-screen p {
+  margin-top: 10px;
+
+  color: #94a3b8;
+}
+
+/* Progress bar */
+
+.loading-bar {
+  margin-top: 30px;
+
+  width: 220px;
+
+  height: 5px;
+
+  background: #1e293b;
+
+  border-radius: 20px;
+
+  overflow: hidden;
+}
+
+.loading-bar span {
+  display: block;
+
+  height: 100%;
+
+  width: 40%;
+
+  background: linear-gradient(90deg, #2563eb, #22d3ee);
+
+  animation: loadingMove 1s infinite;
+}
+
+@keyframes rotateOrbit {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes logoPulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.08);
+  }
+}
+
+@keyframes loadingMove {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(300%);
+  }
+}
