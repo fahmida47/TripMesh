@@ -2,9 +2,13 @@ import React, { useState } from "react";
 import "./Signup.css";
 import { Link, useNavigate } from "react-router-dom";
 import signupBg from "../../assets/login-bg.jpeg";
+import Loading from "../../components/Loading/Loading";
 
 const Signup = () => {
   const navigate = useNavigate();
+
+  const [loading, setLoading] = useState(false);
+
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -20,138 +24,167 @@ const Signup = () => {
   };
 
   const handleSubmit = (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  console.log(data);
+    console.log(data);
 
-  if (data.role === "Guide") {
-    navigate("/guide-dashboard");
-  } else {
-    navigate("/");
-  }
-};
+    // save user data
+
+    localStorage.setItem("user", JSON.stringify(data));
+
+    // show loading
+
+    setLoading(true);
+
+    setTimeout(() => {
+      navigate("/login");
+    }, 1000);
+  };
 
   return (
-    <div className="signup-container">
-      <div className="signup-left"
-        style={{
-          backgroundImage: `
-          linear-gradient(
-          rgba(0,40,90,0.45),
-          rgba(0,40,90,0.45)
-          ),
-          url(${signupBg})
-          `,
-        }}
-      >
-        <div className="logo">✈ TripMesh</div>
+    <>
+      {loading && (
+        <Loading
+          text="Creating TripMesh Account"
+          subText="Setting up your travel profile..."
+        />
+      )}
+      <div className="signup-container">
+        {/* LEFT SIDE */}
 
-        <div className="signup-hero">
-          <h1>
-            Start your journey.
-            <br />
-            Explore the world.
-          </h1>
+        <div
+          className="signup-left"
+          style={{
+            backgroundImage: `
 
-          <p>
-            Join TripMesh and discover amazing destinations with trusted
-            travelers and guides.
-          </p>
+            linear-gradient(
+
+            rgba(0,40,90,0.45),
+
+            rgba(0,40,90,0.45)
+
+            ),
+
+            url(${signupBg})
+
+            `,
+          }}
+        >
+          <div className="logo">✈ TripMesh</div>
+
+          <div className="signup-hero">
+            <h1>
+              Start your journey.
+              <br />
+              Explore the world.
+            </h1>
+
+            <p>
+              Join TripMesh and discover amazing destinations with trusted
+              travelers and guides.
+            </p>
+          </div>
         </div>
 
-        
-      </div>
+        {/* RIGHT SIDE */}
 
-      <div className="signup-right">
-        <div className="signup-card">
-          <h2>Create Account</h2>
+        <div className="signup-right">
+          <div className="signup-card">
+            <h2>Create Account</h2>
 
-          <p className="subtitle">Join TripMesh today</p>
+            <p className="subtitle">Join TripMesh today</p>
 
-          <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              name="name"
-              placeholder="Full Name"
-              value={data.name}
-              onChange={handleChange}
-              required
-            />
+            <form onSubmit={handleSubmit}>
+              <input
+                type="text"
+                name="name"
+                placeholder="Full Name"
+                value={data.name}
+                onChange={handleChange}
+                required
+              />
 
-            <input
-              type="email"
-              name="email"
-              placeholder="Email address"
-              value={data.email}
-              onChange={handleChange}
-              required
-            />
+              <input
+                type="email"
+                name="email"
+                placeholder="Email address"
+                value={data.email}
+                onChange={handleChange}
+                required
+              />
 
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={data.password}
-              onChange={handleChange}
-              required
-            />
+              <input
+                type="password"
+                name="password"
+                placeholder="Password"
+                value={data.password}
+                onChange={handleChange}
+                required
+              />
 
-            <p className="choose">Choose your role</p>
+              <p className="choose">Choose your role</p>
 
-            <div className="role-selection">
-              <label
-                className={
-                  data.role === "Tourist" ? "role-card active" : "role-card"
-                }
-              >
-                <input
-                  type="radio"
-                  name="role"
-                  value="Tourist"
-                  checked={data.role === "Tourist"}
-                  onChange={handleChange}
-                />
+              <div className="role-selection">
+                {/* TOURIST */}
 
-                <span className="icon">🧳</span>
+                <label
+                  className={
+                    data.role === "Tourist" ? "role-card active" : "role-card"
+                  }
+                >
+                  <input
+                    type="radio"
+                    name="role"
+                    value="Tourist"
+                    checked={data.role === "Tourist"}
+                    onChange={handleChange}
+                  />
 
-                <div>
-                  <h4>Tourist</h4>
-                  <small>Explore places & book trips</small>
-                </div>
-              </label>
+                  <span className="icon">🧳</span>
 
-              <label
-                className={
-                  data.role === "Guide" ? "role-card active" : "role-card"
-                }
-              >
-                <input
-                  type="radio"
-                  name="role"
-                  value="Guide"
-                  checked={data.role === "Guide"}
-                  onChange={handleChange}
-                />
+                  <div>
+                    <h4>Tourist</h4>
 
-                <span className="icon">🗺️</span>
+                    <small>Explore places & book trips</small>
+                  </div>
+                </label>
 
-                <div>
-                  <h4>Guide</h4>
-                  <small>Provide travel services</small>
-                </div>
-              </label>
-            </div>
+                {/* GUIDE */}
 
-            <button type="submit">Sign Up</button>
-          </form>
+                <label
+                  className={
+                    data.role === "Guide" ? "role-card active" : "role-card"
+                  }
+                >
+                  <input
+                    type="radio"
+                    name="role"
+                    value="Guide"
+                    checked={data.role === "Guide"}
+                    onChange={handleChange}
+                  />
 
-          <p className="footer-text">
-            Already have an account?
-            <Link to="/login">Login</Link>
-          </p>
+                  <span className="icon">🗺️</span>
+
+                  <div>
+                    <h4>Guide</h4>
+
+                    <small>Provide travel services</small>
+                  </div>
+                </label>
+              </div>
+
+              <button type="submit">Sign Up</button>
+            </form>
+
+            <p className="footer-text">
+              Already have an account?
+              <Link to="/login">Login</Link>
+            </p>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
