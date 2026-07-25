@@ -10,7 +10,12 @@ import Explore from "./pages/Explore/Explore";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import AboutUs from "./pages/AboutUs/AboutUs";
-import ProfileSettings from "./pages/TouristDashboard/ProfileSettingsPage";
+//<<<<<<< feature/issue-31-tourist-profile-settings
+//import ProfileSettings from "./pages/TouristDashboard/ProfileSettingsPage";
+=======
+import GuideDashboard from "./pages/GuideDashboard/GuideDashboard";
+
+//>>>>>>> main
 
 function App() {
   return (
@@ -27,11 +32,12 @@ function App() {
           element={<Explore />}
         />
 
-        <Route path="/profile-settings" element={<ProfileSettings />} />
+       // <Route path="/profile-settings" element={<ProfileSettings />} />
         <Route path="/about" element={<AboutUs />} />
 
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/guide-dashboard" element={<GuideDashboard />} />
 
 
         <Route

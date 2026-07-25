@@ -1,0 +1,8 @@
+const EarningsOverview = () => <article className="overview-card earnings-overview">
+  <div className="overview-card__heading"><h2>Earnings Overview</h2><button type="button">This Month <FiChevronDown aria-hidden="true" /></button></div>
+  <strong className="earnings-total">BDT 78,450</strong><span className="earnings-label">Total Earnings</span><p className="positive-text">↗ 18% <span>from last month</span></p>
+  <div className="earnings-chart"><div className="chart-labels"><span>100K</span><span>80K</span><span>60K</span><span>40K</span><span>20K</span><span>0</span></div><svg viewBox="0 0 360 126" preserveAspectRatio="none" aria-label="Monthly earnings chart"><defs><linearGradient id="earningsFill" x1="0" x2="0" y1="0" y2="1"><stop stopColor="#1e5fe7" stopOpacity=".22"/><stop offset="1" stopColor="#1e5fe7" stopOpacity="0"/></linearGradient></defs><path d="M0 112 L20 108 L42 97 L60 102 L82 78 L102 84 L122 75 L143 77 L164 55 L186 47 L206 55 L228 44 L248 34 L269 20 L290 25 L310 16 L332 10 L360 2 V126 H0Z" fill="url(#earningsFill)"/><path d="M0 112 L20 108 L42 97 L60 102 L82 78 L102 84 L122 75 L143 77 L164 55 L186 47 L206 55 L228 44 L248 34 L269 20 L290 25 L310 16 L332 10 L360 2" fill="none" stroke="#1e5fe7" strokeWidth="2"/></svg><div className="chart-dates"><span>1 Jul</span><span>7 Jul</span><span>14 Jul</span><span>21 Jul</span><span>27 Jul</span></div></div>
+  <div className="payout-summary"><span><b>BDT 45,000</b>Paid to You</span><span><b>BDT 33,450</b>Pending Release</span></div>
+</article>;
+export default EarningsOverview;
+import { FiChevronDown } from "react-icons/fi";

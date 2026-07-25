@@ -1,0 +1,170 @@
+.guide-sidebar{
+
+    width:250px;
+
+    background:#0A1F44;
+
+    color:white;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+
+    padding:28px 18px;
+
+}
+
+.sidebar-logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-bottom:40px;
+}
+
+.logo-circle{
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    background:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
+
+.logo-circle img{
+    width:40px;
+    height:40px;
+    object-fit:contain;
+}
+
+.logo-text h2{
+    font-size:16px;
+    font-weight:700;
+    margin-bottom:2px;
+}
+
+.logo-text p{
+    font-size:13px;
+    color:#C7D2FE;
+}
+
+
+.sidebar-nav{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+
+}
+
+.sidebar-nav a{
+
+    text-decoration:none;
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    padding:12px 16px;
+
+    border-radius:10px;
+
+    font-size:14px;
+
+    transition:.3s;
+
+}
+
+.sidebar-nav a:hover{
+
+    background:rgba(255,255,255,.08);
+
+}
+
+.sidebar-nav .active{
+
+    background:#2F6BFF;
+
+}
+.add-tour-card{
+    margin-top:32px;
+    padding:18px 20px;
+    border-radius:16px;
+
+    min-height:160px;
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-start;
+    align-items:flex-start;
+}
+
+
+.add-tour-card h3{
+    color:#fff;
+    font-size:14px;
+    font-weight:700;
+
+    margin:70px 0 8px 0;
+}
+
+
+.add-tour-card p{
+    color:#E5E7EB;
+    font-size:11px;
+    line-height:18px;
+
+    margin:0 0 0px 0;
+}
+
+.add-tour-card button{
+    width:100%;
+    height:35px;
+
+    border:none;
+    border-radius:10px;
+
+    background:#fff;
+    color:#111827;
+
+    font-size:12px;
+    font-weight:600;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    cursor:pointer;
+}
+.logout-btn{
+
+    border:none;
+
+    background:transparent;
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+    font-size:14px;
+
+    cursor:pointer;
+
+}
