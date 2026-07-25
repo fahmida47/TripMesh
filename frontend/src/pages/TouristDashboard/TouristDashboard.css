@@ -1,0 +1,49 @@
+.ts-shell {
+  min-height: 100vh;
+  background: #f4f6fb;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.ts-shell-body {
+  display: flex;
+  align-items: flex-start;
+}
+
+.ts-shell-content {
+  flex: 1;
+  min-width: 0;
+  padding: 28px;
+}
+
+.ts-dashboard-header {
+  margin-bottom: 20px;
+}
+
+.ts-dashboard-header h1 {
+  margin: 0 0 4px;
+  font-size: 24px;
+  font-weight: 800;
+  color: #0b1638;
+}
+
+.ts-dashboard-header p {
+  margin: 0;
+  font-size: 14px;
+  color: #64748b;
+}
+
+@media (max-width: 1024px) {
+  .ts-shell-content {
+    padding: 22px;
+  }
+}
+
+@media (max-width: 560px) {
+  .ts-shell-content {
+    padding: 16px;
+  }
+
+  .ts-dashboard-header h1 {
+    font-size: 20px;
+  }
+}
