@@ -96,6 +96,7 @@ const ContactForm = () => {
               type="text"
               name="name"
               placeholder="Full Name *"
+              aria-label="Full Name"
               value={formData.name}
               onChange={handleChange}
             />
@@ -110,6 +111,7 @@ const ContactForm = () => {
               type="email"
               name="email"
               placeholder="Email Address *"
+              aria-label="Email Address"
               value={formData.email}
               onChange={handleChange}
             />
@@ -125,6 +127,7 @@ const ContactForm = () => {
             type="text"
             name="subject"
             placeholder="Subject *"
+            aria-label="Subject"
             value={formData.subject}
             onChange={handleChange}
           />
@@ -138,6 +141,8 @@ const ContactForm = () => {
           <textarea
             name="message"
             placeholder="Your Message *"
+            aria-label="Your Message"
+            rows="5"
             value={formData.message}
             onChange={handleChange}
           />
