@@ -1,2 +1,4 @@
-# Ignore the dependencies folder
+node_modules/
 frontend/node_modules/
+dist/
+.env

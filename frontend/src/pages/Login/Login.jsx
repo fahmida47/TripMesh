@@ -14,7 +14,7 @@ const Login = () => {
     e.preventDefault();
 
     console.log(formData);
-    navigate("/");
+    navigate("/guide-dashboard");
   };
 
   return (
