@@ -1,6 +1,5 @@
 import {
   HomeIcon,
-  CompassIcon,
   InboxIcon,
   BookIcon,
   CardIcon,
@@ -19,7 +18,6 @@ import "./TouristSidebar.css";
 // with no logged-in session or real request/message data behind it.
 const NAV_ITEMS = [
   { key: "dashboard", label: "Dashboard", icon: HomeIcon },
-  { key: "explore", label: "Explore", icon: CompassIcon },
   { key: "requests", label: "My Requests", icon: InboxIcon },
   { key: "bookings", label: "My Bookings", icon: BookIcon },
   { key: "payments", label: "My Payments", icon: CardIcon },
