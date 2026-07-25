@@ -51,10 +51,11 @@
     cursor:pointer;
 }
 
-.notification-btn svg{
-    font-size:24px;
-    color:#1F2937;
-    stroke-width:1.8;
+.bell-icon{
+    width:24px;
+    height:24px;
+    stroke:#faf7f7;
+    fill:none;
 }
 
 .notification-count{
@@ -62,13 +63,12 @@
     top:4px;
     right:6px;
 
-    width:16px;
-    height:16px;
+    width:18px;
+    height:18px;
 
     background:#EF4444;
     color:#fff;
     border-radius:50%;
-
     font-size:10px;
     font-weight:700;
 
@@ -77,4 +77,10 @@
     justify-content:center;
 
     border:2px solid #fff;
+}
+
+.bell-symbol{
+    font-size:24px;
+    color:#000;
+    font-family: "Segoe UI Symbol", sans-serif;
 }
