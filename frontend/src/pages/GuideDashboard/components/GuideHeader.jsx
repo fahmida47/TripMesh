@@ -3,12 +3,7 @@ import { FiBell, FiMenu } from "react-icons/fi";
 
 const GuideHeader = () => {
 
-  const today = new Date().toLocaleDateString("en-US", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
+  const today = "Monday, 27 July 2026";
 
   return (
     <header className="guide-header">

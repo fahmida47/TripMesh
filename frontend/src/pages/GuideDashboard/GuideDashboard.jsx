@@ -2,6 +2,7 @@ import "./GuideDashboard.css";
 import GuideSidebar from "./components/GuideSidebar";
 import GuideHeader from "./components/GuideHeader";
 import DashboardStats from "./components/DashboardStats";
+import DashboardOverview from "./components/DashboardOverview";
 
 const GuideDashboard = () => {
   return (
@@ -16,6 +17,8 @@ const GuideDashboard = () => {
         <div className="dashboard-body">
 
           <DashboardStats />
+
+          <DashboardOverview />
 
           {/* Requests */}
 

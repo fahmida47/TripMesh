@@ -8,7 +8,7 @@ import dhakaImage from "../../assets/dhaka.jpg";
 import dhakaCityImage from "../../assets/dhaka-city.jpg";
 import coxsBazarImage from "../../assets/coxsbazar.jpg";
 import sundarbansImage from "../../assets/sundarbans.jpg";
-import sylhetImage from "../../assets/sylhet.jpg";
+import sylhetImage from "../../assets/sylhet-tea-garden.png";
 import paharpurImage from "../../assets/paharpur.jpg";
 
 const locations = [
