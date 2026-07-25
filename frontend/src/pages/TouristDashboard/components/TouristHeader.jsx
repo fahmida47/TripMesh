@@ -3,12 +3,6 @@ import "./TouristHeader.css";
 
 const TOP_LINKS = ["Home", "Explore", "About Us", "Contact Us"];
 
-/**
- * profile: { fullName, avatar } — pulled from the same mock profile
- * used across the dashboard.
- * notificationCount: mock unread-notification count shown as a badge.
- * onMenuClick: opens the sidebar drawer (only visible on tablet/mobile).
- */
 export default function TouristHeader({
   profile,
   notificationCount = 3,

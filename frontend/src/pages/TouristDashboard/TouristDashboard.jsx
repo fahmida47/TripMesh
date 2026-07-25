@@ -6,13 +6,6 @@ import DashboardOverview from "./components/DashboardOverview";
 import { touristProfile } from "./mockProfile";
 import "./TouristDashboard.css";
 
-/**
- * Main Tourist Dashboard page — the approved-design layout:
- * navy top header, navy left sidebar (collapses into an off-canvas
- * drawer on tablet/mobile), light content area on the right.
- *
- * Route this at /dashboard (or wherever a tourist lands after login).
- */
 export default function TouristDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
