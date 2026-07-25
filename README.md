@@ -24,11 +24,8 @@ The platform focuses on creating a trusted connection between tourists and local
 
 The following diagram represents the planned navigation flow, user roles, and major features of TripMesh.
 
-```
-docs/tripmesh-application-flow.mmd
-```
+<img width="1261" height="865" alt="image" src="https://github.com/user-attachments/assets/c1384729-9ed1-4d4f-8ff8-0e6422f3d43a" />
 
----
 
 # 👥 User Roles
 
