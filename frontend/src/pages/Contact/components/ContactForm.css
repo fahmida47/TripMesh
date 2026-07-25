@@ -126,3 +126,27 @@ button:hover {
 
   margin-top: 15px;
 }
+
+@media (max-width: 768px) {
+  .input-row {
+    display: flex;
+
+    flex-direction: column;
+  }
+
+  .input-group {
+    width: 100%;
+  }
+
+  .contact-form-card button {
+    width: 100%;
+
+    min-height: 48px;
+
+    justify-content: center;
+  }
+
+  .privacy {
+    line-height: 1.5;
+  }
+}
