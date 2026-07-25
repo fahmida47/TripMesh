@@ -12,6 +12,7 @@ import Signup from "./pages/Signup/Signup";
 import AboutUs from "./pages/AboutUs/AboutUs";
 import Contact from "./pages/Contact/Contact";
 import GuideDashboard from "./pages/GuideDashboard/GuideDashboard";
+//import TouristDashboard from "./pages/TouristDashboard/TouristDashboard";
 
 
 function App() {
@@ -37,7 +38,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/guide-dashboard" element={<GuideDashboard />} />
-
+       //<Route path="/dashboard" element={<TouristDashboard />} />
 
         <Route
           path="*"
