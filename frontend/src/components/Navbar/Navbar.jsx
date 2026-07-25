@@ -17,8 +17,12 @@ function Navbar() {
 
   const navigate = useNavigate();
 
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
   const storedUser = localStorage.getItem("user");
   const user = storedUser ? JSON.parse(storedUser) : null;
+
 
   const handleLogout = () => {
     localStorage.removeItem("user");
@@ -54,6 +58,13 @@ function Navbar() {
         </Link>
 
         {user?.role === "Tourist" && (
+
+          <Link to="/tourist-dashboard">Tourist Dashboard</Link>
+        )}
+
+        {user?.role === "Guide" && (
+          <Link to="/guide-dashboard">Guide Dashboard</Link>
+
           <Link
             className={pathname === "/tourist-dashboard" ? "active" : ""}
             to="/tourist-dashboard"
@@ -69,6 +80,7 @@ function Navbar() {
           >
             Guide Dashboard
           </Link>
+
         )}
       </nav>
 
