@@ -1,0 +1,16 @@
+.ts-shell {
+  min-height: 100vh;
+  background: #f4f6fb;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.ts-shell-body {
+  display: flex;
+  align-items: flex-start;
+}
+
+.ts-shell-content {
+  flex: 1;
+  min-width: 0;
+  padding: 28px;
+}
