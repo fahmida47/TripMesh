@@ -1,19 +1,32 @@
+/* ===============================
+        GLOBAL
+================================ */
+
 * {
   box-sizing: border-box;
 }
 
 .signup-container {
-  height: 100vh;
+  min-height: 100vh;
+
+  width: 100%;
+
   display: flex;
+
   background: #f5f7ff;
+
+  overflow: hidden;
 }
 
-/* LEFT SECTION */
+/* ===============================
+        LEFT SECTION
+================================ */
 
 .signup-left {
   width: 50%;
 
   background-size: cover;
+
   background-position: center;
 
   color: white;
@@ -21,7 +34,9 @@
   padding: 40px;
 
   display: flex;
+
   flex-direction: column;
+
   justify-content: center;
 
   position: relative;
@@ -35,12 +50,15 @@
 
 .logo {
   font-size: 32px;
+
   font-weight: 700;
+
+  color: white;
 
   animation: fadeDown 1s ease;
 }
 
-/* Hero Text */
+/* Hero */
 
 .signup-hero {
   margin-top: 260px;
@@ -55,6 +73,8 @@
 
   line-height: 1.15;
 
+  margin: 0;
+
   animation: textGlow 2s infinite alternate;
 }
 
@@ -66,13 +86,9 @@
   line-height: 1.5;
 }
 
-.links {
-  margin-top: auto;
-
-  font-size: 15px;
-}
-
-/* RIGHT SECTION */
+/* ===============================
+        RIGHT SECTION
+================================ */
 
 .signup-right {
   width: 50%;
@@ -82,12 +98,18 @@
   justify-content: center;
 
   align-items: center;
+
+  padding: 30px;
 }
 
-/* CARD */
+/* ===============================
+        CARD
+================================ */
 
 .signup-card {
   width: 500px;
+
+  max-width: 100%;
 
   background: white;
 
@@ -98,6 +120,10 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
 
   animation: cardPop 0.9s ease forwards;
+}
+
+.signup-card form {
+  width: 100%;
 }
 
 /* Heading */
@@ -118,14 +144,18 @@
   margin-bottom: 30px;
 }
 
-/* INPUT */
+/* ===============================
+        INPUT
+================================ */
 
-input[type="text"],
-input[type="email"],
-input[type="password"] {
+.signup-card input[type="text"],
+.signup-card input[type="email"],
+.signup-card input[type="password"] {
   width: 100%;
 
-  padding: 15px;
+  height: 52px;
+
+  padding: 0 15px;
 
   margin-bottom: 18px;
 
@@ -138,7 +168,7 @@ input[type="password"] {
   transition: 0.3s;
 }
 
-input:focus {
+.signup-card input:focus {
   outline: none;
 
   border-color: #1769e0;
@@ -146,7 +176,9 @@ input:focus {
   box-shadow: 0 0 10px rgba(23, 105, 224, 0.2);
 }
 
-/* ROLE */
+/* ===============================
+        ROLE
+================================ */
 
 .choose {
   font-weight: 600;
@@ -177,7 +209,7 @@ input:focus {
 
   cursor: pointer;
 
-  transition: all 0.35s ease;
+  transition: 0.35s ease;
 }
 
 .role-card input {
@@ -214,12 +246,20 @@ input:focus {
   color: #666;
 }
 
-/* BUTTON */
+/* ===============================
+        BUTTON
+================================ */
 
-button {
+.signup-card button {
   width: 100%;
 
-  padding: 15px;
+  height: 55px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
 
   margin-top: 25px;
 
@@ -233,12 +273,14 @@ button {
 
   font-size: 18px;
 
+  font-weight: 600;
+
   cursor: pointer;
 
   transition: 0.3s;
 }
 
-button:hover {
+.signup-card button:hover {
   background: #0955c9;
 
   transform: translateY(-4px);
@@ -246,12 +288,16 @@ button:hover {
   box-shadow: 0 10px 20px rgba(23, 105, 224, 0.35);
 }
 
-/* FOOTER */
+/* ===============================
+        FOOTER
+================================ */
 
 .footer-text {
   text-align: center;
 
   margin-top: 25px;
+
+  color: #666;
 }
 
 .footer-text a {
@@ -262,9 +308,9 @@ button:hover {
   margin-left: 5px;
 }
 
-/* =====================
-   ANIMATIONS
-===================== */
+/* ===============================
+        ANIMATIONS
+================================ */
 
 @keyframes imageReveal {
   from {
@@ -332,3 +378,96 @@ button:hover {
   }
 }
 
+/* ===============================
+        RESPONSIVE TABLET
+================================ */
+
+@media (max-width: 900px) {
+  .signup-container {
+    flex-direction: column;
+
+    min-height: 100vh;
+
+    overflow: auto;
+  }
+
+  .signup-left {
+    width: 100%;
+
+    min-height: 380px;
+
+    padding: 30px;
+  }
+
+  .signup-hero {
+    margin-top: 120px;
+  }
+
+  .signup-hero h1 {
+    font-size: 40px;
+  }
+
+  .signup-hero p {
+    width: auto;
+
+    font-size: 17px;
+  }
+
+  .signup-right {
+    width: 100%;
+
+    padding: 25px;
+  }
+
+  .signup-card {
+    width: 100%;
+
+    max-width: 500px;
+
+    padding: 35px;
+  }
+}
+
+/* ===============================
+        MOBILE
+================================ */
+
+@media (max-width: 500px) {
+  .signup-left {
+    min-height: 320px;
+  }
+
+  .logo {
+    font-size: 26px;
+  }
+
+  .signup-hero {
+    margin-top: 90px;
+  }
+
+  .signup-hero h1 {
+    font-size: 32px;
+  }
+
+  .signup-hero p {
+    font-size: 15px;
+  }
+
+  .signup-card {
+    padding: 25px 20px;
+
+    border-radius: 22px;
+  }
+
+  .signup-card h2 {
+    font-size: 30px;
+  }
+
+  .role-selection {
+    flex-direction: column;
+  }
+
+  .role-card {
+    width: 100%;
+  }
+}
