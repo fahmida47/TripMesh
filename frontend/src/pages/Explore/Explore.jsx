@@ -218,7 +218,7 @@ function GuideCard({ guide }) {
   );
 }
 
-function Explore() {
+function Explore({ embedded = false }) {
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -257,7 +257,7 @@ function Explore() {
 
   return (
     <div className="explore-page">
-      <ExploreHero />
+      <ExploreHero showNavbar={!embedded} />
 
       <main className="explore-main">
         <aside className="explore-filter-sidebar">

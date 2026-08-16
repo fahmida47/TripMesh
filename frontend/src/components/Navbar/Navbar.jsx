@@ -1,4 +1,10 @@
-import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
+
 import "./Navbar.css";
 
 const LogoIcon = () => (
@@ -12,251 +18,254 @@ const LogoIcon = () => (
       fill="currentColor"
     />
 
-    <circle cx="20" cy="18" r="10" fill="#03143d" />
+    <circle
+      cx="20"
+      cy="18"
+      r="10"
+      fill="#03143d"
+    />
   </svg>
 );
 
 function Navbar() {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
-  const getNavLinkClass = (path) => `
-    relative
-    py-[29px]
-    pb-6
-    text-[17px]
-    font-semibold
-    no-underline
-    whitespace-nowrap
-    transition-colors
-    duration-200
-    ${
-      pathname === path
-        ? "text-white active-link"
-        : "text-[rgba(235,242,255,0.8)] hover:text-white"
+  const [activeSection, setActiveSection] =
+    useState("home");
+
+  const storedUser =
+    localStorage.getItem("user");
+
+  const user = storedUser
+    ? JSON.parse(storedUser)
+    : null;
+
+  /* =========================
+     LOGOUT
+  ========================= */
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    navigate("/");
+  };
+
+  /* =========================
+     HOME PAGE SECTION SCROLL
+  ========================= */
+
+  const goToSection = (sectionId) => {
+    const landingPage =
+      document.querySelector(".tm-landing");
+
+    const section =
+      document.getElementById(sectionId);
+
+    if (!landingPage || !section) {
+      return;
     }
-  `;
+
+    /* Active navbar line */
+    setActiveSection(sectionId);
+
+    /*
+      About Us + Contact Us
+      previous scroll position reset
+    */
+    const sectionContent =
+      section.querySelector(
+        ".tm-section-content"
+      );
+
+    if (sectionContent) {
+      sectionContent.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "auto",
+      });
+    }
+
+    /*
+      Explore-এর scrollbar এখন
+      .explore-page-এ আছে
+    */
+    const explorePage =
+      section.querySelector(
+        ".explore-page"
+      );
+
+    if (explorePage) {
+      explorePage.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "auto",
+      });
+    }
+
+    /*
+      Main landing page selected
+      section-এ smooth scroll করবে
+    */
+    landingPage.scrollTo({
+      top: section.offsetTop,
+      left: 0,
+      behavior: "smooth",
+    });
+  };
+
+  /* =========================
+     NAVBAR
+  ========================= */
 
   return (
-    <header
-      className="
-        relative
-        z-50
+    <header className="tm-navbar">
+      {/* LOGO */}
 
-        w-[calc(100%-80px)]
-        min-h-[76px]
-
-        ml-10
-        mr-10
-
-        grid
-        grid-cols-[auto_1fr_auto]
-
-        items-center
-        gap-10
-
-        border-b
-        border-[rgba(115,157,224,0.13)]
-
-        max-[1050px]:grid-cols-[auto_auto]
-        max-[1050px]:gap-5
-
-        max-[850px]:w-[calc(100%-40px)]
-        max-[850px]:ml-5
-        max-[850px]:mr-5
-
-        max-[650px]:gap-3
-      "
-    >
-      {/* ================================
-          LOGO / BRAND
-      ================================= */}
-
-      <Link
-        to="/"
-        className="
-          inline-flex
-          items-center
-          gap-[9px]
-
-          text-white
-          no-underline
-
-          text-[25px]
-          font-bold
-          tracking-[-0.7px]
-
-          max-[650px]:text-[21px]
-        "
+      <button
+        type="button"
+        className="tm-navbar__brand"
+        onClick={() =>
+          goToSection("home")
+        }
       >
-        <span
-          className="
-            inline-flex
-            w-8
-            h-[42px]
-
-            text-[#2584ff]
-
-            max-[650px]:w-[27px]
-            max-[650px]:h-[37px]
-          "
-        >
+        <span className="tm-navbar__logo">
           <LogoIcon />
         </span>
 
         <span>TripMesh</span>
-      </Link>
+      </button>
 
-      {/* ================================
-          NAVIGATION LINKS
-      ================================= */}
+      {/* NAVIGATION */}
 
       <nav
-        className="
-          justify-self-center
-
-          flex
-          items-center
-          gap-[52px]
-
-          max-[1050px]:order-3
-          max-[1050px]:col-span-2
-          max-[1050px]:w-full
-          max-[1050px]:justify-center
-          max-[1050px]:overflow-x-auto
-
-          max-[650px]:justify-start
-          max-[650px]:gap-[90px]
-        "
+        className="tm-navbar__links"
+        aria-label="Main navigation"
       >
-        {/* Home */}
-        <Link
-          to="/"
-          className={getNavLinkClass("/")}
+        {/* HOME */}
+
+        <button
+          type="button"
+          className={
+            activeSection === "home"
+              ? "active"
+              : ""
+          }
+          onClick={() =>
+            goToSection("home")
+          }
         >
           Home
-        </Link>
+        </button>
 
-        {/* Explore */}
-        <Link
-          to="/explore"
-          className={getNavLinkClass("/explore")}
+        {/* EXPLORE */}
+
+        <button
+          type="button"
+          className={
+            activeSection === "explore"
+              ? "active"
+              : ""
+          }
+          onClick={() =>
+            goToSection("explore")
+          }
         >
           Explore
-        </Link>
+        </button>
 
-        {/* About */}
-        <Link
-          to="/about"
-          className={getNavLinkClass("/about")}
+        {/* ABOUT US */}
+
+        <button
+          type="button"
+          className={
+            activeSection === "about"
+              ? "active"
+              : ""
+          }
+          onClick={() =>
+            goToSection("about")
+          }
         >
           About Us
-        </Link>
+        </button>
 
-        {/* Contact */}
-        <Link
-          to="/contact"
-          className={getNavLinkClass("/contact")}
+        {/* CONTACT US */}
+
+        <button
+          type="button"
+          className={
+            activeSection === "contact"
+              ? "active"
+              : ""
+          }
+          onClick={() =>
+            goToSection("contact")
+          }
         >
           Contact Us
-        </Link>
+        </button>
+
+        {/* TOURIST DASHBOARD */}
+
+        {user?.role === "Tourist" && (
+          <Link
+            className={
+              pathname ===
+              "/tourist-dashboard"
+                ? "active"
+                : ""
+            }
+            to="/tourist-dashboard"
+          >
+            Tourist Dashboard
+          </Link>
+        )}
+
+        {/* GUIDE DASHBOARD */}
+
+        {user?.role === "Guide" && (
+          <Link
+            className={
+              pathname ===
+              "/guide-dashboard"
+                ? "active"
+                : ""
+            }
+            to="/guide-dashboard"
+          >
+            Guide Dashboard
+          </Link>
+        )}
       </nav>
 
-      {/* ================================
-          AUTH BUTTONS
-      ================================= */}
+      {/* LOGIN / SIGNUP / LOGOUT */}
 
-      <div
-        className="
-          flex
-          items-center
-          gap-3
+      <div className="tm-navbar__actions">
+        {user ? (
+          <button
+            type="button"
+            className="tm-navbar__signup"
+            onClick={handleLogout}
+          >
+            Logout
+          </button>
+        ) : (
+          <>
+            <Link
+              className="tm-navbar__login"
+              to="/login"
+            >
+              Log In
+            </Link>
 
-          justify-self-end
-          ml-auto
-        "
-      >
-        {/* Login */}
-        <Link
-          to="/login"
-          className="
-            min-w-[82px]
-            min-h-[42px]
-
-            px-[17px]
-
-            inline-flex
-            items-center
-            justify-center
-
-            rounded-lg
-
-            border
-            border-[rgba(133,171,232,0.55)]
-
-            text-white
-            text-[13px]
-            font-medium
-
-            no-underline
-
-            bg-[rgba(2,19,55,0.65)]
-
-            transition-all
-            duration-200
-
-            hover:-translate-y-px
-            hover:bg-[rgba(15,57,125,0.7)]
-
-            max-[650px]:hidden
-          "
-        >
-          Log In
-        </Link>
-
-        {/* Sign Up */}
-        <Link
-          to="/signup"
-          className="
-            min-w-[82px]
-            min-h-[42px]
-
-            px-[17px]
-
-            inline-flex
-            items-center
-            justify-center
-
-            rounded-lg
-
-            border
-            border-[#2184ff]
-
-            text-white
-            text-[13px]
-            font-medium
-
-            no-underline
-
-            bg-gradient-to-br
-            from-[#258dff]
-            to-[#0865e5]
-
-            shadow-[0_7px_18px_rgba(0,82,205,0.3)]
-
-            transition-all
-            duration-200
-
-            hover:-translate-y-px
-            hover:from-[#3497ff]
-            hover:to-[#1474ef]
-
-            max-[650px]:min-w-[72px]
-            max-[650px]:min-h-[38px]
-            max-[650px]:px-3
-          "
-        >
-          Sign Up
-        </Link>
+            <Link
+              className="tm-navbar__signup"
+              to="/signup"
+            >
+              Sign Up
+            </Link>
+          </>
+        )}
       </div>
     </header>
   );
