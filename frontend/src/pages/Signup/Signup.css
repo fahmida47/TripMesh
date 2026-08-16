@@ -6,325 +6,109 @@
   box-sizing: border-box;
 }
 
-.signup-container {
-  min-height: 100vh;
-
-  width: 100%;
-
-  display: flex;
-
-  background: #f5f7ff;
-
-  overflow: hidden;
-}
 
 /* ===============================
-        LEFT SECTION
+        FULL SCREEN
 ================================ */
 
-.signup-left {
-  width: 50%;
-
-  background-size: cover;
-
-  background-position: center;
-
-  color: white;
-
-  padding: 40px;
+.signup-container {
+  width: 100%;
+  min-height: 100vh;
 
   display: flex;
-
-  flex-direction: column;
-
-  justify-content: center;
 
   position: relative;
 
   overflow: hidden;
-
-  animation: imageReveal 1.2s ease forwards;
 }
 
-/* Logo */
 
-.logo {
-  font-size: 32px;
+/* ===============================
+        BACKGROUND
+================================ */
 
-  font-weight: 700;
+.signup-background {
+  position: absolute;
+
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background-size: cover;
+  background-position: center;
+
+  animation: imageMove 18s ease-in-out infinite alternate;
+}
+
+
+@keyframes imageMove {
+  from {
+    background-size: 100%;
+  }
+
+  to {
+    background-size: 115%;
+  }
+}
+
+
+/* Background Overlay */
+
+.signup-background::after {
+  content: "";
+
+  position: absolute;
+
+  inset: 0;
+
+  background: linear-gradient(
+    90deg,
+    rgba(2, 6, 23, 0.75),
+    rgba(2, 6, 23, 0.35)
+  );
+}
+
+
+/* ===============================
+        LEFT SIDE
+================================ */
+
+.signup-left {
+  position: absolute;
+
+  inset: 0;
+
+  z-index: 2;
+
+  pointer-events: none;
+}
+
+
+/* ===============================
+        BRAND
+================================ */
+
+.signup-brand {
+  position: absolute;
+
+  top: 45px;
+
+  left: 60px;
+
+  z-index: 2;
+
+  font-size: 36px;
+
+  font-weight: 900;
 
   color: white;
+
+  letter-spacing: -1px;
 
   animation: fadeDown 1s ease;
 }
 
-/* Hero */
-
-.signup-hero {
-  margin-top: 260px;
-
-  opacity: 0;
-
-  animation: heroUp 1s ease 0.3s forwards;
-}
-
-.signup-hero h1 {
-  font-size: 52px;
-
-  line-height: 1.15;
-
-  margin: 0;
-
-  animation: textGlow 2s infinite alternate;
-}
-
-.signup-hero p {
-  font-size: 20px;
-
-  width: 420px;
-
-  line-height: 1.5;
-}
-
-/* ===============================
-        RIGHT SECTION
-================================ */
-
-.signup-right {
-  width: 50%;
-
-  display: flex;
-
-  justify-content: center;
-
-  align-items: center;
-
-  padding: 30px;
-}
-
-/* ===============================
-        CARD
-================================ */
-
-.signup-card {
-  width: 500px;
-
-  max-width: 100%;
-
-  background: white;
-
-  padding: 45px;
-
-  border-radius: 28px;
-
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-
-  animation: cardPop 0.9s ease forwards;
-}
-
-.signup-card form {
-  width: 100%;
-}
-
-/* Heading */
-
-.signup-card h2 {
-  text-align: center;
-
-  font-size: 36px;
-
-  color: #092557;
-}
-
-.subtitle {
-  text-align: center;
-
-  color: #666;
-
-  margin-bottom: 30px;
-}
-
-/* ===============================
-        INPUT
-================================ */
-
-.signup-card input[type="text"],
-.signup-card input[type="email"],
-.signup-card input[type="password"] {
-  width: 100%;
-
-  height: 52px;
-
-  padding: 0 15px;
-
-  margin-bottom: 18px;
-
-  border: 1px solid #ddd;
-
-  border-radius: 12px;
-
-  font-size: 16px;
-
-  transition: 0.3s;
-}
-
-.signup-card input:focus {
-  outline: none;
-
-  border-color: #1769e0;
-
-  box-shadow: 0 0 10px rgba(23, 105, 224, 0.2);
-}
-
-/* ===============================
-        ROLE
-================================ */
-
-.choose {
-  font-weight: 600;
-
-  margin-bottom: 12px;
-}
-
-.role-selection {
-  display: flex;
-
-  gap: 15px;
-}
-
-.role-card {
-  flex: 1;
-
-  border: 2px solid #ddd;
-
-  padding: 15px;
-
-  border-radius: 18px;
-
-  display: flex;
-
-  gap: 12px;
-
-  align-items: center;
-
-  cursor: pointer;
-
-  transition: 0.35s ease;
-}
-
-.role-card input {
-  display: none;
-}
-
-.role-card:hover {
-  transform: translateY(-8px) scale(1.03);
-
-  border-color: #1769e0;
-
-  box-shadow: 0 10px 25px rgba(23, 105, 224, 0.25);
-}
-
-.role-card.active {
-  border-color: #1769e0;
-
-  background: #eef5ff;
-
-  transform: scale(1.04);
-}
-
-.icon {
-  font-size: 35px;
-}
-
-.role-card h4 {
-  margin: 0;
-
-  color: #092557;
-}
-
-.role-card small {
-  color: #666;
-}
-
-/* ===============================
-        BUTTON
-================================ */
-
-.signup-card button {
-  width: 100%;
-
-  height: 55px;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  margin-top: 25px;
-
-  border: none;
-
-  border-radius: 12px;
-
-  background: #1769e0;
-
-  color: white;
-
-  font-size: 18px;
-
-  font-weight: 600;
-
-  cursor: pointer;
-
-  transition: 0.3s;
-}
-
-.signup-card button:hover {
-  background: #0955c9;
-
-  transform: translateY(-4px);
-
-  box-shadow: 0 10px 20px rgba(23, 105, 224, 0.35);
-}
-
-/* ===============================
-        FOOTER
-================================ */
-
-.footer-text {
-  text-align: center;
-
-  margin-top: 25px;
-
-  color: #666;
-}
-
-.footer-text a {
-  color: #1769e0;
-
-  font-weight: 600;
-
-  margin-left: 5px;
-}
-
-/* ===============================
-        ANIMATIONS
-================================ */
-
-@keyframes imageReveal {
-  from {
-    opacity: 0;
-
-    transform: scale(1.15);
-  }
-
-  to {
-    opacity: 1;
-
-    transform: scale(1);
-  }
-}
 
 @keyframes fadeDown {
   from {
@@ -340,25 +124,123 @@
   }
 }
 
-@keyframes heroUp {
+
+/* ===============================
+        HERO TEXT
+================================ */
+
+.signup-hero-text {
+  position: absolute;
+
+  left: 70px;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  z-index: 2;
+
+  color: white;
+
+  max-width: 520px;
+
+  animation: heroShow 1.2s ease;
+}
+
+
+@keyframes heroShow {
   from {
     opacity: 0;
 
-    transform: translateY(50px);
+    transform: translateY(-40%);
   }
 
   to {
     opacity: 1;
 
-    transform: translateY(0);
+    transform: translateY(-50%);
   }
 }
 
-@keyframes cardPop {
+
+.signup-hero-text h1 {
+  margin: 0;
+
+  font-size: 65px;
+
+  line-height: 1.05;
+
+  font-weight: 900;
+
+  letter-spacing: -3px;
+}
+
+
+.signup-hero-text p {
+  margin-top: 25px;
+
+  font-size: 19px;
+
+  line-height: 1.7;
+
+  color: #e2e8f0;
+}
+
+
+/* ===============================
+        RIGHT SIDE
+================================ */
+
+.signup-right {
+  position: absolute;
+
+  right: 8%;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  width: 430px;
+
+  z-index: 5;
+}
+
+
+/* ===============================
+        SIGNUP CARD
+================================ */
+
+.signup-card {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 30px 45px;
+
+  background: rgba(255, 255, 255, 0.93);
+
+  backdrop-filter: blur(25px);
+
+  border-radius: 30px;
+
+  border: 1px solid rgba(255, 255, 255, 0.6);
+
+  box-shadow:
+    0 40px 100px rgba(0, 0, 0, 0.35);
+
+  animation: cardAppear 1s ease;
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+
+@keyframes cardAppear {
   from {
     opacity: 0;
 
-    transform: translateY(40px) scale(0.95);
+    transform: translateY(80px) scale(0.9);
   }
 
   to {
@@ -368,102 +250,431 @@
   }
 }
 
-@keyframes textGlow {
-  from {
-    text-shadow: 0 0 0 rgba(255, 255, 255, 0);
-  }
-
-  to {
-    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-  }
-}
 
 /* ===============================
-        RESPONSIVE TABLET
+        SHINE EFFECT
 ================================ */
 
-@media (max-width: 900px) {
-  .signup-container {
-    flex-direction: column;
+.signup-card::before {
+  content: "";
 
-    min-height: 100vh;
+  position: absolute;
 
-    overflow: auto;
+  width: 150px;
+
+  height: 500px;
+
+  background: linear-gradient(
+    transparent,
+    rgba(255, 255, 255, 0.8),
+    transparent
+  );
+
+  transform: rotate(35deg);
+
+  top: -200px;
+
+  left: -250px;
+
+  animation: shineMove 7s infinite;
+}
+
+
+@keyframes shineMove {
+  0% {
+    left: -250px;
   }
 
-  .signup-left {
-    width: 100%;
-
-    min-height: 380px;
-
-    padding: 30px;
-  }
-
-  .signup-hero {
-    margin-top: 120px;
-  }
-
-  .signup-hero h1 {
-    font-size: 40px;
-  }
-
-  .signup-hero p {
-    width: auto;
-
-    font-size: 17px;
-  }
-
-  .signup-right {
-    width: 100%;
-
-    padding: 25px;
-  }
-
-  .signup-card {
-    width: 100%;
-
-    max-width: 500px;
-
-    padding: 35px;
+  40%,
+  100% {
+    left: 550px;
   }
 }
+
+
+/* ===============================
+        LOGO
+================================ */
+
+.signup-logo {
+  display: flex;
+
+  justify-content: center;
+
+  margin-bottom: 8px;
+}
+
+
+.trip-logo {
+  width: 60px;
+
+  height: 60px;
+
+  transition: 0.4s;
+}
+
+
+.trip-logo:hover {
+  transform: scale(1.1) rotate(5deg);
+}
+
+
+/* ===============================
+        TITLE
+================================ */
+
+.signup-card h2 {
+  text-align: center;
+
+  font-size: 36px;
+
+  font-weight: 900;
+
+  color: #0f172a;
+
+  margin: 0 0 4px;
+}
+
+
+/* ===============================
+        SUBTITLE
+================================ */
+
+.signup-subtitle {
+  text-align: center;
+
+  color: #64748b;
+
+  margin: 4px 0 15px;
+}
+
+
+/* ===============================
+        FORM
+================================ */
+
+.signup-card form {
+  width: 100%;
+}
+
+
+/* ===============================
+        ROLE TITLE
+================================ */
+
+.role-title {
+  margin: 0 0 7px;
+
+  color: #0f172a;
+
+  font-weight: 700;
+
+  font-size: 14px;
+}
+
+
+/* ===============================
+        ROLE CONTAINER
+================================ */
+
+.role-container {
+  display: flex;
+
+  gap: 8px;
+
+  width: 100%;
+
+  margin-bottom: 10px;
+}
+
+
+/* ===============================
+        ROLE CARD
+================================ */
+
+.role-card {
+  flex: 1;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 8px;
+
+  border: 2px solid #e2e8f0;
+
+  border-radius: 15px;
+
+  background: white;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+
+/* Hide Radio */
+
+.role-card input[type="radio"] {
+  display: none;
+}
+
+
+/* Icon */
+
+.role-icon {
+  font-size: 23px;
+
+  flex-shrink: 0;
+}
+
+
+/* Role Heading */
+
+.role-card h4 {
+  margin: 0;
+
+  color: #0f172a;
+
+  font-size: 14px;
+
+  font-weight: 800;
+}
+
+
+/* Role Description */
+
+.role-card small {
+  display: block;
+
+  margin-top: 1px;
+
+  color: #64748b;
+
+  font-size: 9px;
+
+  line-height: 1.2;
+}
+
+
+/* Hover */
+
+.role-card:hover {
+  transform: translateY(-2px);
+
+  border-color: #2563eb;
+
+  box-shadow:
+    0 8px 20px rgba(37, 99, 235, 0.12);
+}
+
+
+/* Active */
+
+.role-card.active {
+  transform: scale(1.02);
+
+  border-color: #2563eb;
+
+  background: #eff6ff;
+
+  box-shadow:
+    0 10px 25px rgba(37, 99, 235, 0.15);
+}
+
+
+/* ===============================
+        INPUTS
+================================ */
+
+.signup-card input[type="text"],
+.signup-card input[type="email"],
+.signup-card input[type="tel"],
+.signup-card input[type="password"] {
+  width: 100%;
+
+  height: 48px;
+
+  box-sizing: border-box;
+
+  padding: 0 18px;
+
+  margin-bottom: 9px;
+
+  border-radius: 15px;
+
+  border: 1px solid #cbd5e1;
+
+  background: #f8fafc;
+
+  font-size: 15px;
+
+  transition: 0.3s;
+}
+
+
+.signup-card input[type="text"]:focus,
+.signup-card input[type="email"]:focus,
+.signup-card input[type="tel"]:focus,
+.signup-card input[type="password"]:focus {
+  outline: none;
+
+  border-color: #1552d7;
+
+  background: white;
+
+  box-shadow:
+    0 0 0 5px rgba(37, 99, 235, 0.15);
+}
+
+
+/* ===============================
+        SIGN UP BUTTON
+================================ */
+
+.signup-card button {
+  width: 100%;
+
+  height: 50px;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin-top: 5px;
+
+  padding: 0;
+
+  border: none;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #0ea5e9
+    );
+
+  color: white;
+
+  font-size: 18px;
+
+  font-weight: 800;
+
+  text-align: center;
+
+  cursor: pointer;
+
+  transition: 0.35s;
+
+  box-shadow:
+    0 15px 35px rgba(37, 99, 235, 0.35);
+}
+
+
+.signup-card button:hover {
+  transform: translateY(-5px);
+
+  box-shadow:
+    0 25px 50px rgba(5, 34, 96, 0.45);
+}
+
+
+/* ===============================
+        FOOTER
+================================ */
+
+.signup-footer {
+  text-align: center;
+
+  margin: 12px 0 0;
+
+  color: #64748b;
+
+  line-height: 1.5;
+
+  font-size: 14px;
+}
+
+
+.signup-footer a {
+  color: #2563eb;
+
+  font-weight: 700;
+
+  margin-left: 5px;
+}
+
+
+.signup-footer a:hover {
+  text-decoration: underline;
+}
+
 
 /* ===============================
         MOBILE
 ================================ */
 
+@media (max-width: 900px) {
+
+  .signup-hero-text {
+    display: none;
+  }
+
+  .signup-right {
+    right: 50%;
+
+    transform: translate(50%, -50%);
+
+    width: 90%;
+  }
+
+  .signup-brand {
+    left: 50%;
+
+    transform: translateX(-50%);
+  }
+}
+
+
+/* ===============================
+        SMALL DEVICE
+================================ */
+
 @media (max-width: 500px) {
-  .signup-left {
-    min-height: 320px;
-  }
-
-  .logo {
-    font-size: 26px;
-  }
-
-  .signup-hero {
-    margin-top: 90px;
-  }
-
-  .signup-hero h1 {
-    font-size: 32px;
-  }
-
-  .signup-hero p {
-    font-size: 15px;
-  }
 
   .signup-card {
-    padding: 25px 20px;
+    padding: 25px 22px;
 
     border-radius: 22px;
   }
 
   .signup-card h2 {
-    font-size: 30px;
+    font-size: 32px;
   }
 
-  .role-selection {
+  .signup-subtitle {
+    font-size: 14px;
+  }
+
+  .signup-brand {
+    top: 25px;
+
+    font-size: 28px;
+  }
+
+  .signup-right {
+    width: 92%;
+  }
+
+  .role-container {
     flex-direction: column;
   }
 
