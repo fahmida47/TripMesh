@@ -22,6 +22,7 @@ function Navbar() {
   const getNavLinkClass = (path) => `
     relative
     py-[29px]
+    pb-6
     text-[17px]
     font-semibold
     no-underline
@@ -44,7 +45,8 @@ function Navbar() {
         w-[calc(100%-80px)]
         min-h-[76px]
 
-        mx-10
+        ml-10
+        mr-10
 
         grid
         grid-cols-[auto_1fr_auto]
@@ -60,6 +62,7 @@ function Navbar() {
 
         max-[850px]:w-[calc(100%-40px)]
         max-[850px]:ml-5
+        max-[850px]:mr-5
 
         max-[650px]:gap-3
       "
