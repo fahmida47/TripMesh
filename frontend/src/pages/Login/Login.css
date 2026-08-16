@@ -1,47 +1,3 @@
-/* ===============================
-        GLOBAL
-================================ */
-
-* {
-  box-sizing: border-box;
-}
-
-/* ===============================
-        FULL SCREEN CONTAINER
-================================ */
-
-.auth-container {
-  width: 100%;
-
-  min-height: 100vh;
-
-  display: flex;
-
-  position: relative;
-
-  overflow: hidden;
-}
-
-/* ===============================
-        BACKGROUND IMAGE
-================================ */
-
-.auth-left {
-  position: absolute;
-
-  inset: 0;
-
-  width: 100%;
-
-  height: 100%;
-
-  background-size: cover;
-
-  background-position: center;
-
-  animation: imageMove 18s ease-in-out infinite alternate;
-}
-
 @keyframes imageMove {
   from {
     background-size: 100%;
@@ -52,200 +8,40 @@
   }
 }
 
-/* Overlay */
-
-.auth-left::after {
-  content: "";
-
-  position: absolute;
-
-  inset: 0;
-
-  background: linear-gradient(
-    90deg,
-    rgba(2, 6, 23, 0.75),
-    rgba(2, 6, 23, 0.35)
-  );
-}
-
-/* ===============================
-          BRAND
-================================ */
-
-.logo {
-  position: absolute;
-
-  top: 45px;
-
-  left: 60px;
-
-  z-index: 2;
-
-  font-size: 36px;
-
-  font-weight: 900;
-
-  color: white;
-
-  letter-spacing: -1px;
-
-  animation: fadeDown 1s ease;
-}
-
 @keyframes fadeDown {
   from {
     opacity: 0;
-
     transform: translateY(-30px);
   }
 
   to {
     opacity: 1;
-
     transform: translateY(0);
   }
-}
-
-/* ===============================
-          HERO TEXT
-================================ */
-
-.hero-text {
-  position: absolute;
-
-  left: 70px;
-
-  top: 50%;
-
-  transform: translateY(-50%);
-
-  z-index: 2;
-
-  color: white;
-
-  max-width: 520px;
-
-  animation: heroShow 1.2s ease;
 }
 
 @keyframes heroShow {
   from {
     opacity: 0;
-
     transform: translateY(-40%);
   }
 
   to {
     opacity: 1;
-
     transform: translateY(-50%);
   }
-}
-
-.hero-text h1 {
-  font-size: 65px;
-
-  line-height: 1.05;
-
-  font-weight: 900;
-
-  letter-spacing: -3px;
-}
-
-.hero-text p {
-  margin-top: 25px;
-
-  font-size: 19px;
-
-  line-height: 1.7;
-
-  color: #e2e8f0;
-}
-
-/* ===============================
-        LOGIN POSITION
-================================ */
-
-.auth-right {
-  position: absolute;
-
-  right: 8%;
-
-  top: 50%;
-
-  transform: translateY(-50%);
-
-  width: 430px;
-
-  z-index: 5;
-}
-
-/* ===============================
-        LOGIN CARD
-================================ */
-
-.auth-card {
-  width: 100%;
-
-  box-sizing: border-box;
-
-  padding: 45px;
-
-  background: rgba(255, 255, 255, 0.93);
-
-  backdrop-filter: blur(25px);
-
-  border-radius: 30px;
-
-  border: 1px solid rgba(255, 255, 255, 0.6);
-
-  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.35);
-
-  animation: cardAppear 1s ease;
-
-  position: relative;
-
-  overflow: hidden;
 }
 
 @keyframes cardAppear {
   from {
     opacity: 0;
-
     transform: translateY(80px) scale(0.9);
   }
 
   to {
     opacity: 1;
-
     transform: translateY(0) scale(1);
   }
-}
-
-/* Shine Effect */
-
-.auth-card::before {
-  content: "";
-
-  position: absolute;
-
-  width: 150px;
-
-  height: 500px;
-
-  background: linear-gradient(
-    transparent,
-    rgba(255, 255, 255, 0.8),
-    transparent
-  );
-
-  transform: rotate(35deg);
-
-  top: -200px;
-
-  left: -250px;
-
-  animation: shineMove 7s infinite;
 }
 
 @keyframes shineMove {
@@ -259,21 +55,159 @@
   }
 }
 
-/* ===============================
-          LOGO ICON
-================================ */
+.auth-container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-left {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  animation: imageMove 18s ease-in-out infinite alternate;
+}
+
+.auth-left::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    90deg,
+    rgba(2, 6, 23, 0.75),
+    rgba(2, 6, 23, 0.35)
+  );
+}
+
+.logo {
+  position: absolute;
+  top: 45px;
+  left: 60px;
+  z-index: 2;
+
+  font-size: 36px;
+  font-weight: 900;
+  color: white;
+  letter-spacing: -1px;
+
+  animation: fadeDown 1s ease;
+}
+
+.hero-text {
+  position: absolute;
+
+  left: 70px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  z-index: 2;
+
+  color: white;
+
+  max-width: 520px;
+
+  animation: heroShow 1.2s ease;
+}
+
+.hero-text h1 {
+  margin: 0;
+
+  font-size: 65px;
+  line-height: 1.05;
+  font-weight: 900;
+  letter-spacing: -3px;
+}
+
+.hero-text p {
+  margin-top: 25px;
+
+  font-size: 19px;
+  line-height: 1.7;
+
+  color: #e2e8f0;
+}
+
+.auth-right {
+  position: absolute;
+
+  right: 8%;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  width: 430px;
+
+  z-index: 5;
+}
+
+.auth-card {
+  width: 100%;
+
+  padding: 38px 45px;
+
+  background: rgba(255, 255, 255, 0.93);
+
+  backdrop-filter: blur(25px);
+
+  border-radius: 30px;
+
+  border: 1px solid rgba(255, 255, 255, 0.6);
+
+  box-shadow:
+    0 40px 100px rgba(0, 0, 0, 0.35);
+
+  animation: cardAppear 1s ease;
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+.auth-card::before {
+  content: "";
+
+  position: absolute;
+
+  width: 150px;
+  height: 500px;
+
+  background: linear-gradient(
+    transparent,
+    rgba(255, 255, 255, 0.8),
+    transparent
+  );
+
+  transform: rotate(35deg);
+
+  top: -200px;
+  left: -250px;
+
+  animation: shineMove 7s infinite;
+
+  pointer-events: none;
+}
 
 .login-logo {
   display: flex;
 
   justify-content: center;
 
-  margin-bottom: 20px;
+  margin-bottom: 15px;
+
+  position: relative;
+
+  z-index: 2;
 }
 
 .trip-logo {
   width: 65px;
-
   height: 65px;
 
   transition: 0.4s;
@@ -283,11 +217,10 @@
   transform: scale(1.1) rotate(5deg);
 }
 
-/* ===============================
-          TEXT
-================================ */
-
 .auth-card h2 {
+  position: relative;
+  z-index: 2;
+
   text-align: center;
 
   font-size: 40px;
@@ -296,39 +229,36 @@
 
   color: #0f172a;
 
-  margin-bottom: 10px;
+  margin: 0 0 8px;
 }
 
 .subtitle {
+  position: relative;
+  z-index: 2;
+
   text-align: center;
 
   color: #64748b;
 
-  margin: 10px 0 30px;
+  margin: 8px 0 25px;
 }
-
-/* ===============================
-          FORM
-================================ */
 
 .auth-card form {
   width: 100%;
-}
 
-/* ===============================
-          INPUT
-================================ */
+  position: relative;
+
+  z-index: 2;
+}
 
 .auth-card input {
   width: 100%;
 
   height: 55px;
 
-  box-sizing: border-box;
-
   padding: 0 18px;
 
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 
   border-radius: 15px;
 
@@ -338,7 +268,13 @@
 
   font-size: 16px;
 
+  color: #0f172a;
+
   transition: 0.3s;
+}
+
+.auth-card input::placeholder {
+  color: #94a3b8;
 }
 
 .auth-card input:focus {
@@ -348,49 +284,42 @@
 
   background: white;
 
-  box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.15);
+  box-shadow:
+    0 0 0 5px rgba(37, 99, 235, 0.15);
 }
-
-/* ===============================
-          FORGOT PASSWORD
-================================ */
 
 .forgot-password {
   display: block;
 
   text-align: right;
 
-  margin-top: -5px;
+  margin-top: 2px;
 
-  margin-bottom: 25px;
-
-  color: #2563eb;
+  margin-bottom: 22px;
 
   font-size: 14px;
 
   font-weight: 600;
+}
+
+.forgot-password a {
+  color: #2563eb;
 
   text-decoration: none;
 
   transition: 0.3s;
 }
 
-.forgot-password:hover {
+.forgot-password a:hover {
   color: #0f4fc4;
 
   text-decoration: underline;
 }
 
-/* ===============================
-          BUTTON
-================================ */
-
 .auth-card button {
   width: 100%;
 
   height: 55px;
-
-  box-sizing: border-box;
 
   display: flex;
 
@@ -398,11 +327,18 @@
 
   justify-content: center;
 
+  padding: 0;
+
   border: none;
 
   border-radius: 18px;
 
-  background: linear-gradient(135deg, #2563eb, #0ea5e9);
+  background:
+    linear-gradient(
+      135deg,
+      #2563eb,
+      #0ea5e9
+    );
 
   color: white;
 
@@ -410,31 +346,41 @@
 
   font-weight: 800;
 
+  text-align: center;
+
   cursor: pointer;
 
   transition: 0.35s;
 
-  box-shadow: 0 15px 35px rgba(37, 99, 235, 0.35);
+  box-shadow:
+    0 15px 35px rgba(37, 99, 235, 0.35);
 }
 
 .auth-card button:hover {
   transform: translateY(-5px);
 
-  box-shadow: 0 25px 50px rgba(5, 34, 96, 0.45);
+  box-shadow:
+    0 25px 50px rgba(5, 34, 96, 0.45);
 }
 
-/* ===============================
-          FOOTER
-================================ */
+.auth-card button:active {
+  transform: translateY(-1px);
+}
 
 .footer-text {
+  position: relative;
+
+  z-index: 2;
+
   text-align: center;
 
-  margin-top: 35px;
+  margin: 25px 0 0;
 
   color: #64748b;
 
   line-height: 1.6;
+
+  font-size: 14px;
 }
 
 .footer-text a {
@@ -443,11 +389,25 @@
   font-weight: 700;
 
   margin-left: 5px;
+
+  text-decoration: none;
 }
 
-/* ===============================
-          MOBILE
-================================ */
+.footer-text a:hover {
+  text-decoration: underline;
+}
+
+.login-error {
+  margin: -3px 0 12px;
+
+  color: #dc2626;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  line-height: 1.4;
+}
 
 @media (max-width: 900px) {
   .hero-text {
@@ -469,10 +429,6 @@
   }
 }
 
-/* ===============================
-          SMALL DEVICE
-================================ */
-
 @media (max-width: 500px) {
   .auth-card {
     padding: 30px 22px;
@@ -486,6 +442,8 @@
 
   .subtitle {
     font-size: 14px;
+
+    margin-bottom: 20px;
   }
 
   .logo {
@@ -496,5 +454,22 @@
 
   .auth-right {
     width: 92%;
+  }
+
+  .trip-logo {
+    width: 58px;
+    height: 58px;
+  }
+
+  .auth-card input {
+    height: 52px;
+
+    font-size: 15px;
+  }
+
+  .auth-card button {
+    height: 52px;
+
+    font-size: 17px;
   }
 }
