@@ -8,7 +8,11 @@ import {
 import "./Navbar.css";
 
 const LogoIcon = () => (
-  <svg viewBox="0 0 40 50" aria-hidden="true">
+  <svg
+    viewBox="0 0 40 50"
+    aria-hidden="true"
+    className="w-full h-full"
+  >
     <path
       d="M20 2C10.6 2 3 9.6 3 19c0 12.7 17 28.5 17 28.5S37 31.7 37 19C37 9.6 29.4 2 20 2Z"
       fill="currentColor"
@@ -65,8 +69,8 @@ function Navbar() {
     setActiveSection(sectionId);
 
     /*
-      Explore / About / Contact-এর ভিতরে
-      আগে scroll করা থাকলে reset করে top-এ আনবে
+      About Us + Contact Us
+      previous scroll position reset
     */
     const sectionContent =
       section.querySelector(
@@ -82,8 +86,25 @@ function Navbar() {
     }
 
     /*
-      Main landing container smooth scroll
-      করে selected section-এ যাবে
+      Explore-এর scrollbar এখন
+      .explore-page-এ আছে
+    */
+    const explorePage =
+      section.querySelector(
+        ".explore-page"
+      );
+
+    if (explorePage) {
+      explorePage.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "auto",
+      });
+    }
+
+    /*
+      Main landing page selected
+      section-এ smooth scroll করবে
     */
     landingPage.scrollTo({
       top: section.offsetTop,

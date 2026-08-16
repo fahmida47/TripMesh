@@ -1,19 +1,60 @@
 import React, { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Signup.css";
-import { Link, useNavigate } from "react-router-dom";
 import signupBg from "../../assets/login-bg.jpeg";
 import Loading from "../../components/Loading/Loading";
+
+const LogoIcon = () => (
+  <svg viewBox="0 0 80 80" className="trip-logo" fill="none">
+    <defs>
+      <linearGradient
+        id="signupTripGradient"
+        x1="0"
+        y1="0"
+        x2="1"
+        y2="1"
+      >
+        <stop offset="0%" stopColor="#38bdf8" />
+        <stop offset="50%" stopColor="#2563eb" />
+        <stop offset="100%" stopColor="#1e3a8a" />
+      </linearGradient>
+    </defs>
+
+    <circle
+      cx="40"
+      cy="40"
+      r="33"
+      stroke="url(#signupTripGradient)"
+      strokeWidth="4"
+    />
+
+    <path
+      d="
+        M40 18
+        C29 18 21 26 21 37
+        C21 51 40 64 40 64
+        C40 64 59 51 59 37
+        C59 26 51 18 40 18Z
+      "
+      fill="url(#signupTripGradient)"
+    />
+
+    <circle cx="40" cy="37" r="9" fill="white" />
+    <circle cx="40" cy="37" r="5" fill="#2563eb" />
+  </svg>
+);
 
 const Signup = () => {
   const navigate = useNavigate();
 
+  const location = useLocation();
+
   const [loading, setLoading] = useState(false);
 
   const [data, setData] = useState({
-    name: "",
-    email: "",
-    password: "",
     role: "Tourist",
+    name: "",
+    phone: location.state?.phone || "",
   });
 
   const handleChange = (e) => {
@@ -26,15 +67,19 @@ const Signup = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(data);
-
-    // save user data
-
-    localStorage.setItem("user", JSON.stringify(data));
-
-    // show loading
-
     setLoading(true);
+
+    // Save new user
+    localStorage.setItem(
+      "user",
+      JSON.stringify(data)
+    );
+
+    // User is not logged in yet
+    localStorage.setItem(
+      "isLoggedIn",
+      "false"
+    );
 
     setTimeout(() => {
       navigate("/login");
@@ -49,52 +94,156 @@ const Signup = () => {
           subText="Setting up your travel profile..."
         />
       )}
+
       <div className="signup-container">
-        {/* LEFT SIDE */}
+
+        {/* ===============================
+              BACKGROUND
+        ================================ */}
 
         <div
-          className="signup-left"
+          className="signup-background"
           style={{
             backgroundImage: `
-
-            linear-gradient(
-
-            rgba(0,40,90,0.45),
-
-            rgba(0,40,90,0.45)
-
-            ),
-
-            url(${signupBg})
-
+              linear-gradient(
+                rgba(0,40,90,0.45),
+                rgba(0,40,90,0.45)
+              ),
+              url(${signupBg})
             `,
           }}
-        >
-          <div className="logo">✈ TripMesh</div>
+        />
 
-          <div className="signup-hero">
+        {/* ===============================
+              LEFT SIDE
+        ================================ */}
+
+        <div className="signup-left">
+
+          <div className="signup-brand">
+            ✈ TripMesh
+          </div>
+
+          <div className="signup-hero-text">
             <h1>
-              Start your journey.
+              Explore more.
               <br />
-              Explore the world.
+              Travel better.
             </h1>
 
             <p>
-              Join TripMesh and discover amazing destinations with trusted
-              travelers and guides.
+              Join TripMesh and discover amazing places,
+              <br />
+              connect with trusted guides, and create
+              <br />
+              unforgettable travel experiences.
             </p>
           </div>
+
         </div>
 
-        {/* RIGHT SIDE */}
+        {/* ===============================
+              RIGHT SIDE
+        ================================ */}
 
         <div className="signup-right">
-          <div className="signup-card">
-            <h2>Create Account</h2>
 
-            <p className="subtitle">Join TripMesh today</p>
+          <div className="signup-card">
+
+            <div className="signup-logo">
+              <LogoIcon />
+            </div>
+
+            <h2>
+              Create Account
+            </h2>
+
+            <p className="signup-subtitle">
+              Join TripMesh today
+            </p>
 
             <form onSubmit={handleSubmit}>
+
+              {/* ===============================
+                    ROLE
+              ================================ */}
+
+              <p className="role-title">
+                Choose your role
+              </p>
+
+              <div className="role-container">
+
+                {/* Tourist */}
+
+                <label
+                  className={`role-card ${
+                    data.role === "Tourist"
+                      ? "active"
+                      : ""
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="role"
+                    value="Tourist"
+                    checked={
+                      data.role === "Tourist"
+                    }
+                    onChange={handleChange}
+                  />
+
+                  <span className="role-icon">
+                    🧳
+                  </span>
+
+                  <div>
+                    <h4>Tourist</h4>
+
+                    <small>
+                      Explore & book trips
+                    </small>
+                  </div>
+                </label>
+
+                {/* Guide */}
+
+                <label
+                  className={`role-card ${
+                    data.role === "Guide"
+                      ? "active"
+                      : ""
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="role"
+                    value="Guide"
+                    checked={
+                      data.role === "Guide"
+                    }
+                    onChange={handleChange}
+                  />
+
+                  <span className="role-icon">
+                    🗺️
+                  </span>
+
+                  <div>
+                    <h4>Guide</h4>
+
+                    <small>
+                      Provide travel services
+                    </small>
+                  </div>
+                </label>
+
+              </div>
+
+              {/* ===============================
+                    FULL NAME
+              ================================ */}
+
               <input
                 type="text"
                 name="name"
@@ -104,85 +253,42 @@ const Signup = () => {
                 required
               />
 
+              {/* ===============================
+                    PHONE
+              ================================ */}
+
               <input
-                type="email"
-                name="email"
-                placeholder="Email address"
-                value={data.email}
+                type="tel"
+                name="phone"
+                placeholder="Phone Number"
+                value={data.phone}
                 onChange={handleChange}
                 required
               />
 
-              <input
-                type="password"
-                name="password"
-                placeholder="Password"
-                value={data.password}
-                onChange={handleChange}
-                required
-              />
+              {/* ===============================
+                    SIGN UP
+              ================================ */}
 
-              <p className="choose">Choose your role</p>
+              <button type="submit">
+                Sign Up
+              </button>
 
-              <div className="role-selection">
-                {/* TOURIST */}
-
-                <label
-                  className={
-                    data.role === "Tourist" ? "role-card active" : "role-card"
-                  }
-                >
-                  <input
-                    type="radio"
-                    name="role"
-                    value="Tourist"
-                    checked={data.role === "Tourist"}
-                    onChange={handleChange}
-                  />
-
-                  <span className="icon">🧳</span>
-
-                  <div>
-                    <h4>Tourist</h4>
-
-                    <small>Explore places & book trips</small>
-                  </div>
-                </label>
-
-                {/* GUIDE */}
-
-                <label
-                  className={
-                    data.role === "Guide" ? "role-card active" : "role-card"
-                  }
-                >
-                  <input
-                    type="radio"
-                    name="role"
-                    value="Guide"
-                    checked={data.role === "Guide"}
-                    onChange={handleChange}
-                  />
-
-                  <span className="icon">🗺️</span>
-
-                  <div>
-                    <h4>Guide</h4>
-
-                    <small>Provide travel services</small>
-                  </div>
-                </label>
-              </div>
-
-              <button type="submit">Sign Up</button>
             </form>
 
-            <p className="footer-text">
+            {/* Footer */}
+
+            <p className="signup-footer">
               Already have an account?
-              <Link to="/login">Login</Link>
+
+              <Link to="/login">
+                Login
+              </Link>
             </p>
+
           </div>
         </div>
+
       </div>
     </>
   );

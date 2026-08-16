@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 * {
   box-sizing: border-box;
 }
@@ -28,3 +30,16 @@ body {
   width: 100%;
   min-height: 100vh;
 }
+
+/* Signup glass card shine animation */
+@keyframes shineMove {
+  0% {
+    left: -250px;
+  }
+
+  40%,
+  100% {
+    left: 550px;
+  }
+}
+
