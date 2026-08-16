@@ -7,11 +7,11 @@ import Team from "./components/Team";
 import TrustSecurity from "./components/TrustSecurity";
 import "./AboutUs.css";
 
-function AboutUs() {
+function AboutUs({ embedded = false }) {
   return (
     <main className="tm-about-page">
       <div className="tm-hero-banner">
-        <Navbar />
+        {!embedded && <Navbar />}
         <Hero />
         <HeroFeatures />
       </div>

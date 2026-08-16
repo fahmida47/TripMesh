@@ -1,4 +1,10 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
+
 import "./Navbar.css";
 
 const LogoIcon = () => (
@@ -8,63 +14,202 @@ const LogoIcon = () => (
       fill="currentColor"
     />
 
-    <circle cx="20" cy="18" r="10" fill="#03143d" />
+    <circle
+      cx="20"
+      cy="18"
+      r="10"
+      fill="#03143d"
+    />
   </svg>
 );
 
 function Navbar() {
   const { pathname } = useLocation();
-
   const navigate = useNavigate();
 
-  const storedUser = localStorage.getItem("user");
-  const user = storedUser ? JSON.parse(storedUser) : null;
+  const [activeSection, setActiveSection] =
+    useState("home");
+
+  const storedUser =
+    localStorage.getItem("user");
+
+  const user = storedUser
+    ? JSON.parse(storedUser)
+    : null;
+
+  /* =========================
+     LOGOUT
+  ========================= */
 
   const handleLogout = () => {
     localStorage.removeItem("user");
-
     navigate("/");
   };
 
+  /* =========================
+     HOME PAGE SECTION SCROLL
+  ========================= */
+
+  const goToSection = (sectionId) => {
+    const landingPage =
+      document.querySelector(".tm-landing");
+
+    const section =
+      document.getElementById(sectionId);
+
+    if (!landingPage || !section) {
+      return;
+    }
+
+    /* Active navbar line */
+    setActiveSection(sectionId);
+
+    /*
+      Explore / About / Contact-এর ভিতরে
+      আগে scroll করা থাকলে reset করে top-এ আনবে
+    */
+    const sectionContent =
+      section.querySelector(
+        ".tm-section-content"
+      );
+
+    if (sectionContent) {
+      sectionContent.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "auto",
+      });
+    }
+
+    /*
+      Main landing container smooth scroll
+      করে selected section-এ যাবে
+    */
+    landingPage.scrollTo({
+      top: section.offsetTop,
+      left: 0,
+      behavior: "smooth",
+    });
+  };
+
+  /* =========================
+     NAVBAR
+  ========================= */
+
   return (
     <header className="tm-navbar">
-      <Link className="tm-navbar__brand" to="/">
+      {/* LOGO */}
+
+      <button
+        type="button"
+        className="tm-navbar__brand"
+        onClick={() =>
+          goToSection("home")
+        }
+      >
         <span className="tm-navbar__logo">
           <LogoIcon />
         </span>
 
         <span>TripMesh</span>
-      </Link>
+      </button>
 
-      <nav className="tm-navbar__links">
-        <Link className={pathname === "/" ? "active" : ""} to="/">
+      {/* NAVIGATION */}
+
+      <nav
+        className="tm-navbar__links"
+        aria-label="Main navigation"
+      >
+        {/* HOME */}
+
+        <button
+          type="button"
+          className={
+            activeSection === "home"
+              ? "active"
+              : ""
+          }
+          onClick={() =>
+            goToSection("home")
+          }
+        >
           Home
-        </Link>
+        </button>
 
-        <Link className={pathname === "/explore" ? "active" : ""} to="/explore">
+        {/* EXPLORE */}
+
+        <button
+          type="button"
+          className={
+            activeSection === "explore"
+              ? "active"
+              : ""
+          }
+          onClick={() =>
+            goToSection("explore")
+          }
+        >
           Explore
-        </Link>
+        </button>
 
-        <Link className={pathname === "/about" ? "active" : ""} to="/about">
+        {/* ABOUT US */}
+
+        <button
+          type="button"
+          className={
+            activeSection === "about"
+              ? "active"
+              : ""
+          }
+          onClick={() =>
+            goToSection("about")
+          }
+        >
           About Us
-        </Link>
+        </button>
 
-        <Link className={pathname === "/contact" ? "active" : ""} to="/contact">
+        {/* CONTACT US */}
+
+        <button
+          type="button"
+          className={
+            activeSection === "contact"
+              ? "active"
+              : ""
+          }
+          onClick={() =>
+            goToSection("contact")
+          }
+        >
           Contact Us
-        </Link>
+        </button>
+
+        {/* TOURIST DASHBOARD */}
 
         {user?.role === "Tourist" && (
           <Link
-            className={pathname === "/tourist-dashboard" ? "active" : ""}
+            className={
+              pathname ===
+              "/tourist-dashboard"
+                ? "active"
+                : ""
+            }
             to="/tourist-dashboard"
           >
             Tourist Dashboard
           </Link>
         )}
 
+        {/* GUIDE DASHBOARD */}
+
         {user?.role === "Guide" && (
           <Link
-            className={pathname === "/guide-dashboard" ? "active" : ""}
+            className={
+              pathname ===
+              "/guide-dashboard"
+                ? "active"
+                : ""
+            }
             to="/guide-dashboard"
           >
             Guide Dashboard
@@ -72,18 +217,30 @@ function Navbar() {
         )}
       </nav>
 
+      {/* LOGIN / SIGNUP / LOGOUT */}
+
       <div className="tm-navbar__actions">
         {user ? (
-          <button className="tm-navbar__signup" onClick={handleLogout}>
+          <button
+            type="button"
+            className="tm-navbar__signup"
+            onClick={handleLogout}
+          >
             Logout
           </button>
         ) : (
           <>
-            <Link className="tm-navbar__login" to="/login">
+            <Link
+              className="tm-navbar__login"
+              to="/login"
+            >
               Log In
             </Link>
 
-            <Link className="tm-navbar__signup" to="/signup">
+            <Link
+              className="tm-navbar__signup"
+              to="/signup"
+            >
               Sign Up
             </Link>
           </>

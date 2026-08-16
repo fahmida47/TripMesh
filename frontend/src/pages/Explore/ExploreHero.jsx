@@ -1,7 +1,9 @@
 import Navbar from "../../components/Navbar/Navbar";
 import exploreHero from "../../assets/explore-hero.png";
 
-function ExploreHero() {
+function ExploreHero({
+  showNavbar = true,
+}) {
   return (
     <section
       className="explore-top-section"
@@ -17,13 +19,16 @@ function ExploreHero() {
         `,
       }}
     >
-      <Navbar />
+      {showNavbar && <Navbar />}
 
       <div className="explore-hero-content">
-        <h1>Explore Guide Services in Bangladesh</h1>
+        <h1>
+          Explore Guide Services in Bangladesh
+        </h1>
 
         <p>
-          Find and connect with professional local guide companies
+          Find and connect with professional
+          local guide companies
           <br />
           for your next unforgettable journey.
         </p>
