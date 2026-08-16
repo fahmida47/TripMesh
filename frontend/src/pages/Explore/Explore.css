@@ -78,7 +78,7 @@
   background: var(--explore-card);
   border: 1px solid var(--explore-border);
   border-radius: 14px;
-  box-shadow: 0 6px 22px rgba(18, 48, 90, 0.06);
+  box-shadow: 0 6px 22px rgba(206, 211, 217, 0.06);
 }
 
 .explore-filter-header {

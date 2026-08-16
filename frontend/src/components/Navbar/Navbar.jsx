@@ -1,9 +1,5 @@
 import { useState } from "react";
-import {
-  Link,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import "./Navbar.css";
 
@@ -29,26 +25,9 @@ const LogoIcon = () => (
 
 function Navbar() {
   const { pathname } = useLocation();
-  const navigate = useNavigate();
 
   const [activeSection, setActiveSection] =
     useState("home");
-
-  const storedUser =
-    localStorage.getItem("user");
-
-  const user = storedUser
-    ? JSON.parse(storedUser)
-    : null;
-
-  /* =========================
-     LOGOUT
-  ========================= */
-
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    navigate("/");
-  };
 
   /* =========================
      HOME PAGE SECTION SCROLL
@@ -86,7 +65,7 @@ function Navbar() {
     }
 
     /*
-      Explore-এর scrollbar এখন
+      Explore-এর scrollbar
       .explore-page-এ আছে
     */
     const explorePage =
@@ -119,6 +98,7 @@ function Navbar() {
 
   return (
     <header className="tm-navbar">
+
       {/* LOGO */}
 
       <button
@@ -135,12 +115,14 @@ function Navbar() {
         <span>TripMesh</span>
       </button>
 
+
       {/* NAVIGATION */}
 
       <nav
         className="tm-navbar__links"
         aria-label="Main navigation"
       >
+
         {/* HOME */}
 
         <button
@@ -156,6 +138,7 @@ function Navbar() {
         >
           Home
         </button>
+
 
         {/* EXPLORE */}
 
@@ -173,6 +156,7 @@ function Navbar() {
           Explore
         </button>
 
+
         {/* ABOUT US */}
 
         <button
@@ -188,6 +172,7 @@ function Navbar() {
         >
           About Us
         </button>
+
 
         {/* CONTACT US */}
 
@@ -205,68 +190,29 @@ function Navbar() {
           Contact Us
         </button>
 
-        {/* TOURIST DASHBOARD */}
-
-        {user?.role === "Tourist" && (
-          <Link
-            className={
-              pathname ===
-              "/tourist-dashboard"
-                ? "active"
-                : ""
-            }
-            to="/tourist-dashboard"
-          >
-            Tourist Dashboard
-          </Link>
-        )}
-
-        {/* GUIDE DASHBOARD */}
-
-        {user?.role === "Guide" && (
-          <Link
-            className={
-              pathname ===
-              "/guide-dashboard"
-                ? "active"
-                : ""
-            }
-            to="/guide-dashboard"
-          >
-            Guide Dashboard
-          </Link>
-        )}
       </nav>
 
-      {/* LOGIN / SIGNUP / LOGOUT */}
+
+      {/* LOGIN / SIGNUP */}
 
       <div className="tm-navbar__actions">
-        {user ? (
-          <button
-            type="button"
-            className="tm-navbar__signup"
-            onClick={handleLogout}
-          >
-            Logout
-          </button>
-        ) : (
-          <>
-            <Link
-              className="tm-navbar__login"
-              to="/login"
-            >
-              Log In
-            </Link>
 
-            <Link
-              className="tm-navbar__signup"
-              to="/signup"
-            >
-              Sign Up
-            </Link>
-          </>
-        )}
+        <Link
+          className="tm-navbar__login"
+          to="/login"
+        >
+          Log In
+        </Link>
+
+        <Link
+          className="tm-navbar__signup"
+          to="/signup"
+        >
+          Sign Up
+        </Link>
+
       </div>
+
     </header>
   );
 }
