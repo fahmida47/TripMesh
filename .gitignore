@@ -1,4 +1,30 @@
-node_modules/
+# =========================
+# Frontend
+# =========================
 frontend/node_modules/
-dist/
-.env
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
+
+# =========================
+# Laravel Backend
+# =========================
+backend/vendor/
+backend/.env
+backend/.env.*
+!backend/.env.example
+
+# Laravel generated files
+backend/storage/*.key
+backend/.phpunit.result.cache
+
+# =========================
+# Logs
+# =========================
+*.log
+
+# =========================
+# IDE
+# =========================
+.vscode/
+.idea/
