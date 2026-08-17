@@ -1,9 +1,6 @@
 import { useState } from "react";
 import TouristSidebar from "./components/TouristSidebar";
-import TouristHeader from "./components/TouristHeader";
-import TouristStats from "./components/TouristStats";
-import DashboardOverview from "./components/DashboardOverview";
-import { touristProfile } from "./mockProfile";
+import Explore from "../Explore/Explore";
 import "./TouristDashboard.css";
 
 export default function TouristDashboard() {
@@ -11,12 +8,6 @@ export default function TouristDashboard() {
 
   return (
     <div className="ts-shell">
-      <TouristHeader
-        profile={touristProfile}
-        notificationCount={3}
-        onMenuClick={() => setSidebarOpen(true)}
-      />
-
       <div className="ts-shell-body">
         <TouristSidebar
           activeKey="dashboard"
@@ -24,17 +15,23 @@ export default function TouristDashboard() {
           onClose={() => setSidebarOpen(false)}
         />
 
-        <main className="ts-shell-content">
-          <div className="ts-dashboard-header">
-            <h1>Welcome back, {touristProfile.fullName.split(" ")[0]}! 👋</h1>
-            <p>Plan your next adventure with TripMesh</p>
-          </div>
-
-          <TouristStats />
-
-          <DashboardOverview />
+        <main className="ts-shell-content ts-shell-content--explore">
+          {/* Reuses the existing Explore page content (search, guide
+              cards, filters, sorting) in "embedded" mode: no duplicate
+              global Navbar is rendered, and this IS the Tourist
+              Dashboard's main content now — no separate overview. */}
+          <Explore embedded />
         </main>
       </div>
+
+      <button
+        type="button"
+        className="ts-mobile-menu-btn"
+        onClick={() => setSidebarOpen(true)}
+        aria-label="Open menu"
+      >
+        ☰
+      </button>
     </div>
   );
 }

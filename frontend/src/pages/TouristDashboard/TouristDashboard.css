@@ -15,6 +15,19 @@
   padding: 28px;
 }
 
+/* Explore is reused as embedded content: it manages its own inner
+   spacing (hero banner, filter grid, etc.), so drop the dashboard's
+   default content padding and let it sit flush beside the sidebar. */
+.ts-shell-content--explore {
+  padding: 0;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.ts-shell-content--explore .explore-page {
+  min-height: 100%;
+}
+
 .ts-dashboard-header {
   margin-bottom: 20px;
 }
@@ -32,9 +45,34 @@
   color: #64748b;
 }
 
+/* Floating menu button to open the off-canvas sidebar — only needed on
+   tablet/mobile now that there's no top header with a hamburger icon. */
+.ts-mobile-menu-btn {
+  display: none;
+}
+
 @media (max-width: 1024px) {
   .ts-shell-content {
     padding: 22px;
+  }
+
+  .ts-mobile-menu-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    border: none;
+    background: #0b1638;
+    color: #fff;
+    font-size: 18px;
+    box-shadow: 0 4px 12px rgba(11, 22, 56, 0.35);
+    cursor: pointer;
+    z-index: 50;
   }
 }
 

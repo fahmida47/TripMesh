@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import {
   HomeIcon,
   InboxIcon,
@@ -41,6 +42,15 @@ export default function TouristSidebar({
   isOpen = false,
   onClose,
 }) {
+  const navigate = useNavigate();
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    // Frontend-only mock: no real session/token to clear yet, just
+    // send the tourist back to the homepage.
+    navigate("/");
+  };
+
   return (
     <>
       {isOpen && (
@@ -96,7 +106,7 @@ export default function TouristSidebar({
           </button>
         </div>
 
-        <a href="#logout" className="ts-logout">
+        <a href="#logout" className="ts-logout" onClick={handleLogout}>
           <LogOutIcon />
           <span>Log Out</span>
         </a>
