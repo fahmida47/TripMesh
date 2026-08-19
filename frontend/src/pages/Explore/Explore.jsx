@@ -11,15 +11,9 @@ import sundarbansImage from "../../assets/sundarbans.jpg";
 import sylhetImage from "../../assets/sylhet-tea-garden.png";
 import paharpurImage from "../../assets/paharpur.jpg";
 
-const locations = [
-  { id: 1, name: "All Locations", count: null },
-  { id: 2, name: "Dhaka", count: 24 },
-  { id: 3, name: "Cox's Bazar", count: 18 },
-  { id: 4, name: "Sylhet", count: 16 },
-  { id: 5, name: "Sundarbans", count: 12 },
-  { id: 6, name: "Bandarban", count: 14 },
-  { id: 7, name: "Paharpur", count: 9 },
-];
+/* =========================
+   MOCK GUIDE DATA
+========================= */
 
 const guideCompanies = [
   {
@@ -27,7 +21,11 @@ const guideCompanies = [
     companyName: "PathPilot",
     location: "Dhaka",
     destination: "Dhaka Historical Places",
-    tourTypes: ["Single Tour", "Dual Tour", "Group Tour"],
+    tourTypes: [
+      "Single Tour",
+      "Dual Tour",
+      "Group Tour",
+    ],
     description:
       "Experience the rich history, culture and hidden gems with our expert local guides.",
     rating: 4.8,
@@ -37,12 +35,17 @@ const guideCompanies = [
     image: dhakaImage,
     logoText: "P",
   },
+
   {
     id: 2,
     companyName: "WanderMate",
     location: "Cox's Bazar",
     destination: "Cox's Bazar Beach",
-    tourTypes: ["Single Tour", "Dual Tour", "Group Tour"],
+    tourTypes: [
+      "Single Tour",
+      "Dual Tour",
+      "Group Tour",
+    ],
     description:
       "Enjoy the sea breeze and explore the best attractions with our professional local team.",
     rating: 4.7,
@@ -52,6 +55,7 @@ const guideCompanies = [
     image: coxsBazarImage,
     logoText: "W",
   },
+
   {
     id: 3,
     companyName: "JourneyRoot",
@@ -67,12 +71,17 @@ const guideCompanies = [
     image: sundarbansImage,
     logoText: "J",
   },
+
   {
     id: 4,
     companyName: "Horizon Link",
     location: "Sylhet",
     destination: "Sylhet Tea Gardens",
-    tourTypes: ["Single Tour", "Dual Tour", "Group Tour"],
+    tourTypes: [
+      "Single Tour",
+      "Dual Tour",
+      "Group Tour",
+    ],
     description:
       "Explore lush tea gardens, waterfalls and the peaceful natural beauty of Sylhet.",
     rating: 4.6,
@@ -82,12 +91,17 @@ const guideCompanies = [
     image: sylhetImage,
     logoText: "H",
   },
+
   {
     id: 5,
     companyName: "Local Lens",
     location: "Paharpur",
     destination: "Paharpur Heritage Site",
-    tourTypes: ["Single Tour", "Dual Tour", "Group Tour"],
+    tourTypes: [
+      "Single Tour",
+      "Dual Tour",
+      "Group Tour",
+    ],
     description:
       "Step into history with guided tours of ancient heritage sites and nearby attractions.",
     rating: 4.6,
@@ -97,12 +111,17 @@ const guideCompanies = [
     image: paharpurImage,
     logoText: "L",
   },
+
   {
     id: 6,
     companyName: "RoamBridge",
     location: "Dhaka",
     destination: "Old Dhaka City",
-    tourTypes: ["Single Tour", "Dual Tour", "Group Tour"],
+    tourTypes: [
+      "Single Tour",
+      "Dual Tour",
+      "Group Tour",
+    ],
     description:
       "Explore vibrant city life and heritage locations with friendly and knowledgeable guides.",
     rating: 4.8,
@@ -114,19 +133,33 @@ const guideCompanies = [
   },
 ];
 
+/* =========================
+   TOUR TYPE BADGE
+========================= */
+
 function TourTypeBadge({ type }) {
-  const badgeClass = type.toLowerCase().replaceAll(" ", "-");
+  const badgeClass = type
+    .toLowerCase()
+    .replaceAll(" ", "-");
 
   return (
-    <span className={`explore-tour-badge ${badgeClass}`}>
+    <span
+      className={`explore-tour-badge ${badgeClass}`}
+    >
       {type}
     </span>
   );
 }
 
+/* =========================
+   GUIDE CARD
+========================= */
+
 function GuideCard({ guide }) {
   return (
     <article className="explore-guide-card">
+      {/* IMAGE */}
+
       <div className="explore-guide-image-wrapper">
         <img
           className="explore-guide-image"
@@ -143,7 +176,11 @@ function GuideCard({ guide }) {
         </button>
       </div>
 
+      {/* CARD CONTENT */}
+
       <div className="explore-guide-content">
+        {/* COMPANY */}
+
         <div className="explore-company-heading">
           <div
             className="explore-company-logo"
@@ -162,6 +199,8 @@ function GuideCard({ guide }) {
           </div>
         </div>
 
+        {/* TOUR TYPES */}
+
         <div className="explore-tour-badges">
           {guide.tourTypes.map((type) => (
             <TourTypeBadge
@@ -171,9 +210,13 @@ function GuideCard({ guide }) {
           ))}
         </div>
 
+        {/* DESCRIPTION */}
+
         <p className="explore-guide-description">
           {guide.description}
         </p>
+
+        {/* RATING + PRICE */}
 
         <div className="explore-guide-meta">
           <div className="explore-rating">
@@ -186,7 +229,9 @@ function GuideCard({ guide }) {
 
             <strong>{guide.rating}</strong>
 
-            <span>({guide.reviews} reviews)</span>
+            <span>
+              ({guide.reviews} reviews)
+            </span>
           </div>
 
           <div className="explore-price">
@@ -197,6 +242,8 @@ function GuideCard({ guide }) {
             </strong>
           </div>
         </div>
+
+        {/* BUTTONS */}
 
         <div className="explore-card-actions">
           <button
@@ -218,186 +265,192 @@ function GuideCard({ guide }) {
   );
 }
 
+/* =========================
+   EXPLORE PAGE
+========================= */
+
 function Explore({ embedded = false }) {
-  const [searchInput, setSearchInput] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchInput, setSearchInput] =
+    useState("");
+
+  const [searchTerm, setSearchTerm] =
+    useState("");
+
+  /* TOUR TYPE */
+
+  const [
+    selectedTourType,
+    setSelectedTourType,
+  ] = useState("");
+
+  const [
+    searchTourType,
+    setSearchTourType,
+  ] = useState("");
+
+  /* PRICE RANGE */
+
+  const [
+    priceRange,
+    setPriceRange,
+  ] = useState("");
+
+  const [
+    searchPriceRange,
+    setSearchPriceRange,
+  ] = useState("");
+
+  /* SORT */
+
+  const [sortBy, setSortBy] =
+    useState("popular");
+
+  /* GRID / LIST VIEW */
+
+  const [viewMode, setViewMode] =
+    useState("grid");
+
+  /* =========================
+     SEARCH
+  ========================= */
 
   const handleSearch = () => {
-    setSearchTerm(searchInput.trim().toLowerCase());
-  };
-
-  const filteredCompanies = guideCompanies.filter((company) => {
-    if (!searchTerm) {
-      return true;
-    }
-
-    const matchesCompanyName = company.companyName
-      .toLowerCase()
-      .includes(searchTerm);
-
-    const matchesLocation = company.location
-      .toLowerCase()
-      .includes(searchTerm);
-
-    const matchesDestination = company.destination
-      .toLowerCase()
-      .includes(searchTerm);
-
-    const matchesTourType = company.tourTypes.some((tourType) =>
-      tourType.toLowerCase().includes(searchTerm),
+    setSearchTerm(
+      searchInput
+        .trim()
+        .toLowerCase()
     );
 
+    setSearchTourType(
+      selectedTourType
+    );
+
+    setSearchPriceRange(
+      priceRange
+    );
+  };
+
+  /* =========================
+     FILTER SEARCH RESULTS
+  ========================= */
+
+  const filteredCompanies =
+    guideCompanies.filter((company) => {
+      /* Destination / company / location */
+
+      const matchesText =
+        !searchTerm ||
+        company.companyName
+          .toLowerCase()
+          .includes(searchTerm) ||
+        company.location
+          .toLowerCase()
+          .includes(searchTerm) ||
+        company.destination
+          .toLowerCase()
+          .includes(searchTerm);
+
+      /* Tour Type */
+
+      const matchesTourType =
+        !searchTourType ||
+        company.tourTypes.includes(
+          searchTourType
+        );
+
+      /* Price Range */
+
+      const matchesPrice =
+        !searchPriceRange ||
+        (
+          searchPriceRange === "low" &&
+          company.price >= 2000 &&
+          company.price <= 2500
+        ) ||
+        (
+          searchPriceRange === "medium" &&
+          company.price >= 2501 &&
+          company.price <= 3000
+        ) ||
+        (
+          searchPriceRange === "high" &&
+          company.price >= 3001
+        );
+
+      return (
+        matchesText &&
+        matchesTourType &&
+        matchesPrice
+      );
+    });
+
+  /* =========================
+     SORT
+  ========================= */
+
+  const sortedCompanies = [
+    ...filteredCompanies,
+  ].sort((a, b) => {
+    if (sortBy === "rating") {
+      return b.rating - a.rating;
+    }
+
+    if (sortBy === "low-price") {
+      return a.price - b.price;
+    }
+
+    if (sortBy === "high-price") {
+      return b.price - a.price;
+    }
+
     return (
-      matchesCompanyName ||
-      matchesLocation ||
-      matchesDestination ||
-      matchesTourType
+      b.popularity -
+      a.popularity
     );
   });
 
+  /* =========================
+     PAGE
+  ========================= */
+
   return (
     <div className="explore-page">
-      <ExploreHero showNavbar={!embedded} />
+      <ExploreHero
+        showNavbar={!embedded}
+      />
 
-      <main className="explore-main">
-        <aside className="explore-filter-sidebar">
-          <div className="explore-filter-header">
-            <h2>Filters</h2>
-
-            <button
-              type="button"
-              className="explore-reset-button"
-            >
-              ↻ Reset
-            </button>
-          </div>
-
-          <section className="explore-filter-group">
-            <h3>
-              <span aria-hidden="true">⌖</span>
-              Location
-            </h3>
-
-            <div className="explore-filter-options">
-              {locations.map((location, index) => (
-                <label
-                  className="explore-checkbox-label"
-                  key={location.id}
-                >
-                  <input
-                    type="checkbox"
-                    defaultChecked={index === 0}
-                  />
-
-                  <span>
-                    {location.name}
-
-                    {location.count !== null
-                      ? ` (${location.count})`
-                      : ""}
-                  </span>
-                </label>
-              ))}
-            </div>
-          </section>
-
-          <section className="explore-filter-group">
-            <h3>
-              <span aria-hidden="true">♧</span>
-              Tour Type
-
-              <span className="explore-collapse-icon">
-                ⌃
-              </span>
-            </h3>
-
-            <div className="explore-filter-options">
-              {[
-                "Group Tour",
-                "Dual Tour",
-                "Single Tour",
-              ].map((tourType) => (
-                <label
-                  className="explore-checkbox-label"
-                  key={tourType}
-                >
-                  <input type="checkbox" />
-                  <span>{tourType}</span>
-                </label>
-              ))}
-            </div>
-          </section>
-
-          <section className="explore-filter-group">
-            <h3>
-              <span aria-hidden="true">◉</span>
-              Price Range
-
-              <span className="explore-collapse-icon">
-                ⌃
-              </span>
-            </h3>
-
-            <div className="explore-filter-options">
-              <label className="explore-radio-label">
-                <input
-                  type="radio"
-                  name="priceOrder"
-                  defaultChecked
-                />
-
-                <span>Low to High</span>
-              </label>
-
-              <label className="explore-radio-label">
-                <input
-                  type="radio"
-                  name="priceOrder"
-                />
-
-                <span>High to Low</span>
-              </label>
-            </div>
-          </section>
-
-          <section className="explore-filter-group">
-            <h3>
-              <span aria-hidden="true">☆</span>
-              Guide Rating
-
-              <span className="explore-collapse-icon">
-                ⌃
-              </span>
-            </h3>
-
-            <div className="explore-filter-options">
-              <label className="explore-checkbox-label">
-                <input type="checkbox" />
-                <span>4 Stars and Above</span>
-              </label>
-
-              <label className="explore-checkbox-label">
-                <input type="checkbox" />
-                <span>3 Stars and Above</span>
-              </label>
-            </div>
-          </section>
-
-          <button
-            type="button"
-            className="explore-apply-filter-button"
-          >
-            Apply Filters
-          </button>
-        </aside>
-
+      <main className="explore-main explore-main-no-filter">
         <section className="explore-listing-section">
+
+          {/* SEARCH + SORT */}
+
           <div className="explore-search-sort-row">
+
             <ExploreSearch
-              searchInput={searchInput}
-              onSearchInputChange={setSearchInput}
-              onSearch={handleSearch}
+              searchInput={
+                searchInput
+              }
+              onSearchInputChange={
+                setSearchInput
+              }
+              onSearch={
+                handleSearch
+              }
+              tourType={
+                selectedTourType
+              }
+              onTourTypeChange={
+                setSelectedTourType
+              }
+              priceRange={
+                priceRange
+              }
+              onPriceRangeChange={
+                setPriceRange
+              }
             />
+
+            {/* SORT */}
 
             <div className="explore-sort-control">
               <label htmlFor="guide-sort">
@@ -406,7 +459,12 @@ function Explore({ embedded = false }) {
 
               <select
                 id="guide-sort"
-                defaultValue="popular"
+                value={sortBy}
+                onChange={(event) =>
+                  setSortBy(
+                    event.target.value
+                  )
+                }
               >
                 <option value="popular">
                   Most Popular
@@ -427,11 +485,13 @@ function Explore({ embedded = false }) {
             </div>
           </div>
 
+          {/* RESULT COUNT */}
+
           <div className="explore-listing-header">
             <p>
               Showing{" "}
               <strong>
-                {filteredCompanies.length}
+                {sortedCompanies.length}
               </strong>{" "}
               of{" "}
               <strong>
@@ -440,43 +500,73 @@ function Explore({ embedded = false }) {
               guide services
             </p>
 
+            {/* GRID / LIST BUTTON */}
+
             <div className="explore-view-buttons">
               <button
                 type="button"
-                className="active"
+                className={
+                  viewMode === "grid"
+                    ? "active"
+                    : ""
+                }
                 aria-label="Grid view"
+                onClick={() =>
+                  setViewMode("grid")
+                }
               >
                 ▦
               </button>
 
               <button
                 type="button"
+                className={
+                  viewMode === "list"
+                    ? "active"
+                    : ""
+                }
                 aria-label="List view"
+                onClick={() =>
+                  setViewMode("list")
+                }
               >
                 ☷
               </button>
             </div>
           </div>
 
-          <div className="explore-guide-grid">
-            {filteredCompanies.length > 0 ? (
-              filteredCompanies.map((guide) => (
-                <GuideCard
-                  key={guide.id}
-                  guide={guide}
-                />
-              ))
+          {/* GUIDE CARDS */}
+
+          <div
+            className={`explore-guide-grid ${
+              viewMode === "list"
+                ? "explore-guide-list"
+                : ""
+            }`}
+          >
+            {sortedCompanies.length > 0 ? (
+              sortedCompanies.map(
+                (guide) => (
+                  <GuideCard
+                    key={guide.id}
+                    guide={guide}
+                  />
+                )
+              )
             ) : (
               <div className="explore-no-results">
-                <h3>No guide companies found</h3>
+                <h3>
+                  No guide companies found
+                </h3>
 
                 <p>
-                  Try searching by another company,
-                  destination, location, or tour type.
+                  Try another destination,
+                  price range, or tour type.
                 </p>
               </div>
             )}
           </div>
+
         </section>
       </main>
     </div>
