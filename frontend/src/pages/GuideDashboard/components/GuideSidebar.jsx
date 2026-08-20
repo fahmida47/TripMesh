@@ -1,6 +1,5 @@
 import "./GuideSidebar.css";
-
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import {
   FiGrid,
@@ -8,8 +7,6 @@ import {
   FiMap,
   FiInbox,
   FiCalendar,
-  FiDollarSign,
-  FiMessageSquare,
   FiLogOut,
   FiStar,
 } from "react-icons/fi";
@@ -17,21 +14,9 @@ import {
 import logo from "../../../assets/logo.png";
 
 const GuideSidebar = () => {
-  const navigate = useNavigate();
-
-  // ==============================
-  // LOGOUT
-  // ==============================
-  const handleLogout = () => {
-    localStorage.setItem("isLoggedIn", "false");
-    navigate("/");
-  };
-
   return (
     <aside className="guide-sidebar">
       <div className="guide-sidebar-top">
-
-        {/* Logo */}
         <div className="sidebar-logo">
           <div className="logo-circle">
             <img src={logo} alt="TripMesh Logo" />
@@ -43,10 +28,7 @@ const GuideSidebar = () => {
           </div>
         </div>
 
-        {/* Navigation */}
         <nav className="sidebar-nav">
-
-          {/* Dashboard */}
           <NavLink
             to="/guide-dashboard"
             end
@@ -58,7 +40,6 @@ const GuideSidebar = () => {
             <span>Dashboard</span>
           </NavLink>
 
-          {/* My Profile */}
           <NavLink
             to="/guide-dashboard/profile"
             className={({ isActive }) =>
@@ -69,7 +50,6 @@ const GuideSidebar = () => {
             <span>My Profile</span>
           </NavLink>
 
-          {/* Tour Services */}
           <NavLink
             to="/guide-dashboard/tour-services"
             className={({ isActive }) =>
@@ -80,7 +60,6 @@ const GuideSidebar = () => {
             <span>Tour Services</span>
           </NavLink>
 
-          {/* Requests */}
           <NavLink
             to="/guide-dashboard/requests"
             className={({ isActive }) =>
@@ -91,37 +70,26 @@ const GuideSidebar = () => {
             <span>Requests</span>
           </NavLink>
 
-          {/* Bookings */}
-          <a href="#" className="sidebar-link">
+          <NavLink
+            to="/guide-dashboard/bookings"
+            className={({ isActive }) =>
+              isActive ? "sidebar-link active" : "sidebar-link"
+            }
+          >
             <FiCalendar />
             <span>Bookings</span>
-          </a>
+          </NavLink>
 
-          {/* Payments */}
-          <a href="#" className="sidebar-link">
-            <FiDollarSign />
-            <span>Payments</span>
-          </a>
-
-          {/* Reviews */}
           <a href="#" className="sidebar-link">
             <FiStar />
             <span>Reviews and Ratings</span>
           </a>
-
-          {/* Messages */}
-          <a href="#" className="sidebar-link">
-            <FiMessageSquare />
-            <span>Messages</span>
-          </a>
-
         </nav>
       </div>
 
-      {/* Logout */}
       <button
+        type="button"
         className="logout-btn"
-        onClick={handleLogout}
       >
         <FiLogOut />
         <span>Logout</span>
