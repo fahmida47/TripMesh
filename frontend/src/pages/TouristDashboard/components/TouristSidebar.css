@@ -185,11 +185,11 @@
   display: none;
 }
 
-<<<<<<< Updated upstream
+
 /* ==============================
    BACKDROP
    ============================== */
-=======
+
 .ts-brand {
   display: flex;
   align-items: center;
@@ -325,7 +325,6 @@
 }
 
 /* ---- Responsive: off-canvas drawer on tablet & mobile ---- */
->>>>>>> Stashed changes
 
 .ts-sidebar-backdrop {
   display: none;

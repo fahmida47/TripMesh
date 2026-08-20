@@ -76,36 +76,7 @@
 .ts-topbar-right {
   display: flex;
   align-items: center;
-  gap: 18px;
   justify-self: end;
-}
-
-.ts-bell {
-  position: relative;
-  background: transparent;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  padding: 6px;
-}
-
-.ts-bell-badge {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background: #ef4444;
-  color: #fff;
-  font-size: 10px;
-  font-weight: 700;
-  min-width: 16px;
-  height: 16px;
-  border-radius: 999px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid #0b1638;
 }
 
 .ts-account {

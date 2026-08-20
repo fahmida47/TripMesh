@@ -1,161 +1,384 @@
-.ts-sidebar-close {
-  display: none;
+/* ========================================
+   REQUESTS BOOKINGS PAGE
+   ======================================== */
+
+.rb-page {
+  width: 100%;
+  min-height: 100%;
+  padding: 28px;
+  box-sizing: border-box;
+  background: #f8fafc;
 }
 
-/* ==============================
-   BRAND
-   ============================== */
+/* ========================================
+   PAGE HEADER
+   ======================================== */
 
-.ts-brand {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  padding: 4px 12px 18px;
+.rb-header {
+  margin-bottom: 24px;
 }
 
-.ts-brand-mark {
-  width: 32px;
-  height: 32px;
-  border-radius: 9px;
-  background: #2563eb;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.ts-brand-name {
-  font-size: 18px;
+.rb-header h1 {
+  margin: 0;
+  font-size: 28px;
   font-weight: 800;
-  color: #fff;
-  letter-spacing: -0.01em;
+  color: #101b35;
+  line-height: 1.2;
 }
 
-.ts-brand-accent {
-  color: #60a5fa;
-}
-
-/* ==============================
-   NAVIGATION
-   ============================== */
-
-.ts-nav {
-  margin-top: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.ts-nav-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  color: #aab4d4;
-  font-size: 16px;
-  font-weight: 600;
-  text-decoration: none;
-  position: relative;
-  transition:
-    background 0.15s ease,
-    color 0.15s ease;
-}
-
-.ts-nav-item svg {
-  flex-shrink: 0;
-}
-
-.ts-nav-item:hover {
-  background: rgba(255, 255, 255, 0.06);
-  color: #fff;
-}
-
-.ts-nav-item.active {
-  background: #2563eb;
-  color: #fff;
-  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.35);
-}
-
-/* ==============================
-   PROMO
-   ============================== */
-
-.ts-promo {
-  margin-top: 18px;
-  min-height: 190px;
-  border-radius: 14px;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  background: linear-gradient(160deg, #16327a 0%, #0b1638 100%);
-  background-size: cover;
-  background-position: center;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.ts-promo-title {
-  margin: 0 0 6px;
-  font-size: 15px;
-  font-weight: 800;
-  color: #fff;
-}
-
-.ts-promo-copy {
-  margin: 0 0 14px;
-  font-size: 12.5px;
-  color: #b7c0dc;
+.rb-header p {
+  margin: 7px 0 0;
+  color: #64748b;
+  font-size: 14px;
   line-height: 1.5;
 }
 
-.ts-promo-btn {
+/* ========================================
+   MAIN PANEL
+   ======================================== */
+
+.rb-panel {
   width: 100%;
+  background: #ffffff;
+  border: 1px solid #e6eaf1;
+  border-radius: 16px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* ========================================
+   PANEL HEADER
+   ======================================== */
+
+.rb-panel-header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  background: #fff;
-  color: #0b1638;
-  border: none;
-  border-radius: 9px;
-  padding: 9px 0;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px 22px;
 }
 
-.ts-promo-btn:hover {
-  background: #e7ecff;
-}
-
-/* ==============================
-   LOGOUT
-   ============================== */
-
-.ts-logout {
-  margin-top: auto;
+.rb-panel-title {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  color: #fca5a5;
-  font-size: 16px;
+}
+
+.rb-panel-title h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  color: #101b35;
+}
+
+.rb-count-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* ========================================
+   FILTER
+   ======================================== */
+
+.rb-filter {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.rb-filter select {
+  appearance: none;
+  -webkit-appearance: none;
+  min-width: 135px;
+  padding: 9px 34px 9px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #334155;
+  font-size: 13px;
   font-weight: 600;
-  text-decoration: none;
-  transition: background 0.15s ease;
+  outline: none;
+  cursor: pointer;
 }
 
-.ts-logout:hover {
-  background: rgba(248, 113, 113, 0.12);
+.rb-filter select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
-/* ==============================
-   BACKDROP
-   ============================== */
+.rb-filter svg {
+  position: absolute;
+  right: 10px;
+  width: 15px;
+  height: 15px;
+  color: #64748b;
+  pointer-events: none;
+}
 
-.ts-sidebar-backdrop {
-  display: none;
+/* ========================================
+   COLUMN HEADER
+   ======================================== */
+
+.rb-col-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 180px 120px;
+  align-items: center;
+  gap: 20px;
+  padding: 13px 22px;
+  background: #f8fafc;
+  border-top: 1px solid #e6eaf1;
+  border-bottom: 1px solid #e6eaf1;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ========================================
+   REQUEST LIST
+   ======================================== */
+
+.rb-list {
+  width: 100%;
+  min-height: 220px;
+}
+
+/* ========================================
+   EMPTY STATE
+   ======================================== */
+
+.rb-empty {
+  margin: 0;
+  padding: 75px 20px;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* ========================================
+   FOOTER
+   ======================================== */
+
+.rb-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 22px;
+  border-top: 1px solid #e6eaf1;
+  background: #ffffff;
+}
+
+.rb-footer-text {
+  color: #64748b;
+  font-size: 12px;
+}
+
+/* ========================================
+   PAGINATION
+   ======================================== */
+
+.rb-pager {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.rb-pager button {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #475569;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.rb-pager button:hover:not(:disabled) {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+/* ACTIVE PAGE - ALWAYS BLUE */
+
+.rb-pager button.active {
+  background: #2563eb !important;
+  border-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+.rb-pager button.active:hover {
+  background: #2563eb !important;
+  border-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+.rb-pager button.active:focus {
+  background: #2563eb !important;
+  border-color: #2563eb !important;
+  color: #ffffff !important;
+  outline: none;
+}
+
+.rb-pager button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   TOAST
+   ======================================== */
+
+.rb-toast {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 100;
+
+  padding: 12px 18px;
+  border-radius: 10px;
+
+  background: #0b1638;
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+/* ========================================
+   RESPONSIVE - TABLET
+   ======================================== */
+
+@media (max-width: 900px) {
+  .rb-page {
+    padding: 24px 20px;
+  }
+
+  .rb-col-header {
+    grid-template-columns: minmax(0, 1fr) 130px 100px;
+    gap: 12px;
+    padding: 12px 18px;
+  }
+
+  .rb-panel-header {
+    padding: 18px;
+  }
+
+  .rb-footer {
+    padding: 15px 18px;
+  }
+}
+
+/* ========================================
+   RESPONSIVE - MOBILE
+   ======================================== */
+
+@media (max-width: 700px) {
+  .rb-page {
+    padding: 20px 14px;
+  }
+
+  .rb-header {
+    margin-bottom: 18px;
+  }
+
+  .rb-header h1 {
+    font-size: 24px;
+  }
+
+  .rb-header p {
+    font-size: 13px;
+  }
+
+  .rb-panel-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px;
+  }
+
+  .rb-panel-title {
+    width: 100%;
+  }
+
+  .rb-filter {
+    width: 100%;
+  }
+
+  .rb-filter select {
+    width: 100%;
+  }
+
+  .rb-col-header {
+    grid-template-columns: minmax(0, 1fr) 90px 75px;
+    gap: 8px;
+    padding: 11px 12px;
+  }
+
+  .rb-list {
+    min-height: 180px;
+  }
+
+  .rb-empty {
+    padding: 55px 16px;
+    font-size: 13px;
+  }
+
+  .rb-footer {
+    flex-direction: column;
+    align-items: center;
+    padding: 14px;
+    gap: 12px;
+  }
+}
+
+/* ========================================
+   SMALL MOBILE
+   ======================================== */
+
+@media (max-width: 480px) {
+  .rb-page {
+    padding: 16px 10px;
+  }
+
+  .rb-header h1 {
+    font-size: 22px;
+  }
+
+  .rb-panel-title h2 {
+    font-size: 16px;
+  }
+
+  .rb-count-pill {
+    font-size: 11px;
+    padding: 4px 8px;
+  }
+
+  .rb-col-header {
+    grid-template-columns: minmax(0, 1fr) 75px 65px;
+    font-size: 10px;
+  }
+
+  .rb-footer-text {
+    font-size: 11px;
+  }
 }

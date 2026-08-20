@@ -39,16 +39,7 @@ const NAV_ITEMS = [
     label: "Reviews & Ratings",
     icon: FiStar,
   },
-  {
-    key: "favorites",
-    label: "Favorites",
-    icon: FiHeart,
-  },
-  {
-    key: "support",
-    label: "Help & Support",
-    icon: FiHelpCircle,
-  },
+  
 ];
 
 export default function TouristSidebar({

@@ -1,6 +1,7 @@
 import { BellIcon, ChevronDownIcon, MenuIcon } from "./NavIcons";
 import "./TouristHeader.css";
 
+
 const TOP_LINKS = ["Home", "Explore", "About Us", "Contact Us"];
 
 export default function TouristHeader({

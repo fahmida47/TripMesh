@@ -1,8 +1,10 @@
-import { FiBell, FiChevronDown, FiMenu, FiUser } from "react-icons/fi";
+import { FiChevronDown, FiMenu, FiUser } from "react-icons/fi";
+
 import "./TouristTopbar.css";
 
 export default function TouristTopbar({ onMenuClick, onProfileClick }) {
   const user = JSON.parse(localStorage.getItem("user")) || {};
+
   const touristName = user.name || "Tourist";
 
   let registeredDate;
@@ -44,15 +46,6 @@ export default function TouristTopbar({ onMenuClick, onProfileClick }) {
       </div>
 
       <div className="ts-dashtopbar-spacer" />
-
-      <button
-        type="button"
-        className="ts-dashtopbar-bell"
-        aria-label="Notifications"
-      >
-        <FiBell />
-        <span className="ts-dashtopbar-bell-badge">3</span>
-      </button>
 
       <button
         type="button"

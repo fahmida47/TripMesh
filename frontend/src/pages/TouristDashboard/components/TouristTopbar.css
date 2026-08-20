@@ -3,11 +3,9 @@
   height: 74px;
   padding: 14px 26px;
   box-sizing: border-box;
-
   display: flex;
   align-items: center;
   gap: 14px;
-
   background: #ffffff;
   border-bottom: 1px solid #e6eaf1;
 }
@@ -16,14 +14,11 @@
   display: none;
   align-items: center;
   justify-content: center;
-
   width: 36px;
   height: 36px;
-
   border-radius: 8px;
   border: 1px solid #e2e8f0;
   background: #fff;
-
   font-size: 16px;
   cursor: pointer;
   color: #0b1638;
@@ -33,62 +28,14 @@
   flex: 1;
 }
 
-.ts-dashtopbar-bell {
-  position: relative;
-
-  width: 38px;
-  height: 38px;
-
-  border-radius: 10px;
-  border: 1px solid #e2e8f0;
-  background: #fff;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  cursor: pointer;
-  color: #334155;
-}
-
-.ts-dashtopbar-bell:hover {
-  background: #f8fafc;
-}
-
-.ts-dashtopbar-bell-badge {
-  position: absolute;
-  top: -4px;
-  right: -4px;
-
-  min-width: 16px;
-  height: 16px;
-  padding: 0 3px;
-
-  border-radius: 999px;
-  background: #ef4444;
-  color: #fff;
-
-  font-size: 10px;
-  font-weight: 800;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border: 2px solid #fff;
-}
-
 .ts-dashtopbar-account {
   display: flex;
   align-items: center;
   gap: 9px;
-
   padding: 5px 10px 5px 5px;
-
   border-radius: 999px;
   border: 1px solid #e2e8f0;
   background: #fff;
-
   cursor: pointer;
 }
 
@@ -99,18 +46,14 @@
 .ts-dashtopbar-avatar {
   width: 40px;
   height: 40px;
-
   border-radius: 999px;
   background: #2563eb;
   color: #fff;
-
   font-size: 15px;
   font-weight: 800;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   overflow: hidden;
   flex-shrink: 0;
 }
