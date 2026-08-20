@@ -1,0 +1,679 @@
+.guide-profile-page {
+  width: 100%;
+  min-height: 100vh;
+  padding: 20px;
+  background: #f6f8fc;
+  color: #10213f;
+  box-sizing: border-box;
+}
+
+/* =========================
+   PAGE HEADING
+========================= */
+
+.guide-profile-heading {
+  margin-bottom: 20px;
+}
+
+.guide-profile-heading h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 700;
+  color: #0f1f3d;
+}
+
+.guide-profile-heading p {
+  margin: 7px 0 0;
+  font-size: 14px;
+  color: #7a8498;
+}
+
+/* =========================
+   COMMON CARDS
+========================= */
+
+.profile-main-card,
+.profile-section-card {
+  background: #ffffff;
+  border: 1px solid #e3e8f2;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(20, 42, 86, 0.05);
+  box-sizing: border-box;
+}
+
+.profile-main-card {
+  position: relative;
+  margin-bottom: 18px;
+  padding: 10px 10px 18px;
+  overflow: visible;
+}
+
+.profile-section-card {
+  padding: 20px;
+  position: relative;
+}
+
+.profile-section-card h2 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 700;
+  color: #12213d;
+}
+
+.profile-section-card > p,
+.experience-header p {
+  margin: 6px 0 15px;
+  color: #7a8498;
+  font-size: 12px;
+}
+
+/* =========================
+   COVER PHOTO
+========================= */
+
+.profile-cover {
+  position: relative;
+  z-index: 1;
+
+  width: 100%;
+  height: 165px;
+
+  border-radius: 9px;
+  background: #f0f2ff;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  border: 1px solid #dfe4f3;
+
+  overflow: hidden;
+}
+
+.cover-placeholder {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  color: #76829a;
+}
+
+.cover-placeholder span {
+  font-size: 30px;
+  margin-bottom: 5px;
+}
+
+.cover-placeholder p {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.edit-cover-btn {
+  position: absolute;
+
+  top: 50%;
+  right: 18px;
+
+  transform: translateY(-50%);
+
+  padding: 10px 15px;
+
+  border: 1px solid #d7deea;
+  border-radius: 7px;
+
+  background: #ffffff;
+  color: #273755;
+
+  font-size: 12px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow: 0 2px 7px rgba(12, 29, 64, 0.07);
+}
+
+/* =========================
+   PROFILE HEADER INFO
+========================= */
+
+.profile-header-info {
+  position: relative;
+  z-index: 5;
+
+  display: grid;
+
+  grid-template-columns:
+    175px
+    minmax(220px, 1fr)
+    minmax(220px, 1fr)
+    auto;
+
+  gap: 26px;
+  align-items: center;
+
+  padding: 18px 14px 4px;
+}
+
+/* =========================
+   PROFILE PICTURE
+========================= */
+
+.profile-photo-wrapper {
+  position: relative;
+  z-index: 10;
+
+  align-self: start;
+  text-align: center;
+
+  margin-top: -72px;
+}
+
+.profile-photo {
+  width: 105px;
+  height: 105px;
+
+  margin: 0 auto 9px;
+
+  border-radius: 50%;
+  border: 5px solid #ffffff;
+
+  background: #f7f8fc;
+
+  box-shadow: 0 3px 12px rgba(18, 38, 80, 0.16);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.profile-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-photo span {
+  font-size: 38px;
+  color: #5e49a7;
+}
+
+.profile-photo-wrapper p {
+  margin: 0;
+  font-size: 11px;
+  color: #727d92;
+}
+
+/* =========================
+   FORM FIELDS
+========================= */
+
+.profile-field {
+  width: 100%;
+  min-width: 0;
+}
+
+.profile-field label,
+.experience-item > label {
+  display: block;
+
+  margin-bottom: 6px;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  color: #263651;
+}
+
+.profile-field input,
+.profile-section-card textarea,
+.experience-item input,
+.experience-item textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  border: 1px solid #dce2ed;
+  border-radius: 7px;
+
+  background: #ffffff;
+  color: #243451;
+
+  font-family: inherit;
+  font-size: 13px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.profile-field input,
+.experience-item input {
+  height: 42px;
+  padding: 0 12px;
+}
+
+.profile-section-card textarea,
+.experience-item textarea {
+  resize: vertical;
+  padding: 12px;
+}
+
+.profile-field input:focus,
+.profile-section-card textarea:focus,
+.experience-item input:focus,
+.experience-item textarea:focus {
+  border-color: #376df7;
+  box-shadow: 0 0 0 3px rgba(55, 109, 247, 0.08);
+}
+
+.profile-field input::placeholder,
+.profile-section-card textarea::placeholder,
+.experience-item input::placeholder,
+.experience-item textarea::placeholder {
+  color: #a0a8b9;
+}
+
+/* =========================
+   SAVE BUTTON
+========================= */
+
+.profile-save-btn {
+  min-width: 170px;
+  height: 48px;
+
+  padding: 0 20px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: #2868f4;
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+  line-height: 1;
+}
+
+.profile-save-btn:hover {
+  background: #1658e2;
+}
+
+/* =========================
+   CONTENT GRID
+========================= */
+
+.profile-content-grid {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 0.85fr)
+    minmax(0, 1.25fr);
+
+  gap: 18px;
+}
+
+/* =========================
+   BIO
+========================= */
+
+.profile-section-card textarea[name="bio"] {
+  min-height: 135px;
+}
+
+.character-count {
+  display: block;
+
+  position: relative;
+
+  margin-top: -24px;
+  margin-right: 8px;
+
+  text-align: right;
+
+  font-size: 10px;
+  color: #8e98aa;
+}
+
+/* =========================
+   CONTACT INFORMATION
+========================= */
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.social-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+
+  gap: 10px;
+  margin-top: 12px;
+}
+
+/* =========================
+   TOUR SERVICES
+========================= */
+
+.empty-tour-services {
+  min-height: 205px;
+
+  padding: 22px;
+
+  border: 1px solid #e1e6f0;
+  border-radius: 9px;
+
+  background: #fbfcff;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.tour-service-icon {
+  margin-bottom: 10px;
+  font-size: 38px;
+}
+
+.empty-tour-services h3 {
+  margin: 0 0 5px;
+
+  font-size: 13px;
+  color: #243451;
+}
+
+.empty-tour-services p {
+  margin: 0;
+
+  font-size: 11px;
+  color: #8791a3;
+}
+
+.tour-service-buttons {
+  display: flex;
+
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.tour-service-buttons button {
+  min-width: 150px;
+  height: 40px;
+
+  padding: 0 15px;
+
+  border: 1px solid #2868f4;
+  border-radius: 7px;
+
+  background: #2868f4;
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.tour-service-buttons .secondary-btn {
+  background: #ffffff;
+  color: #2868f4;
+}
+
+.tour-service-buttons button:hover {
+  opacity: 0.9;
+}
+
+/* =========================
+   EXPERIENCE HEADER
+========================= */
+
+.experience-header {
+  display: flex;
+
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+.add-experience-btn {
+  flex: 0 0 auto;
+
+  padding: 8px 13px;
+
+  border: 1px solid #4a79f6;
+  border-radius: 7px;
+
+  background: #ffffff;
+  color: #2868f4;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+/* =========================
+   EXPERIENCE CARDS
+========================= */
+
+.experience-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 12px;
+}
+
+.experience-item {
+  padding: 10px;
+
+  border: 1px solid #e1e6ef;
+  border-radius: 8px;
+
+  background: #ffffff;
+}
+
+.experience-upload {
+  height: 90px;
+
+  margin-bottom: 10px;
+
+  border: 1px dashed #ccd5e4;
+  border-radius: 8px;
+
+  background: #fafbfe;
+
+  display: flex !important;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  color: #7d8799 !important;
+}
+
+.experience-upload span {
+  font-size: 21px;
+}
+
+.experience-upload p {
+  margin: 4px 0 0;
+  font-size: 10px;
+}
+
+.experience-upload small {
+  margin-top: 2px;
+  font-size: 9px;
+}
+
+.experience-item input {
+  margin-bottom: 10px;
+}
+
+.experience-item textarea {
+  height: 75px;
+}
+
+.experience-count {
+  display: block;
+
+  position: relative;
+
+  margin-top: -20px;
+  padding-right: 6px;
+
+  text-align: right;
+
+  font-size: 9px;
+  color: #8c96a7;
+}
+
+/* =========================
+   FIXED SIDEBAR LAYOUT
+========================= */
+
+.guide-dashboard {
+  width: 100%;
+  min-height: 100vh;
+
+  background: #f6f8fc;
+}
+
+.dashboard-content {
+  margin-left: 280px;
+
+  width: calc(100% - 280px);
+
+  min-height: 100vh;
+
+  box-sizing: border-box;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 1150px) {
+  .profile-header-info {
+    grid-template-columns:
+      150px
+      minmax(0, 1fr)
+      minmax(0, 1fr);
+  }
+
+  .profile-save-btn {
+    grid-column: 2 / 4;
+    justify-self: end;
+  }
+
+  .profile-content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .dashboard-content {
+    margin-left: 240px;
+    width: calc(100% - 240px);
+  }
+
+  .guide-profile-page {
+    padding: 16px;
+  }
+
+  .profile-header-info {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-photo-wrapper {
+    margin-top: -70px;
+  }
+
+  .profile-save-btn {
+    grid-column: auto;
+    width: 100%;
+  }
+
+  .contact-grid,
+  .social-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .experience-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tour-service-buttons {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .tour-service-buttons button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 600px) {
+  .profile-cover {
+    height: 135px;
+  }
+
+  .edit-cover-btn {
+    top: auto;
+    right: 10px;
+    bottom: 10px;
+
+    transform: none;
+  }
+
+  .guide-profile-heading h1 {
+    font-size: 24px;
+  }
+
+  .experience-header {
+    flex-direction: column;
+  }
+
+  .add-experience-btn {
+    width: 100%;
+  }
+}
+.profile-final-save {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-top: 20px;
+  padding: 0 20px 20px 0;
+  box-sizing: border-box;
+}
+
+.profile-final-save .profile-save-btn {
+  min-width: 170px;
+}
