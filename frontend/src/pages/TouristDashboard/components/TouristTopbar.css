@@ -1,0 +1,122 @@
+.ts-dashtopbar {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+  background: #ffffff;
+  border-bottom: 1px solid #e8edf5;
+}
+
+.ts-dashtopbar-menu {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  color: #0b1638;
+}
+
+.ts-dashtopbar-spacer {
+  flex: 1;
+}
+
+.ts-dashtopbar-bell {
+  position: relative;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #334155;
+}
+
+.ts-dashtopbar-bell:hover {
+  background: #f8fafc;
+}
+
+.ts-dashtopbar-bell-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 3px;
+  border-radius: 999px;
+  background: #ef4444;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff;
+}
+
+.ts-dashtopbar-account {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 5px 10px 5px 5px;
+  border-radius: 999px;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  cursor: pointer;
+}
+
+.ts-dashtopbar-account:hover {
+  background: #f8fafc;
+}
+
+.ts-dashtopbar-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  background: #2563eb;
+  color: #fff;
+  font-size: 12.5px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.ts-dashtopbar-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ts-dashtopbar-name {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #0b1638;
+}
+
+.ts-dashtopbar-chevron {
+  width: 14px;
+  height: 14px;
+  color: #94a3b8;
+}
+
+@media (max-width: 1024px) {
+  .ts-dashtopbar-menu {
+    display: flex;
+  }
+}
+
+@media (max-width: 560px) {
+  .ts-dashtopbar-name {
+    display: none;
+  }
+}

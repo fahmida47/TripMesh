@@ -14,6 +14,36 @@
   display: none;
 }
 
+.ts-brand {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 4px 12px 18px;
+}
+
+.ts-brand-mark {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: #2563eb;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.ts-brand-name {
+  font-size: 18px;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.01em;
+}
+
+.ts-brand-accent {
+  color: #60a5fa;
+}
+
 .ts-nav {
   margin-top: 8px;
   display: flex;
@@ -101,10 +131,10 @@
 /* ---- Log Out ---- */
 
 .ts-logout {
+  margin-top: auto;
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-top: 14px;
   padding: 10px 12px;
   border-radius: 10px;
   color: #fca5a5;

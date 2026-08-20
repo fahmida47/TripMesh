@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import {
   HomeIcon,
-  InboxIcon,
   BookIcon,
   CardIcon,
   StarIcon,
@@ -11,21 +10,22 @@ import {
   HelpIcon,
   LogOutIcon,
   CloseIcon,
+  LogoMarkIcon,
 } from "./NavIcons";
-import { PROMO_IMAGE } from "../mockProfile";
 import "./TouristSidebar.css";
 
 // No badge counts here on purpose — this is a frontend-only mock page
 // with no logged-in session or real request/message data behind it.
+// "My Requests" isn't a separate nav item — the combined My Requests &
+// Bookings page (with tabs for both) opens from "My Bookings" below.
 const NAV_ITEMS = [
   { key: "dashboard", label: "Dashboard", icon: HomeIcon },
-  { key: "requests", label: "My Requests", icon: InboxIcon },
+  { key: "profile", label: "My Profile", icon: UserGearIcon },
   { key: "bookings", label: "My Bookings", icon: BookIcon },
   { key: "payments", label: "My Payments", icon: CardIcon },
   { key: "reviews", label: "My Reviews", icon: StarIcon },
   { key: "favorites", label: "My Favorites", icon: HeartIcon },
   { key: "messages", label: "Messages", icon: MailIcon },
-  { key: "profile", label: "Profile Settings", icon: UserGearIcon },
   { key: "support", label: "Help & Support", icon: HelpIcon },
 ];
 
@@ -67,6 +67,15 @@ export default function TouristSidebar({
           <CloseIcon />
         </button>
 
+        <div className="ts-brand">
+          <span className="ts-brand-mark" aria-hidden="true">
+            <LogoMarkIcon />
+          </span>
+          <span className="ts-brand-name">
+            Trip<span className="ts-brand-accent">Mesh</span>
+          </span>
+        </div>
+
         <nav className="ts-nav">
           {NAV_ITEMS.map(({ key, label, icon: Icon }) => (
             <a
@@ -86,25 +95,6 @@ export default function TouristSidebar({
             </a>
           ))}
         </nav>
-
-        <div
-          className="ts-promo"
-          style={
-            PROMO_IMAGE
-              ? {
-                  backgroundImage: `linear-gradient(180deg, rgba(11,22,56,0.15) 0%, rgba(11,22,56,0.85) 100%), url(${PROMO_IMAGE})`,
-                }
-              : undefined
-          }
-        >
-          <p className="ts-promo-title">Discover Bangladesh</p>
-          <p className="ts-promo-copy">
-            Unforgettable journeys with trusted local guides
-          </p>
-          <button type="button" className="ts-promo-btn">
-            Explore Now
-          </button>
-        </div>
 
         <a href="#logout" className="ts-logout" onClick={handleLogout}>
           <LogOutIcon />
