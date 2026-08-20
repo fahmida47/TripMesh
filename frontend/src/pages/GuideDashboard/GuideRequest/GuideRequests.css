@@ -1,0 +1,268 @@
+/* =========================================
+   MAIN GUIDE DASHBOARD LAYOUT
+========================================= */
+
+.guide-dashboard-layout {
+  min-height: 100vh;
+  background: #f5f7fb;
+}
+
+.guide-main-content {
+  margin-left: 280px;
+  width: calc(100% - 280px);
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+
+/* =========================================
+   REQUESTS PAGE
+========================================= */
+
+.guide-requests-page {
+  padding: 32px;
+  box-sizing: border-box;
+}
+
+
+/* =========================================
+   PAGE HEADER
+========================================= */
+
+.guide-requests-header {
+  margin-bottom: 28px;
+}
+
+.guide-requests-header h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.guide-requests-header p {
+  margin: 8px 0 0;
+  color: #64748b;
+  font-size: 15px;
+}
+
+
+/* =========================================
+   REQUEST SUMMARY CARDS
+========================================= */
+
+.request-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.request-summary-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-sizing: border-box;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+  min-width: 0;
+}
+
+.summary-card-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+
+/* Icon backgrounds */
+
+.summary-card-icon.all {
+  background: #eef4ff;
+}
+
+.summary-card-icon.pending {
+  background: #fff7df;
+}
+
+.summary-card-icon.accepted {
+  background: #e9f9ef;
+}
+
+.summary-card-icon.rejected {
+  background: #fff0f0;
+}
+
+.summary-card-icon.cancelled {
+  background: #f1f2f4;
+}
+
+
+/* Card text */
+
+.summary-card-content span {
+  display: block;
+  color: #64748b;
+  font-size: 13px;
+  margin-bottom: 4px;
+  white-space: nowrap;
+}
+
+.summary-card-content h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 25px;
+  font-weight: 700;
+}
+
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.requests-empty-state {
+  min-height: 420px;
+
+  background: #ffffff;
+
+  border-radius: 18px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  padding: 40px;
+
+  box-sizing: border-box;
+
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
+}
+
+.requests-empty-icon {
+  width: 72px;
+  height: 72px;
+
+  border-radius: 50%;
+
+  background: #eef4ff;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 32px;
+
+  margin-bottom: 20px;
+}
+
+.requests-empty-state h2 {
+  margin: 0 0 10px;
+
+  font-size: 24px;
+  font-weight: 700;
+
+  color: #0f172a;
+}
+
+.requests-empty-state p {
+  max-width: 480px;
+
+  margin: 0;
+
+  line-height: 1.6;
+
+  font-size: 15px;
+
+  color: #64748b;
+}
+
+
+/* =========================================
+   RESPONSIVE - 1200px
+========================================= */
+
+@media (max-width: 1200px) {
+
+  .request-summary-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+}
+
+
+/* =========================================
+   RESPONSIVE - 900px
+========================================= */
+
+@media (max-width: 900px) {
+
+  .guide-main-content {
+    margin-left: 240px;
+    width: calc(100% - 240px);
+  }
+
+  .guide-requests-page {
+    padding: 24px;
+  }
+
+  .guide-requests-header h1 {
+    font-size: 26px;
+  }
+
+  .request-summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+}
+
+
+/* =========================================
+   RESPONSIVE - 600px
+========================================= */
+
+@media (max-width: 600px) {
+
+  .guide-main-content {
+    margin-left: 0;
+    width: 100%;
+  }
+
+  .guide-requests-page {
+    padding: 20px;
+  }
+
+  .request-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .guide-requests-header h1 {
+    font-size: 24px;
+  }
+
+  .requests-empty-state {
+    min-height: 350px;
+    padding: 30px 20px;
+  }
+
+  .requests-empty-state h2 {
+    font-size: 21px;
+  }
+
+  .requests-empty-state p {
+    font-size: 14px;
+  }
+
+}
