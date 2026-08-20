@@ -16,8 +16,12 @@ import Contact from "./pages/Contact/Contact";
 
 import GuideDashboard from "./pages/GuideDashboard/GuideDashboard";
 import GuideProfile from "./pages/GuideDashboard/Profile/GuideProfile";
+
 import GuideTourServices from "./pages/GuideDashboard/TourServices/GuideTourServices";
 import AddTourService from "./pages/GuideDashboard/TourServices/AddTourService";
+
+
+import GuideRequests from "./pages/GuideDashboard/GuideRequest/GuideRequests";
 
 import TouristDashboard from "./pages/TouristDashboard/TouristDashboard";
 
@@ -68,6 +72,7 @@ function App() {
         />
 
         <Route
+
           path="/guide-dashboard/tour-services"
           element={<GuideTourServices />}
         />
@@ -75,6 +80,10 @@ function App() {
         <Route
           path="/guide-dashboard/tour-services/add"
           element={<AddTourService />}
+
+          path="/guide-dashboard/requests"
+          element={<GuideRequests />}
+
         />
 
         <Route

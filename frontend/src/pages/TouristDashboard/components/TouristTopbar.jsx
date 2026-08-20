@@ -1,38 +1,53 @@
-import { ChevronDownIcon } from "./NavIcons";
-import { touristProfile } from "../mockProfile";
 import "./TouristTopbar.css";
 
-/**
- * Sits above the active page (Explore / My Requests & Bookings / etc.)
- * inside ts-shell-content. Mirrors the reference design's top-right
- * profile chip — the sidebar already carries the TripMesh logo and nav,
- * so this bar stays deliberately minimal. (Notification bell and account
- * name are hidden for now.) The avatar itself is left empty too — once
- * backend/auth is wired up, the logged-in tourist's initials/photo and
- * name will populate here.
- */
-export default function TouristTopbar({ onMenuClick }) {
+const TouristTopbar = () => {
+  const user = JSON.parse(localStorage.getItem("user")) || {};
+
+  const touristName = user.name || "Tourist";
+
+  // Registration date
+  let registeredDate;
+
+  if (user.registeredDate) {
+    registeredDate = new Date(user.registeredDate);
+  } else {
+    // Old account হলে আজকের date একবার save করে দিচ্ছি
+    registeredDate = new Date();
+
+    const updatedUser = {
+      ...user,
+      registeredDate: registeredDate.toISOString(),
+    };
+
+    localStorage.setItem(
+      "user",
+      JSON.stringify(updatedUser)
+    );
+  }
+
+  const formattedDate = registeredDate.toLocaleDateString(
+    "en-US",
+    {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }
+  );
+
   return (
-    <header className="ts-dashtopbar">
-      <button
-        type="button"
-        className="ts-dashtopbar-menu"
-        onClick={onMenuClick}
-        aria-label="Open menu"
-      >
-        ☰
-      </button>
+    <header className="tourist-header">
+      <div className="tourist-header-text">
 
-      <div className="ts-dashtopbar-spacer" />
+        <h2>
+          Welcome back, {touristName}! 👋
+        </h2>
 
-      <button type="button" className="ts-dashtopbar-account">
-        <span className="ts-dashtopbar-avatar">
-          {touristProfile.avatar && (
-            <img src={touristProfile.avatar} alt={touristProfile.fullName} />
-          )}
-        </span>
-        <ChevronDownIcon className="ts-dashtopbar-chevron" />
-      </button>
+        <p>{formattedDate}</p>
+
+      </div>
     </header>
   );
-}
+};
+
+export default TouristTopbar;
