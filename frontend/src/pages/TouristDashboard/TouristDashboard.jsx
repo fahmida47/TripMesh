@@ -1,29 +1,23 @@
 import { useState } from "react";
 
 import TouristSidebar from "./components/TouristSidebar";
-
 import TouristTopbar from "./components/TouristTopbar";
-
 import RequestsBookings from "./components/RequestsBookings";
-
+import TouristProfile from "./Profile/TouristProfile";
 import Explore from "../Explore/Explore";
 
 import "./TouristDashboard.css";
 
 export default function TouristDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activeKey, setActiveKey] = useState("dashboard");
 
-  const [activeKey, setActiveKey] =
-    useState("dashboard");
-
-  const isRequestsBookings =
-    activeKey === "bookings";
+  const isRequestsBookings = activeKey === "bookings";
+  const isProfile = activeKey === "profile";
 
   return (
     <div className="ts-shell">
-
       <div className="ts-shell-body">
-
         <TouristSidebar
           activeKey={activeKey}
           onNavigate={setActiveKey}
@@ -32,29 +26,26 @@ export default function TouristDashboard() {
         />
 
         <div className="ts-shell-main">
-
-          <TouristTopbar />
+          <TouristTopbar
+            onMenuClick={() => setSidebarOpen(true)}
+            onProfileClick={() => setActiveKey("profile")}
+          />
 
           <main
             className={`ts-shell-content ${
-              isRequestsBookings
-                ? ""
-                : "ts-shell-content--explore"
+              isRequestsBookings ? "" : "ts-shell-content--explore"
             }`}
           >
-
-            {isRequestsBookings ? (
+            {isProfile ? (
+              <TouristProfile />
+            ) : isRequestsBookings ? (
               <RequestsBookings />
             ) : (
               <Explore embedded />
             )}
-
           </main>
-
         </div>
-
       </div>
-
     </div>
   );
 }

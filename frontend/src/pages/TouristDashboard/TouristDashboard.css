@@ -1,8 +1,6 @@
 .ts-shell {
   min-height: 100vh;
-
   background: #f4f6fb;
-
   font-family:
     Inter,
     system-ui,
@@ -27,11 +25,8 @@
 
 .ts-shell-main {
   margin-left: 280px;
-
   min-width: 0;
-
   min-height: 100vh;
-
   display: flex;
   flex-direction: column;
 }
@@ -42,16 +37,14 @@
 
 .ts-shell-content {
   flex: 1;
-
   min-width: 0;
-
-  padding: 28px;
+  padding: 32px;
 }
 
 /* Explore embedded mode */
+
 .ts-shell-content--explore {
   padding: 0;
-
   overflow: hidden;
 }
 
@@ -69,19 +62,14 @@
 
 .ts-dashboard-header h1 {
   margin: 0 0 4px;
-
-  font-size: 24px;
-
+  font-size: 30px;
   font-weight: 800;
-
   color: #0b1638;
 }
 
 .ts-dashboard-header p {
   margin: 0;
-
-  font-size: 14px;
-
+  font-size: 17px;
   color: #64748b;
 }
 
@@ -95,7 +83,7 @@
   }
 
   .ts-shell-content {
-    padding: 22px;
+    padding: 26px;
   }
 }
 
@@ -109,6 +97,6 @@
   }
 
   .ts-dashboard-header h1 {
-    font-size: 20px;
+    font-size: 26px;
   }
 }
