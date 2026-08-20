@@ -13,9 +13,16 @@ import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import AboutUs from "./pages/AboutUs/AboutUs";
 import Contact from "./pages/Contact/Contact";
+
 import GuideDashboard from "./pages/GuideDashboard/GuideDashboard";
 import GuideProfile from "./pages/GuideDashboard/Profile/GuideProfile";
+
+import GuideTourServices from "./pages/GuideDashboard/TourServices/GuideTourServices";
+import AddTourService from "./pages/GuideDashboard/TourServices/AddTourService";
+
+
 import GuideRequests from "./pages/GuideDashboard/GuideRequest/GuideRequests";
+
 import TouristDashboard from "./pages/TouristDashboard/TouristDashboard";
 
 function App() {
@@ -65,8 +72,18 @@ function App() {
         />
 
         <Route
+
+          path="/guide-dashboard/tour-services"
+          element={<GuideTourServices />}
+        />
+
+        <Route
+          path="/guide-dashboard/tour-services/add"
+          element={<AddTourService />}
+
           path="/guide-dashboard/requests"
           element={<GuideRequests />}
+
         />
 
         <Route

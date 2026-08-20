@@ -65,23 +65,26 @@ const GuideSidebar = () => {
 
         <nav className="sidebar-nav">
 
-          {/* Dashboard */}
+                   {/* Dashboard */}
 
           <NavLink
             to="/guide-dashboard"
+            end
             className={({ isActive }) =>
               isActive
                 ? "sidebar-link active"
                 : "sidebar-link"
             }
-            end
           >
             <FiGrid />
             <span>Dashboard</span>
           </NavLink>
 
 
+         
+
           {/* My Profile */}
+
 
           <NavLink
             to="/guide-dashboard/profile"
@@ -96,15 +99,28 @@ const GuideSidebar = () => {
           </NavLink>
 
 
+          {/* TOUR SERVICES */}
+          <NavLink
+            to="/guide-dashboard/tour-services"
+            className={({ isActive }) =>
+              isActive ? "sidebar-link active" : "sidebar-link"
+            }
+
+
           {/* Tour Services */}
 
           <a
             href="#"
             className="sidebar-link"
+
           >
             <FiMap />
             <span>Tour Services</span>
-          </a>
+          </NavLink>
+
+
+          {/* REQUESTS */}
+          <a href="#" className="sidebar-link">
 
 
           {/* Requests */}
@@ -117,10 +133,15 @@ const GuideSidebar = () => {
                 : "sidebar-link"
             }
           >
+
             <FiInbox />
             <span>Requests</span>
           </NavLink>
 
+
+
+          {/* BOOKINGS */}
+          <a href="#" className="sidebar-link">
 
           {/* Bookings */}
 
@@ -128,9 +149,14 @@ const GuideSidebar = () => {
             href="#"
             className="sidebar-link"
           >
+
             <FiCalendar />
             <span>Bookings</span>
           </a>
+
+
+          {/* PAYMENTS */}
+          <a href="#" className="sidebar-link">
 
 
           {/* Payments */}
@@ -139,9 +165,14 @@ const GuideSidebar = () => {
             href="#"
             className="sidebar-link"
           >
+
             <FiDollarSign />
             <span>Payments</span>
           </a>
+
+
+          {/* REVIEWS */}
+          <a href="#" className="sidebar-link">
 
 
           {/* Reviews */}
@@ -150,9 +181,14 @@ const GuideSidebar = () => {
             href="#"
             className="sidebar-link"
           >
+
             <FiStar />
             <span>Reviews and Ratings</span>
           </a>
+
+
+          {/* MESSAGES */}
+          <a href="#" className="sidebar-link">
 
 
           {/* Messages */}
@@ -161,6 +197,7 @@ const GuideSidebar = () => {
             href="#"
             className="sidebar-link"
           >
+
             <FiMessageSquare />
             <span>Messages</span>
           </a>
@@ -170,12 +207,17 @@ const GuideSidebar = () => {
       </div>
 
 
+      {/* LOGOUT */}
+      <button className="logout-btn">
+
+
       {/* Logout */}
 
       <button
         className="logout-btn"
         onClick={handleLogout}
       >
+
         <FiLogOut />
         <span>Logout</span>
       </button>

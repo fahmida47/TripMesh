@@ -1,0 +1,249 @@
+.top-tour-services-card {
+  width: 100%;
+  min-height: 270px;
+  padding: 18px;
+  box-sizing: border-box;
+
+  background: #ffffff;
+  border: 1px solid #e2e7f0;
+  border-radius: 12px;
+
+  box-shadow: 0 3px 12px rgba(25, 44, 85, 0.05);
+}
+
+.top-tour-services-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.top-tour-services-header h3 {
+  margin: 0;
+
+  font-size: 16px;
+  font-weight: 700;
+
+  color: #14233e;
+}
+
+/* =========================
+   MANAGE ALL / VIEW ALL
+========================= */
+
+.manage-all-btn,
+.top-tour-view-all {
+  padding: 0;
+  margin: 0;
+
+  border: none;
+  outline: none;
+  box-shadow: none;
+
+  background: transparent !important;
+  color: #2868f4;
+
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  text-decoration: none;
+
+  user-select: none;
+  -webkit-user-select: none;
+
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.manage-all-btn:hover,
+.top-tour-view-all:hover {
+  border: none;
+  outline: none;
+  box-shadow: none;
+
+  background: transparent !important;
+  color: #2868f4;
+
+  text-decoration: underline;
+}
+
+.manage-all-btn:focus,
+.top-tour-view-all:focus {
+  border: none;
+  outline: none;
+  box-shadow: none;
+
+  background: transparent !important;
+  color: #2868f4;
+}
+
+.manage-all-btn:active,
+.top-tour-view-all:active {
+  border: none;
+  outline: none;
+  box-shadow: none;
+
+  background: transparent !important;
+  color: #2868f4;
+
+  transform: none;
+}
+
+/* =========================
+   EMPTY STATE
+========================= */
+
+.top-tour-services-empty {
+  min-height: 190px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+
+  border-top: 1px solid #edf0f5;
+}
+
+.top-tour-services-empty p {
+  margin: 0 0 6px;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  color: #273753;
+}
+
+.top-tour-services-empty span {
+  font-size: 12px;
+  color: #8b95a7;
+}
+
+/* =========================
+   FUTURE TOP SERVICE ROWS
+========================= */
+
+.top-tour-services-list {
+  width: 100%;
+}
+
+.top-tour-service-item {
+  min-height: 62px;
+
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto
+    auto;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 10px 0;
+
+  border-bottom: 1px solid #edf0f5;
+}
+
+.top-tour-service-item:last-child {
+  border-bottom: none;
+}
+
+.top-tour-service-info {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+}
+
+.top-tour-service-info img {
+  width: 46px;
+  height: 40px;
+
+  flex-shrink: 0;
+
+  border-radius: 6px;
+
+  object-fit: cover;
+}
+
+.top-tour-service-text {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.top-tour-service-text strong {
+  overflow: hidden;
+
+  color: #172742;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.top-tour-service-text span {
+  color: #7b8798;
+  font-size: 10px;
+}
+
+.top-tour-service-price {
+  color: #172742;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+.top-tour-service-bookings {
+  color: #172742;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 800px) {
+  .top-tour-services-card {
+    padding: 16px;
+  }
+
+  .top-tour-service-item {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .top-tour-service-bookings {
+    grid-column: 2;
+  }
+}
+
+@media (max-width: 500px) {
+  .top-tour-services-header h3 {
+    font-size: 15px;
+  }
+
+  .top-tour-services-empty {
+    min-height: 160px;
+  }
+}
