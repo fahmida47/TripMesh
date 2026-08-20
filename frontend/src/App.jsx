@@ -1,9 +1,4 @@
-import {
-  Routes,
-  Route,
-  Link,
-  BrowserRouter,
-} from "react-router-dom";
+import { Routes, Route, Link, BrowserRouter } from "react-router-dom";
 
 import ScrollToTop from "./ScrollToTop";
 
@@ -20,7 +15,6 @@ import GuideProfile from "./pages/GuideDashboard/Profile/GuideProfile";
 import GuideTourServices from "./pages/GuideDashboard/TourServices/GuideTourServices";
 import AddTourService from "./pages/GuideDashboard/TourServices/AddTourService";
 
-
 import GuideRequests from "./pages/GuideDashboard/GuideRequest/GuideRequests";
 
 import TouristDashboard from "./pages/TouristDashboard/TouristDashboard";
@@ -31,48 +25,23 @@ function App() {
       <ScrollToTop />
 
       <Routes>
-        <Route
-          path="/"
-          element={<GlobalLandingPage />}
-        />
+        <Route path="/" element={<GlobalLandingPage />} />
+
+        <Route path="/explore" element={<Explore />} />
+
+        <Route path="/about" element={<AboutUs />} />
+
+        <Route path="/contact" element={<Contact />} />
+
+        <Route path="/login" element={<Login />} />
+
+        <Route path="/signup" element={<Signup />} />
+
+        <Route path="/guide-dashboard" element={<GuideDashboard />} />
+
+        <Route path="/guide-dashboard/profile" element={<GuideProfile />} />
 
         <Route
-          path="/explore"
-          element={<Explore />}
-        />
-
-        <Route
-          path="/about"
-          element={<AboutUs />}
-        />
-
-        <Route
-          path="/contact"
-          element={<Contact />}
-        />
-
-        <Route
-          path="/login"
-          element={<Login />}
-        />
-
-        <Route
-          path="/signup"
-          element={<Signup />}
-        />
-
-        <Route
-          path="/guide-dashboard"
-          element={<GuideDashboard />}
-        />
-
-        <Route
-          path="/guide-dashboard/profile"
-          element={<GuideProfile />}
-        />
-
-        <Route
-
           path="/guide-dashboard/tour-services"
           element={<GuideTourServices />}
         />
@@ -80,16 +49,11 @@ function App() {
         <Route
           path="/guide-dashboard/tour-services/add"
           element={<AddTourService />}
-
-          path="/guide-dashboard/requests"
-          element={<GuideRequests />}
-
         />
 
-        <Route
-          path="/tourist-dashboard"
-          element={<TouristDashboard />}
-        />
+        <Route path="/guide-dashboard/requests" element={<GuideRequests />} />
+
+        <Route path="/tourist-dashboard" element={<TouristDashboard />} />
 
         <Route
           path="*"
@@ -97,9 +61,7 @@ function App() {
             <div>
               <h2>Page Not Found</h2>
 
-              <Link to="/">
-                Go to Home
-              </Link>
+              <Link to="/">Go to Home</Link>
             </div>
           }
         />
