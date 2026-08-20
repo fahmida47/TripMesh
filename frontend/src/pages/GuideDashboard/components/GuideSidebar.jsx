@@ -31,17 +31,19 @@ const GuideSidebar = () => {
         </div>
 
         <nav className="sidebar-nav">
+          {/* DASHBOARD */}
           <NavLink
             to="/guide-dashboard"
+            end
             className={({ isActive }) =>
               isActive ? "sidebar-link active" : "sidebar-link"
             }
-            end
           >
             <FiGrid />
             <span>Dashboard</span>
           </NavLink>
 
+          {/* PROFILE */}
           <NavLink
             to="/guide-dashboard/profile"
             className={({ isActive }) =>
@@ -52,31 +54,42 @@ const GuideSidebar = () => {
             <span>My Profile</span>
           </NavLink>
 
-          <a href="#" className="sidebar-link">
+          {/* TOUR SERVICES */}
+          <NavLink
+            to="/guide-dashboard/tour-services"
+            className={({ isActive }) =>
+              isActive ? "sidebar-link active" : "sidebar-link"
+            }
+          >
             <FiMap />
             <span>Tour Services</span>
-          </a>
+          </NavLink>
 
+          {/* REQUESTS */}
           <a href="#" className="sidebar-link">
             <FiInbox />
             <span>Requests</span>
           </a>
 
+          {/* BOOKINGS */}
           <a href="#" className="sidebar-link">
             <FiCalendar />
             <span>Bookings</span>
           </a>
 
+          {/* PAYMENTS */}
           <a href="#" className="sidebar-link">
             <FiDollarSign />
             <span>Payments</span>
           </a>
 
+          {/* REVIEWS */}
           <a href="#" className="sidebar-link">
             <FiStar />
             <span>Reviews and Ratings</span>
           </a>
 
+          {/* MESSAGES */}
           <a href="#" className="sidebar-link">
             <FiMessageSquare />
             <span>Messages</span>
@@ -84,6 +97,7 @@ const GuideSidebar = () => {
         </nav>
       </div>
 
+      {/* LOGOUT */}
       <button className="logout-btn">
         <FiLogOut />
         <span>Logout</span>
