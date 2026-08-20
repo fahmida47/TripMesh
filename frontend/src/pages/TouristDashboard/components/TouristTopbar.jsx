@@ -1,17 +1,15 @@
+import { FiBell, FiChevronDown, FiMenu, FiUser } from "react-icons/fi";
 import "./TouristTopbar.css";
 
-const TouristTopbar = () => {
+export default function TouristTopbar({ onMenuClick, onProfileClick }) {
   const user = JSON.parse(localStorage.getItem("user")) || {};
-
   const touristName = user.name || "Tourist";
 
-  // Registration date
   let registeredDate;
 
   if (user.registeredDate) {
     registeredDate = new Date(user.registeredDate);
   } else {
-    // Old account হলে আজকের date একবার save করে দিচ্ছি
     registeredDate = new Date();
 
     const updatedUser = {
@@ -19,35 +17,59 @@ const TouristTopbar = () => {
       registeredDate: registeredDate.toISOString(),
     };
 
-    localStorage.setItem(
-      "user",
-      JSON.stringify(updatedUser)
-    );
+    localStorage.setItem("user", JSON.stringify(updatedUser));
   }
 
-  const formattedDate = registeredDate.toLocaleDateString(
-    "en-US",
-    {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    }
-  );
+  const formattedDate = registeredDate.toLocaleDateString("en-US", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
 
   return (
-    <header className="tourist-header">
-      <div className="tourist-header-text">
+    <header className="ts-dashtopbar">
+      <button
+        type="button"
+        className="ts-dashtopbar-menu"
+        onClick={onMenuClick}
+        aria-label="Open menu"
+      >
+        <FiMenu />
+      </button>
 
-        <h2>
-          Welcome back, {touristName}! 👋
-        </h2>
-
+      <div className="ts-dashtopbar-welcome">
+        <h2>Welcome back, {touristName}! 👋</h2>
         <p>{formattedDate}</p>
-
       </div>
+
+      <div className="ts-dashtopbar-spacer" />
+
+      <button
+        type="button"
+        className="ts-dashtopbar-bell"
+        aria-label="Notifications"
+      >
+        <FiBell />
+        <span className="ts-dashtopbar-bell-badge">3</span>
+      </button>
+
+      <button
+        type="button"
+        className="ts-dashtopbar-account"
+        onClick={onProfileClick}
+        aria-label="Open profile"
+      >
+        <span className="ts-dashtopbar-avatar">
+          <FiUser />
+        </span>
+
+        <span className="ts-dashtopbar-profile-text">
+          {touristName}
+        </span>
+
+        <FiChevronDown className="ts-dashtopbar-chevron" />
+      </button>
     </header>
   );
-};
-
-export default TouristTopbar;
+}

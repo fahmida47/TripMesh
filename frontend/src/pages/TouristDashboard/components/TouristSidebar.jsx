@@ -1,7 +1,4 @@
-import "./TouristSidebar.css";
-
 import { useNavigate } from "react-router-dom";
-
 import {
   FiGrid,
   FiUser,
@@ -13,6 +10,7 @@ import {
   FiLogOut,
 } from "react-icons/fi";
 
+import "./TouristSidebar.css";
 import logo from "../../../assets/logo.png";
 
 const NAV_ITEMS = [
@@ -77,7 +75,6 @@ export default function TouristSidebar({
       )}
 
       <aside className={`ts-sidebar ${isOpen ? "open" : ""}`}>
-
         {/* Mobile Close Button */}
         <button
           type="button"
@@ -90,27 +87,20 @@ export default function TouristSidebar({
 
         {/* Sidebar Top */}
         <div className="ts-sidebar-top">
-
           {/* Logo */}
           <div className="ts-sidebar-logo">
-
             <div className="ts-logo-circle">
-              <img
-                src={logo}
-                alt="TripMesh Logo"
-              />
+              <img src={logo} alt="TripMesh Logo" />
             </div>
 
             <div className="ts-logo-text">
               <h2>TripMesh</h2>
               <p>Tourist</p>
             </div>
-
           </div>
 
           {/* Navigation */}
           <nav className="ts-sidebar-nav">
-
             {NAV_ITEMS.map(({ key, label, icon: Icon }) => (
               <a
                 key={key}
@@ -128,24 +118,17 @@ export default function TouristSidebar({
                 }}
               >
                 <Icon />
-
                 <span>{label}</span>
               </a>
             ))}
-
           </nav>
         </div>
 
         {/* Logout */}
-        <button
-          className="ts-logout-btn"
-          onClick={handleLogout}
-        >
+        <button className="ts-logout-btn" onClick={handleLogout}>
           <FiLogOut />
-
           <span>Logout</span>
         </button>
-
       </aside>
     </>
   );
