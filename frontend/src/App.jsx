@@ -15,6 +15,7 @@ import AboutUs from "./pages/AboutUs/AboutUs";
 import Contact from "./pages/Contact/Contact";
 import GuideDashboard from "./pages/GuideDashboard/GuideDashboard";
 import GuideProfile from "./pages/GuideDashboard/Profile/GuideProfile";
+import GuideRequests from "./pages/GuideDashboard/GuideRequest/GuideRequests";
 import TouristDashboard from "./pages/TouristDashboard/TouristDashboard";
 
 function App() {
@@ -61,6 +62,11 @@ function App() {
         <Route
           path="/guide-dashboard/profile"
           element={<GuideProfile />}
+        />
+
+        <Route
+          path="/guide-dashboard/requests"
+          element={<GuideRequests />}
         />
 
         <Route
