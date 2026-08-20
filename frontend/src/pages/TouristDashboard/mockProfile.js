@@ -15,7 +15,7 @@ import dhakaImg from "../../assets/dhaka.jpg";
 import promoImg from "../../assets/sidebar-bg.jpg";
 
 export const touristProfile = {
-  id: 1,
+  id: "", // filled in once the tourist actually logs in (backend/auth not wired up yet)
   fullName: "Afia Farjana",
   avatar: null, // null -> initials avatar; string -> image url / data url
   email: "afia.farjana@email.com",

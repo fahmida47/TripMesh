@@ -121,3 +121,22 @@ export const CloseIcon = (p) => (
     <path d="m6 6 12 12" />
   </svg>
 );
+
+export const ChevronLeftIcon = (p) => (
+  <svg {...base} {...p}>
+    <path d="m15 18-6-6 6-6" />
+  </svg>
+);
+
+export const ChevronRightIcon = (p) => (
+  <svg {...base} {...p}>
+    <path d="m9 18 6-6-6-6" />
+  </svg>
+);
+
+// Filled pin mark used as the TripMesh brand logo (sidebar header).
+export const LogoMarkIcon = (p) => (
+  <svg width={20} height={20} viewBox="0 0 24 24" fill="currentColor" {...p}>
+    <path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6a2.5 2.5 0 0 1 0 5.5Z" />
+  </svg>
+);
