@@ -1,0 +1,254 @@
+/* =========================================
+   REVIEWS & RATINGS PAGE
+========================================= */
+
+.reviews-page {
+  min-height: 100vh;
+  background: #ffffff;
+}
+
+/* =========================================
+   MAIN CONTENT
+========================================= */
+
+.reviews-main-content {
+  margin-left: 280px;
+  min-height: 100vh;
+  background: #ffffff;
+  box-sizing: border-box;
+}
+
+.reviews-page-container {
+  width: 100%;
+  padding: 32px 36px 40px;
+  box-sizing: border-box;
+}
+
+/* =========================================
+   PAGE HEADER
+========================================= */
+
+.reviews-page-header {
+  margin-bottom: 26px;
+}
+
+.reviews-page-header h1 {
+  margin: 0 0 7px;
+  color: #14233e;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.reviews-page-header p {
+  margin: 0;
+  color: #8b95a7;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* =========================================
+   RATING SUMMARY
+========================================= */
+
+.reviews-rating-summary {
+  width: 100%;
+  min-height: 130px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 22px;
+  margin-bottom: 24px;
+  box-sizing: border-box;
+
+  background: #ffffff;
+  border: 1px solid #e2e7f0;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(25, 44, 85, 0.05);
+}
+
+.reviews-rating-icon {
+  width: 58px;
+  height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 12px;
+  background: #f3f5f8;
+
+  color: #9aa3b2;
+  font-size: 25px;
+}
+
+.reviews-rating-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.reviews-rating-label {
+  margin-bottom: 4px;
+  color: #8b95a7;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.reviews-rating-info h2 {
+  margin: 0 0 5px;
+  color: #273753;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.reviews-rating-info p {
+  margin: 0;
+  color: #8b95a7;
+  font-size: 12px;
+}
+
+/* =========================================
+   CUSTOMER REVIEWS
+========================================= */
+
+.customer-reviews {
+  width: 100%;
+  min-height: 400px;
+
+  background: #ffffff;
+  border: 1px solid #e2e7f0;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(25, 44, 85, 0.05);
+
+  overflow: hidden;
+}
+
+.customer-reviews-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 16px;
+  padding: 20px 22px;
+
+  border-bottom: 1px solid #edf0f5;
+}
+
+.customer-reviews-header h2 {
+  margin: 0 0 5px;
+
+  color: #14233e;
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.customer-reviews-header p {
+  margin: 0;
+
+  color: #8b95a7;
+  font-size: 12px;
+}
+
+.reviews-total {
+  padding: 6px 11px;
+
+  border-radius: 20px;
+
+  background: #f3f5f8;
+  color: #6f7b8f;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* =========================================
+   EMPTY STATE
+========================================= */
+
+.reviews-empty-state {
+  min-height: 320px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 30px 20px;
+
+  text-align: center;
+}
+
+.reviews-empty-icon {
+  width: 58px;
+  height: 58px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 16px;
+
+  border-radius: 50%;
+
+  background: #f3f5f8;
+  color: #9aa3b2;
+
+  font-size: 24px;
+}
+
+.reviews-empty-state h3 {
+  margin: 0 0 7px;
+
+  color: #273753;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.reviews-empty-state p {
+  max-width: 400px;
+
+  margin: 0;
+
+  color: #8b95a7;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 900px) {
+  .reviews-main-content {
+    margin-left: 0;
+  }
+
+  .reviews-page-container {
+    padding: 28px 24px 35px;
+  }
+}
+
+@media (max-width: 600px) {
+  .reviews-page-container {
+    padding: 22px 16px 30px;
+  }
+
+  .reviews-page-header h1 {
+    font-size: 23px;
+  }
+
+  .reviews-rating-summary {
+    padding: 18px;
+  }
+
+  .customer-reviews-header {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 18px;
+  }
+
+  .reviews-empty-state {
+    min-height: 280px;
+  }
+}
