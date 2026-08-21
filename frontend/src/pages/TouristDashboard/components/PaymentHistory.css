@@ -3,8 +3,9 @@
    ======================================== */
 
 .pm-page {
-  width: 100%;
-  min-height: 100%;
+  width: calc(100% - 280px);
+  min-height: 100vh;
+  margin-left: 280px;
   padding: 28px;
   box-sizing: border-box;
   background: #f8fafc;
@@ -34,7 +35,7 @@
 }
 
 /* ========================================
-   OVERVIEW STAT CARDS (counts only, no amounts)
+   OVERVIEW STAT CARDS
    ======================================== */
 
 .pm-stats {
@@ -231,7 +232,9 @@
   display: none;
 }
 
-/* Tour & company */
+/* ========================================
+   TOUR & COMPANY
+   ======================================== */
 
 .pm-tour {
   display: flex;
@@ -263,7 +266,9 @@
   color: #64748b;
 }
 
-/* Destination */
+/* ========================================
+   DESTINATION
+   ======================================== */
 
 .pm-destination {
   display: inline-flex;
@@ -279,14 +284,18 @@
   color: #94a3b8;
 }
 
-/* Date */
+/* ========================================
+   DATE
+   ======================================== */
 
 .pm-date {
   font-size: 13.5px;
   color: #334155;
 }
 
-/* Status badges */
+/* ========================================
+   STATUS BADGES
+   ======================================== */
 
 .pm-badge {
   display: inline-flex;
@@ -298,13 +307,34 @@
   white-space: nowrap;
 }
 
-.pm-badge--paid { background: #dcfce7; color: #15803d; }
-.pm-badge--pending { background: #fef3c7; color: #b45309; }
-.pm-badge--heldbyadmin { background: #dbeafe; color: #1d4ed8; }
-.pm-badge--releasedtocompany { background: #ede9fe; color: #6d28d9; }
-.pm-badge--refunded { background: #fee2e2; color: #b91c1c; }
+.pm-badge--paid {
+  background: #dcfce7;
+  color: #15803d;
+}
 
-/* Actions */
+.pm-badge--pending {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.pm-badge--heldbyadmin {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.pm-badge--releasedtocompany {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+.pm-badge--refunded {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+/* ========================================
+   ACTIONS
+   ======================================== */
 
 .pm-cell--actions {
   display: flex;
@@ -330,7 +360,10 @@
   font-weight: 700;
   cursor: pointer;
   white-space: nowrap;
-  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .pm-btn svg {
@@ -417,12 +450,13 @@
   background: #ffffff;
   color: #475569;
   cursor: pointer;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
-  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+  transition:
+    background 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease;
 }
 
 .pm-pager button:hover:not(:disabled) {
@@ -608,7 +642,9 @@
   font-size: 14px;
   outline: none;
   box-sizing: border-box;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .pm-form-field input:focus {
@@ -645,16 +681,12 @@
   right: 24px;
   bottom: 24px;
   z-index: 100;
-
   padding: 12px 18px;
   border-radius: 10px;
-
   background: #0b1638;
   color: #ffffff;
-
   font-size: 13px;
   font-weight: 600;
-
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
 }
 
@@ -670,6 +702,8 @@
 
 @media (max-width: 900px) {
   .pm-page {
+    width: 100%;
+    margin-left: 0;
     padding: 24px 20px;
   }
 
@@ -722,6 +756,8 @@
 
 @media (max-width: 700px) {
   .pm-page {
+    width: 100%;
+    margin-left: 0;
     padding: 20px 14px;
   }
 
@@ -799,6 +835,8 @@
 
 @media (max-width: 480px) {
   .pm-page {
+    width: 100%;
+    margin-left: 0;
     padding: 16px 10px;
   }
 
