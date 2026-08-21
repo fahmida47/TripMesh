@@ -2,31 +2,46 @@
    COMPLETE YOUR PAYMENT PAGE
    ======================================== */
 
+/* ========================================
+   PAGE SHELL
+   ======================================== */
+
+.cp-shell {
+  width: 100%;
+  min-height: 100vh;
+  background: #f8fafc;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* ========================================
+   MAIN CONTENT
+   TouristSidebar = 280px fixed
+   ======================================== */
+
+.cp-content {
+  width: calc(100% - 280px);
+  min-height: 100vh;
+  margin-left: 280px;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* ========================================
+   PAYMENT PAGE
+   ======================================== */
+
 .cp-page {
   width: 100%;
-  min-height: 100%;
+  min-height: 100vh;
   padding: 28px;
   box-sizing: border-box;
   background: #f8fafc;
 }
 
-.cp-back {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  border: none;
-  background: none;
-  padding: 0;
-  margin-bottom: 18px;
-  color: #2563eb;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.cp-back:hover {
-  text-decoration: underline;
-}
+/* ========================================
+   PAGE HEADER
+   ======================================== */
 
 .cp-header {
   margin-bottom: 24px;
@@ -44,23 +59,20 @@
   margin: 7px 0 0;
   color: #64748b;
   font-size: 14px;
+  line-height: 1.5;
 }
 
 /* ========================================
-   LAYOUT
+   MAIN LAYOUT
    ======================================== */
 
 .cp-grid {
   display: grid;
-  grid-template-columns: 1fr 340px;
+  grid-template-columns: minmax(0, 1fr) 340px;
   align-items: start;
   gap: 24px;
-}
-
-@media (max-width: 900px) {
-  .cp-grid {
-    grid-template-columns: 1fr;
-  }
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .cp-main {
@@ -71,14 +83,16 @@
 }
 
 /* ========================================
-   SECTIONS
+   COMMON SECTION
    ======================================== */
 
 .cp-section {
+  width: 100%;
   background: #ffffff;
   border: 1px solid #e6eaf1;
   border-radius: 16px;
   padding: 24px;
+  box-sizing: border-box;
 }
 
 .cp-section h2 {
@@ -97,82 +111,152 @@
   justify-content: center;
   width: 22px;
   height: 22px;
+  flex-shrink: 0;
   border-radius: 999px;
   background: #2563eb;
   color: #ffffff;
   font-size: 12px;
   font-weight: 700;
-  flex-shrink: 0;
 }
 
 /* ========================================
-   STEP 1 — PAYMENT METHODS
+   STEP 1
+   PAYMENT METHODS
    ======================================== */
 
 .cp-methods {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
 }
 
-@media (max-width: 520px) {
-  .cp-methods {
-    grid-template-columns: 1fr;
-  }
-}
+/* Payment Method Card */
 
 .cp-method {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+
+  width: 100%;
+  min-height: 160px;
+
   padding: 20px 14px;
+
   border: 1.5px solid #e2e8f0;
   border-radius: 14px;
+
   background: #ffffff;
+
   cursor: pointer;
   text-align: center;
-  transition: border-color 0.15s ease, background 0.15s ease;
+
+  box-sizing: border-box;
+
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
 }
 
 .cp-method:hover {
   border-color: #93c5fd;
+  background: #f8fbff;
+  transform: translateY(-1px);
 }
 
 .cp-method--active {
   border-color: #2563eb;
   background: #eff6ff;
+
+  box-shadow:
+    0 0 0 2px rgba(37, 99, 235, 0.06);
 }
+
+/* ========================================
+   SELECTED CHECK
+   ======================================== */
 
 .cp-method-check {
   position: absolute;
+
   top: 10px;
   right: 10px;
-  width: 20px;
-  height: 20px;
+
+  width: 21px;
+  height: 21px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   border-radius: 999px;
+
   background: #2563eb;
   color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+
   font-size: 12px;
+
+  z-index: 2;
 }
+
+.cp-method-check svg {
+  width: 13px;
+  height: 13px;
+}
+
+/* ========================================
+   PAYMENT BRAND IMAGE
+   bKash / Nagad
+   ======================================== */
 
 .cp-method-icon {
-  width: 40px;
-  height: 40px;
+  width: 100%;
+  height: 75px;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 4px;
+
+  margin-bottom: 8px;
+
+  overflow: hidden;
+  border-radius: 10px;
 }
 
-.cp-method-icon svg {
+/*
+   IMPORTANT:
+   Your PaymentMethodIcons.jsx uses <img>
+   NOT <svg>.
+*/
+
+.cp-method-icon img.payment-brand-logo {
+  display: block;
+
   width: 100%;
   height: 100%;
+
+  max-width: 170px;
+
+  object-fit: contain;
+
+  border-radius: 10px;
 }
+
+/* If image has transparent/white space */
+
+.payment-brand-logo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* ========================================
+   METHOD TEXT
+   ======================================== */
 
 .cp-method-label {
   font-size: 15px;
@@ -186,18 +270,25 @@
 }
 
 /* ========================================
-   STEP 2 — PAYMENT DETAILS
+   STEP 2
+   PAYMENT DETAILS
    ======================================== */
 
 .cp-note {
   display: flex;
   align-items: flex-start;
+
   gap: 8px;
+
   margin: 0 0 18px;
   padding: 12px 14px;
+
   border-radius: 10px;
+
   font-size: 13px;
   line-height: 1.5;
+
+  box-sizing: border-box;
 }
 
 .cp-note--info {
@@ -211,52 +302,98 @@
   margin: 4px 0 0;
 }
 
-.cp-note--warning svg {
+.cp-note svg {
   flex-shrink: 0;
   margin-top: 2px;
 }
 
+/* ========================================
+   FORM FIELD
+   ======================================== */
+
 .cp-field {
+  width: 100%;
   margin-bottom: 16px;
+}
+
+.cp-field:last-child {
+  margin-bottom: 0;
 }
 
 .cp-field label {
   display: block;
+
   margin-bottom: 6px;
+
   font-size: 13px;
   font-weight: 600;
+
   color: #334155;
 }
+
+/* ========================================
+   INPUT
+   ======================================== */
 
 .cp-input {
   display: flex;
   align-items: center;
+
   gap: 10px;
+
+  width: 100%;
+
   padding: 0 14px;
+
   border: 1px solid #e2e8f0;
   border-radius: 10px;
+
   background: #ffffff;
+
+  box-sizing: border-box;
+
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
-.cp-input svg {
-  color: #94a3b8;
-  flex-shrink: 0;
+.cp-input:hover {
+  border-color: #cbd5e1;
 }
 
 .cp-input:focus-within {
   border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.cp-input svg {
+  width: 17px;
+  height: 17px;
+
+  color: #94a3b8;
+
+  flex-shrink: 0;
 }
 
 .cp-input input {
   flex: 1;
+
   min-width: 0;
+
   border: none;
   outline: none;
+
   padding: 12px 0;
+
   font-size: 14px;
+
   color: #101b35;
+
   background: transparent;
+
+  font-family: inherit;
 }
 
 .cp-input input::placeholder {
@@ -264,52 +401,92 @@
 }
 
 /* ========================================
-   STEP 3 — SUBMIT
+   STEP 3
+   SUBMIT PAYMENT
    ======================================== */
 
 .cp-checkbox {
   display: flex;
   align-items: flex-start;
+
   gap: 10px;
-  font-size: 13px;
-  color: #334155;
-  line-height: 1.5;
-  cursor: pointer;
+
   margin-bottom: 20px;
+
+  font-size: 13px;
+
+  color: #334155;
+
+  line-height: 1.5;
+
+  cursor: pointer;
 }
 
 .cp-checkbox input {
-  margin-top: 2px;
   width: 16px;
   height: 16px;
-  accent-color: #2563eb;
+
   flex-shrink: 0;
+
+  margin-top: 2px;
+
+  accent-color: #2563eb;
+
+  cursor: pointer;
 }
+
+/* ========================================
+   SUBMIT BUTTON
+   ======================================== */
 
 .cp-submit {
   display: flex;
   align-items: center;
   justify-content: center;
+
   gap: 8px;
+
   width: 100%;
+
   padding: 14px;
+
   border: none;
   border-radius: 10px;
+
   background: #2563eb;
+
   color: #ffffff;
+
   font-size: 15px;
   font-weight: 700;
+
   cursor: pointer;
-  transition: background 0.15s ease;
+
+  font-family: inherit;
+
+  transition:
+    background 0.15s ease,
+    transform 0.1s ease;
 }
 
 .cp-submit:hover:not(:disabled) {
   background: #1d4ed8;
 }
 
+.cp-submit:active:not(:disabled) {
+  transform: translateY(1px);
+}
+
 .cp-submit:disabled {
   background: #cbd5e1;
+  color: #ffffff;
+
   cursor: not-allowed;
+}
+
+.cp-submit svg {
+  width: 16px;
+  height: 16px;
 }
 
 /* ========================================
@@ -317,114 +494,187 @@
    ======================================== */
 
 .cp-summary {
+  width: 100%;
+
   background: #ffffff;
+
   border: 1px solid #e6eaf1;
+
   border-radius: 16px;
+
   padding: 22px;
+
   position: sticky;
+
   top: 20px;
+
+  box-sizing: border-box;
 }
 
 .cp-summary h3 {
   margin: 0 0 16px;
+
   font-size: 15px;
   font-weight: 700;
+
   color: #101b35;
 }
 
 .cp-summary-empty {
   margin: 0;
+
   font-size: 13px;
+
   color: #94a3b8;
 }
 
+/* ========================================
+   SUMMARY TOUR
+   ======================================== */
+
 .cp-summary-tour {
   display: flex;
+
   gap: 12px;
+
   padding-bottom: 16px;
-  border-bottom: 1px solid #eef1f6;
+
   margin-bottom: 16px;
+
+  border-bottom: 1px solid #eef1f6;
 }
 
 .cp-summary-thumb {
   width: 56px;
   height: 56px;
-  border-radius: 10px;
-  object-fit: cover;
+
   flex-shrink: 0;
+
+  border-radius: 10px;
+
+  object-fit: cover;
 }
 
 .cp-summary-thumb--placeholder {
   display: flex;
+
   align-items: center;
   justify-content: center;
+
   color: #ffffff;
+
   font-weight: 700;
+
   font-size: 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #93c5fd,
+      #2563eb
+    );
 }
 
 .cp-summary-title {
   margin: 0 0 2px;
+
   font-size: 14px;
   font-weight: 700;
+
   color: #101b35;
 }
 
 .cp-summary-company {
   display: block;
+
   font-size: 12px;
+
   color: #64748b;
 }
 
 .cp-summary-rating {
   display: inline-flex;
+
   align-items: center;
+
   gap: 4px;
+
   margin-top: 4px;
+
   font-size: 12px;
+
   color: #b45309;
 }
 
+/* ========================================
+   SUMMARY ROWS
+   ======================================== */
+
 .cp-summary-rows {
   display: flex;
+
   flex-direction: column;
+
   gap: 10px;
+
   padding-bottom: 16px;
-  border-bottom: 1px solid #eef1f6;
+
   margin-bottom: 16px;
+
+  border-bottom: 1px solid #eef1f6;
 }
 
 .cp-summary-row {
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
+
   gap: 10px;
+
   font-size: 13px;
 }
 
 .cp-summary-row > span:first-child {
   display: inline-flex;
+
   align-items: center;
+
   gap: 6px;
+
   color: #64748b;
 }
 
 .cp-summary-row > span:last-child {
   color: #101b35;
+
   font-weight: 600;
+
   text-align: right;
+
+  word-break: break-word;
 }
+
+/* ========================================
+   PRICE
+   ======================================== */
 
 .cp-summary-price {
   padding-bottom: 12px;
+
   margin-bottom: 12px;
+
   border-bottom: 1px solid #eef1f6;
 }
 
 .cp-summary-price-title {
   margin: 0 0 10px;
+
   font-size: 13px;
+
   font-weight: 700;
+
   color: #101b35;
 }
 
@@ -432,49 +682,84 @@
   margin-bottom: 8px;
 }
 
+/* ========================================
+   TOTAL
+   ======================================== */
+
 .cp-summary-total {
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
+
+  gap: 10px;
+
   margin-bottom: 18px;
 }
 
 .cp-summary-total span:first-child {
   font-size: 14px;
+
   font-weight: 700;
+
   color: #101b35;
 }
 
 .cp-summary-total span:last-child {
   font-size: 20px;
+
   font-weight: 800;
+
   color: #2563eb;
+
+  white-space: nowrap;
 }
+
+/* ========================================
+   SECURE PAYMENT
+   ======================================== */
 
 .cp-secure {
   display: flex;
+
   gap: 10px;
+
   padding: 14px;
+
   border-radius: 12px;
+
   background: #eff6ff;
+
+  box-sizing: border-box;
 }
 
 .cp-secure svg {
+  width: 17px;
+  height: 17px;
+
   color: #2563eb;
+
   flex-shrink: 0;
+
   margin-top: 2px;
 }
 
 .cp-secure p {
   margin: 0 0 2px;
+
   font-size: 13px;
+
   font-weight: 700;
+
   color: #1d4ed8;
 }
 
 .cp-secure span {
   font-size: 12px;
+
   color: #1d4ed8;
+
   line-height: 1.4;
 }
 
@@ -483,58 +768,323 @@
    ======================================== */
 
 .cp-success {
+  width: 100%;
+
   max-width: 480px;
+
   margin: 40px auto;
+
   background: #ffffff;
+
   border: 1px solid #e6eaf1;
+
   border-radius: 16px;
+
   padding: 40px 32px;
+
   text-align: center;
+
+  box-sizing: border-box;
 }
 
 .cp-success-icon {
   width: 64px;
   height: 64px;
+
   margin: 0 auto 18px;
+
   border-radius: 999px;
+
   background: #dcfce7;
+
   color: #16a34a;
+
   display: flex;
+
   align-items: center;
   justify-content: center;
+
   font-size: 34px;
+}
+
+.cp-success-icon svg {
+  width: 34px;
+  height: 34px;
 }
 
 .cp-success h2 {
   margin: 0 0 10px;
+
   font-size: 22px;
+
   font-weight: 800;
+
   color: #101b35;
 }
 
 .cp-success p {
   margin: 0 0 24px;
+
   font-size: 14px;
+
   color: #64748b;
+
   line-height: 1.6;
 }
 
+/* ========================================
+   SUCCESS RECAP
+   ======================================== */
+
 .cp-success-recap {
   display: flex;
+
   flex-direction: column;
+
   gap: 10px;
+
   padding: 16px;
+
   border-radius: 12px;
+
   background: #f8fafc;
+
   border: 1px solid #eef1f6;
+
   margin-bottom: 24px;
+
   text-align: left;
 }
 
-.cp-success-back {
-  justify-content: center;
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
+.cp-success-recap .cp-summary-row {
+  display: flex;
+
+  justify-content: space-between;
+
+  gap: 10px;
+}
+
+/* ========================================
+   SIDEBAR OVERLAY SAFETY
+   ======================================== */
+
+/*
+   Prevent payment content from going underneath
+   a fixed sidebar.
+*/
+
+.cp-shell .cp-content {
+  position: relative;
+  z-index: 1;
+}
+
+/*
+   Sidebar should stay above payment content.
+*/
+
+.cp-shell .ts-sidebar {
+  z-index: 1000;
+}
+
+/* ========================================
+   RESPONSIVE - 1200px
+   ======================================== */
+
+@media (max-width: 1200px) {
+  .cp-grid {
+    grid-template-columns:
+      minmax(0, 1fr)
+      310px;
+
+    gap: 20px;
+  }
+
+  .cp-page {
+    padding: 26px;
+  }
+}
+
+/* ========================================
+   RESPONSIVE - 1050px
+   ======================================== */
+
+@media (max-width: 1050px) {
+  .cp-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cp-summary {
+    position: static;
+  }
+}
+
+/* ========================================
+   RESPONSIVE - 900px
+   ======================================== */
+
+@media (max-width: 900px) {
+  .cp-content {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .cp-page {
+    width: 100%;
+    padding: 24px 20px;
+  }
+
+  .cp-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cp-summary {
+    position: static;
+  }
+}
+
+/* ========================================
+   TABLET - 700px
+   ======================================== */
+
+@media (max-width: 700px) {
+  .cp-page {
+    padding: 20px 14px;
+  }
+
+  .cp-header {
+    margin-bottom: 20px;
+  }
+
+  .cp-header h1 {
+    font-size: 24px;
+  }
+
+  .cp-header p {
+    font-size: 13px;
+  }
+
+  .cp-section {
+    padding: 20px;
+    border-radius: 14px;
+  }
+
+  .cp-methods {
+    grid-template-columns: 1fr;
+  }
+
+  .cp-method {
+    min-height: 145px;
+  }
+
+  .cp-method-icon {
+    height: 70px;
+  }
+
+  .cp-summary {
+    padding: 20px;
+    border-radius: 14px;
+  }
+}
+
+/* ========================================
+   SMALL MOBILE - 480px
+   ======================================== */
+
+@media (max-width: 480px) {
+  .cp-page {
+    padding: 16px 10px;
+  }
+
+  .cp-header h1 {
+    font-size: 22px;
+  }
+
+  .cp-header p {
+    font-size: 12.5px;
+  }
+
+  .cp-section {
+    padding: 16px;
+  }
+
+  .cp-section h2 {
+    font-size: 14px;
+  }
+
+  .cp-method {
+    min-height: 140px;
+    padding: 17px 12px;
+  }
+
+  .cp-method-icon {
+    width: 100%;
+    height: 64px;
+  }
+
+  .cp-method-icon img.payment-brand-logo {
+    max-width: 150px;
+  }
+
+  .cp-method-label {
+    font-size: 14px;
+  }
+
+  .cp-method-hint {
+    font-size: 11.5px;
+  }
+
+  .cp-input {
+    padding: 0 12px;
+  }
+
+  .cp-input input {
+    font-size: 13px;
+  }
+
+  .cp-summary {
+    padding: 16px;
+  }
+
+  .cp-summary-total span:last-child {
+    font-size: 18px;
+  }
+
+  .cp-success {
+    margin: 20px auto;
+    padding: 28px 18px;
+  }
+
+  .cp-success h2 {
+    font-size: 20px;
+  }
+}
+
+/* ========================================
+   VERY SMALL MOBILE - 360px
+   ======================================== */
+
+@media (max-width: 360px) {
+  .cp-page {
+    padding: 14px 8px;
+  }
+
+  .cp-section {
+    padding: 14px;
+  }
+
+  .cp-summary {
+    padding: 14px;
+  }
+
+  .cp-summary-row {
+    font-size: 12px;
+  }
+
+  .cp-summary-total span:first-child {
+    font-size: 13px;
+  }
+
+  .cp-summary-total span:last-child {
+    font-size: 17px;
+  }
 }
