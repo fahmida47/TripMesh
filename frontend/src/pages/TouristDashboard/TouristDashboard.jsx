@@ -14,8 +14,7 @@ export default function TouristDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeKey, setActiveKey] = useState("dashboard");
 
-  // Holds the request/payment that triggered "Pay Now" / "Proceed to
-  // Payment", plus where to send the tourist back to once they're done.
+  // Stores the booking/payment that opened the payment page
   const [paymentTarget, setPaymentTarget] = useState(null);
 
   const isRequestsBookings = activeKey === "bookings";
@@ -24,7 +23,11 @@ export default function TouristDashboard() {
   const isCompletePayment = activeKey === "complete-payment";
 
   const goToPayment = (booking, from) => {
-    setPaymentTarget({ booking, from });
+    setPaymentTarget({
+      booking,
+      from,
+    });
+
     setActiveKey("complete-payment");
   };
 
@@ -36,6 +39,9 @@ export default function TouristDashboard() {
   return (
     <div className="ts-shell">
       <div className="ts-shell-body">
+        {/* =========================
+            TOURIST SIDEBAR
+        ========================= */}
         <TouristSidebar
           activeKey={activeKey}
           onNavigate={setActiveKey}
@@ -43,32 +49,55 @@ export default function TouristDashboard() {
           onClose={() => setSidebarOpen(false)}
         />
 
+        {/* =========================
+            MAIN AREA
+        ========================= */}
         <div className="ts-shell-main">
           <TouristTopbar
             onMenuClick={() => setSidebarOpen(true)}
             onProfileClick={() => setActiveKey("profile")}
           />
 
-          <main
-            className={`ts-shell-content ${
-              isRequestsBookings || isPayments || isCompletePayment ? "" : "ts-shell-content--explore"
-            }`}
-          >
-            {isProfile ? (
-              <TouristProfile />
-            ) : isCompletePayment ? (
+          <main className="ts-shell-content">
+            {/* PROFILE */}
+            {isProfile && <TouristProfile />}
+
+            {/* PAYMENT PAGE */}
+            {isCompletePayment && (
               <PaymentPage
                 booking={paymentTarget?.booking}
-                backLabel={paymentTarget?.from === "payments" ? "Back to Payments" : "Back to My Requests"}
+                backLabel={
+                  paymentTarget?.from === "payments"
+                    ? "Back to Payments"
+                    : "Back to My Requests"
+                }
                 onBack={handleBackFromPayment}
               />
-            ) : isRequestsBookings ? (
-              <RequestsBookings onProceedToPayment={(booking) => goToPayment(booking, "bookings")} />
-            ) : isPayments ? (
-              <PaymentHistory onPayNow={(booking) => goToPayment(booking, "payments")} />
-            ) : (
-              <Explore embedded />
             )}
+
+            {/* BOOKINGS */}
+            {isRequestsBookings && (
+              <RequestsBookings
+                onProceedToPayment={(booking) =>
+                  goToPayment(booking, "bookings")
+                }
+              />
+            )}
+
+            {/* PAYMENTS */}
+            {isPayments && (
+              <PaymentHistory
+                onPayNow={(booking) =>
+                  goToPayment(booking, "payments")
+                }
+              />
+            )}
+
+            {/* DASHBOARD / EXPLORE */}
+            {!isProfile &&
+              !isCompletePayment &&
+              !isRequestsBookings &&
+              !isPayments && <Explore embedded />}
           </main>
         </div>
       </div>
