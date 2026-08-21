@@ -3,16 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\VerificationCode;
 use App\Models\Guide\GuideProfile;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
     /**
      * Send verification code to phone number.
+     *
+     * OTP is shown ONLY in Laravel terminal.
+     * OTP is NOT returned to browser.
+     * OTP is NOT stored in database.
      */
     public function sendCode(Request $request): JsonResponse
     {
@@ -29,15 +33,15 @@ class AuthController extends Controller
 
         $phone = trim($request->phone);
 
-        // Generate a random 6-digit verification code.
+        // Generate random 6-digit OTP
         $code = (string) random_int(100000, 999999);
 
         /*
         |--------------------------------------------------------------------------
         | DEVELOPMENT ONLY
         |--------------------------------------------------------------------------
-        | OTP will be shown in the Laravel terminal.
-        | Later, when an SMS service is connected, remove this section.
+        | OTP is shown ONLY in Laravel terminal.
+        | It is NOT returned in the API response.
         |--------------------------------------------------------------------------
         */
 
@@ -51,16 +55,23 @@ class AuthController extends Controller
         error_log('========================================');
         error_log('');
 
-        // Remove previous codes for this phone number.
-        VerificationCode::where('phone', $phone)->delete();
+        /*
+        |--------------------------------------------------------------------------
+        | Store OTP temporarily in Laravel Cache
+        |--------------------------------------------------------------------------
+        | This does NOT create a database record.
+        | OTP automatically expires after 5 minutes.
+        |--------------------------------------------------------------------------
+        */
 
-        // Store new verification code.
-        VerificationCode::create([
-            'phone' => $phone,
-            'code' => $code,
-            'expires_at' => now()->addMinutes(5),
-        ]);
+        Cache::put(
+            'verification_code_' . $phone,
+            $code,
+            now()->addMinutes(5)
+        );
 
+        // IMPORTANT:
+        // OTP is NOT included in this response.
         return response()->json([
             'message' => 'Verification code sent successfully.',
             'phone' => $phone,
@@ -87,32 +98,48 @@ class AuthController extends Controller
         $phone = trim($request->phone);
         $code = trim($request->code);
 
-        $verification = VerificationCode::where('phone', $phone)
-            ->where('code', $code)
-            ->latest()
-            ->first();
+        /*
+        |--------------------------------------------------------------------------
+        | Get OTP from Laravel Cache
+        |--------------------------------------------------------------------------
+        */
 
-        if (!$verification) {
+        $cacheKey = 'verification_code_' . $phone;
+
+        $storedCode = Cache::get($cacheKey);
+
+        // No OTP found
+        if (!$storedCode) {
+            return response()->json([
+                'message' => 'Verification code is invalid or expired.',
+            ], 401);
+        }
+
+        // OTP does not match
+        if ($storedCode !== $code) {
             return response()->json([
                 'message' => 'Invalid verification code.',
             ], 401);
         }
 
-        if ($verification->expires_at->isPast()) {
-            $verification->delete();
+        /*
+        |--------------------------------------------------------------------------
+        | Verification successful
+        |--------------------------------------------------------------------------
+        */
 
-            return response()->json([
-                'message' => 'Verification code has expired.',
-            ], 401);
-        }
+        // Delete OTP immediately after successful verification
+        Cache::forget($cacheKey);
 
-        // Verification successful.
-        $verification->delete();
-
-        // Check whether this phone number already belongs to a user.
+        // Check whether this phone already belongs to a user
         $user = User::where('phone', $phone)->first();
 
-        // Existing user.
+        /*
+        |--------------------------------------------------------------------------
+        | Existing User
+        |--------------------------------------------------------------------------
+        */
+
         if ($user) {
             $token = auth('api')->login($user);
 
@@ -129,7 +156,12 @@ class AuthController extends Controller
             ], 200);
         }
 
-        // New user.
+        /*
+        |--------------------------------------------------------------------------
+        | New User
+        |--------------------------------------------------------------------------
+        */
+
         return response()->json([
             'verified' => true,
             'is_new_user' => true,
@@ -144,16 +176,18 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
+
             'phone' => [
                 'required',
                 'string',
                 'min:10',
                 'max:20',
-                'unique:users,phone'
+                'unique:users,phone',
             ],
+
             'role' => [
                 'required',
-                'in:tourist,guide'
+                'in:tourist,guide',
             ],
         ]);
 
@@ -180,11 +214,6 @@ class AuthController extends Controller
         |--------------------------------------------------------------------------
         | Automatically Create Guide Profile
         |--------------------------------------------------------------------------
-        |
-        | Every new guide gets a Guide Profile.
-        | The signup name becomes the initial company name
-        | and contact person.
-        |
         */
 
         if ($user->role === 'guide') {
