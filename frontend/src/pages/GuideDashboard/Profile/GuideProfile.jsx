@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import "./GuideProfile.css";
 import GuideSidebar from "../components/GuideSidebar";
 import GuideHeader from "../components/GuideHeader";
@@ -22,10 +23,6 @@ function GuideProfile() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
-
-  // ==========================================
-  // LOAD PROFILE
-  // ==========================================
 
   useEffect(() => {
     loadProfile();
@@ -76,21 +73,18 @@ function GuideProfile() {
         address: savedProfile.address || "",
       });
 
-      // Existing profile picture
       if (savedProfile.profile_picture) {
         setProfileImage({
           preview: `${STORAGE_URL}/${savedProfile.profile_picture}`,
         });
       }
 
-      // Existing cover photo
       if (savedProfile.cover_photo) {
         setCoverImage({
           preview: `${STORAGE_URL}/${savedProfile.cover_photo}`,
         });
       }
 
-      // Existing experiences
       if (Array.isArray(savedProfile.experiences)) {
         setExperiences(
           savedProfile.experiences.map((experience) => ({
@@ -105,18 +99,12 @@ function GuideProfile() {
           })),
         );
       }
-
-      console.log("Guide profile loaded:", savedProfile);
     } catch (error) {
       console.error("Load profile error:", error);
     } finally {
       setLoading(false);
     }
   };
-
-  // ==========================================
-  // PROFILE INPUT CHANGE
-  // ==========================================
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -126,10 +114,6 @@ function GuideProfile() {
       [name]: value,
     }));
   };
-
-  // ==========================================
-  // PROFILE IMAGE
-  // ==========================================
 
   const handleProfileImage = (e) => {
     const file = e.target.files?.[0];
@@ -142,10 +126,6 @@ function GuideProfile() {
     });
   };
 
-  // ==========================================
-  // COVER IMAGE
-  // ==========================================
-
   const handleCoverImage = (e) => {
     const file = e.target.files?.[0];
 
@@ -156,10 +136,6 @@ function GuideProfile() {
       preview: URL.createObjectURL(file),
     });
   };
-
-  // ==========================================
-  // EXPERIENCE CHANGE
-  // ==========================================
 
   const handleExperienceChange = (id, field, value) => {
     setExperiences((prev) =>
@@ -173,10 +149,6 @@ function GuideProfile() {
       ),
     );
   };
-
-  // ==========================================
-  // EXPERIENCE IMAGE
-  // ==========================================
 
   const handleExperienceImage = (id, file) => {
     if (!file) return;
@@ -196,10 +168,6 @@ function GuideProfile() {
     );
   };
 
-  // ==========================================
-  // ADD EXPERIENCE
-  // ==========================================
-
   const handleAddExperience = () => {
     setExperiences((prev) => [
       ...prev,
@@ -212,23 +180,22 @@ function GuideProfile() {
     ]);
   };
 
-  // ==========================================
-  // SAVE NEW EXPERIENCE
-  // ==========================================
   const saveNewExperience = async (experience) => {
     try {
       const token = localStorage.getItem("token");
 
       if (!token) {
-        alert("You are not logged in.");
+        setSuccessMessage("You are not logged in.");
         return false;
       }
 
       const formData = new FormData();
 
-      formData.append("title", experience.title);
-      formData.append("description", experience.description);
+      formData.append("title", experience.title.trim());
+      formData.append("description", experience.description.trim());
 
+      // Photo is optional.
+      // Only append it when the user actually selected a file.
       if (experience.image?.file) {
         formData.append("photo", experience.image.file);
       }
@@ -254,41 +221,100 @@ function GuideProfile() {
           ? Object.values(data.errors).flat().join("\n")
           : "";
 
-        alert(data.message || validationErrors || "Failed to save experience.");
+        setSuccessMessage(
+          data.message ||
+            validationErrors ||
+            "Failed to save experience.",
+        );
 
         return false;
       }
 
       console.log("Experience added:", data.experience);
-
       return true;
     } catch (error) {
       console.error("Experience save error:", error);
 
-      alert("Something went wrong while saving the experience.");
+      setSuccessMessage(
+        "Something went wrong while saving the experience.",
+      );
 
       return false;
     }
   };
-  // ==========================================
-  // SAVE PROFILE
-  // ==========================================
+
+  const uploadProfilePicture = async (token) => {
+    if (!profileImage?.file) return true;
+
+    const formData = new FormData();
+    formData.append("profile_picture", profileImage.file);
+
+    const response = await fetch(
+      `${API_BASE_URL}/guide/profile/profile-picture`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      },
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("Profile picture upload error:", data);
+      throw new Error(
+        data.message || "Profile picture upload failed.",
+      );
+    }
+
+    return true;
+  };
+
+  const uploadCoverPhoto = async (token) => {
+    if (!coverImage?.file) return true;
+
+    const formData = new FormData();
+    formData.append("cover_photo", coverImage.file);
+
+    const response = await fetch(
+      `${API_BASE_URL}/guide/profile/cover-photo`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      },
+    );
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("Cover photo upload error:", data);
+      throw new Error(data.message || "Cover photo upload failed.");
+    }
+
+    return true;
+  };
 
   const handleSave = async () => {
+    setSuccessMessage("");
+
     try {
       setSaving(true);
 
       const token = localStorage.getItem("token");
 
       if (!token) {
-        alert("You are not logged in.");
+        setSuccessMessage("You are not logged in.");
         return;
       }
 
-      // ==========================================
-      // SAVE BASIC PROFILE
-      // ==========================================
-
+      // Save basic profile first.
       const response = await fetch(`${API_BASE_URL}/guide/profile`, {
         method: "PUT",
         headers: {
@@ -315,82 +341,35 @@ function GuideProfile() {
           ? Object.values(data.errors).flat().join("\n")
           : "";
 
-        alert(data.message || validationErrors || "Failed to save profile.");
+        setSuccessMessage(
+          data.message ||
+            validationErrors ||
+            "Failed to save profile.",
+        );
 
         return;
       }
 
       console.log("Profile saved:", data.profile);
 
-      // ==========================================
-      // UPLOAD PROFILE PICTURE
-      // ==========================================
+      // Upload selected profile picture.
+      await uploadProfilePicture(token);
 
-      if (profileImage?.file) {
-        const formData = new FormData();
+      // Upload selected cover photo.
+      await uploadCoverPhoto(token);
 
-        formData.append("profile_picture", profileImage.file);
-
-        const imageResponse = await fetch(
-          `${API_BASE_URL}/guide/profile/profile-picture`,
-          {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: formData,
-          },
-        );
-
-        const imageData = await imageResponse.json();
-
-        if (!imageResponse.ok) {
-          console.error("Profile picture upload error:", imageData);
-        }
-      }
-
-      // ==========================================
-      // UPLOAD COVER PHOTO
-      // ==========================================
-
-      if (coverImage?.file) {
-        const formData = new FormData();
-
-        formData.append("cover_photo", coverImage.file);
-
-        const coverResponse = await fetch(
-          `${API_BASE_URL}/guide/profile/cover-photo`,
-          {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: formData,
-          },
-        );
-
-        const coverData = await coverResponse.json();
-
-        if (!coverResponse.ok) {
-          console.error("Cover photo upload error:", coverData);
-        }
-      }
-
-      // ==========================================
-      // SAVE EXPERIENCES
-      // ==========================================
+      // Save newly added experiences.
       for (const experience of experiences) {
-        // Only save newly added experiences
         if (String(experience.id).startsWith("new-")) {
           if (!experience.title.trim()) {
-            alert("Please enter an experience title.");
+            setSuccessMessage("Please enter an experience title.");
             return;
           }
 
           if (!experience.description.trim()) {
-            alert("Please enter your experience description.");
+            setSuccessMessage(
+              "Please enter your experience description.",
+            );
             return;
           }
 
@@ -412,23 +391,17 @@ function GuideProfile() {
     } catch (error) {
       console.error("Save profile error:", error);
 
-      alert("Something went wrong while saving the profile.");
+      setSuccessMessage(
+        error.message || "Something went wrong while saving the profile.",
+      );
     } finally {
       setSaving(false);
     }
   };
 
-  // ==========================================
-  // TOUR SERVICES
-  // ==========================================
-
   const goToTourServices = () => {
     window.location.href = "/guide-dashboard/tour-services";
   };
-
-  // ==========================================
-  // LOADING
-  // ==========================================
 
   if (loading) {
     return (
@@ -449,10 +422,6 @@ function GuideProfile() {
     );
   }
 
-  // ==========================================
-  // UI
-  // ==========================================
-
   return (
     <div className="guide-dashboard">
       <GuideSidebar />
@@ -461,19 +430,12 @@ function GuideProfile() {
         <GuideHeader />
 
         <div className="guide-profile-page">
-          {/* PAGE HEADING */}
-
           <div className="guide-profile-heading">
             <h1>My Profile</h1>
-
             <p>Manage your company information and preferences</p>
           </div>
 
-          {/* PROFILE HEADER */}
-
           <section className="profile-main-card">
-            {/* COVER */}
-
             <div
               className="profile-cover"
               style={
@@ -495,29 +457,28 @@ function GuideProfile() {
                 Edit Cover Photo
                 <input
                   type="file"
-                  accept="image/*"
+                  accept=".jpg,.jpeg,.png,.webp"
                   onChange={handleCoverImage}
                   hidden
                 />
               </label>
             </div>
 
-            {/* PROFILE HEADER INFO */}
-
             <div className="profile-header-info">
-              {/* PROFILE IMAGE */}
-
               <div className="profile-photo-wrapper">
                 <label className="profile-photo">
                   {profileImage ? (
-                    <img src={profileImage.preview} alt="Profile preview" />
+                    <img
+                      src={profileImage.preview}
+                      alt="Profile preview"
+                    />
                   ) : (
                     <span>👤</span>
                   )}
 
                   <input
                     type="file"
-                    accept="image/*"
+                    accept=".jpg,.jpeg,.png,.webp"
                     onChange={handleProfileImage}
                     hidden
                   />
@@ -525,8 +486,6 @@ function GuideProfile() {
 
                 <p>Profile Picture</p>
               </div>
-
-              {/* COMPANY */}
 
               <div className="profile-field">
                 <label>Guide Company Name</label>
@@ -539,8 +498,6 @@ function GuideProfile() {
                   placeholder="Enter guide company name"
                 />
               </div>
-
-              {/* OWNER */}
 
               <div className="profile-field">
                 <label>Contact Person / Owner</label>
@@ -556,11 +513,7 @@ function GuideProfile() {
             </div>
           </section>
 
-          {/* CONTENT */}
-
           <div className="profile-content-grid">
-            {/* BIO */}
-
             <section className="profile-section-card">
               <h2>Bio</h2>
 
@@ -577,10 +530,10 @@ function GuideProfile() {
                 placeholder="Write about your company, experience, specialties, and what clients can expect..."
               />
 
-              <span className="character-count">{profile.bio.length}/1000</span>
+              <span className="character-count">
+                {profile.bio.length}/1000
+              </span>
             </section>
-
-            {/* CONTACT */}
 
             <section className="profile-section-card">
               <h2>Contact Information</h2>
@@ -628,12 +581,12 @@ function GuideProfile() {
               </div>
             </section>
 
-            {/* TOUR SERVICES */}
-
             <section className="profile-section-card">
               <h2>Tour Services</h2>
 
-              <p>Manage and showcase the tour services your company offers.</p>
+              <p>
+                Manage and showcase the tour services your company offers.
+              </p>
 
               <div className="empty-tour-services">
                 <div className="tour-service-icon">🗺️</div>
@@ -658,8 +611,6 @@ function GuideProfile() {
               </div>
             </section>
 
-            {/* EXPERIENCES */}
-
             <section className="profile-section-card">
               <div className="experience-header">
                 <div>
@@ -683,8 +634,6 @@ function GuideProfile() {
               <div className="experience-grid">
                 {experiences.map((experience) => (
                   <div className="experience-item" key={experience.id}>
-                    {/* IMAGE */}
-
                     <label className="experience-upload">
                       {experience.image ? (
                         <img
@@ -700,16 +649,14 @@ function GuideProfile() {
                       ) : (
                         <>
                           <span>▧</span>
-
                           <p>Upload Photo</p>
-
-                          <small>JPG, PNG</small>
+                          <small>JPG, PNG, WEBP</small>
                         </>
                       )}
 
                       <input
                         type="file"
-                        accept="image/*"
+                        accept=".jpg,.jpeg,.png,.webp"
                         hidden
                         onChange={(e) =>
                           handleExperienceImage(
@@ -719,8 +666,6 @@ function GuideProfile() {
                         }
                       />
                     </label>
-
-                    {/* TITLE */}
 
                     <label>Experience Title</label>
 
@@ -736,8 +681,6 @@ function GuideProfile() {
                       }
                       placeholder="Enter a short title"
                     />
-
-                    {/* DESCRIPTION */}
 
                     <label>Your Experience</label>
 
@@ -763,11 +706,11 @@ function GuideProfile() {
             </section>
           </div>
 
-          {/* SAVE */}
-
           <div className="profile-final-save">
             {successMessage && (
-              <div className="profile-success-message">{successMessage}</div>
+              <div className="profile-success-message">
+                {successMessage}
+              </div>
             )}
 
             <button
