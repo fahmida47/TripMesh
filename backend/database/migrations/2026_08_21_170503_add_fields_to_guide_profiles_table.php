@@ -7,22 +7,58 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Create guide_profiles and guide_experiences tables.
      */
     public function up(): void
     {
-        Schema::table('guide_experiences', function (Blueprint $table) {
-            $table->foreignId('guide_profile_id')
-                ->after('id')
-                ->constrained('guide_profiles')
-                ->cascadeOnDelete();
+        /*
+        |--------------------------------------------------------------------------
+        | Guide Profiles
+        |--------------------------------------------------------------------------
+        */
 
-            $table->string('title')->after('guide_profile_id');
+        if (!Schema::hasTable('guide_profiles')) {
+            Schema::create('guide_profiles', function (Blueprint $table) {
+                $table->id();
 
-            $table->text('description')->nullable()->after('title');
+                $table->foreignId('user_id')
+                    ->constrained('users')
+                    ->cascadeOnDelete();
 
-            $table->string('photo')->nullable()->after('description');
-        });
+                $table->string('company_name');
+                $table->string('contact_person')->nullable();
+                $table->text('bio')->nullable();
+                $table->string('phone')->nullable();
+                $table->string('email')->nullable();
+                $table->string('address')->nullable();
+                $table->string('profile_picture')->nullable();
+                $table->string('cover_photo')->nullable();
+
+                $table->timestamps();
+            });
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Guide Experiences
+        |--------------------------------------------------------------------------
+        */
+
+        if (!Schema::hasTable('guide_experiences')) {
+            Schema::create('guide_experiences', function (Blueprint $table) {
+                $table->id();
+
+                $table->foreignId('guide_profile_id')
+                    ->constrained('guide_profiles')
+                    ->cascadeOnDelete();
+
+                $table->string('title');
+                $table->text('description')->nullable();
+                $table->string('photo')->nullable();
+
+                $table->timestamps();
+            });
+        }
     }
 
     /**
@@ -30,14 +66,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('guide_experiences', function (Blueprint $table) {
-            $table->dropForeign(['guide_profile_id']);
-            $table->dropColumn([
-                'guide_profile_id',
-                'title',
-                'description',
-                'photo',
-            ]);
-        });
+        Schema::dropIfExists('guide_experiences');
+        Schema::dropIfExists('guide_profiles');
     }
 };
