@@ -1,86 +1,246 @@
+/* =========================================
+   CONTACT FORM CARD
+========================================= */
+
 .contact-form-card {
-  background: white;
-
+  width: 100%;
+  background: #ffffff;
   border-radius: 14px;
-
   padding: 28px;
-
+  box-sizing: border-box;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
 }
 
 .contact-form-card h2 {
   margin: 0;
-
   color: #08245c;
-
   font-size: 28px;
+  font-weight: 700;
 }
 
 .title-line {
   width: 45px;
-
   height: 4px;
-
   background: #1769ff;
-
   margin: 12px 0 25px;
+  border-radius: 5px;
 }
 
-.input-group {
-  display: flex;
 
+/* =========================================
+   FORM
+========================================= */
+
+.contact-form-card form {
+  width: 100%;
+}
+
+.input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.contact-field {
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* =========================================
+   INPUT GROUP
+========================================= */
+
+.input-group {
+  width: 100%;
+  min-height: 50px;
+
+  display: flex;
   align-items: center;
 
   gap: 12px;
 
   border: 1px solid #dce3ef;
-
   border-radius: 10px;
 
   padding: 0 15px;
-
   margin-bottom: 15px;
+
+  background: #ffffff;
+
+  box-sizing: border-box;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
 }
+
+.input-group:focus-within {
+  border-color: #1769ff;
+
+  box-shadow:
+    0 0 0 3px rgba(23, 105, 255, 0.1);
+
+  background: #ffffff;
+}
+
+.input-group:hover {
+  border-color: #b9c6da;
+}
+
+
+/* =========================================
+   ICON
+========================================= */
 
 .input-group svg {
-  color: #1769ff;
-
   width: 20px;
+  height: 20px;
+
+  flex-shrink: 0;
+
+  color: #1769ff;
 }
+
+
+/* =========================================
+   INPUT + TEXTAREA
+   IMPORTANT: TEXT COLOR BLACK
+========================================= */
 
 .input-group input,
 .input-group textarea {
   width: 100%;
 
   border: none;
-
   outline: none;
 
-  padding: 15px 0;
+  background: transparent;
 
+  /* IMPORTANT */
+  color: #111827 !important;
+
+  font-family: inherit;
   font-size: 15px;
+  font-weight: 400;
+
+  box-sizing: border-box;
+
+  /* Prevent inherited white text */
+  -webkit-text-fill-color: #111827;
 }
+
+
+/* =========================================
+   INPUT
+========================================= */
+
+.input-group input {
+  height: 48px;
+
+  padding: 12px 0;
+
+  color: #111827 !important;
+  -webkit-text-fill-color: #111827;
+}
+
+
+/* =========================================
+   TEXTAREA
+========================================= */
 
 .textarea-box {
   align-items: flex-start;
+
+  min-height: 145px;
+
+  padding-top: 14px;
+  padding-bottom: 14px;
 }
 
 .textarea-box textarea {
-  height: 120px;
+  min-height: 115px;
 
-  resize: none;
+  height: 115px;
+
+  padding: 0;
+
+  resize: vertical;
+
+  line-height: 1.5;
+
+  /* IMPORTANT */
+  color: #111827 !important;
+  -webkit-text-fill-color: #111827;
+
+  background: transparent !important;
 }
 
-button {
-  display: flex;
+
+/* =========================================
+   PLACEHOLDER
+========================================= */
+
+.input-group input::placeholder,
+.input-group textarea::placeholder {
+  color: #94a3b8 !important;
+
+  opacity: 1;
+
+  -webkit-text-fill-color: #94a3b8;
+}
+
+
+/* =========================================
+   ERROR BORDER
+========================================= */
+
+.input-group.input-error {
+  border-color: #dc2626;
+}
+
+.input-group.input-error:focus-within {
+  border-color: #dc2626;
+
+  box-shadow:
+    0 0 0 3px rgba(220, 38, 38, 0.08);
+}
+
+
+/* =========================================
+   ERROR MESSAGE
+========================================= */
+
+.error {
+  color: #dc2626;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  margin: -8px 0 12px;
+
+  line-height: 1.4;
+}
+
+
+/* =========================================
+   SUBMIT BUTTON
+========================================= */
+
+.contact-submit-btn {
+  width: auto;
+
+  display: inline-flex;
 
   align-items: center;
+  justify-content: center;
 
   gap: 8px;
 
   background: #1769ff;
 
-  color: white;
+  color: #ffffff;
 
   border: none;
 
@@ -88,30 +248,36 @@ button {
 
   border-radius: 9px;
 
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+
   cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.15s ease;
 }
 
-button:hover {
+.contact-submit-btn:hover {
   background: #0d5bdd;
 }
 
-.error {
-  color: #dc2626;
-
-  font-size: 13px;
-
-  margin: -8px 0 12px;
+.contact-submit-btn:active {
+  transform: translateY(1px);
 }
 
-.success {
-  margin-top: 15px;
+.contact-submit-btn:focus {
+  outline: none;
 
-  color: #16a34a;
-
-  font-size: 14px;
-
-  font-weight: 600;
+  box-shadow:
+    0 0 0 3px rgba(23, 105, 255, 0.2);
 }
+
+
+/* =========================================
+   PRIVACY
+========================================= */
 
 .privacy {
   display: flex;
@@ -124,13 +290,81 @@ button:hover {
 
   font-size: 13px;
 
-  margin-top: 15px;
+  line-height: 1.5;
+
+  margin: 15px 0 0;
 }
 
+.privacy svg {
+  flex-shrink: 0;
+
+  color: #1769ff;
+}
+
+
+/* =========================================
+   SUCCESS
+========================================= */
+
+.success {
+  margin: 15px 0 0;
+
+  padding: 10px 12px;
+
+  border-radius: 8px;
+
+  background: #ecfdf5;
+
+  color: #15803d;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================
+   RESPONSIVE - 900px
+========================================= */
+
+@media (max-width: 900px) {
+  .contact-form-card {
+    padding: 24px;
+  }
+
+  .contact-form-card h2 {
+    font-size: 25px;
+  }
+
+  .input-row {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+}
+
+
+/* =========================================
+   RESPONSIVE - 768px
+========================================= */
+
 @media (max-width: 768px) {
+  .contact-form-card {
+    padding: 22px;
+    border-radius: 12px;
+  }
+
+  .contact-form-card h2 {
+    font-size: 24px;
+  }
+
+  .title-line {
+    margin-bottom: 22px;
+  }
+
   .input-row {
     display: flex;
-
     flex-direction: column;
   }
 
@@ -138,15 +372,96 @@ button:hover {
     width: 100%;
   }
 
-  .contact-form-card button {
+  .contact-submit-btn {
     width: 100%;
-
     min-height: 48px;
-
-    justify-content: center;
   }
 
   .privacy {
-    line-height: 1.5;
+    align-items: flex-start;
+  }
+}
+
+
+/* =========================================
+   RESPONSIVE - 480px
+========================================= */
+
+@media (max-width: 480px) {
+  .contact-form-card {
+    padding: 18px;
+  }
+
+  .contact-form-card h2 {
+    font-size: 21px;
+  }
+
+  .title-line {
+    width: 40px;
+    height: 3px;
+
+    margin: 10px 0 20px;
+  }
+
+  .input-group {
+    gap: 10px;
+
+    padding: 0 12px;
+
+    border-radius: 8px;
+  }
+
+  .input-group svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  .input-group input,
+  .input-group textarea {
+    font-size: 14px;
+  }
+
+  .textarea-box {
+    min-height: 135px;
+  }
+
+  .textarea-box textarea {
+    min-height: 105px;
+    height: 105px;
+  }
+
+  .contact-submit-btn {
+    font-size: 14px;
+  }
+
+  .privacy {
+    font-size: 12px;
+  }
+
+  .success {
+    font-size: 13px;
+  }
+}
+
+
+/* =========================================
+   VERY SMALL MOBILE
+========================================= */
+
+@media (max-width: 360px) {
+  .contact-form-card {
+    padding: 15px;
+  }
+
+  .contact-form-card h2 {
+    font-size: 19px;
+  }
+
+  .input-group {
+    padding: 0 10px;
+  }
+
+  .contact-submit-btn {
+    padding: 13px 18px;
   }
 }
