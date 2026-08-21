@@ -1,13 +1,13 @@
+/* ========================================
+   TOURIST SIDEBAR
+   ======================================== */
+
 .ts-sidebar {
   width: 280px;
   height: 100vh;
-
   background: #05235c;
-
   color: #ffffff;
-
   padding: 24px 20px;
-
   box-sizing: border-box;
 
   position: fixed;
@@ -19,38 +19,33 @@
   justify-content: space-between;
 
   overflow-y: auto;
-
   z-index: 1000;
 }
 
-/* ==============================
+/* ========================================
    SIDEBAR TOP
-   ============================== */
+   ======================================== */
 
 .ts-sidebar-top {
   display: flex;
   flex-direction: column;
 }
 
-/* ==============================
+/* ========================================
    LOGO
-   ============================== */
+   ======================================== */
 
 .ts-sidebar-logo {
   display: flex;
   align-items: center;
-
   gap: 14px;
-
   margin-bottom: 28px;
 }
 
 .ts-logo-circle {
   width: 46px;
   height: 46px;
-
   border-radius: 50%;
-
   background: #ffffff;
 
   display: flex;
@@ -58,62 +53,51 @@
   justify-content: center;
 
   overflow: hidden;
-
   flex-shrink: 0;
 }
 
 .ts-logo-circle img {
   width: 28px;
   height: 28px;
-
   object-fit: contain;
 }
 
 .ts-logo-text h2 {
   margin: 0;
-
   font-size: 22px;
   font-weight: 700;
-
   line-height: 1.1;
-
   color: #ffffff;
 }
 
 .ts-logo-text p {
   margin: 4px 0 0;
-
   font-size: 14px;
-
   color: rgba(255, 255, 255, 0.8);
 }
 
-/* ==============================
+/* ========================================
    NAVIGATION
-   ============================== */
+   ======================================== */
 
 .ts-sidebar-nav {
   display: flex;
   flex-direction: column;
-
   gap: 12px;
 }
 
 .ts-sidebar-link {
   display: flex;
   align-items: center;
-
   gap: 14px;
 
   text-decoration: none;
-
   color: #ffffff;
 
   font-size: 16px;
   font-weight: 500;
 
   padding: 14px 16px;
-
   border-radius: 12px;
 
   transition:
@@ -124,7 +108,6 @@
 .ts-sidebar-link svg {
   width: 18px;
   height: 18px;
-
   flex-shrink: 0;
 }
 
@@ -134,28 +117,24 @@
 
 .ts-sidebar-link.active {
   background: #2f6df6;
-
   color: #ffffff;
 }
 
-/* ==============================
+/* ========================================
    LOGOUT
-   ============================== */
+   ======================================== */
 
 .ts-logout-btn {
   margin-top: 24px;
-
   padding-top: 18px;
 
   border: none;
-
   border-top: 1px solid rgba(255, 255, 255, 0.12);
 
   background: transparent;
 
   display: flex;
   align-items: center;
-
   gap: 12px;
 
   color: #ff4d4f;
@@ -164,7 +143,6 @@
   font-weight: 600;
 
   cursor: pointer;
-
   text-align: left;
 }
 
@@ -177,173 +155,34 @@
   color: #ff6b6b;
 }
 
-/* ==============================
+/* ========================================
    CLOSE BUTTON
-   ============================== */
+   ======================================== */
 
 .ts-sidebar-close {
   display: none;
 }
 
-
-/* ==============================
+/* ========================================
    BACKDROP
-   ============================== */
-
-.ts-brand {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  padding: 4px 12px 18px;
-}
-
-.ts-brand-mark {
-  width: 32px;
-  height: 32px;
-  border-radius: 9px;
-  background: #2563eb;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.ts-brand-name {
-  font-size: 18px;
-  font-weight: 800;
-  color: #fff;
-  letter-spacing: -0.01em;
-}
-
-.ts-brand-accent {
-  color: #60a5fa;
-}
-
-.ts-nav {
-  margin-top: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.ts-nav-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  color: #aab4d4;
-  font-size: 16px;
-  font-weight: 600;
-  text-decoration: none;
-  position: relative;
-  transition: background 0.15s ease, color 0.15s ease;
-}
-
-.ts-nav-item svg {
-  flex-shrink: 0;
-}
-
-.ts-nav-item:hover {
-  background: rgba(255, 255, 255, 0.06);
-  color: #fff;
-}
-
-.ts-nav-item.active {
-  background: #2563eb;
-  color: #fff;
-  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.35);
-}
-
-.ts-promo {
-  margin-top: 18px;
-  min-height: 190px;
-  border-radius: 14px;
-  padding: 16px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  background: linear-gradient(160deg, #16327a 0%, #0b1638 100%);
-  background-size: cover;
-  background-position: center;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.ts-promo-title {
-  margin: 0 0 6px;
-  font-size: 15px;
-  font-weight: 800;
-  color: #fff;
-}
-
-.ts-promo-copy {
-  margin: 0 0 14px;
-  font-size: 12.5px;
-  color: #b7c0dc;
-  line-height: 1.5;
-}
-
-.ts-promo-btn {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  background: #fff;
-  color: #0b1638;
-  border: none;
-  border-radius: 9px;
-  padding: 9px 0;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.ts-promo-btn:hover {
-  background: #e7ecff;
-}
-
-/* ---- Log Out ---- */
-
-.ts-logout {
-  margin-top: auto;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
-  border-radius: 10px;
-  color: #fca5a5;
-  font-size: 16px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: background 0.15s ease;
-}
-
-.ts-logout:hover {
-  background: rgba(248, 113, 113, 0.12);
-}
-
-/* ---- Responsive: off-canvas drawer on tablet & mobile ---- */
+   ======================================== */
 
 .ts-sidebar-backdrop {
   display: none;
 }
 
-/* ==============================
-   RESPONSIVE
-   ============================== */
+/* ========================================
+   TABLET / MOBILE
+   ======================================== */
 
 @media (max-width: 1024px) {
   .ts-sidebar {
     width: 280px;
 
     transform: translateX(-100%);
-
     transition: transform 0.25s ease;
 
-    box-shadow:
-      8px 0 24px rgba(11, 22, 56, 0.25);
+    box-shadow: 8px 0 24px rgba(11, 22, 56, 0.25);
   }
 
   .ts-sidebar.open {
@@ -355,7 +194,6 @@
 
     align-items: center;
     justify-content: center;
-
     align-self: flex-end;
 
     width: 32px;
@@ -364,15 +202,12 @@
     margin-bottom: 6px;
 
     border: none;
-
     border-radius: 8px;
 
     background: rgba(255, 255, 255, 0.08);
-
     color: #ffffff;
 
     cursor: pointer;
-
     font-size: 24px;
   }
 
@@ -380,7 +215,6 @@
     display: block;
 
     position: fixed;
-
     inset: 0;
 
     background: rgba(11, 22, 56, 0.5);
@@ -389,10 +223,13 @@
   }
 }
 
+/* ========================================
+   SMALL TABLET
+   ======================================== */
+
 @media (max-width: 900px) {
   .ts-sidebar {
     width: 240px;
-
     padding: 20px 16px;
   }
 
@@ -402,7 +239,6 @@
 
   .ts-sidebar-link {
     font-size: 15px;
-
     padding: 12px 14px;
   }
 }
