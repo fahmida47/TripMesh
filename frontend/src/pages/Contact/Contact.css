@@ -1,11 +1,16 @@
+/* =========================================
+   CONTACT PAGE
+========================================= */
+
 .contact-page {
   background: #edeeef;
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
-/* =========================
+/* =========================================
    HERO SECTION
-========================= */
+========================================= */
 
 .contact-hero {
   position: relative;
@@ -14,6 +19,7 @@
 
   margin-top: -76px;
   padding-top: 76px;
+
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -35,6 +41,7 @@
 
 .hero-content {
   position: relative;
+
   z-index: 2;
 
   padding: 45px 8% 0;
@@ -45,18 +52,22 @@
 .hero-content h1 {
   margin: 0 0 12px;
 
+  color: #ffffff;
+
   font-size: 48px;
   font-weight: 700;
+
   letter-spacing: -1px;
 }
 
 .hero-content p {
   margin: 0;
 
-  font-size: 18px;
-  line-height: 1.6;
-
   color: rgba(255, 255, 255, 0.92);
+
+  font-size: 18px;
+
+  line-height: 1.6;
 }
 
 .plane-icon {
@@ -83,9 +94,9 @@
   }
 }
 
-/* =========================
+/* =========================================
    MAIN CONTACT LAYOUT
-========================= */
+========================================= */
 
 .contact-container {
   width: min(1200px, 90%);
@@ -97,11 +108,13 @@
   grid-template-columns: 330px 1fr;
 
   gap: 25px;
+
+  align-items: start;
 }
 
-/* =========================
-   CONTACT CARDS
-========================= */
+/* =========================================
+   COMMON CONTACT CARD
+========================================= */
 
 .contact-info,
 .contact-form {
@@ -114,212 +127,19 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
 }
 
-.contact-info h2,
-.contact-form h2 {
-  margin: 0;
-
-  color: #08245c;
-
-  font-size: 28px;
-
-  font-weight: 700;
-}
-
-.title-line {
-  width: 45px;
-
-  height: 4px;
-
-  margin: 12px 0 25px;
-
-  border-radius: 10px;
-
-  background: #1769ff;
-}
-
-/* =========================
-   LEFT CONTACT INFO
-========================= */
-
-.info-item {
-  display: flex;
-
-  align-items: flex-start;
-
-  gap: 15px;
-
-  margin-bottom: 22px;
-}
-
-.icon-box {
-  width: 52px;
-  height: 52px;
-
-  border-radius: 16px;
-
-  background: linear-gradient(135deg, #eaf2ff, #d7e8ff);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  color: #1769ff;
-
-  box-shadow: 0 8px 18px rgba(23, 105, 255, 0.15);
-
-  transition: all 0.3s ease;
-}
-
-.icon-box svg {
-  stroke-width: 2.2;
-}
-
-.info-item:hover .icon-box {
-  transform: translateY(-4px) rotate(-5deg);
-
-  background: linear-gradient(135deg, #1769ff, #258dff);
-
-  color: white;
-}
-
-.info-item h3 {
-  margin: 0 0 5px;
-
-  color: #14295c;
-
-  font-size: 17px;
-}
-
-.info-item p {
-  margin: 0;
-
-  color: #56627a;
-
-  font-size: 14px;
-
-  line-height: 1.5;
-}
-
-/* =========================
-   CONTACT FORM
-========================= */
-
-.form-row {
-  display: grid;
-
-  grid-template-columns: 1fr 1fr;
-
-  gap: 16px;
-}
-
-.contact-form input,
-.contact-form textarea {
-  width: 100%;
-
-  padding: 14px 16px;
-
-  margin-bottom: 16px;
-
-  border-radius: 10px;
-
-  border: 1px solid #dce3ef;
-
-  font-size: 15px;
-
-  font-family: inherit;
-
-  color: #14295c;
-
-  transition: all 0.3s ease;
-
-  box-sizing: border-box;
-}
-
-.contact-form input::placeholder,
-.contact-form textarea::placeholder {
-  color: #94a3b8;
-}
-
-.contact-form input:focus,
-.contact-form textarea:focus {
-  outline: none;
-
-  border-color: #1769ff;
-
-  box-shadow: 0 0 0 3px rgba(23, 105, 255, 0.15);
-}
-
-.contact-form textarea {
-  height: 120px;
-
-  resize: none;
-}
-
-/* =========================
-   SEND BUTTON
-========================= */
-
-.contact-form button {
-  display: inline-flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  gap: 8px;
-
-  background: linear-gradient(135deg, #258dff, #1769ff);
-
-  color: white;
-
-  border: none;
-
-  padding: 14px 28px;
-
-  border-radius: 9px;
-
-  font-size: 15px;
-
-  font-weight: 600;
-
-  cursor: pointer;
-
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
-}
-
-.contact-form button:hover {
-  transform: translateY(-2px);
-
-  box-shadow: 0 8px 20px rgba(23, 105, 255, 0.35);
-}
-
-/* =========================
-   PRIVACY TEXT
-========================= */
-
-.privacy {
-  display: flex;
-
-  align-items: center;
-
-  gap: 6px;
-
-  margin-top: 15px;
-
-  color: #64748b;
-
-  font-size: 13px;
-}
-
-/* =========================
+/* =========================================
+   REMOVE OLD FORM INPUT STYLING
+   ContactForm has its own CSS
+========================================= */
+
+/* =========================================
    LAPTOP / TABLET
-========================= */
+========================================= */
 
 @media (max-width: 1100px) {
   .contact-container {
     grid-template-columns: 300px 1fr;
+
     gap: 20px;
   }
 
@@ -333,121 +153,9 @@
   }
 }
 
-/* =========================
+/* =========================================
    TABLET
-========================= */
-
-@media (max-width: 900px) {
-  .contact-hero {
-    height: 280px;
-
-    margin-top: -76px;
-  }
-
-  .contact-container {
-    width: 90%;
-
-    grid-template-columns: 1fr;
-  }
-
-  .form-row {
-    grid-template-columns: 1fr;
-  }
-
-  .hero-content {
-    padding: 40px 7% 0;
-  }
-
-  .hero-content h1 {
-    font-size: 38px;
-  }
-
-  .hero-content p {
-    font-size: 16px;
-  }
-}
-
-/* =========================
-   MOBILE
-========================= */
-
-@media (max-width: 600px) {
-  .contact-hero {
-    height: 240px;
-
-    margin-top: -70px;
-
-    padding-top: 70px;
-  }
-
-  .hero-content {
-    padding: 35px 6% 0;
-  }
-
-  .hero-content h1 {
-    font-size: 30px;
-  }
-
-  .hero-content p {
-    font-size: 14px;
-
-    line-height: 1.5;
-  }
-
-  .plane-icon {
-    font-size: 28px;
-  }
-
-  .contact-container {
-    width: 92%;
-
-    margin-top: 20px;
-  }
-
-  .contact-info,
-  .contact-form {
-    padding: 20px;
-
-    border-radius: 12px;
-  }
-
-  .contact-info h2,
-  .contact-form h2 {
-    font-size: 23px;
-  }
-
-  .info-item {
-    gap: 12px;
-
-    margin-bottom: 18px;
-  }
-
-  .icon-box {
-    width: 42px;
-
-    height: 42px;
-
-    font-size: 19px;
-  }
-
-  .contact-form button {
-    width: 100%;
-  }
-}
-
-/* =========================
-   RESPONSIVE DESIGN
-========================= */
-
-/* Large Desktop */
-@media (min-width: 1200px) {
-  .contact-container {
-    grid-template-columns: 330px 1fr;
-    max-width: 1200px;
-  }
-}
-
-/* Tablet */
+========================================= */
 
 @media (max-width: 1024px) {
   .contact-hero {
@@ -477,7 +185,41 @@
   }
 }
 
-/* Mobile */
+/* =========================================
+   TABLET - 900px
+========================================= */
+
+@media (max-width: 900px) {
+  .contact-hero {
+    height: 280px;
+
+    margin-top: -76px;
+  }
+
+  .contact-container {
+    width: 90%;
+
+    grid-template-columns: 1fr;
+
+    gap: 20px;
+  }
+
+  .hero-content {
+    padding: 40px 7% 0;
+  }
+
+  .hero-content h1 {
+    font-size: 38px;
+  }
+
+  .hero-content p {
+    font-size: 16px;
+  }
+}
+
+/* =========================================
+   MOBILE - 768px
+========================================= */
 
 @media (max-width: 768px) {
   .contact-page {
@@ -488,7 +230,6 @@
     height: 240px;
 
     margin-top: 0;
-
     padding-top: 0;
 
     background-position: center;
@@ -532,11 +273,6 @@
     margin: 25px auto;
   }
 
-  /*
-  Contact Information first
-  Form second
-  */
-
   .contact-info {
     order: 1;
   }
@@ -546,9 +282,52 @@
   }
 }
 
-/* Small Mobile */
+/* =========================================
+   MOBILE - 600px
+========================================= */
+
+@media (max-width: 600px) {
+  .contact-hero {
+    height: 240px;
+
+    margin-top: -70px;
+    padding-top: 70px;
+  }
+
+  .hero-content {
+    padding: 35px 6% 0;
+  }
+
+  .hero-content h1 {
+    font-size: 30px;
+  }
+
+  .hero-content p {
+    font-size: 14px;
+
+    line-height: 1.5;
+  }
+
+  .plane-icon {
+    font-size: 28px;
+  }
+
+  .contact-container {
+    width: 92%;
+
+    margin-top: 20px;
+  }
+}
+
+/* =========================================
+   SMALL MOBILE - 480px
+========================================= */
 
 @media (max-width: 480px) {
+  .contact-hero {
+    height: 240px;
+  }
+
   .hero-content {
     padding: 45px 18px 0;
   }
@@ -563,5 +342,17 @@
 
   .contact-container {
     width: 94%;
+  }
+}
+
+/* =========================================
+   LARGE DESKTOP
+========================================= */
+
+@media (min-width: 1200px) {
+  .contact-container {
+    grid-template-columns: 330px 1fr;
+
+    max-width: 1200px;
   }
 }
