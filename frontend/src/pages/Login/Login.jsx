@@ -4,17 +4,24 @@ import "./Login.css";
 import loginBg from "../../assets/login-bg.jpeg";
 import Loading from "../../components/Loading/Loading";
 
+const API_URL = "http://127.0.0.1:8000/api";
+
 const LogoIcon = () => (
   <svg viewBox="0 0 80 80" className="trip-logo" fill="none">
     <defs>
-      <linearGradient id="tripGradient" x1="0" y1="0" x2="1" y2="1">
+      <linearGradient
+        id="tripGradient"
+        x1="0"
+        y1="0"
+        x2="1"
+        y2="1"
+      >
         <stop offset="0%" stopColor="#38bdf8" />
         <stop offset="50%" stopColor="#2563eb" />
         <stop offset="100%" stopColor="#1e3a8a" />
       </linearGradient>
     </defs>
 
-    {/* Outer Circle */}
     <circle
       cx="40"
       cy="40"
@@ -23,19 +30,17 @@ const LogoIcon = () => (
       strokeWidth="4"
     />
 
-    {/* Location Pin */}
     <path
       d="
-      M40 18
-      C29 18 21 26 21 37
-      C21 51 40 64 40 64
-      C40 64 59 51 59 37
-      C59 26 51 18 40 18Z
+        M40 18
+        C29 18 21 26 21 37
+        C21 51 40 64 40 64
+        C40 64 59 51 59 37
+        C59 26 51 18 40 18Z
       "
       fill="url(#tripGradient)"
     />
 
-    {/* Center Circle */}
     <circle cx="40" cy="37" r="9" fill="white" />
     <circle cx="40" cy="37" r="5" fill="#2563eb" />
   </svg>
@@ -45,6 +50,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
+  const [sendingCode, setSendingCode] = useState(false);
 
   const [formData, setFormData] = useState({
     phone: "",
@@ -52,24 +58,8 @@ const Login = () => {
   });
 
   const [error, setError] = useState("");
-
-  /*
-    ==========================================
-    MANUAL VERIFICATION CODE
-    ==========================================
-
-    Sir je verification code diyechen,
-    ekhane oi code boshao.
-
-    Example:
-    123456
-  */
-
-  const VERIFICATION_CODE = "123456";
-
-  /* ===============================
-          INPUT CHANGE
-  ================================ */
+  const [success, setSuccess] = useState("");
+  const [codeSent, setCodeSent] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -80,22 +70,15 @@ const Login = () => {
     setError("");
   };
 
-  /* ===============================
-          LOGIN
-  ================================ */
+  // ==========================================
+  // SEND VERIFICATION CODE
+  // ==========================================
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
+  const handleSendCode = async () => {
     setError("");
+    setSuccess("");
 
     const phone = formData.phone.trim();
-    const verificationCode =
-      formData.verificationCode.trim();
-
-    /* ===============================
-          PHONE VALIDATION
-    ================================ */
 
     if (!phone) {
       setError("Please enter your phone number.");
@@ -107,77 +90,194 @@ const Login = () => {
       return;
     }
 
-    /* ===============================
-          VERIFICATION CODE
-    ================================ */
+    setSendingCode(true);
+
+    try {
+      const response = await fetch(
+        `${API_URL}/auth/send-code`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            phone: phone,
+          }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setError(
+          result.message ||
+            "Failed to send verification code."
+        );
+
+        setSendingCode(false);
+        return;
+      }
+
+      setCodeSent(true);
+
+      setSuccess(
+        "Verification code sent successfully."
+      );
+
+      /*
+       * Development mode:
+       * Backend currently returns the OTP because
+       * no SMS provider is connected yet.
+       *
+       * OTP is NOT printed in the console.
+       */
+
+      setSendingCode(false);
+    } catch (error) {
+      console.error("Send code error:", error);
+
+      setError(
+        "Unable to connect to the server. Please make sure Laravel is running."
+      );
+
+      setSendingCode(false);
+    }
+  };
+
+  // ==========================================
+  // VERIFY CODE + LOGIN
+  // ==========================================
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    setError("");
+    setSuccess("");
+
+    const phone = formData.phone.trim();
+    const verificationCode =
+      formData.verificationCode.trim();
+
+    if (!phone) {
+      setError("Please enter your phone number.");
+      return;
+    }
+
+    if (phone.length < 10) {
+      setError("Please enter a valid phone number.");
+      return;
+    }
 
     if (!verificationCode) {
-      setError("Please enter the verification code.");
+      setError(
+        "Please enter the verification code."
+      );
       return;
     }
 
-    if (verificationCode !== VERIFICATION_CODE) {
-      setError("Invalid verification code.");
+    if (verificationCode.length !== 6) {
+      setError(
+        "Verification code must be 6 digits."
+      );
       return;
     }
-
-    /* ===============================
-          CHECK USER
-    ================================ */
-
-    const savedUser = JSON.parse(
-      localStorage.getItem("user")
-    );
-
-    /*
-      ==========================================
-      NEW USER
-      ==========================================
-
-      Phone number localStorage-er user-er
-      sathe match na korle Signup-e jabe.
-    */
-
-    if (!savedUser || savedUser.phone !== phone) {
-      navigate("/signup", {
-        state: {
-          phone: phone,
-        },
-      });
-
-      return;
-    }
-
-    /* ===============================
-          OLD USER
-    ================================ */
-
-    localStorage.setItem(
-      "isLoggedIn",
-      "true"
-    );
 
     setLoading(true);
 
-    /* ===============================
-          ROLE BASED NAVIGATION
-    ================================ */
+    try {
+      const response = await fetch(
+        `${API_URL}/auth/verify-code`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            phone: phone,
+            code: verificationCode,
+          }),
+        }
+      );
 
-    setTimeout(() => {
-      if (savedUser.role === "Guide") {
-        navigate("/guide-dashboard");
-      } else {
-        navigate("/tourist-dashboard");
+      const result = await response.json();
+
+      if (!response.ok) {
+        setError(
+          result.message ||
+            "Invalid verification code."
+        );
+
+        setLoading(false);
+        return;
       }
-    }, 1000);
+
+      // ==========================================
+      // EXISTING USER
+      // ==========================================
+
+      if (
+        result.is_new_user === false &&
+        result.token
+      ) {
+        localStorage.setItem(
+          "token",
+          result.token
+        );
+
+        localStorage.setItem(
+          "user",
+          JSON.stringify(result.user)
+        );
+
+        localStorage.setItem(
+          "isLoggedIn",
+          "true"
+        );
+
+        // Role based dashboard
+
+        if (result.user.role === "guide") {
+          navigate("/guide-dashboard");
+        } else {
+          navigate("/tourist-dashboard");
+        }
+
+        return;
+      }
+
+      // ==========================================
+      // NEW USER
+      // ==========================================
+
+      if (result.is_new_user === true) {
+        setLoading(false);
+
+        navigate("/signup", {
+          state: {
+            phone: phone,
+          },
+        });
+
+        return;
+      }
+
+      setError("Something went wrong.");
+      setLoading(false);
+    } catch (error) {
+      console.error("Login error:", error);
+
+      setError(
+        "Unable to connect to the server. Please make sure Laravel is running."
+      );
+
+      setLoading(false);
+    }
   };
 
   return (
     <>
-      {/* ===============================
-            LOADING
-      ================================ */}
-
       {loading && (
         <Loading
           text="Exploring TripMesh"
@@ -187,9 +287,9 @@ const Login = () => {
 
       <div className="auth-container">
 
-        {/* ===============================
-              LEFT SIDE
-        ================================ */}
+        {/* ================================
+            LEFT SIDE
+        ================================= */}
 
         <div
           className="auth-left"
@@ -203,14 +303,9 @@ const Login = () => {
             `,
           }}
         >
-
-          {/* Brand */}
-
           <div className="logo">
             ✈ TripMesh
           </div>
-
-          {/* Hero Text */}
 
           <div className="hero-text">
             <h1>
@@ -225,24 +320,18 @@ const Login = () => {
               and make your journey unforgettable.
             </p>
           </div>
-
         </div>
 
-        {/* ===============================
-              RIGHT SIDE
-        ================================ */}
+        {/* ================================
+            RIGHT SIDE
+        ================================= */}
 
         <div className="auth-right">
-
           <div className="auth-card">
-
-            {/* Logo Icon */}
 
             <div className="login-logo">
               <LogoIcon />
             </div>
-
-            {/* Heading */}
 
             <h2>
               Welcome Back!
@@ -252,13 +341,9 @@ const Login = () => {
               Login to continue your adventure
             </p>
 
-            {/* ===============================
-                  LOGIN FORM
-            ================================ */}
-
             <form onSubmit={handleSubmit}>
 
-              {/* Phone Number */}
+              {/* PHONE */}
 
               <input
                 type="tel"
@@ -269,19 +354,41 @@ const Login = () => {
                 required
               />
 
-              {/* Verification Code */}
+              {/* SEND CODE */}
 
-              <input
-                type="text"
-                name="verificationCode"
-                placeholder="Verification Code"
-                value={formData.verificationCode}
-                onChange={handleChange}
-                maxLength={6}
-                required
-              />
+              <button
+                type="button"
+                onClick={handleSendCode}
+                disabled={sendingCode}
+              >
+                {sendingCode
+                  ? "Sending..."
+                  : "Send Verification Code"}
+              </button>
 
-              {/* Error */}
+              {/* SUCCESS */}
+
+              {success && (
+                <p className="login-success">
+                  {success}
+                </p>
+              )}
+
+              {/* VERIFICATION CODE */}
+
+              {codeSent && (
+                <input
+                  type="text"
+                  name="verificationCode"
+                  placeholder="Verification Code"
+                  value={formData.verificationCode}
+                  onChange={handleChange}
+                  maxLength={6}
+                  required
+                />
+              )}
+
+              {/* ERROR */}
 
               {error && (
                 <p className="login-error">
@@ -289,19 +396,17 @@ const Login = () => {
                 </p>
               )}
 
-              
+              {/* LOGIN */}
 
-              {/* Login Button */}
-
-              <button type="submit">
-                Verify & Login
-              </button>
+              {codeSent && (
+                <button type="submit">
+                  Verify & Login
+                </button>
+              )}
 
             </form>
 
-            {/* ===============================
-                  FOOTER
-            ================================ */}
+            {/* FOOTER */}
 
             <p className="footer-text">
               Don't have an account?
@@ -312,7 +417,6 @@ const Login = () => {
             </p>
 
           </div>
-
         </div>
 
       </div>
