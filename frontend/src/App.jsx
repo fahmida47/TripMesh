@@ -23,6 +23,8 @@ import AddTourService from "./pages/GuideDashboard/TourServices/AddTourService";
 import GuideRequests from "./pages/GuideDashboard/GuideRequest/GuideRequests";
 import GuideBookings from "./pages/GuideDashboard/Bookings/GuideBookings";
 
+import ReviewsRatings from "./pages/GuideDashboard/Rating/ReviewsRatings";
+
 import TouristDashboard from "./pages/TouristDashboard/TouristDashboard";
 
 function App() {
@@ -94,6 +96,12 @@ function App() {
         <Route
           path="/guide-dashboard/bookings"
           element={<GuideBookings />}
+        />
+
+        {/* REVIEWS & RATINGS */}
+        <Route
+          path="/guide-dashboard/reviews"
+          element={<ReviewsRatings />}
         />
 
         {/* TOURIST DASHBOARD */}
