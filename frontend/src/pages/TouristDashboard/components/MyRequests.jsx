@@ -13,7 +13,7 @@ const PAGE_SIZE = 5;
 // No mock data — this list starts empty and will be filled from the
 // backend once the tourist is logged in and requests are fetched from the API.
 
-export default function MyRequests({ onToast }) {
+export default function MyRequests({ onToast, onProceedToPayment }) {
   const [requests, setRequests] = useState([]);
   const [statusFilter, setStatusFilter] = useState("All Status");
   const [page, setPage] = useState(1);
@@ -62,9 +62,7 @@ export default function MyRequests({ onToast }) {
   };
 
   const handleProceedToPayment = (request) => {
-    onToast(
-      `Redirecting to payment for ${request.companyName}…`
-    );
+    onProceedToPayment?.(request);
   };
 
   return (
