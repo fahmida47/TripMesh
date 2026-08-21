@@ -344,9 +344,15 @@
   color: #ffffff;
 }
 
-.pm-btn--primary:hover {
+.pm-btn--primary:hover:not(:disabled) {
   background: #1d4ed8;
   border-color: #1d4ed8;
+}
+
+.pm-btn--primary:disabled {
+  background: #cbd5e1;
+  border-color: #cbd5e1;
+  cursor: not-allowed;
 }
 
 .pm-btn--ghost {

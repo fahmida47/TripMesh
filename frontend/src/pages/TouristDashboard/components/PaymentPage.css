@@ -1,0 +1,540 @@
+/* ========================================
+   COMPLETE YOUR PAYMENT PAGE
+   ======================================== */
+
+.cp-page {
+  width: 100%;
+  min-height: 100%;
+  padding: 28px;
+  box-sizing: border-box;
+  background: #f8fafc;
+}
+
+.cp-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  background: none;
+  padding: 0;
+  margin-bottom: 18px;
+  color: #2563eb;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cp-back:hover {
+  text-decoration: underline;
+}
+
+.cp-header {
+  margin-bottom: 24px;
+}
+
+.cp-header h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 800;
+  color: #101b35;
+  line-height: 1.2;
+}
+
+.cp-header p {
+  margin: 7px 0 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* ========================================
+   LAYOUT
+   ======================================== */
+
+.cp-grid {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  align-items: start;
+  gap: 24px;
+}
+
+@media (max-width: 900px) {
+  .cp-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cp-main {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+
+/* ========================================
+   SECTIONS
+   ======================================== */
+
+.cp-section {
+  background: #ffffff;
+  border: 1px solid #e6eaf1;
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.cp-section h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 18px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #101b35;
+}
+
+.cp-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+/* ========================================
+   STEP 1 — PAYMENT METHODS
+   ======================================== */
+
+.cp-methods {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 520px) {
+  .cp-methods {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cp-method {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 20px 14px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 14px;
+  background: #ffffff;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.cp-method:hover {
+  border-color: #93c5fd;
+}
+
+.cp-method--active {
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+
+.cp-method-check {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: #2563eb;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+.cp-method-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.cp-method-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+.cp-method-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: #101b35;
+}
+
+.cp-method-hint {
+  font-size: 12px;
+  color: #64748b;
+}
+
+/* ========================================
+   STEP 2 — PAYMENT DETAILS
+   ======================================== */
+
+.cp-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 0 0 18px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.cp-note--info {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.cp-note--warning {
+  background: #eff6ff;
+  color: #1d4ed8;
+  margin: 4px 0 0;
+}
+
+.cp-note--warning svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.cp-field {
+  margin-bottom: 16px;
+}
+
+.cp-field label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.cp-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #ffffff;
+}
+
+.cp-input svg {
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+.cp-input:focus-within {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.cp-input input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  padding: 12px 0;
+  font-size: 14px;
+  color: #101b35;
+  background: transparent;
+}
+
+.cp-input input::placeholder {
+  color: #94a3b8;
+}
+
+/* ========================================
+   STEP 3 — SUBMIT
+   ======================================== */
+
+.cp-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  color: #334155;
+  line-height: 1.5;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.cp-checkbox input {
+  margin-top: 2px;
+  width: 16px;
+  height: 16px;
+  accent-color: #2563eb;
+  flex-shrink: 0;
+}
+
+.cp-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  background: #2563eb;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.cp-submit:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.cp-submit:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+}
+
+/* ========================================
+   BOOKING SUMMARY
+   ======================================== */
+
+.cp-summary {
+  background: #ffffff;
+  border: 1px solid #e6eaf1;
+  border-radius: 16px;
+  padding: 22px;
+  position: sticky;
+  top: 20px;
+}
+
+.cp-summary h3 {
+  margin: 0 0 16px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #101b35;
+}
+
+.cp-summary-empty {
+  margin: 0;
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.cp-summary-tour {
+  display: flex;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #eef1f6;
+  margin-bottom: 16px;
+}
+
+.cp-summary-thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.cp-summary-thumb--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.cp-summary-title {
+  margin: 0 0 2px;
+  font-size: 14px;
+  font-weight: 700;
+  color: #101b35;
+}
+
+.cp-summary-company {
+  display: block;
+  font-size: 12px;
+  color: #64748b;
+}
+
+.cp-summary-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  font-size: 12px;
+  color: #b45309;
+}
+
+.cp-summary-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #eef1f6;
+  margin-bottom: 16px;
+}
+
+.cp-summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.cp-summary-row > span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #64748b;
+}
+
+.cp-summary-row > span:last-child {
+  color: #101b35;
+  font-weight: 600;
+  text-align: right;
+}
+
+.cp-summary-price {
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #eef1f6;
+}
+
+.cp-summary-price-title {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #101b35;
+}
+
+.cp-summary-price .cp-summary-row {
+  margin-bottom: 8px;
+}
+
+.cp-summary-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.cp-summary-total span:first-child {
+  font-size: 14px;
+  font-weight: 700;
+  color: #101b35;
+}
+
+.cp-summary-total span:last-child {
+  font-size: 20px;
+  font-weight: 800;
+  color: #2563eb;
+}
+
+.cp-secure {
+  display: flex;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 12px;
+  background: #eff6ff;
+}
+
+.cp-secure svg {
+  color: #2563eb;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.cp-secure p {
+  margin: 0 0 2px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #1d4ed8;
+}
+
+.cp-secure span {
+  font-size: 12px;
+  color: #1d4ed8;
+  line-height: 1.4;
+}
+
+/* ========================================
+   PAYMENT SUCCESS
+   ======================================== */
+
+.cp-success {
+  max-width: 480px;
+  margin: 40px auto;
+  background: #ffffff;
+  border: 1px solid #e6eaf1;
+  border-radius: 16px;
+  padding: 40px 32px;
+  text-align: center;
+}
+
+.cp-success-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 18px;
+  border-radius: 999px;
+  background: #dcfce7;
+  color: #16a34a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 34px;
+}
+
+.cp-success h2 {
+  margin: 0 0 10px;
+  font-size: 22px;
+  font-weight: 800;
+  color: #101b35;
+}
+
+.cp-success p {
+  margin: 0 0 24px;
+  font-size: 14px;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+.cp-success-recap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  border-radius: 12px;
+  background: #f8fafc;
+  border: 1px solid #eef1f6;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+.cp-success-back {
+  justify-content: center;
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+}

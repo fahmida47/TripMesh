@@ -5,7 +5,6 @@ import { ChevronLeftIcon, ChevronRightIcon } from "./NavIcons";
 import TouristStatCard from "./TouristStatCard";
 import PaymentCard from "./PaymentCard";
 import PaymentDetailsModal from "./PaymentDetailsModal";
-import PaymentFormModal from "./PaymentFormModal";
 
 import "./PaymentHistory.css";
 
@@ -18,14 +17,14 @@ const PAYMENTS = [];
 /**
  * "Payments" — opened from the sidebar's "Payments" nav item.
  * Overview cards only show counts (no amounts) until payments are wired up
- * to the backend; the table + Pay Now button are ready, actual payment
- * processing is a follow-up.
+ * to the backend. Every "Pay Now" entry point here (the row action, the
+ * details modal, and the "Make a Payment" quick-pay card) routes to the
+ * same PaymentPage via `onPayNow`, passed down from TouristDashboard.
  */
-export default function PaymentHistory() {
+export default function PaymentHistory({ onPayNow }) {
   const [payments] = useState(PAYMENTS);
   const [page, setPage] = useState(1);
   const [activePayment, setActivePayment] = useState(null);
-  const [showPayForm, setShowPayForm] = useState(false);
 
   const [toast, setToast] = useState(null);
   const toastTimer = useRef(null);
@@ -51,12 +50,20 @@ export default function PaymentHistory() {
   const rangeStart = payments.length === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1;
   const rangeEnd = Math.min(currentPage * PAGE_SIZE, payments.length);
 
+  // "Make a Payment" quick-pay card has no booking of its own — if there's
+  // a pending payment in the list it uses that, otherwise it still opens
+  // PaymentPage (Booking Summary will just show "No booking selected").
+  const firstPending = payments.find((p) => p.status === "Pending");
+
   const handlePayNow = (payment) => {
-    showToast(`Redirecting to payment for ${payment.tourName}…`);
+    onPayNow?.(payment);
   };
 
-  const handleFormSubmit = () => {
-    showToast("Payment submitted!");
+  const handleQuickPay = () => {
+    if (!firstPending) {
+      showToast("No specific booking selected — opening the payment page.");
+    }
+    handlePayNow(firstPending || null);
   };
 
   return (
@@ -88,7 +95,7 @@ export default function PaymentHistory() {
           <button
             type="button"
             className="pm-btn pm-btn--primary"
-            onClick={() => setShowPayForm(true)}
+            onClick={handleQuickPay}
           >
             <FiCreditCard aria-hidden="true" /> Pay Now
           </button>
@@ -162,13 +169,6 @@ export default function PaymentHistory() {
           payment={activePayment}
           onClose={() => setActivePayment(null)}
           onPayNow={handlePayNow}
-        />
-      )}
-
-      {showPayForm && (
-        <PaymentFormModal
-          onClose={() => setShowPayForm(false)}
-          onSubmit={handleFormSubmit}
         />
       )}
 
