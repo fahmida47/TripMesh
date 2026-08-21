@@ -1,14 +1,21 @@
-import { Mail, Phone, MessageCircle, Clock3 } from "lucide-react";
+import {
+  Mail,
+  Phone,
+  MessageCircle,
+  Clock3,
+} from "lucide-react";
 
 import "./ContactInformation.css";
 
 const ContactInformation = () => {
   return (
     <div className="contact-information">
+
       <h2>Get in Touch</h2>
 
       <div className="title-line"></div>
 
+      {/* Email */}
       <div className="contact-item">
         <div className="contact-icon">
           <Mail size={24} />
@@ -25,6 +32,7 @@ const ContactInformation = () => {
         </div>
       </div>
 
+      {/* Phone */}
       <div className="contact-item">
         <div className="contact-icon">
           <Phone size={24} />
@@ -41,6 +49,7 @@ const ContactInformation = () => {
         </div>
       </div>
 
+      {/* Live Chat */}
       <div className="contact-item">
         <div className="contact-icon">
           <MessageCircle size={24} />
@@ -57,6 +66,7 @@ const ContactInformation = () => {
         </div>
       </div>
 
+      {/* Response Time */}
       <div className="contact-item">
         <div className="contact-icon">
           <Clock3 size={24} />
@@ -72,6 +82,7 @@ const ContactInformation = () => {
           </p>
         </div>
       </div>
+
     </div>
   );
 };
