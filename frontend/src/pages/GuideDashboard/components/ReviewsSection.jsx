@@ -1,57 +1,35 @@
-const ratingBars = [
-  ["5 Stars", 96],
-  ["4 Stars", 20],
-  ["3 Stars", 6],
-  ["2 Stars", 2],
-  ["1 Star", 0],
-];
+import { useNavigate } from "react-router-dom";
+import "./ReviewsSection.css";
 
 const ReviewsSection = () => {
+  const navigate = useNavigate();
+
+  const handleViewAll = () => {
+    navigate("/guide-dashboard/reviews");
+  };
+
   return (
-    <article className="overview-card reviews-card">
-      <div className="overview-card__heading">
-        <h2>Reviews & Ratings</h2>
-        <a href="#reviews">View All</a>
+    <section className="reviews-section-card">
+      <div className="reviews-section-header">
+        <h3>Reviews & Ratings</h3>
+
+        <button
+          type="button"
+          className="reviews-view-all-btn"
+          onClick={handleViewAll}
+        >
+          View All
+        </button>
       </div>
 
-      <div className="ratings-summary">
-        <div>
-          <strong>4.8</strong>
-          <span className="stars">★★★★★</span>
-          <p>(124 Reviews)</p>
-        </div>
+      <div className="reviews-section-empty">
+        <p>Not rated yet</p>
 
-        <div className="rating-bars">
-          {ratingBars.map(([label, value]) => (
-            <div key={label}>
-              <span>{label}</span>
-
-              <i>
-                <b style={{ width: `${value}%` }} />
-              </i>
-
-              <small>{value}</small>
-            </div>
-          ))}
-        </div>
+        <span>
+          Reviews from travelers will appear here once you receive them.
+        </span>
       </div>
-
-      <div className="review">
-        <span className="avatar">JS</span>
-
-        <div>
-          <b>John Smith</b>
-          <span className="stars">★★★★★</span>
-
-          <p>
-            Excellent service! Our guide was very friendly and knowledgeable.
-            We had an amazing time.
-          </p>
-        </div>
-
-        <time>24 July 2026</time>
-      </div>
-    </article>
+    </section>
   );
 };
 

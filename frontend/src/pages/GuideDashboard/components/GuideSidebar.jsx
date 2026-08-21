@@ -87,13 +87,18 @@ const GuideSidebar = () => {
             <span>Bookings</span>
           </NavLink>
 
-          <a href="#" className="sidebar-link">
+          <NavLink
+            to="/guide-dashboard/reviews"
+            className={({ isActive }) =>
+              isActive ? "sidebar-link active" : "sidebar-link"
+            }
+          >
             <FiStar />
             <span>Reviews and Ratings</span>
-          </a>
+          </NavLink>
         </nav>
       </div>
-
+      
       <button
         type="button"
         className="logout-btn"

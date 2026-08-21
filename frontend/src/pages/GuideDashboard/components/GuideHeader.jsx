@@ -11,7 +11,6 @@ const GuideHeader = () => {
   if (user.registeredDate) {
     registeredDate = new Date(user.registeredDate);
   } else {
-    // Old account হলে আজকের date একবার save করে দিচ্ছি
     registeredDate = new Date();
 
     const updatedUser = {
