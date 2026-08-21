@@ -18,21 +18,6 @@ const DashboardOverview = () => (
       <TopTourServices />
     </div>
 
-    <aside className="profile-banner">
-      <FiShield aria-hidden="true" />
-
-      <div>
-        <h3>Complete Your Profile</h3>
-        <p>
-          Add more details to your profile and services to get more bookings.
-        </p>
-      </div>
-
-      <button type="button">
-        Update Profile
-      </button>
-    </aside>
-
   </section>
 );
 
