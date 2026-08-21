@@ -7,7 +7,6 @@ import {
   Send,
   ShieldCheck,
 } from "lucide-react";
-
 import "./ContactForm.css";
 
 const ContactForm = () => {
@@ -19,18 +18,29 @@ const ContactForm = () => {
   };
 
   const [formData, setFormData] = useState(initialForm);
-
   const [errors, setErrors] = useState({});
-
   const [success, setSuccess] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setFormData({
-      ...formData,
+    setFormData((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
+
+    // Remove error while typing
+    if (errors[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
+    }
+
+    // Remove success message if user starts editing again
+    if (success) {
+      setSuccess("");
+    }
   };
 
   const validate = () => {
@@ -42,7 +52,9 @@ const ContactForm = () => {
 
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+    } else if (
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)
+    ) {
       newErrors.email = "Enter a valid email address";
     }
 
@@ -52,8 +64,9 @@ const ContactForm = () => {
 
     if (!formData.message.trim()) {
       newErrors.message = "Message is required";
-    } else if (formData.message.length < 10) {
-      newErrors.message = "Message should be at least 10 characters";
+    } else if (formData.message.trim().length < 10) {
+      newErrors.message =
+        "Message should be at least 10 characters";
     }
 
     return newErrors;
@@ -66,18 +79,15 @@ const ContactForm = () => {
 
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-
       setSuccess("");
-
       return;
     }
 
     setSuccess(
-      "Thank you for contacting TripMesh. We will respond within 24 hours.",
+      "Thank you for contacting TripMesh. We will respond within 24 hours."
     );
 
     setFormData(initialForm);
-
     setErrors({});
   };
 
@@ -87,80 +97,131 @@ const ContactForm = () => {
 
       <div className="title-line"></div>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} noValidate>
+        {/* Name + Email */}
         <div className="input-row">
-          <div className="input-group">
-            <User />
+          <div className="contact-field">
+            <div
+              className={`input-group ${
+                errors.name ? "input-error" : ""
+              }`}
+            >
+              <User aria-hidden="true" />
+
+              <input
+                type="text"
+                name="name"
+                placeholder="Full Name *"
+                aria-label="Full Name"
+                value={formData.name}
+                onChange={handleChange}
+                autoComplete="name"
+              />
+            </div>
+
+            {errors.name && (
+              <p className="error">{errors.name}</p>
+            )}
+          </div>
+
+          <div className="contact-field">
+            <div
+              className={`input-group ${
+                errors.email ? "input-error" : ""
+              }`}
+            >
+              <Mail aria-hidden="true" />
+
+              <input
+                type="email"
+                name="email"
+                placeholder="Email Address *"
+                aria-label="Email Address"
+                value={formData.email}
+                onChange={handleChange}
+                autoComplete="email"
+              />
+            </div>
+
+            {errors.email && (
+              <p className="error">{errors.email}</p>
+            )}
+          </div>
+        </div>
+
+        {/* Subject */}
+        <div className="contact-field">
+          <div
+            className={`input-group ${
+              errors.subject ? "input-error" : ""
+            }`}
+          >
+            <FileText aria-hidden="true" />
 
             <input
               type="text"
-              name="name"
-              placeholder="Full Name *"
-              aria-label="Full Name"
-              value={formData.name}
+              name="subject"
+              placeholder="Subject *"
+              aria-label="Subject"
+              value={formData.subject}
               onChange={handleChange}
             />
           </div>
 
-          {errors.name && <p className="error">{errors.name}</p>}
+          {errors.subject && (
+            <p className="error">{errors.subject}</p>
+          )}
+        </div>
 
-          <div className="input-group">
-            <Mail />
+        {/* Message */}
+        <div className="contact-field">
+          <div
+            className={`input-group textarea-box ${
+              errors.message ? "input-error" : ""
+            }`}
+          >
+            <MessageSquare aria-hidden="true" />
 
-            <input
-              type="email"
-              name="email"
-              placeholder="Email Address *"
-              aria-label="Email Address"
-              value={formData.email}
+            <textarea
+              name="message"
+              placeholder="Your Message *"
+              aria-label="Your Message"
+              rows="5"
+              value={formData.message}
               onChange={handleChange}
+              spellCheck="true"
             />
           </div>
 
-          {errors.email && <p className="error">{errors.email}</p>}
+          {errors.message && (
+            <p className="error">{errors.message}</p>
+          )}
         </div>
 
-        <div className="input-group">
-          <FileText />
-
-          <input
-            type="text"
-            name="subject"
-            placeholder="Subject *"
-            aria-label="Subject"
-            value={formData.subject}
-            onChange={handleChange}
-          />
-        </div>
-
-        {errors.subject && <p className="error">{errors.subject}</p>}
-
-        <div className="input-group textarea-box">
-          <MessageSquare />
-
-          <textarea
-            name="message"
-            placeholder="Your Message *"
-            aria-label="Your Message"
-            rows="5"
-            value={formData.message}
-            onChange={handleChange}
-          />
-        </div>
-
-        {errors.message && <p className="error">{errors.message}</p>}
-
-        <button type="submit">
-          <Send size={18} />
-          Send Message
+        {/* Submit */}
+        <button
+          type="submit"
+          className="contact-submit-btn"
+        >
+          <Send size={18} aria-hidden="true" />
+          <span>Send Message</span>
         </button>
 
+        {/* Privacy */}
         <p className="privacy">
-          <ShieldCheck size={16} />
-          We respect your privacy. Your information is safe with us.
+          <ShieldCheck size={16} aria-hidden="true" />
+          <span>
+            We respect your privacy. Your information is safe
+            with us.
+          </span>
         </p>
 
-        {success && <p className="success">{success}</p>}
+        {/* Success */}
+        {success && (
+          <p className="success" role="status">
+            {success}
+          </p>
+        )}
       </form>
     </div>
   );
