@@ -1,8 +1,15 @@
 import React, { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  Link,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
+
 import "./Signup.css";
 import signupBg from "../../assets/login-bg.jpeg";
 import Loading from "../../components/Loading/Loading";
+
+const API_URL = "http://127.0.0.1:8000/api";
 
 const LogoIcon = () => (
   <svg viewBox="0 0 80 80" className="trip-logo" fill="none">
@@ -46,10 +53,10 @@ const LogoIcon = () => (
 
 const Signup = () => {
   const navigate = useNavigate();
-
   const location = useLocation();
 
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const [data, setData] = useState({
     role: "Tourist",
@@ -62,28 +69,110 @@ const Signup = () => {
       ...data,
       [e.target.name]: e.target.value,
     });
+
+    setError("");
   };
 
-  const handleSubmit = (e) => {
+  // ==========================================
+  // REGISTER
+  // ==========================================
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setError("");
+
+    const name = data.name.trim();
+    const phone = data.phone.trim();
+
+    if (!name) {
+      setError("Please enter your full name.");
+      return;
+    }
+
+    if (!phone || phone.length < 10) {
+      setError("Please enter a valid phone number.");
+      return;
+    }
 
     setLoading(true);
 
-    // Save new user
-    localStorage.setItem(
-      "user",
-      JSON.stringify(data)
-    );
+    try {
+      const response = await fetch(
+        `${API_URL}/auth/register`,
+        {
+          method: "POST",
 
-    // User is not logged in yet
-    localStorage.setItem(
-      "isLoggedIn",
-      "false"
-    );
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
 
-    setTimeout(() => {
-      navigate("/login");
-    }, 1000);
+          body: JSON.stringify({
+            name: name,
+            phone: phone,
+            role: data.role.toLowerCase(),
+          }),
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        setError(
+          result.message ||
+            "Registration failed. Please try again."
+        );
+
+        setLoading(false);
+        return;
+      }
+
+      // ==========================================
+      // SAVE JWT TOKEN
+      // ==========================================
+
+      localStorage.setItem(
+        "token",
+        result.token
+      );
+
+      // ==========================================
+      // SAVE USER
+      // ==========================================
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify(result.user)
+      );
+
+      localStorage.setItem(
+        "isLoggedIn",
+        "true"
+      );
+
+      // ==========================================
+      // ROLE BASED DASHBOARD
+      // ==========================================
+
+      if (result.user.role === "guide") {
+        navigate("/guide-dashboard");
+      } else {
+        navigate("/tourist-dashboard");
+      }
+
+    } catch (error) {
+      console.error(
+        "Registration error:",
+        error
+      );
+
+      setError(
+        "Unable to connect to the server. Please make sure Laravel is running."
+      );
+
+      setLoading(false);
+    }
   };
 
   return (
@@ -97,9 +186,9 @@ const Signup = () => {
 
       <div className="signup-container">
 
-        {/* ===============================
-              BACKGROUND
-        ================================ */}
+        {/* ================================
+            BACKGROUND
+        ================================= */}
 
         <div
           className="signup-background"
@@ -114,9 +203,9 @@ const Signup = () => {
           }}
         />
 
-        {/* ===============================
-              LEFT SIDE
-        ================================ */}
+        {/* ================================
+            LEFT SIDE
+        ================================= */}
 
         <div className="signup-left">
 
@@ -125,6 +214,7 @@ const Signup = () => {
           </div>
 
           <div className="signup-hero-text">
+
             <h1>
               Explore more.
               <br />
@@ -138,13 +228,14 @@ const Signup = () => {
               <br />
               unforgettable travel experiences.
             </p>
+
           </div>
 
         </div>
 
-        {/* ===============================
-              RIGHT SIDE
-        ================================ */}
+        {/* ================================
+            RIGHT SIDE
+        ================================= */}
 
         <div className="signup-right">
 
@@ -164,9 +255,7 @@ const Signup = () => {
 
             <form onSubmit={handleSubmit}>
 
-              {/* ===============================
-                    ROLE
-              ================================ */}
+              {/* ROLE */}
 
               <p className="role-title">
                 Choose your role
@@ -174,7 +263,7 @@ const Signup = () => {
 
               <div className="role-container">
 
-                {/* Tourist */}
+                {/* TOURIST */}
 
                 <label
                   className={`role-card ${
@@ -183,6 +272,7 @@ const Signup = () => {
                       : ""
                   }`}
                 >
+
                   <input
                     type="radio"
                     name="role"
@@ -198,15 +288,18 @@ const Signup = () => {
                   </span>
 
                   <div>
-                    <h4>Tourist</h4>
+                    <h4>
+                      Tourist
+                    </h4>
 
                     <small>
                       Explore & book trips
                     </small>
                   </div>
+
                 </label>
 
-                {/* Guide */}
+                {/* GUIDE */}
 
                 <label
                   className={`role-card ${
@@ -215,6 +308,7 @@ const Signup = () => {
                       : ""
                   }`}
                 >
+
                   <input
                     type="radio"
                     name="role"
@@ -230,19 +324,20 @@ const Signup = () => {
                   </span>
 
                   <div>
-                    <h4>Guide</h4>
+                    <h4>
+                      Guide
+                    </h4>
 
                     <small>
                       Provide travel services
                     </small>
                   </div>
+
                 </label>
 
               </div>
 
-              {/* ===============================
-                    FULL NAME
-              ================================ */}
+              {/* NAME */}
 
               <input
                 type="text"
@@ -253,9 +348,7 @@ const Signup = () => {
                 required
               />
 
-              {/* ===============================
-                    PHONE
-              ================================ */}
+              {/* PHONE */}
 
               <input
                 type="tel"
@@ -266,9 +359,15 @@ const Signup = () => {
                 required
               />
 
-              {/* ===============================
-                    SIGN UP
-              ================================ */}
+              {/* ERROR */}
+
+              {error && (
+                <p className="login-error">
+                  {error}
+                </p>
+              )}
+
+              {/* SIGN UP */}
 
               <button type="submit">
                 Sign Up
@@ -276,17 +375,20 @@ const Signup = () => {
 
             </form>
 
-            {/* Footer */}
+            {/* FOOTER */}
 
             <p className="signup-footer">
+
               Already have an account?
 
               <Link to="/login">
                 Login
               </Link>
+
             </p>
 
           </div>
+
         </div>
 
       </div>
