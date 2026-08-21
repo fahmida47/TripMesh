@@ -1,15 +1,6 @@
-import React from "react";
 import "./Contact.css";
 import contactBg from "../../assets/contact-bg.jpg";
 import Navbar from "../../components/Navbar/Navbar";
-import {
-  Mail,
-  Phone,
-  MessageCircle,
-  Clock3,
-  Send,
-  ShieldCheck,
-} from "lucide-react";
 import ContactInformation from "./components/ContactInformation";
 import ContactForm from "./components/ContactForm";
 
@@ -17,7 +8,7 @@ const Contact = () => {
   return (
     <div className="contact-page">
       <Navbar />
-      {/* Hero Section */}
+
       <section
         className="contact-hero"
         style={{ backgroundImage: `url(${contactBg})` }}
@@ -39,11 +30,9 @@ const Contact = () => {
         </div>
       </section>
 
-      {/* Main Contact Layout */}
       <section className="contact-container">
-        {/* Left Contact Information */}
         <ContactInformation />
-        {/* Right Form */}
+
         <ContactForm />
       </section>
     </div>
