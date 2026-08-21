@@ -1,6 +1,14 @@
 import { useMemo, useRef, useState } from "react";
-import { Check, Image as ImageIcon, UserRound, UserCog } from "lucide-react";
+import {
+  Check,
+  Image as ImageIcon,
+  UserRound,
+  UserCog,
+} from "lucide-react";
+
 import { touristProfile } from "../mockProfile";
+import TouristSidebar from "../components/TouristSidebar";
+
 import "./TouristProfile.css";
 
 const INITIAL_FORM = {
@@ -25,306 +33,407 @@ const COUNTRIES = [
   "Sri Lanka",
   "United States",
   "United Kingdom",
+  "Canada",
+  "Australia",
 ];
 
-export default function TouristProfile() {
-  const [form, setForm] = useState(INITIAL_FORM);
-  const [photo, setPhoto] = useState(touristProfile.avatar || "");
-  const [coverPhoto, setCoverPhoto] = useState("");
-  const [savedSection, setSavedSection] = useState("");
-  const fileInputRef = useRef(null);
+const TouristProfile = () => {
+  const [formData, setFormData] = useState(INITIAL_FORM);
+
+  const [profileImage, setProfileImage] = useState(null);
+  const [coverImage, setCoverImage] = useState(null);
+
+  const [saved, setSaved] = useState(false);
+
+  const profileInputRef = useRef(null);
   const coverInputRef = useRef(null);
 
-  const initials = useMemo(() => {
-    return form.fullName
+  const profileInitials = useMemo(() => {
+    if (!formData.fullName.trim()) {
+      return "TP";
+    }
+
+    return formData.fullName
       .trim()
-      .split(/\s+/)
-      .filter(Boolean)
+      .split(" ")
+      .map((name) => name[0])
+      .join("")
       .slice(0, 2)
-      .map((part) => part[0].toUpperCase())
-      .join("") || "AF";
-  }, [form.fullName]);
+      .toUpperCase();
+  }, [formData.fullName]);
 
-  const updateField = (event) => {
+  const handleChange = (event) => {
     const { name, value } = event.target;
-    setForm((current) => ({ ...current, [name]: value }));
-    setSavedSection("");
-  };
 
-  const handleBioChange = (event) => {
-    setForm((current) => ({
-      ...current,
-      bio: event.target.value.slice(0, 300),
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
     }));
-    setSavedSection("");
+
+    setSaved(false);
   };
 
-  const handlePhotoChange = (event) => {
+  const handleProfileImage = (event) => {
     const file = event.target.files?.[0];
+
     if (!file) return;
 
-    if (!file.type.startsWith("image/")) return;
+    setProfileImage({
+      file,
+      preview: URL.createObjectURL(file),
+    });
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      setPhoto(reader.result);
-      setSavedSection("");
-    };
-    reader.readAsDataURL(file);
+    setSaved(false);
   };
 
-  const handleCoverChange = (event) => {
+  const handleCoverImage = (event) => {
     const file = event.target.files?.[0];
-    if (!file || !file.type.startsWith("image/")) return;
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      setCoverPhoto(reader.result);
-      setSavedSection("");
+    if (!file) return;
+
+    setCoverImage({
+      file,
+      preview: URL.createObjectURL(file),
+    });
+
+    setSaved(false);
+  };
+
+  const handleSave = () => {
+    const profileData = {
+      ...formData,
+      profileImage: profileImage?.file || null,
+      coverImage: coverImage?.file || null,
     };
-    reader.readAsDataURL(file);
-  };
 
-  const saveSection = (section) => {
-    setSavedSection(section);
-    window.setTimeout(() => setSavedSection(""), 1800);
-  };
+    console.log("Tourist Profile Data:", profileData);
 
-  const saveButtonContent = (section) =>
-    savedSection === section ? (
-      <>
-        <Check size={15} /> Saved
-      </>
-    ) : (
-      "Save Changes"
-    );
+    setSaved(true);
+
+    setTimeout(() => {
+      setSaved(false);
+    }, 2500);
+  };
 
   return (
-    <div className="tourist-profile-page">
-      <div className="tourist-profile-heading">
-        <div className="tourist-profile-title-row">
-          <span className="tourist-profile-title-icon" aria-hidden="true"><UserCog size={26} /></span>
-          <h1>My Profile</h1>
-        </div>
-        <p>Manage your personal information and travel preferences</p>
-      </div>
+    <div className="tourist-profile-layout">
+      {/* FIXED TOURIST SIDEBAR */}
+      <TouristSidebar />
 
-      <section className="tourist-profile-main-card">
-        <div
-          className="tourist-profile-cover"
-          style={coverPhoto ? { backgroundImage: `url(${coverPhoto})` } : {}}
-        >
-          {!coverPhoto && (
-            <div className="tourist-profile-cover-placeholder">
-              <ImageIcon size={24} />
-              <span>Cover Photo</span>
+      {/* MAIN PROFILE CONTENT */}
+      <main className="tourist-profile-page">
+        {/* PAGE HEADING */}
+        <div className="tourist-profile-page-heading">
+          <div className="tourist-profile-title-icon">
+            <UserCog size={22} />
+          </div>
+
+          <div>
+            <h1>My Profile</h1>
+
+            <p>
+              Manage your personal information and preferences
+            </p>
+          </div>
+        </div>
+
+        {/* =========================
+            BASIC INFORMATION
+        ========================= */}
+        <section className="tourist-profile-main-card">
+          {/* COVER PHOTO */}
+          <div
+            className="tourist-profile-cover"
+            style={
+              coverImage
+                ? {
+                    backgroundImage: `url(${coverImage.preview})`,
+                  }
+                : {}
+            }
+          >
+            {!coverImage && (
+              <div className="tourist-cover-placeholder">
+                <ImageIcon size={25} />
+
+                <span>Cover Photo</span>
+              </div>
+            )}
+
+            <button
+              type="button"
+              className="tourist-edit-cover-btn"
+              onClick={() => coverInputRef.current?.click()}
+            >
+              Edit Cover Photo
+            </button>
+
+            <input
+              ref={coverInputRef}
+              type="file"
+              accept="image/*"
+              onChange={handleCoverImage}
+              hidden
+            />
+          </div>
+
+          <div className="tourist-profile-basic-info">
+            {/* PROFILE PICTURE */}
+            <div className="tourist-profile-photo-section">
+              <button
+                type="button"
+                className="tourist-profile-photo"
+                onClick={() =>
+                  profileInputRef.current?.click()
+                }
+              >
+                {profileImage ? (
+                  <img
+                    src={profileImage.preview}
+                    alt="Tourist profile"
+                  />
+                ) : (
+                  <span>{profileInitials}</span>
+                )}
+              </button>
+
+              <input
+                ref={profileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleProfileImage}
+                hidden
+              />
+
+              <p>Profile Picture</p>
+            </div>
+
+            {/* FULL NAME */}
+            <div className="tourist-profile-field">
+              <label htmlFor="tourist-full-name">
+                Full Name
+              </label>
+
+              <input
+                id="tourist-full-name"
+                type="text"
+                name="fullName"
+                value={formData.fullName}
+                onChange={handleChange}
+                placeholder="Enter your full name"
+              />
+            </div>
+
+            {/* PHONE */}
+            <div className="tourist-profile-field">
+              <label htmlFor="tourist-phone">
+                Phone Number
+              </label>
+
+              <input
+                id="tourist-phone"
+                type="text"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="Enter phone number"
+              />
+            </div>
+
+            {/* EMAIL */}
+            <div className="tourist-profile-field tourist-email-field">
+              <label htmlFor="tourist-email">
+                Email Address
+              </label>
+
+              <input
+                id="tourist-email"
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Enter email address"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* =========================
+            ABOUT ME
+        ========================= */}
+        <section className="tourist-profile-card">
+          <div className="tourist-profile-section-heading">
+            <h2>About Me</h2>
+
+            <p>Tell us a little bit about yourself</p>
+          </div>
+
+          <div className="tourist-profile-field">
+            <label htmlFor="tourist-bio">
+              Bio
+            </label>
+
+            <div className="tourist-bio-wrapper">
+              <textarea
+                id="tourist-bio"
+                name="bio"
+                value={formData.bio}
+                onChange={handleChange}
+                maxLength={300}
+                placeholder="Write something about yourself..."
+              />
+
+              <span className="tourist-character-count">
+                {formData.bio.length} / 300
+              </span>
+            </div>
+          </div>
+        </section>
+
+        {/* =========================
+            ADDRESS INFORMATION
+        ========================= */}
+        <section className="tourist-profile-card">
+          <div className="tourist-profile-section-heading">
+            <h2>Address Information</h2>
+
+            <p>
+              Add or update your current address information
+            </p>
+          </div>
+
+          <div className="tourist-address-grid">
+            {/* ADDRESS LINE 1 */}
+            <div className="tourist-profile-field tourist-address-full">
+              <label htmlFor="address-line-1">
+                Address Line 1
+              </label>
+
+              <input
+                id="address-line-1"
+                type="text"
+                name="addressLine1"
+                value={formData.addressLine1}
+                onChange={handleChange}
+                placeholder="Enter street address"
+              />
+            </div>
+
+            {/* ADDRESS LINE 2 */}
+            <div className="tourist-profile-field tourist-address-full">
+              <label htmlFor="address-line-2">
+                Address Line 2 (Optional)
+              </label>
+
+              <input
+                id="address-line-2"
+                type="text"
+                name="addressLine2"
+                value={formData.addressLine2}
+                onChange={handleChange}
+                placeholder="Apartment, suite, unit, etc."
+              />
+            </div>
+
+            {/* CITY */}
+            <div className="tourist-profile-field">
+              <label htmlFor="tourist-city">
+                City
+              </label>
+
+              <input
+                id="tourist-city"
+                type="text"
+                name="city"
+                value={formData.city}
+                onChange={handleChange}
+                placeholder="Enter city"
+              />
+            </div>
+
+            {/* STATE */}
+            <div className="tourist-profile-field">
+              <label htmlFor="tourist-state">
+                State / Province
+              </label>
+
+              <input
+                id="tourist-state"
+                type="text"
+                name="state"
+                value={formData.state}
+                onChange={handleChange}
+                placeholder="Enter state or province"
+              />
+            </div>
+
+            {/* ZIP */}
+            <div className="tourist-profile-field">
+              <label htmlFor="tourist-zip">
+                Zip / Postal Code
+              </label>
+
+              <input
+                id="tourist-zip"
+                type="text"
+                name="zip"
+                value={formData.zip}
+                onChange={handleChange}
+                placeholder="Enter postal code"
+              />
+            </div>
+
+            {/* COUNTRY */}
+            <div className="tourist-profile-field">
+              <label htmlFor="tourist-country">
+                Country
+              </label>
+
+              <select
+                id="tourist-country"
+                name="country"
+                value={formData.country}
+                onChange={handleChange}
+              >
+                <option value="">
+                  Select country
+                </option>
+
+                {COUNTRIES.map((country) => (
+                  <option
+                    key={country}
+                    value={country}
+                  >
+                    {country}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </section>
+
+        {/* =========================
+            SAVE PROFILE
+        ========================= */}
+        <div className="tourist-profile-save-area">
+          {saved && (
+            <div className="tourist-profile-saved-message">
+              <Check size={17} />
+              Profile saved
             </div>
           )}
 
           <button
             type="button"
-            className="tourist-profile-edit-cover-button"
-            onClick={() => coverInputRef.current?.click()}
+            className="tourist-profile-save-btn"
+            onClick={handleSave}
           >
-            Edit Cover Photo
-          </button>
-          <input
-            ref={coverInputRef}
-            type="file"
-            accept="image/png,image/jpeg,image/jpg,image/webp"
-            onChange={handleCoverChange}
-            hidden
-          />
-        </div>
-
-        <div className="tourist-profile-header-info">
-          <div className="tourist-profile-photo-column tourist-profile-header-photo">
-            <div
-              className="tourist-profile-photo-wrap"
-              role="button"
-              tabIndex={0}
-              onClick={() => fileInputRef.current?.click()}
-              onKeyDown={(event) => {
-                if (event.key === "Enter" || event.key === " ") {
-                  event.preventDefault();
-                  fileInputRef.current?.click();
-                }
-              }}
-            >
-              {photo ? (
-                <img src={photo} alt="Profile" className="tourist-profile-photo" />
-              ) : (
-                <div className="tourist-profile-photo tourist-profile-photo-placeholder">
-                  {initials || <UserRound size={38} />}
-                </div>
-              )}
-            </div>
-            <input
-              ref={fileInputRef}
-              type="file"
-              accept="image/png,image/jpeg,image/jpg,image/webp"
-              onChange={handlePhotoChange}
-              hidden
-            />
-            <span className="tourist-profile-photo-label">Profile Picture</span>
-          </div>
-
-          <div className="tourist-profile-fields tourist-profile-header-fields">
-            <label>
-              <span>Full Name</span>
-              <input
-                name="fullName"
-                value={form.fullName}
-                onChange={updateField}
-                placeholder="Enter your full name"
-              />
-            </label>
-
-            <label>
-              <span>Phone Number</span>
-              <input
-                name="phone"
-                type="tel"
-                value={form.phone}
-                onChange={updateField}
-                placeholder="Enter phone number"
-              />
-            </label>
-
-            <label className="tourist-profile-email-field">
-              <span>Email Address</span>
-              <input
-                name="email"
-                type="email"
-                value={form.email}
-                onChange={updateField}
-                placeholder="Enter email address"
-              />
-            </label>
-          </div>
-        </div>
-
-        <div className="tourist-profile-card-footer tourist-profile-main-footer">
-          <button
-            type="button"
-            className="tourist-profile-save-button"
-            onClick={() => saveSection("basic")}
-          >
-            {saveButtonContent("basic")}
+            Save Changes
           </button>
         </div>
-      </section>
-      <section className="tourist-profile-card">
-        <div className="tourist-profile-card-heading">
-          <h2>About Me</h2>
-          <p>Tell us a little bit about yourself</p>
-        </div>
-
-        <div className="tourist-profile-fields">
-          <label>
-            <span>Bio</span>
-            <textarea
-              name="bio"
-              value={form.bio}
-              onChange={handleBioChange}
-              maxLength={300}
-              placeholder="Write something about yourself..."
-            />
-          </label>
-          <div className="tourist-profile-character-count">{form.bio.length} / 300</div>
-        </div>
-
-        <div className="tourist-profile-card-footer">
-          <button
-            type="button"
-            className="tourist-profile-save-button"
-            onClick={() => saveSection("bio")}
-          >
-            {saveButtonContent("bio")}
-          </button>
-        </div>
-      </section>
-
-      <section className="tourist-profile-card">
-        <div className="tourist-profile-card-heading">
-          <h2>Address Information</h2>
-          <p>Add your address details</p>
-        </div>
-
-        <div className="tourist-profile-address-grid tourist-profile-fields">
-          <label className="tourist-profile-span-2">
-            <span>Address Line 1</span>
-            <input
-              name="addressLine1"
-              value={form.addressLine1}
-              onChange={updateField}
-              placeholder="Enter your address"
-            />
-          </label>
-
-          <label className="tourist-profile-span-2">
-            <span>Address Line 2 <em>(Optional)</em></span>
-            <input
-              name="addressLine2"
-              value={form.addressLine2}
-              onChange={updateField}
-              placeholder="Apartment, suite, unit, building, etc."
-            />
-          </label>
-
-          <label>
-            <span>City</span>
-            <input
-              name="city"
-              value={form.city}
-              onChange={updateField}
-              placeholder="Enter city"
-            />
-          </label>
-
-          <label>
-            <span>State / Province</span>
-            <input
-              name="state"
-              value={form.state}
-              onChange={updateField}
-              placeholder="Enter state or province"
-            />
-          </label>
-
-          <label>
-            <span>Zip / Postal Code</span>
-            <input
-              name="zip"
-              value={form.zip}
-              onChange={updateField}
-              placeholder="Enter zip code"
-            />
-          </label>
-
-          <label className="tourist-profile-span-3">
-            <span>Country</span>
-            <select name="country" value={form.country} onChange={updateField}>
-              <option value="">Select your country</option>
-              {COUNTRIES.map((country) => (
-                <option key={country} value={country}>
-                  {country}
-                </option>
-              ))}
-            </select>
-          </label>
-        </div>
-
-        <div className="tourist-profile-card-footer">
-          <button
-            type="button"
-            className="tourist-profile-save-button"
-            onClick={() => saveSection("address")}
-          >
-            {saveButtonContent("address")}
-          </button>
-        </div>
-      </section>
+      </main>
     </div>
   );
 }
+
+export default TouristProfile;
