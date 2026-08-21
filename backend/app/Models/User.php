@@ -17,6 +17,11 @@ class User extends Authenticatable implements JWTSubject
         'remember_token',
     ];
 
+    public function touristProfile()
+    {
+        return $this->hasOne(TouristProfile::class);
+    }
+
     /**
      * JWT identifier.
      */
