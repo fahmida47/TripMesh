@@ -86,7 +86,7 @@
 
   border-radius: 50%;
 
-  background: #7447e8;
+  background: #2d5cf6;
   color: #ffffff;
 
   font-size: 18px;
@@ -181,7 +181,7 @@
 
 .review-form-field select:focus,
 .review-form-field textarea:focus {
-  border-color: #7047e8;
+  border-color: #2d5cf6;
 
   box-shadow: 0 0 0 3px rgba(112, 71, 232, 0.08);
 }
@@ -196,7 +196,7 @@
   margin-top: 7px;
 
   font-size: 11px;
-  color: #7664c9;
+  color: #2d5cf6;
 }
 
 /* =========================
@@ -327,17 +327,17 @@
 }
 
 .review-cancel-btn {
-  border: 1px solid #7951e7;
+  border: 1px solid #2d5cf6;
 
   background: #ffffff !important;
-  color: #6740d5 !important;
+  color: #2d5cf6 !important;
 }
 
 .review-cancel-btn:hover {
   background: #ffffff !important;
 
-  border-color: #5d34cb;
-  color: #5d34cb !important;
+  border-color: #2d5cf6;
+  color: #2d5cf6 !important;
 }
 
 .review-cancel-btn:focus,
@@ -351,18 +351,18 @@
 .review-submit-btn {
   border: none;
 
-  background: #6a38d8;
+  background: #2d5cf6;
   color: #ffffff;
 }
 
 .review-submit-btn:hover {
-  background: #582bc5;
+  background: #2d5cf6;
   color: #ffffff;
 }
 
 .review-submit-btn:focus,
 .review-submit-btn:active {
-  background: #6a38d8;
+  background: #2d5cf6;
 
   outline: none;
   box-shadow: none;
@@ -431,7 +431,7 @@
   border-radius: 16px;
 
   background: #eee8ff;
-  color: #754be2;
+  color:#2d5cf6;
 
   font-size: 36px;
 }
@@ -442,7 +442,7 @@
   font-size: 17px;
   font-weight: 700;
 
-  color: #5a36c4;
+  color: #2d5cf6;
 }
 
 .reviews-empty-state p {
@@ -553,10 +553,10 @@
   align-items: center;
   justify-content: center;
 
-  border: 2px solid #7047e8;
+  border: 2px solid #0b40ef;
   border-radius: 50%;
 
-  color: #7047e8;
+  color: #0b40ef;
 
   font-size: 15px;
   font-weight: 700;
@@ -568,7 +568,7 @@
   font-size: 14px;
   font-weight: 700;
 
-  color: #5d37c6;
+  color: #0b40ef;
 }
 
 .reviews-info-card p {
