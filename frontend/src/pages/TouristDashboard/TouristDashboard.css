@@ -19,8 +19,10 @@
 }
 
 /* ==============================
-   MAIN CONTENT
-   Sidebar width = 280px
+   MAIN CONTENT AREA
+
+   Sidebar = 280px
+   Main content starts after sidebar
    ============================== */
 
 .ts-shell-main {
@@ -33,23 +35,23 @@
 
 /* ==============================
    CONTENT
+
+   IMPORTANT:
+   Do NOT use the old
+   .ts-shell-content--explore
+   rule here.
+
+   All pages get proper space
+   beside the sidebar.
    ============================== */
 
 .ts-shell-content {
   flex: 1;
   min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
   padding: 32px;
-}
-
-/* Explore embedded mode */
-
-.ts-shell-content--explore {
-  padding: 0;
-  overflow: hidden;
-}
-
-.ts-shell-content--explore .explore-page {
-  min-height: 100%;
+  overflow-x: hidden;
 }
 
 /* ==============================
@@ -74,15 +76,66 @@
 }
 
 /* ==============================
+   BOOKINGS PAGE
+   ============================== */
+
+.ts-shell-content .rb-page {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* ==============================
+   PAYMENT PAGE
+
+   Prevent payment content from
+   being hidden behind sidebar.
+   ============================== */
+
+.ts-shell-content .pm-page {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* ==============================
+   PAYMENT COMPLETE PAGE
+   ============================== */
+
+.ts-shell-content .payment-page {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* ==============================
+   EXPLORE
+
+   Embedded Explore should still
+   fill available main area.
+   ============================== */
+
+.ts-shell-content .explore-page {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* ==============================
    TABLET
+
+   Sidebar becomes off-canvas
+   according to TouristSidebar.css
    ============================== */
 
 @media (max-width: 1024px) {
   .ts-shell-main {
     margin-left: 0;
+    width: 100%;
   }
 
   .ts-shell-content {
+    width: 100%;
     padding: 26px;
   }
 }
@@ -98,5 +151,9 @@
 
   .ts-dashboard-header h1 {
     font-size: 26px;
+  }
+
+  .ts-dashboard-header p {
+    font-size: 15px;
   }
 }
