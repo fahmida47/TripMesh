@@ -515,3 +515,422 @@
     font-size: 13px;
   }
 }
+/* ==================================
+   TOURIST PROFILE + FIXED SIDEBAR
+================================== */
+
+.tourist-profile-layout {
+  width: 100%;
+  min-height: 100vh;
+  background: #f6f8fc;
+}
+
+.tourist-profile-page {
+  margin-left: 315px;
+  width: calc(100% - 315px);
+  min-height: 100vh;
+
+  padding: 24px;
+
+  box-sizing: border-box;
+  background: #f6f8fc;
+}
+
+/* PAGE TITLE */
+
+.tourist-profile-page-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-bottom: 22px;
+}
+
+.tourist-profile-title-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #2868f4;
+  color: #ffffff;
+}
+
+.tourist-profile-page-heading h1 {
+  margin: 0;
+
+  color: #10213f;
+
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.tourist-profile-page-heading p {
+  margin: 5px 0 0;
+
+  color: #7b8798;
+  font-size: 14px;
+}
+
+/* MAIN CARD */
+
+.tourist-profile-main-card,
+.tourist-profile-card {
+  background: #ffffff;
+
+  border: 1px solid #e2e7f0;
+  border-radius: 12px;
+
+  box-shadow: 0 3px 12px rgba(25, 44, 85, 0.05);
+
+  box-sizing: border-box;
+}
+
+.tourist-profile-main-card {
+  padding: 10px;
+  margin-bottom: 18px;
+
+  overflow: visible;
+}
+
+.tourist-profile-card {
+  padding: 22px;
+  margin-bottom: 18px;
+}
+
+/* COVER */
+
+.tourist-profile-cover {
+  position: relative;
+
+  width: 100%;
+  height: 175px;
+
+  border: 1px solid #dce4f2;
+  border-radius: 9px;
+
+  background: #edf3ff;
+  background-size: cover;
+  background-position: center;
+
+  overflow: hidden;
+}
+
+.tourist-cover-placeholder {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 6px;
+
+  color: #65738d;
+}
+
+.tourist-edit-cover-btn {
+  position: absolute;
+
+  top: 50%;
+  right: 18px;
+
+  transform: translateY(-50%);
+
+  min-width: 135px;
+  height: 40px;
+
+  border: 1px solid #d7dfeb;
+  border-radius: 7px;
+
+  background: #ffffff !important;
+  color: #2868f4 !important;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+/* BASIC INFO */
+
+.tourist-profile-basic-info {
+  display: grid;
+
+  grid-template-columns:
+    180px
+    minmax(0, 1fr)
+    minmax(0, 1fr);
+
+  gap: 20px;
+
+  align-items: center;
+
+  padding: 18px 16px 8px;
+}
+
+/* PROFILE PHOTO */
+
+.tourist-profile-photo-section {
+  position: relative;
+
+  margin-top: -75px;
+
+  text-align: center;
+}
+
+.tourist-profile-photo {
+  width: 108px;
+  height: 108px;
+
+  margin: 0 auto 8px;
+
+  border: 5px solid #ffffff;
+  border-radius: 50%;
+
+  background: #eeeaff;
+
+  box-shadow: 0 3px 12px rgba(25, 44, 85, 0.14);
+
+  color: #6045cf;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+
+  font-size: 28px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.tourist-profile-photo img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.tourist-profile-photo-section p {
+  margin: 0;
+
+  color: #71809a;
+  font-size: 11px;
+}
+
+/* FIELDS */
+
+.tourist-profile-field {
+  min-width: 0;
+}
+
+.tourist-profile-field label {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: #263653;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.tourist-profile-field input,
+.tourist-profile-field select,
+.tourist-profile-field textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  border: 1px solid #dce2ed;
+  border-radius: 8px;
+
+  background: #ffffff;
+  color: #253450;
+
+  font-family: inherit;
+  font-size: 13px;
+
+  outline: none;
+}
+
+.tourist-profile-field input,
+.tourist-profile-field select {
+  height: 44px;
+
+  padding: 0 12px;
+}
+
+.tourist-profile-field textarea {
+  min-height: 120px;
+
+  padding: 12px;
+
+  resize: vertical;
+}
+
+.tourist-profile-field input:focus,
+.tourist-profile-field select:focus,
+.tourist-profile-field textarea:focus {
+  border-color: #2868f4;
+
+  box-shadow:
+    0 0 0 3px rgba(40, 104, 244, 0.08);
+}
+
+.tourist-email-field {
+  grid-column: 2 / 4;
+}
+
+/* SECTION HEADING */
+
+.tourist-profile-section-heading {
+  margin-bottom: 16px;
+}
+
+.tourist-profile-section-heading h2 {
+  margin: 0;
+
+  color: #172742;
+
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.tourist-profile-section-heading p {
+  margin: 5px 0 0;
+
+  color: #7f899c;
+  font-size: 12px;
+}
+
+/* BIO */
+
+.tourist-bio-wrapper {
+  position: relative;
+}
+
+.tourist-character-count {
+  position: absolute;
+
+  right: 10px;
+  bottom: 8px;
+
+  color: #8b95a7;
+
+  font-size: 10px;
+}
+
+/* ADDRESS */
+
+.tourist-address-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 16px;
+}
+
+.tourist-address-full {
+  grid-column: 1 / -1;
+}
+
+/* SAVE */
+
+.tourist-profile-save-area {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 14px;
+
+  padding-bottom: 25px;
+}
+
+.tourist-profile-save-btn {
+  min-width: 160px;
+  height: 45px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: #2868f4;
+  color: #ffffff;
+
+  font-family: inherit;
+
+  font-size: 13px;
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.tourist-profile-saved-message {
+  display: flex;
+  align-items: center;
+
+  gap: 5px;
+
+  color: #198754;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1000px) {
+  .tourist-profile-basic-info {
+    grid-template-columns:
+      150px
+      minmax(0, 1fr);
+  }
+
+  .tourist-email-field {
+    grid-column: 2;
+  }
+}
+
+@media (max-width: 900px) {
+  .tourist-profile-page {
+    margin-left: 0;
+
+    width: 100%;
+
+    padding: 18px;
+  }
+}
+
+@media (max-width: 650px) {
+  .tourist-profile-basic-info {
+    grid-template-columns: 1fr;
+  }
+
+  .tourist-email-field {
+    grid-column: auto;
+  }
+
+  .tourist-address-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tourist-address-full {
+    grid-column: auto;
+  }
+
+  .tourist-profile-photo-section {
+    margin-top: -70px;
+  }
+
+  .tourist-profile-save-btn {
+    width: 100%;
+  }
+}
+

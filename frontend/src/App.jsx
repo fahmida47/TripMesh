@@ -16,16 +16,17 @@ import Contact from "./pages/Contact/Contact";
 
 import GuideDashboard from "./pages/GuideDashboard/GuideDashboard";
 import GuideProfile from "./pages/GuideDashboard/Profile/GuideProfile";
-
 import GuideTourServices from "./pages/GuideDashboard/TourServices/GuideTourServices";
 import AddTourService from "./pages/GuideDashboard/TourServices/AddTourService";
-
 import GuideRequests from "./pages/GuideDashboard/GuideRequest/GuideRequests";
 import GuideBookings from "./pages/GuideDashboard/Bookings/GuideBookings";
 
 import ReviewsRatings from "./pages/GuideDashboard/Rating/ReviewsRatings";
 
 import TouristDashboard from "./pages/TouristDashboard/TouristDashboard";
+import TouristProfile from "./pages/TouristDashboard/Profile/TouristProfile";
+import TouristReviews from "./pages/TouristDashboard/Reviews/TouristReviews";
+import RequestsBookings from "./pages/TouristDashboard/components/RequestsBookings";
 
 function App() {
   return (
@@ -33,49 +34,56 @@ function App() {
       <ScrollToTop />
 
       <Routes>
+        {/* HOME */}
         <Route
           path="/"
           element={<GlobalLandingPage />}
         />
 
+        {/* EXPLORE */}
         <Route
           path="/explore"
           element={<Explore />}
         />
 
+        {/* ABOUT */}
         <Route
           path="/about"
           element={<AboutUs />}
         />
 
+        {/* CONTACT */}
         <Route
           path="/contact"
           element={<Contact />}
         />
 
+        {/* LOGIN */}
         <Route
           path="/login"
           element={<Login />}
         />
 
+        {/* SIGNUP */}
         <Route
           path="/signup"
           element={<Signup />}
         />
 
-        {/* GUIDE DASHBOARD */}
+        {/* ======================
+            GUIDE DASHBOARD
+        ====================== */}
+
         <Route
           path="/guide-dashboard"
           element={<GuideDashboard />}
         />
 
-        {/* GUIDE PROFILE */}
         <Route
           path="/guide-dashboard/profile"
           element={<GuideProfile />}
         />
 
-        {/* TOUR SERVICES */}
         <Route
           path="/guide-dashboard/tour-services"
           element={<GuideTourServices />}
@@ -86,17 +94,21 @@ function App() {
           element={<AddTourService />}
         />
 
-        {/* GUIDE REQUESTS */}
         <Route
           path="/guide-dashboard/requests"
           element={<GuideRequests />}
         />
 
-        {/* GUIDE BOOKINGS */}
         <Route
           path="/guide-dashboard/bookings"
           element={<GuideBookings />}
         />
+
+
+        {/* ======================
+            TOURIST DASHBOARD
+        ====================== */}
+
 
         {/* REVIEWS & RATINGS */}
         <Route
@@ -105,9 +117,28 @@ function App() {
         />
 
         {/* TOURIST DASHBOARD */}
+ 
         <Route
           path="/tourist-dashboard"
           element={<TouristDashboard />}
+        />
+
+        {/* TOURIST PROFILE */}
+        <Route
+          path="/tourist-dashboard/profile"
+          element={<TouristProfile />}
+        />
+
+        {/* TOURIST BOOKINGS */}
+        <Route
+          path="/tourist-dashboard/bookings"
+          element={<RequestsBookings />}
+        />
+
+        {/* TOURIST REVIEWS */}
+        <Route
+          path="/tourist-dashboard/reviews"
+          element={<TouristReviews />}
         />
 
         {/* PAGE NOT FOUND */}

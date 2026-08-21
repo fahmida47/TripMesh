@@ -1,12 +1,11 @@
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+
 import {
   FiGrid,
   FiUser,
   FiCalendar,
   FiDollarSign,
   FiStar,
-  FiHeart,
-  FiHelpCircle,
   FiLogOut,
 } from "react-icons/fi";
 
@@ -15,36 +14,34 @@ import logo from "../../../assets/logo.png";
 
 const NAV_ITEMS = [
   {
-    key: "dashboard",
     label: "Dashboard",
     icon: FiGrid,
+    path: "/tourist-dashboard",
+    end: true,
   },
   {
-    key: "profile",
     label: "My Profile",
     icon: FiUser,
+    path: "/tourist-dashboard/profile",
   },
   {
-    key: "bookings",
     label: "Bookings",
     icon: FiCalendar,
+    path: "/tourist-dashboard/bookings",
   },
   {
-    key: "payments",
     label: "Payments",
     icon: FiDollarSign,
+    path: "/tourist-dashboard/payments",
   },
   {
-    key: "reviews",
     label: "Reviews & Ratings",
     icon: FiStar,
+    path: "/tourist-dashboard/reviews",
   },
-  
 ];
 
 export default function TouristSidebar({
-  activeKey = "dashboard",
-  onNavigate,
   isOpen = false,
   onClose,
 }) {
@@ -66,7 +63,6 @@ export default function TouristSidebar({
       )}
 
       <aside className={`ts-sidebar ${isOpen ? "open" : ""}`}>
-        {/* Mobile Close Button */}
         <button
           type="button"
           className="ts-sidebar-close"
@@ -76,9 +72,7 @@ export default function TouristSidebar({
           ×
         </button>
 
-        {/* Sidebar Top */}
         <div className="ts-sidebar-top">
-          {/* Logo */}
           <div className="ts-sidebar-logo">
             <div className="ts-logo-circle">
               <img src={logo} alt="TripMesh Logo" />
@@ -90,33 +84,35 @@ export default function TouristSidebar({
             </div>
           </div>
 
-          {/* Navigation */}
           <nav className="ts-sidebar-nav">
-            {NAV_ITEMS.map(({ key, label, icon: Icon }) => (
-              <a
-                key={key}
-                href={`#${key}`}
-                className={`ts-sidebar-link ${
-                  key === activeKey ? "active" : ""
-                }`}
-                onClick={(e) => {
-                  if (onNavigate) {
-                    e.preventDefault();
-                    onNavigate(key);
-                  }
+            {NAV_ITEMS.map((item) => {
+              const Icon = item.icon;
 
-                  onClose?.();
-                }}
-              >
-                <Icon />
-                <span>{label}</span>
-              </a>
-            ))}
+              return (
+                <NavLink
+                  key={item.path}
+                  to={item.path}
+                  end={item.end}
+                  className={({ isActive }) =>
+                    isActive
+                      ? "ts-sidebar-link active"
+                      : "ts-sidebar-link"
+                  }
+                  onClick={() => onClose?.()}
+                >
+                  <Icon />
+                  <span>{item.label}</span>
+                </NavLink>
+              );
+            })}
           </nav>
         </div>
 
-        {/* Logout */}
-        <button className="ts-logout-btn" onClick={handleLogout}>
+        <button
+          type="button"
+          className="ts-logout-btn"
+          onClick={handleLogout}
+        >
           <FiLogOut />
           <span>Logout</span>
         </button>
