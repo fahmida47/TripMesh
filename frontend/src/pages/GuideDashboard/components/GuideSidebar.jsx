@@ -1,5 +1,5 @@
 import "./GuideSidebar.css";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import {
   FiGrid,
@@ -14,6 +14,13 @@ import {
 import logo from "../../../assets/logo.png";
 
 const GuideSidebar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.setItem("isLoggedIn", "false");
+    navigate("/");
+  };
+
   return (
     <aside className="guide-sidebar">
       <div className="guide-sidebar-top">
@@ -90,6 +97,7 @@ const GuideSidebar = () => {
       <button
         type="button"
         className="logout-btn"
+        onClick={handleLogout}
       >
         <FiLogOut />
         <span>Logout</span>
