@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Check,
   Image as ImageIcon,
@@ -6,23 +6,24 @@ import {
   UserCog,
 } from "lucide-react";
 
-import { touristProfile } from "../mockProfile";
 import TouristSidebar from "../components/TouristSidebar";
 
 import "./TouristProfile.css";
 
 const INITIAL_FORM = {
-  fullName: touristProfile.fullName || "",
-  phone: touristProfile.phone || "",
-  email: touristProfile.email || "",
+  fullName: "",
+  phone: "",
+  email: "",
   bio: "",
   addressLine1: "",
   addressLine2: "",
-  city: touristProfile.city || "",
+  city: "",
   state: "",
   zip: "",
-  country: touristProfile.country || "",
+  country: "",
 };
+
+const API_BASE_URL = "http://127.0.0.1:8000/api";
 
 const COUNTRIES = [
   "Bangladesh",
@@ -44,9 +45,65 @@ const TouristProfile = () => {
   const [coverImage, setCoverImage] = useState(null);
 
   const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
 
   const profileInputRef = useRef(null);
   const coverInputRef = useRef(null);
+
+  useEffect(() => {
+    loadProfile();
+  }, []);
+
+  const mapProfileToForm = (profile) => ({
+    fullName: profile.full_name || "",
+    phone: profile.phone || "",
+    email: profile.email || "",
+    bio: profile.bio || "",
+    addressLine1: profile.address_line_1 || "",
+    addressLine2: profile.address_line_2 || "",
+    city: profile.city || "",
+    state: profile.state || "",
+    zip: profile.postal_code || "",
+    country: profile.country || "",
+  });
+
+  const loadProfile = async () => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      setError("You are not logged in.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/tourist/profile`, {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to load your profile.");
+      }
+
+      const profile = data.profile;
+      setFormData(mapProfileToForm(profile));
+
+      if (profile.profile_picture_url) {
+        setProfileImage({ preview: profile.profile_picture_url });
+      }
+
+      if (profile.cover_photo_url) {
+        setCoverImage({ preview: profile.cover_photo_url });
+      }
+    } catch (loadError) {
+      console.error("Load tourist profile error:", loadError);
+      setError(loadError.message || "Unable to load your profile.");
+    }
+  };
 
   const profileInitials = useMemo(() => {
     if (!formData.fullName.trim()) {
@@ -71,6 +128,7 @@ const TouristProfile = () => {
     }));
 
     setSaved(false);
+    setError("");
   };
 
   const handleProfileImage = (event) => {
@@ -86,7 +144,7 @@ const TouristProfile = () => {
     setSaved(false);
   };
 
-  const handleCoverImage = (event) => {
+  const handleCoverImage = async (event) => {
     const file = event.target.files?.[0];
 
     if (!file) return;
@@ -97,22 +155,135 @@ const TouristProfile = () => {
     });
 
     setSaved(false);
+    setError("");
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      setError("You are not logged in.");
+      return;
+    }
+
+    try {
+      setSaving(true);
+
+      const data = await uploadImage(
+        token,
+        "/tourist/profile/cover-photo",
+        "cover_photo",
+        { file },
+      );
+
+      setCoverImage({ preview: data.url });
+      setSaved(true);
+    } catch (uploadError) {
+      console.error("Cover photo upload error:", uploadError);
+      setError(uploadError.message || "Unable to upload the cover photo.");
+    } finally {
+      setSaving(false);
+    }
   };
 
-  const handleSave = () => {
-    const profileData = {
-      ...formData,
-      profileImage: profileImage?.file || null,
-      coverImage: coverImage?.file || null,
-    };
+  const uploadImage = async (token, endpoint, field, image) => {
+    if (!image?.file) return;
 
-    console.log("Tourist Profile Data:", profileData);
+    const uploadData = new FormData();
+    uploadData.append(field, image.file);
 
-    setSaved(true);
+    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: uploadData,
+    });
+    const data = await response.json();
 
-    setTimeout(() => {
-      setSaved(false);
-    }, 2500);
+    if (!response.ok) {
+      const validationErrors = data.errors
+        ? Object.values(data.errors).flat().join(" ")
+        : "";
+      throw new Error(data.message || validationErrors || "Image upload failed.");
+    }
+
+    return data;
+  };
+
+  const handleSave = async () => {
+    setSaved(false);
+    setError("");
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      setError("You are not logged in.");
+      return;
+    }
+
+    try {
+      setSaving(true);
+
+      const response = await fetch(`${API_BASE_URL}/tourist/profile`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          full_name: formData.fullName,
+          phone: formData.phone,
+          email: formData.email || null,
+          bio: formData.bio || null,
+          address_line_1: formData.addressLine1 || null,
+          address_line_2: formData.addressLine2 || null,
+          city: formData.city || null,
+          state: formData.state || null,
+          postal_code: formData.zip || null,
+          country: formData.country || null,
+        }),
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        const validationErrors = data.errors
+          ? Object.values(data.errors).flat().join(" ")
+          : "";
+        throw new Error(data.message || validationErrors || "Failed to save your profile.");
+      }
+
+      await uploadImage(
+        token,
+        "/tourist/profile/profile-picture",
+        "profile_picture",
+        profileImage,
+      );
+      await uploadImage(
+        token,
+        "/tourist/profile/cover-photo",
+        "cover_photo",
+        coverImage,
+      );
+
+      const signedInUser = JSON.parse(localStorage.getItem("user") || "{}");
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...signedInUser,
+          name: data.profile.full_name,
+          phone: data.profile.phone,
+        }),
+      );
+
+      await loadProfile();
+      setSaved(true);
+    } catch (saveError) {
+      console.error("Save tourist profile error:", saveError);
+      setError(saveError.message || "Unable to save your profile.");
+    } finally {
+      setSaving(false);
+    }
   };
 
   return (
@@ -423,12 +594,19 @@ const TouristProfile = () => {
             </div>
           )}
 
+          {error && (
+            <div className="tourist-profile-saved-message">
+              {error}
+            </div>
+          )}
+
           <button
             type="button"
             className="tourist-profile-save-btn"
             onClick={handleSave}
+            disabled={saving}
           >
-            Save Changes
+            {saving ? "Saving..." : "Save Changes"}
           </button>
         </div>
       </main>
