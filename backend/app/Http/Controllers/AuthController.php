@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\VerificationCode;
+use App\Models\Guide\GuideProfile;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -36,7 +37,7 @@ class AuthController extends Controller
         | DEVELOPMENT ONLY
         |--------------------------------------------------------------------------
         | OTP will be shown in the Laravel terminal.
-        | Later, when SMS service is connected, remove this section.
+        | Later, when an SMS service is connected, remove this section.
         |--------------------------------------------------------------------------
         */
 
@@ -143,8 +144,17 @@ class AuthController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
-            'phone' => ['required', 'string', 'min:10', 'max:20', 'unique:users,phone'],
-            'role' => ['required', 'in:tourist,guide'],
+            'phone' => [
+                'required',
+                'string',
+                'min:10',
+                'max:20',
+                'unique:users,phone'
+            ],
+            'role' => [
+                'required',
+                'in:tourist,guide'
+            ],
         ]);
 
         if ($validator->fails()) {
@@ -154,11 +164,43 @@ class AuthController extends Controller
             ], 422);
         }
 
+        /*
+        |--------------------------------------------------------------------------
+        | Create User
+        |--------------------------------------------------------------------------
+        */
+
         $user = User::create([
             'name' => trim($request->name),
             'phone' => trim($request->phone),
             'role' => $request->role,
         ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Automatically Create Guide Profile
+        |--------------------------------------------------------------------------
+        |
+        | Every new guide gets a Guide Profile.
+        | The signup name becomes the initial company name
+        | and contact person.
+        |
+        */
+
+        if ($user->role === 'guide') {
+            GuideProfile::create([
+                'user_id' => $user->id,
+                'company_name' => $user->name,
+                'contact_person' => $user->name,
+                'phone' => $user->phone,
+            ]);
+        }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Generate JWT Token
+        |--------------------------------------------------------------------------
+        */
 
         $token = auth('api')->login($user);
 
@@ -180,6 +222,12 @@ class AuthController extends Controller
     public function user(): JsonResponse
     {
         $user = auth('api')->user();
+
+        if (!$user) {
+            return response()->json([
+                'message' => 'Unauthenticated.',
+            ], 401);
+        }
 
         return response()->json([
             'user' => [
