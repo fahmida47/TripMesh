@@ -473,3 +473,11 @@
     font-size: 17px;
   }
 }
+
+.login-success {
+  margin: -3px 0 12px;
+  color: #16a34a;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+}
