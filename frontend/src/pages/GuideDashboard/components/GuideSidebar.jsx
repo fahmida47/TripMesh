@@ -9,11 +9,12 @@ import {
   FiCalendar,
   FiLogOut,
   FiStar,
+  FiX,
 } from "react-icons/fi";
 
 import logo from "../../../assets/logo.png";
 
-const GuideSidebar = () => {
+const GuideSidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -21,8 +22,16 @@ const GuideSidebar = () => {
     navigate("/");
   };
 
+  const closeSidebar = () => {
+    if (setSidebarOpen) {
+      setSidebarOpen(false);
+    }
+  };
+
   return (
-    <aside className="guide-sidebar">
+    <aside
+      className={`guide-sidebar ${sidebarOpen ? "guide-sidebar-open" : ""}`}
+    >
       <div className="guide-sidebar-top">
         <div className="sidebar-logo">
           <div className="logo-circle">
@@ -33,12 +42,22 @@ const GuideSidebar = () => {
             <h2>TripMesh</h2>
             <p>Guide Company</p>
           </div>
+
+          <button
+            type="button"
+            className="sidebar-close-btn"
+            onClick={closeSidebar}
+            aria-label="Close sidebar"
+          >
+            <FiX />
+          </button>
         </div>
 
         <nav className="sidebar-nav">
           <NavLink
             to="/guide-dashboard"
             end
+            onClick={closeSidebar}
             className={({ isActive }) =>
               isActive ? "sidebar-link active" : "sidebar-link"
             }
@@ -49,6 +68,7 @@ const GuideSidebar = () => {
 
           <NavLink
             to="/guide-dashboard/profile"
+            onClick={closeSidebar}
             className={({ isActive }) =>
               isActive ? "sidebar-link active" : "sidebar-link"
             }
@@ -59,6 +79,7 @@ const GuideSidebar = () => {
 
           <NavLink
             to="/guide-dashboard/tour-services"
+            onClick={closeSidebar}
             className={({ isActive }) =>
               isActive ? "sidebar-link active" : "sidebar-link"
             }
@@ -69,6 +90,7 @@ const GuideSidebar = () => {
 
           <NavLink
             to="/guide-dashboard/requests"
+            onClick={closeSidebar}
             className={({ isActive }) =>
               isActive ? "sidebar-link active" : "sidebar-link"
             }
@@ -79,6 +101,7 @@ const GuideSidebar = () => {
 
           <NavLink
             to="/guide-dashboard/bookings"
+            onClick={closeSidebar}
             className={({ isActive }) =>
               isActive ? "sidebar-link active" : "sidebar-link"
             }
@@ -89,6 +112,7 @@ const GuideSidebar = () => {
 
           <NavLink
             to="/guide-dashboard/reviews"
+            onClick={closeSidebar}
             className={({ isActive }) =>
               isActive ? "sidebar-link active" : "sidebar-link"
             }
