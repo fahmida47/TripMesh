@@ -1,11 +1,11 @@
 import "./GuideHeader.css";
+import { FiMenu } from "react-icons/fi";
 
-const GuideHeader = () => {
+const GuideHeader = ({ sidebarOpen, setSidebarOpen }) => {
   const user = JSON.parse(localStorage.getItem("user")) || {};
 
   const guideName = user.name || "Guide";
 
-  // Registration date
   let registeredDate;
 
   if (user.registeredDate) {
@@ -30,9 +30,17 @@ const GuideHeader = () => {
 
   return (
     <header className="guide-header">
+      <button
+        type="button"
+        className="guide-menu-btn"
+        onClick={() => setSidebarOpen(!sidebarOpen)}
+        aria-label="Open navigation menu"
+      >
+        <FiMenu />
+      </button>
+
       <div className="guide-header-text">
         <h2>Welcome back, {guideName}! 👋</h2>
-
         <p>{formattedDate}</p>
       </div>
     </header>
