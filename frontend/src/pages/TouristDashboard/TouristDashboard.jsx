@@ -1,61 +1,26 @@
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 import TouristSidebar from "./components/TouristSidebar";
 import TouristTopbar from "./components/TouristTopbar";
-
 import RequestsBookings from "./components/RequestsBookings";
 import TouristProfile from "./Profile/TouristProfile";
 import PaymentHistory from "./components/PaymentHistory";
 import PaymentPage from "./components/PaymentPage";
-import TouristReviews from "./Reviews/TouristReviews";
-
 import Explore from "../Explore/Explore";
 
 import "./TouristDashboard.css";
 
 export default function TouristDashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [activeKey, setActiveKey] = useState("dashboard");
+
+  // Stores the booking/payment that opened the payment page
   const [paymentTarget, setPaymentTarget] = useState(null);
 
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  /* =========================
-     FIND ACTIVE PAGE FROM URL
-  ========================= */
-
-  const getActiveKey = () => {
-    const path = location.pathname;
-
-    if (path === "/tourist-dashboard/profile") {
-      return "profile";
-    }
-
-    if (path === "/tourist-dashboard/bookings") {
-      return "bookings";
-    }
-
-    if (path === "/tourist-dashboard/payments") {
-      return "payments";
-    }
-
-    if (path === "/tourist-dashboard/reviews") {
-      return "reviews";
-    }
-
-    if (path === "/tourist-dashboard/payment") {
-      return "complete-payment";
-    }
-
-    return "dashboard";
-  };
-
-  const activeKey = getActiveKey();
-
-  /* =========================
-     PAYMENT
-  ========================= */
+  const isRequestsBookings = activeKey === "bookings";
+  const isProfile = activeKey === "profile";
+  const isPayments = activeKey === "payments";
+  const isCompletePayment = activeKey === "complete-payment";
 
   const goToPayment = (booking, from) => {
     setPaymentTarget({
@@ -63,58 +28,12 @@ export default function TouristDashboard() {
       from,
     });
 
-    navigate("/tourist-dashboard/payment");
+    setActiveKey("complete-payment");
   };
 
   const handleBackFromPayment = () => {
-    const destination = paymentTarget?.from || "bookings";
-
-    if (destination === "payments") {
-      navigate("/tourist-dashboard/payments");
-    } else {
-      navigate("/tourist-dashboard/bookings");
-    }
-
+    setActiveKey(paymentTarget?.from || "bookings");
     setPaymentTarget(null);
-  };
-
-  /* =========================
-     CLOSE SIDEBAR ON PAGE CHANGE
-  ========================= */
-
-  useEffect(() => {
-    setSidebarOpen(false);
-  }, [location.pathname]);
-
-  /* =========================
-     NAVIGATION
-  ========================= */
-
-  const handleNavigate = (key) => {
-    switch (key) {
-      case "dashboard":
-        navigate("/tourist-dashboard");
-        break;
-
-      case "profile":
-        navigate("/tourist-dashboard/profile");
-        break;
-
-      case "bookings":
-        navigate("/tourist-dashboard/bookings");
-        break;
-
-      case "payments":
-        navigate("/tourist-dashboard/payments");
-        break;
-
-      case "reviews":
-        navigate("/tourist-dashboard/reviews");
-        break;
-
-      default:
-        navigate("/tourist-dashboard");
-    }
   };
 
   return (
@@ -123,10 +42,9 @@ export default function TouristDashboard() {
         {/* =========================
             TOURIST SIDEBAR
         ========================= */}
-
         <TouristSidebar
           activeKey={activeKey}
-          onNavigate={handleNavigate}
+          onNavigate={setActiveKey}
           isOpen={sidebarOpen}
           onClose={() => setSidebarOpen(false)}
         />
@@ -134,31 +52,18 @@ export default function TouristDashboard() {
         {/* =========================
             MAIN AREA
         ========================= */}
-
         <div className="ts-shell-main">
-          {/* TOPBAR */}
-
           <TouristTopbar
             onMenuClick={() => setSidebarOpen(true)}
-            onProfileClick={() => navigate("/tourist-dashboard/profile")}
+            onProfileClick={() => setActiveKey("profile")}
           />
 
-          {/* =========================
-              PAGE CONTENT
-          ========================= */}
-
           <main className="ts-shell-content">
-            {/* =========================
-                PROFILE
-            ========================= */}
+            {/* PROFILE */}
+            {isProfile && <TouristProfile />}
 
-            {activeKey === "profile" && <TouristProfile />}
-
-            {/* =========================
-                COMPLETE PAYMENT
-            ========================= */}
-
-            {activeKey === "complete-payment" && (
+            {/* PAYMENT PAGE */}
+            {isCompletePayment && (
               <PaymentPage
                 booking={paymentTarget?.booking}
                 backLabel={
@@ -170,11 +75,8 @@ export default function TouristDashboard() {
               />
             )}
 
-            {/* =========================
-                BOOKINGS
-            ========================= */}
-
-            {activeKey === "bookings" && (
+            {/* BOOKINGS */}
+            {isRequestsBookings && (
               <RequestsBookings
                 onProceedToPayment={(booking) =>
                   goToPayment(booking, "bookings")
@@ -182,27 +84,18 @@ export default function TouristDashboard() {
               />
             )}
 
-            {/* =========================
-                PAYMENTS
-            ========================= */}
-
-            {activeKey === "payments" && (
+            {/* PAYMENTS */}
+            {isPayments && (
               <PaymentHistory
                 onPayNow={(booking) => goToPayment(booking, "payments")}
               />
             )}
 
-            {/* =========================
-                REVIEWS
-            ========================= */}
-
-            {activeKey === "reviews" && <TouristReviews />}
-
-            {/* =========================
-                DASHBOARD
-            ========================= */}
-
-            {activeKey === "dashboard" && <Explore embedded />}
+            {/* DASHBOARD / EXPLORE */}
+            {!isProfile &&
+              !isCompletePayment &&
+              !isRequestsBookings &&
+              !isPayments && <Explore embedded />}
           </main>
         </div>
       </div>
