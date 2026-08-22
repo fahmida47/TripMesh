@@ -985,3 +985,509 @@
     margin-top: -25px;
   }
 }
+
+/* ========================================
+   MOBILE CARD - KEEP DESKTOP STYLE
+======================================== */
+
+@media (max-width: 650px) {
+
+  /* Main explore width */
+  .explore-main-no-filter {
+    width: calc(100% - 24px);
+    margin: 0 auto;
+    padding: 18px 0 60px;
+  }
+
+  /* Search */
+  .explore-search-sort-row {
+    width: 100%;
+  }
+
+  /* Cards - one card per row */
+  .explore-guide-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    width: 100%;
+  }
+
+  /* Keep desktop card appearance */
+  .explore-guide-card {
+    width: 100%;
+    min-width: 0;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+
+  /* Image same style as desktop */
+  .explore-guide-image-wrapper {
+    width: 100%;
+    height: 190px;
+    min-height: 190px;
+  }
+
+  .explore-guide-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Card content */
+  .explore-guide-content {
+    width: 100%;
+    padding: 0 16px 15px;
+  }
+
+  /* Company heading */
+  .explore-company-heading {
+    min-height: 68px;
+    grid-template-columns: 58px minmax(0, 1fr);
+    gap: 11px;
+  }
+
+  /* Company logo */
+  .explore-company-logo {
+    width: 58px;
+    height: 58px;
+    margin-top: -25px;
+    border-width: 5px;
+    font-size: 23px;
+  }
+
+  /* Company name */
+  .explore-company-title-wrapper h3 {
+    margin: 0 0 5px;
+    font-size: 18px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Location */
+  .explore-location {
+    font-size: 12px;
+  }
+
+  /* Tour badges */
+  .explore-tour-badges {
+    min-height: 28px;
+    margin: 1px 0 10px;
+    gap: 6px;
+  }
+
+  .explore-tour-badge {
+    padding: 5px 9px;
+    font-size: 10px;
+  }
+
+  /* Description */
+  .explore-guide-description {
+    min-height: 52px;
+    margin: 4px 0 14px;
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  /* Rating + Price */
+  .explore-guide-meta {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+
+  /* Buttons */
+  .explore-card-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 11px;
+  }
+
+  .explore-card-actions button {
+    min-height: 38px;
+    font-size: 12px;
+  }
+
+  /* ========================================
+     LIST VIEW ON MOBILE
+     Also keep same card style
+  ======================================== */
+
+  .explore-guide-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .explore-guide-list .explore-guide-card {
+    display: block;
+    width: 100%;
+    min-height: 0;
+  }
+
+  .explore-guide-list .explore-guide-image-wrapper {
+    width: 100%;
+    height: 190px;
+    min-height: 190px;
+  }
+
+  .explore-guide-list .explore-guide-content {
+    width: 100%;
+    padding: 0 16px 15px;
+  }
+
+  .explore-guide-list .explore-company-heading {
+    min-height: 68px;
+    grid-template-columns: 58px minmax(0, 1fr);
+    gap: 11px;
+  }
+
+  .explore-guide-list .explore-company-logo {
+    width: 58px;
+    height: 58px;
+    margin-top: -25px;
+    border-width: 5px;
+    font-size: 23px;
+  }
+
+  .explore-guide-list .explore-company-title-wrapper h3 {
+    font-size: 18px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .explore-guide-list .explore-guide-description {
+    min-height: 52px;
+    font-size: 12px;
+  }
+
+  .explore-guide-list .explore-card-actions {
+    grid-template-columns: 1fr 1fr;
+    gap: 11px;
+  }
+
+}
+/* ========================================
+   MOBILE GUIDE CARDS - FINAL FIX
+======================================== */
+
+@media (max-width: 650px) {
+
+  /* Explore main container */
+  .explore-main-no-filter {
+    width: calc(100% - 24px);
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 18px 0 60px;
+  }
+
+  /* ========================================
+     GUIDE GRID
+     MOBILE = ONE CARD PER ROW
+  ======================================== */
+
+  .explore-guide-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 20px;
+    width: 100%;
+  }
+
+  /* ========================================
+     CARD
+  ======================================== */
+
+  .explore-guide-card {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    display: block;
+    overflow: hidden;
+    border-radius: 14px;
+  }
+
+  /* ========================================
+     IMAGE
+  ======================================== */
+
+  .explore-guide-image-wrapper {
+    width: 100%;
+    height: 200px;
+    min-height: 200px;
+  }
+
+  .explore-guide-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* ========================================
+     CARD CONTENT
+  ======================================== */
+
+  .explore-guide-content {
+    width: 100%;
+    min-width: 0;
+    padding: 0 16px 16px;
+  }
+
+  /* ========================================
+     COMPANY INFO
+  ======================================== */
+
+  .explore-company-heading {
+    width: 100%;
+    min-height: 70px;
+
+    display: grid;
+    grid-template-columns: 58px minmax(0, 1fr);
+
+    align-items: center;
+    gap: 12px;
+  }
+
+  .explore-company-logo {
+    width: 58px;
+    height: 58px;
+
+    margin-top: -25px;
+
+    border: 5px solid #ffffff;
+    border-radius: 50%;
+
+    font-size: 23px;
+  }
+
+  .explore-company-title-wrapper {
+    min-width: 0;
+  }
+
+  .explore-company-title-wrapper h3 {
+    margin: 0 0 5px;
+
+    max-width: 100%;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    font-size: 18px;
+  }
+
+  .explore-location {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    font-size: 12px;
+  }
+
+  /* ========================================
+     TOUR BADGES
+  ======================================== */
+
+  .explore-tour-badges {
+    width: 100%;
+
+    min-height: 28px;
+
+    margin: 1px 0 12px;
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+    gap: 7px;
+  }
+
+  .explore-tour-badge {
+    padding: 5px 9px;
+    font-size: 10px;
+  }
+
+  /* ========================================
+     DESCRIPTION
+  ======================================== */
+
+  .explore-guide-description {
+    width: 100%;
+    min-height: auto;
+
+    margin: 5px 0 16px;
+
+    color: #2c354c;
+
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  /* ========================================
+     RATING + PRICE
+  ======================================== */
+
+  .explore-guide-meta {
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-bottom: 16px;
+  }
+
+  .explore-rating {
+    font-size: 12px;
+  }
+
+  .explore-rating strong {
+    font-size: 14px;
+  }
+
+  .explore-star {
+    font-size: 18px;
+  }
+
+  .explore-price {
+    font-size: 12px;
+  }
+
+  .explore-price strong {
+    font-size: 18px;
+  }
+
+  /* ========================================
+     BUTTONS
+  ======================================== */
+
+  .explore-card-actions {
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+  }
+
+  .explore-card-actions button {
+    width: 100%;
+    min-width: 0;
+    min-height: 40px;
+
+    padding: 0 10px;
+
+    font-size: 12px;
+  }
+
+
+  /* ========================================
+     LIST VIEW
+     ALSO ONE CARD PER ROW
+  ======================================== */
+
+  .explore-guide-list {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .explore-guide-list .explore-guide-card {
+    width: 100%;
+    display: block;
+    min-height: 0;
+  }
+
+  .explore-guide-list .explore-guide-image-wrapper {
+    width: 100%;
+    height: 200px;
+    min-height: 200px;
+  }
+
+  .explore-guide-list .explore-guide-content {
+    width: 100%;
+    padding: 0 16px 16px;
+  }
+
+  .explore-guide-list .explore-company-heading {
+    min-height: 70px;
+    grid-template-columns: 58px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .explore-guide-list .explore-company-logo {
+    width: 58px;
+    height: 58px;
+    margin-top: -25px;
+  }
+
+  .explore-guide-list .explore-company-title-wrapper h3 {
+    font-size: 18px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .explore-guide-list .explore-guide-description {
+    min-height: auto;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+
+  .explore-guide-list .explore-card-actions {
+    grid-template-columns: 1fr 1fr;
+  }
+
+}
+
+
+/* ========================================
+   VERY SMALL PHONES
+======================================== */
+
+@media (max-width: 380px) {
+
+  .explore-main-no-filter {
+    width: calc(100% - 20px);
+  }
+
+  .explore-guide-image-wrapper,
+  .explore-guide-list .explore-guide-image-wrapper {
+    height: 180px;
+    min-height: 180px;
+  }
+
+  .explore-guide-content,
+  .explore-guide-list .explore-guide-content {
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  .explore-company-heading,
+  .explore-guide-list .explore-company-heading {
+    grid-template-columns: 52px minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .explore-company-logo,
+  .explore-guide-list .explore-company-logo {
+    width: 52px;
+    height: 52px;
+    font-size: 21px;
+  }
+
+  .explore-guide-description,
+  .explore-guide-list .explore-guide-description {
+    font-size: 12px;
+  }
+
+  .explore-card-actions button {
+    font-size: 11px;
+  }
+}
