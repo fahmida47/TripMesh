@@ -3,8 +3,10 @@
 ========================================= */
 
 .reviews-page {
-  min-height: 100vh;
+  width: 100%;
+  min-height: 100%;
   background: #ffffff;
+  box-sizing: border-box;
 }
 
 /* =========================================
@@ -12,15 +14,21 @@
 ========================================= */
 
 .reviews-main-content {
-  margin-left: 280px;
-  min-height: 100vh;
+  width: 100%;
+  min-width: 0;
   background: #ffffff;
   box-sizing: border-box;
 }
 
+/* =========================================
+   PAGE CONTAINER
+========================================= */
+
 .reviews-page-container {
   width: 100%;
-  padding: 32px 36px 40px;
+  max-width: none;
+  margin: 0;
+  padding: 28px 32px 40px;
   box-sizing: border-box;
 }
 
@@ -29,6 +37,7 @@
 ========================================= */
 
 .reviews-page-header {
+  width: 100%;
   margin-bottom: 26px;
 }
 
@@ -53,16 +62,20 @@
 .reviews-rating-summary {
   width: 100%;
   min-height: 130px;
+
   display: flex;
   align-items: center;
+
   gap: 20px;
   padding: 22px;
   margin-bottom: 24px;
+
   box-sizing: border-box;
 
   background: #ffffff;
   border: 1px solid #e2e7f0;
   border-radius: 12px;
+
   box-shadow: 0 3px 12px rgba(25, 44, 85, 0.05);
 }
 
@@ -77,9 +90,10 @@
   flex-shrink: 0;
 
   border-radius: 12px;
-  background: #f3f5f8;
 
+  background: #f3f5f8;
   color: #9aa3b2;
+
   font-size: 25px;
 }
 
@@ -90,6 +104,7 @@
 
 .reviews-rating-label {
   margin-bottom: 4px;
+
   color: #8b95a7;
   font-size: 12px;
   font-weight: 500;
@@ -97,6 +112,7 @@
 
 .reviews-rating-info h2 {
   margin: 0 0 5px;
+
   color: #273753;
   font-size: 20px;
   font-weight: 700;
@@ -104,6 +120,7 @@
 
 .reviews-rating-info p {
   margin: 0;
+
   color: #8b95a7;
   font-size: 12px;
 }
@@ -117,8 +134,10 @@
   min-height: 400px;
 
   background: #ffffff;
+
   border: 1px solid #e2e7f0;
   border-radius: 12px;
+
   box-shadow: 0 3px 12px rgba(25, 44, 85, 0.05);
 
   overflow: hidden;
@@ -130,6 +149,7 @@
   justify-content: space-between;
 
   gap: 16px;
+
   padding: 20px 22px;
 
   border-bottom: 1px solid #edf0f5;
@@ -216,16 +236,22 @@
 }
 
 /* =========================================
-   RESPONSIVE
+   TABLET
 ========================================= */
 
 @media (max-width: 900px) {
-  .reviews-main-content {
-    margin-left: 0;
-  }
-
   .reviews-page-container {
     padding: 28px 24px 35px;
+  }
+}
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+  .reviews-page-container {
+    padding: 24px 20px 30px;
   }
 }
 
@@ -245,6 +271,7 @@
   .customer-reviews-header {
     align-items: flex-start;
     flex-direction: column;
+
     padding: 18px;
   }
 
