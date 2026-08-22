@@ -1,0 +1,386 @@
+/* =========================================================
+   TRIPMESH GLOBAL RESPONSIVE CSS
+   Desktop → Tablet → Mobile
+   ========================================================= */
+
+/* =========================================================
+   GLOBAL SAFETY
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+img,
+svg,
+video,
+canvas {
+  max-width: 100%;
+}
+
+button,
+input,
+textarea,
+select {
+  max-width: 100%;
+}
+
+/* =========================================================
+   COMMON CONTAINER SAFETY
+   ========================================================= */
+
+.tm-landing,
+.tm-page-section,
+.tm-hero,
+.explore-page,
+.about-page,
+.contact-page,
+.guide-dashboard,
+.tourist-dashboard {
+  max-width: 100%;
+}
+
+/* =========================================================
+   LARGE TABLET
+   1050px
+   ========================================================= */
+
+@media (max-width: 1050px) {
+  /* Prevent large fixed widths */
+
+  .tm-hero__inner,
+  .tm-section-content,
+  .explore-container,
+  .about-container,
+  .contact-container {
+    max-width: 100%;
+  }
+
+  /* Images */
+
+  img {
+    height: auto;
+  }
+
+  /* Tables */
+
+  table {
+    max-width: 100%;
+  }
+
+  /* Dashboard cards */
+
+  .dashboard-grid,
+  .stats-grid,
+  .cards-grid {
+    max-width: 100%;
+  }
+}
+
+/* =========================================================
+   TABLET
+   850px
+   ========================================================= */
+
+@media (max-width: 850px) {
+  /* =======================================================
+     GLOBAL TYPOGRAPHY
+     ======================================================= */
+
+  h1 {
+    font-size: clamp(36px, 7vw, 58px);
+  }
+
+  h2 {
+    font-size: clamp(28px, 5vw, 42px);
+  }
+
+  h3 {
+    font-size: clamp(21px, 3.5vw, 30px);
+  }
+
+  /* =======================================================
+     COMMON FLEX LAYOUT
+     ======================================================= */
+
+  .row,
+  .flex-row {
+    flex-wrap: wrap;
+  }
+
+  /* =======================================================
+     COMMON GRIDS
+     ======================================================= */
+
+  .grid,
+  .cards-grid,
+  .dashboard-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* =======================================================
+     FORMS
+     ======================================================= */
+
+  input,
+  textarea,
+  select {
+    max-width: 100%;
+  }
+
+  /* =======================================================
+     BUTTONS
+     ======================================================= */
+
+  button {
+    max-width: 100%;
+  }
+
+  /* =======================================================
+     MODALS
+     ======================================================= */
+
+  .modal,
+  .modal-content {
+    max-width: calc(100% - 32px);
+  }
+}
+
+/* =========================================================
+   MOBILE
+   650px
+   ========================================================= */
+
+@media (max-width: 650px) {
+  /* =======================================================
+     GLOBAL
+     ======================================================= */
+
+  body {
+    font-size: 14px;
+  }
+
+  /* =======================================================
+     TYPOGRAPHY
+     ======================================================= */
+
+  h1 {
+    font-size: clamp(32px, 10vw, 45px);
+
+    line-height: 1.1;
+  }
+
+  h2 {
+    font-size: clamp(25px, 8vw, 36px);
+
+    line-height: 1.15;
+  }
+
+  h3 {
+    font-size: clamp(20px, 6vw, 28px);
+  }
+
+  p {
+    line-height: 1.55;
+  }
+
+  /* =======================================================
+     COMMON CONTAINERS
+     ======================================================= */
+
+  .container,
+  .section-container,
+  .page-container {
+    width: calc(100% - 24px);
+
+    max-width: 100%;
+
+    margin-left: 12px;
+
+    margin-right: 12px;
+  }
+
+  /* =======================================================
+     COMMON GRID → SINGLE COLUMN
+     ======================================================= */
+
+  .grid,
+  .cards-grid,
+  .dashboard-grid,
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* =======================================================
+     COMMON FLEX → COLUMN
+     ======================================================= */
+
+  .flex-row {
+    flex-direction: column;
+  }
+
+  /* =======================================================
+     IMAGES
+     ======================================================= */
+
+  img {
+    max-width: 100%;
+
+    height: auto;
+
+    object-fit: cover;
+  }
+
+  /* =======================================================
+     FORMS
+     ======================================================= */
+
+  .form-row {
+    grid-template-columns: 1fr !important;
+
+    flex-direction: column;
+  }
+
+  input,
+  textarea,
+  select {
+    width: 100% !important;
+
+    max-width: 100%;
+  }
+
+  /* =======================================================
+     BUTTON GROUPS
+     ======================================================= */
+
+  .button-group,
+  .action-buttons {
+    width: 100%;
+
+    flex-wrap: wrap;
+  }
+
+  /* =======================================================
+     CARDS
+     ======================================================= */
+
+  .card {
+    width: 100%;
+
+    max-width: 100%;
+  }
+
+  /* =======================================================
+     MODAL
+     ======================================================= */
+
+  .modal,
+  .modal-content {
+    width: calc(100% - 24px);
+
+    max-width: calc(100% - 24px);
+
+    margin: 12px;
+  }
+
+  /* =======================================================
+     TABLE
+     ======================================================= */
+
+  .table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    min-width: 600px;
+  }
+
+  /* =======================================================
+     LONG TEXT
+     ======================================================= */
+
+  .text-content,
+  .description,
+  .content-text {
+    overflow-wrap: anywhere;
+
+    word-break: break-word;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+   400px
+   ========================================================= */
+
+@media (max-width: 400px) {
+  body {
+    font-size: 13px;
+  }
+
+  .container,
+  .section-container,
+  .page-container {
+    width: calc(100% - 16px);
+
+    margin-left: 8px;
+
+    margin-right: 8px;
+  }
+
+  h1 {
+    font-size: 30px;
+  }
+
+  h2 {
+    font-size: 25px;
+  }
+
+  button {
+    min-height: 38px;
+  }
+
+  .modal,
+  .modal-content {
+    width: calc(100% - 16px);
+
+    max-width: calc(100% - 16px);
+
+    margin: 8px;
+  }
+}
+
+/* =========================================================
+   LANDSCAPE MOBILE
+   ========================================================= */
+
+@media (max-width: 850px) and (orientation: landscape) {
+  .tm-hero {
+    min-height: 100vh;
+  }
+}
