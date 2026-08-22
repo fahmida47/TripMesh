@@ -1,106 +1,330 @@
+/* =========================================
+   TOURIST DASHBOARD TOPBAR
+   ========================================= */
+
 .ts-dashtopbar {
   width: 100%;
-  height: 74px;
-  padding: 14px 26px;
+  min-height: 76px;
+  padding: 12px 28px;
   box-sizing: border-box;
+
   display: flex;
   align-items: center;
-  gap: 14px;
+
   background: #ffffff;
-  border-bottom: 1px solid #e6eaf1;
+  border-bottom: 1px solid #e7ebf3;
+
+  position: relative;
+  z-index: 100;
 }
 
+/* =========================================
+   MOBILE MENU
+   ========================================= */
+
 .ts-dashtopbar-menu {
+  width: 40px;
+  height: 40px;
+
+  margin-right: 16px;
+
   display: none;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
-  background: #fff;
-  font-size: 16px;
+
+  border: 1px solid #e1e6ef;
+  border-radius: 10px;
+
+  background: #ffffff;
+  color: #17213d;
+
+  font-size: 20px;
+
   cursor: pointer;
-  color: #0b1638;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
 }
 
-.ts-dashtopbar-spacer {
-  flex: 1;
+.ts-dashtopbar-menu:hover {
+  background: #f5f7fb;
+  border-color: #d6dce8;
 }
 
-.ts-dashtopbar-account {
+.ts-dashtopbar-menu:active {
+  transform: scale(0.96);
+}
+
+/* =========================================
+   WELCOME
+   ========================================= */
+
+.ts-dashtopbar-welcome {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.ts-dashtopbar-title-row {
   display: flex;
   align-items: center;
-  gap: 9px;
-  padding: 5px 10px 5px 5px;
-  border-radius: 999px;
-  border: 1px solid #e2e8f0;
-  background: #fff;
+  gap: 7px;
+}
+
+.ts-dashtopbar-welcome h2 {
+  margin: 0;
+
+  font-size: 20px;
+  line-height: 1.25;
+  font-weight: 750;
+
+  color: #17213d;
+}
+
+.ts-dashtopbar-wave {
+  display: inline-flex;
+  align-items: center;
+
+  font-size: 19px;
+  line-height: 1;
+}
+
+.ts-dashtopbar-welcome p {
+  margin: 5px 0 0;
+
+  font-size: 12px;
+  line-height: 1.4;
+
+  color: #8992a6;
+}
+
+/* =========================================
+   RIGHT SIDE
+   ========================================= */
+
+.ts-dashtopbar-actions {
+  margin-left: auto;
+
+  display: flex;
+  align-items: center;
+}
+
+/* =========================================
+   ACCOUNT BUTTON
+   ========================================= */
+
+.ts-dashtopbar-account {
+  min-height: 48px;
+
+  padding: 4px 10px 4px 5px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  border: 1px solid #e4e8f0;
+  border-radius: 12px;
+
+  background: #ffffff;
+
   cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .ts-dashtopbar-account:hover {
-  background: #f8fafc;
+  background: #f8faff;
+  border-color: #d8deea;
+
+  box-shadow: 0 4px 12px rgba(23, 33, 61, 0.06);
 }
+
+.ts-dashtopbar-account:focus {
+  outline: none;
+}
+
+/* =========================================
+   AVATAR
+   ========================================= */
 
 .ts-dashtopbar-avatar {
   width: 40px;
   height: 40px;
-  border-radius: 999px;
-  background: #2563eb;
-  color: #fff;
-  font-size: 15px;
-  font-weight: 800;
+
+  flex-shrink: 0;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #2d5cf6;
+  color: #ffffff;
+
+  font-size: 16px;
 }
 
 .ts-dashtopbar-avatar svg {
-  width: 22px;
-  height: 22px;
+  width: 20px;
+  height: 20px;
 }
 
-.ts-dashtopbar-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+/* =========================================
+   PROFILE INFO
+   ========================================= */
+
+.ts-dashtopbar-profile-info {
+  min-width: 80px;
+
+  display: flex;
+  flex-direction: column;
+
+  align-items: flex-start;
+  justify-content: center;
 }
 
-.ts-dashtopbar-name,
 .ts-dashtopbar-profile-text {
-  font-size: 16px;
-  font-weight: 700;
+  max-width: 150px;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  font-size: 13px;
   line-height: 1.3;
-  color: #101b35;
+
+  font-weight: 700;
+
+  color: #17213d;
 }
+
+.ts-dashtopbar-profile-role {
+  margin-top: 2px;
+
+  font-size: 10px;
+  line-height: 1.2;
+
+  font-weight: 600;
+
+  color: #8b94a8;
+}
+
+/* =========================================
+   CHEVRON
+   ========================================= */
 
 .ts-dashtopbar-chevron {
-  width: 18px;
-  height: 18px;
-  color: #94a3b8;
+  width: 17px;
+  height: 17px;
+
+  flex-shrink: 0;
+
+  color: #8b94a8;
+
+  transition: transform 0.2s ease;
 }
 
-/* ==============================
-   RESPONSIVE
-   ============================== */
+.ts-dashtopbar-account:hover .ts-dashtopbar-chevron {
+  transform: translateY(1px);
+}
+
+/* =========================================
+   TABLET
+   ========================================= */
 
 @media (max-width: 1024px) {
+  .ts-dashtopbar {
+    min-height: 72px;
+    padding: 12px 24px;
+  }
+
   .ts-dashtopbar-menu {
     display: flex;
   }
 }
 
-@media (max-width: 560px) {
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 700px) {
   .ts-dashtopbar {
-    height: 64px;
-    padding: 12px 16px;
+    min-height: 68px;
+    padding: 10px 16px;
   }
 
-  .ts-dashtopbar-name,
-  .ts-dashtopbar-profile-text {
+  .ts-dashtopbar-menu {
+    width: 38px;
+    height: 38px;
+
+    margin-right: 12px;
+
+    font-size: 19px;
+  }
+
+  .ts-dashtopbar-welcome h2 {
+    font-size: 16px;
+  }
+
+  .ts-dashtopbar-wave {
+    font-size: 16px;
+  }
+
+  .ts-dashtopbar-welcome p {
+    font-size: 10px;
+    margin-top: 3px;
+  }
+
+  .ts-dashtopbar-account {
+    min-height: 42px;
+
+    padding: 2px 5px 2px 2px;
+
+    gap: 6px;
+
+    border-radius: 10px;
+  }
+
+  .ts-dashtopbar-avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .ts-dashtopbar-profile-info {
     display: none;
+  }
+
+  .ts-dashtopbar-chevron {
+    width: 15px;
+    height: 15px;
+  }
+}
+
+/* =========================================
+   SMALL MOBILE
+   ========================================= */
+
+@media (max-width: 480px) {
+  .ts-dashtopbar {
+    padding: 9px 12px;
+  }
+
+  .ts-dashtopbar-menu {
+    margin-right: 9px;
+  }
+
+  .ts-dashtopbar-welcome h2 {
+    font-size: 14px;
+  }
+
+  .ts-dashtopbar-welcome p {
+    font-size: 9px;
   }
 }
