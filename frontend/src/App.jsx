@@ -10,6 +10,7 @@ import AboutUs from "./pages/AboutUs/AboutUs";
 import Contact from "./pages/Contact/Contact";
 
 import GuideDashboard from "./pages/GuideDashboard/GuideDashboard";
+import GuideLayout from "./pages/GuideDashboard/GuideLayout";
 import GuideProfile from "./pages/GuideDashboard/Profile/GuideProfile";
 import GuideTourServices from "./pages/GuideDashboard/TourServices/GuideTourServices";
 import AddTourService from "./pages/GuideDashboard/TourServices/AddTourService";
@@ -50,28 +51,30 @@ function App() {
         <Route path="/signup" element={<Signup />} />
 
         {/* ======================
-            GUIDE DASHBOARD
-        ====================== */}
+    GUIDE DASHBOARD
+====================== */}
 
-        <Route path="/guide-dashboard" element={<GuideDashboard />} />
+        <Route element={<GuideLayout />}>
+          <Route path="/guide-dashboard" element={<GuideDashboard />} />
 
-        <Route path="/guide-dashboard/profile" element={<GuideProfile />} />
+          <Route path="/guide-dashboard/profile" element={<GuideProfile />} />
 
-        <Route
-          path="/guide-dashboard/tour-services"
-          element={<GuideTourServices />}
-        />
+          <Route
+            path="/guide-dashboard/tour-services"
+            element={<GuideTourServices />}
+          />
 
-        <Route
-          path="/guide-dashboard/tour-services/add"
-          element={<AddTourService />}
-        />
+          <Route
+            path="/guide-dashboard/tour-services/add"
+            element={<AddTourService />}
+          />
 
-        <Route path="/guide-dashboard/requests" element={<GuideRequests />} />
+          <Route path="/guide-dashboard/requests" element={<GuideRequests />} />
 
-        <Route path="/guide-dashboard/bookings" element={<GuideBookings />} />
+          <Route path="/guide-dashboard/bookings" element={<GuideBookings />} />
 
-        <Route path="/guide-dashboard/reviews" element={<ReviewsRatings />} />
+          <Route path="/guide-dashboard/reviews" element={<ReviewsRatings />} />
+        </Route>
 
         {/* ======================
             TOURIST DASHBOARD
