@@ -8,6 +8,11 @@ return new class extends Migration
 {
     public function up(): void
     {
+        // SQLite cannot drop an indexed column until the index is removed.
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropUnique('users_email_unique');
+        });
+
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn([
                 'email',

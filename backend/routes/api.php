@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Guide\GuideExperienceController;
 use App\Http\Controllers\Guide\GuideProfileController;
+use App\Http\Controllers\TouristProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -82,4 +83,19 @@ Route::middleware('auth:api')
             GuideExperienceController::class,
             'destroy'
         ]);
+    });
+
+/*
+|--------------------------------------------------------------------------
+| Tourist Profile Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware('auth:api')
+    ->prefix('tourist/profile')
+    ->group(function () {
+        Route::get('/', [TouristProfileController::class, 'show']);
+        Route::put('/', [TouristProfileController::class, 'update']);
+        Route::post('/profile-picture', [TouristProfileController::class, 'uploadProfilePicture']);
+        Route::post('/cover-photo', [TouristProfileController::class, 'uploadCoverPhoto']);
     });

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Guide\GuideProfile;
+use App\Models\TouristProfile;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
@@ -221,6 +222,14 @@ class AuthController extends Controller
                 'user_id' => $user->id,
                 'company_name' => $user->name,
                 'contact_person' => $user->name,
+                'phone' => $user->phone,
+            ]);
+        }
+
+        if ($user->role === 'tourist') {
+            TouristProfile::create([
+                'user_id' => $user->id,
+                'full_name' => $user->name,
                 'phone' => $user->phone,
             ]);
         }
