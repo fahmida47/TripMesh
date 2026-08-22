@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-
 import "./Navbar.css";
 
 const LogoIcon = () => (
@@ -9,7 +8,6 @@ const LogoIcon = () => (
       d="M20 2C10.6 2 3 9.6 3 19c0 12.7 17 28.5 17 28.5S37 31.7 37 19C37 9.6 29.4 2 20 2Z"
       fill="currentColor"
     />
-
     <circle cx="20" cy="18" r="10" fill="#03143d" />
   </svg>
 );
@@ -18,14 +16,14 @@ function Navbar() {
   const { pathname } = useLocation();
 
   const [activeSection, setActiveSection] = useState("home");
+  const [menuOpen, setMenuOpen] = useState(false);
 
   /* =========================
      HOME PAGE SECTION SCROLL
-  ========================= */
+     ========================= */
 
   const goToSection = (sectionId) => {
     const landingPage = document.querySelector(".tm-landing");
-
     const section = document.getElementById(sectionId);
 
     if (!landingPage || !section) {
@@ -34,6 +32,9 @@ function Navbar() {
 
     /* Active navbar line */
     setActiveSection(sectionId);
+
+    /* Close mobile menu */
+    setMenuOpen(false);
 
     /*
       About Us + Contact Us
@@ -74,12 +75,11 @@ function Navbar() {
 
   /* =========================
      NAVBAR
-  ========================= */
+     ========================= */
 
   return (
     <header className="tm-navbar">
       {/* LOGO */}
-
       <button
         type="button"
         className="tm-navbar__brand"
@@ -93,10 +93,13 @@ function Navbar() {
       </button>
 
       {/* NAVIGATION */}
-
-      <nav className="tm-navbar__links" aria-label="Main navigation">
+      <nav
+        className={`tm-navbar__links ${
+          menuOpen ? "tm-navbar__links--open" : ""
+        }`}
+        aria-label="Main navigation"
+      >
         {/* HOME */}
-
         <button
           type="button"
           className={activeSection === "home" ? "active" : ""}
@@ -106,7 +109,6 @@ function Navbar() {
         </button>
 
         {/* EXPLORE */}
-
         <button
           type="button"
           className={activeSection === "explore" ? "active" : ""}
@@ -116,7 +118,6 @@ function Navbar() {
         </button>
 
         {/* ABOUT US */}
-
         <button
           type="button"
           className={activeSection === "about" ? "active" : ""}
@@ -126,7 +127,6 @@ function Navbar() {
         </button>
 
         {/* CONTACT US */}
-
         <button
           type="button"
           className={activeSection === "contact" ? "active" : ""}
@@ -136,16 +136,34 @@ function Navbar() {
         </button>
       </nav>
 
-      {/* LOGIN / SIGNUP */}
-
+      {/* LOGIN / SIGNUP / HAMBURGER */}
       <div className="tm-navbar__actions">
+        {/* LOGIN */}
         <Link className="tm-navbar__login" to="/login">
           Log In
         </Link>
 
+        {/* SIGNUP */}
         <Link className="tm-navbar__signup" to="/signup">
           Sign Up
         </Link>
+
+        {/* MOBILE HAMBURGER */}
+        <button
+          type="button"
+          className={`tm-navbar__menu ${
+            menuOpen ? "tm-navbar__menu--open" : ""
+          }`}
+          onClick={() => setMenuOpen((prev) => !prev)}
+          aria-label={
+            menuOpen ? "Close navigation menu" : "Open navigation menu"
+          }
+          aria-expanded={menuOpen}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </div>
     </header>
   );
