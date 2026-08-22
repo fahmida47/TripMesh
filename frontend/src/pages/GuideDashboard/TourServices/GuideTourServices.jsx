@@ -3,9 +3,6 @@ import { useNavigate } from "react-router-dom";
 
 import "./GuideTourServices.css";
 
-import GuideSidebar from "../components/GuideSidebar";
-import GuideHeader from "../components/GuideHeader";
-
 function GuideTourServices() {
   const navigate = useNavigate();
 
@@ -19,7 +16,6 @@ function GuideTourServices() {
   const handleEditService = (id) => {
     console.log("Edit service:", id);
 
-    // Later this can open an edit form
     navigate(`/guide-dashboard/tour-services/edit/${id}`);
   };
 
@@ -34,151 +30,139 @@ function GuideTourServices() {
   };
 
   return (
-    <div className="guide-dashboard">
-      <GuideSidebar />
+    <main className="tour-services-page">
+      {/* PAGE HEADER */}
+      <div className="tour-services-header">
+        <div>
+          <h1>Tour Services</h1>
+          <p>Manage all your tour services and packages.</p>
+        </div>
 
-      <div className="dashboard-content">
-        <GuideHeader />
+        <button
+          type="button"
+          className="add-tour-service-button"
+          onClick={handleAddTourService}
+        >
+          + Add New Tour Service
+        </button>
+      </div>
 
-        <main className="tour-services-page">
-          {/* PAGE HEADER */}
-          <div className="tour-services-header">
+      {/* SUMMARY */}
+      <section className="tour-service-summary">
+        {/* TOTAL SERVICES */}
+        <div className="total-services-card">
+          <div className="total-services-icon">🧳</div>
+
+          <div>
+            <p>Total Services</p>
+            <h2>{tourServices.length}</h2>
+            <span>All your tour services</span>
+          </div>
+        </div>
+
+        {/* TOP TOUR SERVICE */}
+        <div className="top-tour-service-card">
+          <div className="top-tour-service-title">
             <div>
-              <h1>Tour Services</h1>
+              <p>Top Tour Service</p>
 
-              <p>Manage all your tour services and packages.</p>
+              <h3>
+                {tourServices.length === 0
+                  ? "Not yet available"
+                  : "No booking data yet"}
+              </h3>
             </div>
 
             <button
               type="button"
-              className="add-tour-service-button"
-              onClick={handleAddTourService}
+              className="top-tour-view-all"
+              onClick={() => navigate("/guide-dashboard/tour-services")}
             >
-              + Add New Tour Service
+              View All
             </button>
           </div>
 
-          {/* SUMMARY */}
-          <section className="tour-service-summary">
-            {/* TOTAL SERVICES */}
-            <div className="total-services-card">
-              <div className="total-services-icon">🧳</div>
+          <p className="top-tour-empty-text">
+            Your most booked tour service will appear here.
+          </p>
+        </div>
+      </section>
 
-              <div>
-                <p>Total Services</p>
+      {/* TOUR SERVICES LIST */}
+      <section className="tour-services-list-card">
+        <div className="tour-services-table-header">
+          <span>Tour Service</span>
+          <span>Tour Type</span>
+          <span>Duration</span>
+          <span>Price (BDT)</span>
+          <span>Actions</span>
+        </div>
 
-                <h2>{tourServices.length}</h2>
+        {tourServices.length === 0 ? (
+          <div className="tour-services-empty-state">
+            <div className="tour-services-empty-icon">🗺️</div>
 
-                <span>All your tour services</span>
-              </div>
-            </div>
+            <h2>No tour services added yet</h2>
 
-            {/* TOP TOUR SERVICE */}
-            <div className="top-tour-service-card">
-              <div className="top-tour-service-title">
-                <div>
-                  <p>Top Tour Service</p>
+            <p>Add your first tour service to start creating packages.</p>
 
-                  <h3>
-                    {tourServices.length === 0
-                      ? "Not yet available"
-                      : "No booking data yet"}
-                  </h3>
+            <button type="button" onClick={handleAddTourService}>
+              + Add Tour Service
+            </button>
+          </div>
+        ) : (
+          <div className="tour-services-list">
+            {tourServices.map((service) => (
+              <div className="tour-service-row" key={service.id}>
+                {/* TOUR SERVICE */}
+                <div className="tour-service-name">
+                  {service.image && (
+                    <img
+                      src={service.image}
+                      alt={service.title}
+                      className="tour-service-list-image"
+                    />
+                  )}
+
+                  <div>
+                    <strong>{service.title}</strong>
+                    <span>{service.destination}</span>
+                  </div>
                 </div>
 
-                <button
-                  type="button"
-                  className="top-tour-view-all"
-                  onClick={() => navigate("/guide-dashboard/tour-services")}
-                >
-                  View All
-                </button>
+                {/* TOUR TYPE */}
+                <span>{service.tourType}</span>
+
+                {/* DURATION */}
+                <span>{service.duration}</span>
+
+                {/* PRICE */}
+                <strong>৳ {service.price}</strong>
+
+                {/* ACTIONS */}
+                <div className="tour-service-actions">
+                  <button
+                    type="button"
+                    className="edit-service-btn"
+                    onClick={() => handleEditService(service.id)}
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    type="button"
+                    className="delete-service-btn"
+                    onClick={() => handleDeleteService(service.id)}
+                  >
+                    Delete
+                  </button>
+                </div>
               </div>
-
-              <p className="top-tour-empty-text">
-                Your most booked tour service will appear here.
-              </p>
-            </div>
-          </section>
-
-          {/* TOUR SERVICES LIST */}
-          <section className="tour-services-list-card">
-            <div className="tour-services-table-header">
-              <span>Tour Service</span>
-              <span>Tour Type</span>
-              <span>Duration</span>
-              <span>Price (BDT)</span>
-              <span>Actions</span>
-            </div>
-
-            {tourServices.length === 0 ? (
-              <div className="tour-services-empty-state">
-                <div className="tour-services-empty-icon">🗺️</div>
-
-                <h2>No tour services added yet</h2>
-
-                <p>Add your first tour service to start creating packages.</p>
-
-                <button type="button" onClick={handleAddTourService}>
-                  + Add Tour Service
-                </button>
-              </div>
-            ) : (
-              <div className="tour-services-list">
-                {tourServices.map((service) => (
-                  <div className="tour-service-row" key={service.id}>
-                    {/* TOUR SERVICE */}
-                    <div className="tour-service-name">
-                      {service.image && (
-                        <img
-                          src={service.image}
-                          alt={service.title}
-                          className="tour-service-list-image"
-                        />
-                      )}
-
-                      <div>
-                        <strong>{service.title}</strong>
-
-                        <span>{service.destination}</span>
-                      </div>
-                    </div>
-
-                    {/* TOUR TYPE */}
-                    <span>{service.tourType}</span>
-
-                    {/* DURATION */}
-                    <span>{service.duration}</span>
-
-                    {/* PRICE */}
-                    <strong>৳ {service.price}</strong>
-
-                    {/* ACTIONS */}
-                    <div className="tour-service-actions">
-                      <button
-                        type="button"
-                        className="edit-service-btn"
-                        onClick={() => handleEditService(service.id)}
-                      >
-                        Edit
-                      </button>
-
-                      <button
-                        type="button"
-                        className="delete-service-btn"
-                        onClick={() => handleDeleteService(service.id)}
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </section>
-        </main>
-      </div>
-    </div>
+            ))}
+          </div>
+        )}
+      </section>
+    </main>
   );
 }
 
