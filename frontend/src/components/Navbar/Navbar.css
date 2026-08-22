@@ -1,35 +1,53 @@
+/* =========================================================
+   TRIPMESH NAVBAR
+   ========================================================= */
+
 .tm-navbar {
   position: fixed;
+
   top: 0;
   left: 0;
+
   z-index: 1000;
 
   width: 100%;
+
   min-height: 76px;
+
   padding: 0 40px;
 
   display: grid;
+
   grid-template-columns: auto 1fr auto;
+
   align-items: center;
+
   gap: 40px;
 
   box-sizing: border-box;
 
   background: #03143d;
+
   border-bottom: 1px solid rgba(115, 157, 224, 0.13);
 }
 
-/* Brand */
+/* =========================================================
+   BRAND
+   ========================================================= */
 
 .tm-navbar__brand {
   display: inline-flex;
+
   align-items: center;
+
   gap: 9px;
 
   padding: 0;
 
   border: none;
+
   outline: none;
+
   box-shadow: none;
 
   background: transparent;
@@ -37,12 +55,15 @@
   color: #ffffff;
 
   font: inherit;
+
   font-size: 25px;
+
   font-weight: 750;
 
   cursor: pointer;
 
   appearance: none;
+
   -webkit-appearance: none;
 }
 
@@ -51,13 +72,21 @@
 .tm-navbar__brand:focus-visible,
 .tm-navbar__brand:active {
   border: none;
+
   outline: none;
+
   box-shadow: none;
+
   background: transparent;
 }
 
+/* =========================================================
+   LOGO
+   ========================================================= */
+
 .tm-navbar__logo {
   width: 32px;
+
   height: 42px;
 
   display: inline-flex;
@@ -67,16 +96,21 @@
 
 .tm-navbar__logo svg {
   width: 100%;
+
   height: 100%;
 }
 
-/* Navigation */
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
 
 .tm-navbar__links {
   justify-self: center;
 
   display: flex;
+
   align-items: center;
+
   gap: 52px;
 }
 
@@ -87,38 +121,52 @@
   padding: 29px 0 24px;
 
   border: none;
+
   outline: none;
+
   box-shadow: none;
 
   background: transparent !important;
 
   color: rgba(235, 242, 255, 0.8);
+
   text-decoration: none;
 
   font: inherit;
+
   font-size: 17px;
+
   font-weight: 600;
 
   cursor: pointer;
 
   appearance: none;
+
   -webkit-appearance: none;
 
   transition: color 0.2s ease;
 }
 
-/* Hover = text white */
+/* =========================================================
+   HOVER
+   ========================================================= */
 
 .tm-navbar__links button:hover,
 .tm-navbar__links a:hover {
   color: #ffffff;
 
   border: none;
+
   outline: none;
+
   box-shadow: none;
 
   background: transparent !important;
 }
+
+/* =========================================================
+   FOCUS
+   ========================================================= */
 
 .tm-navbar__links button:focus,
 .tm-navbar__links button:focus-visible,
@@ -126,13 +174,17 @@
   color: #ffffff;
 
   border: none;
+
   outline: none;
+
   box-shadow: none;
 
   background: transparent !important;
 }
 
-/* Blue line default hidden */
+/* =========================================================
+   ACTIVE BLUE LINE
+   ========================================================= */
 
 .tm-navbar__links button::after,
 .tm-navbar__links a::after {
@@ -141,6 +193,7 @@
   position: absolute;
 
   left: 0;
+
   right: 0;
 
   bottom: 0;
@@ -152,6 +205,7 @@
   background: #2385ff;
 
   opacity: 0;
+
   transform: scaleX(0);
 
   transition:
@@ -167,31 +221,42 @@
 .tm-navbar__links button.active::after,
 .tm-navbar__links a.active::after {
   opacity: 1;
+
   transform: scaleX(1);
 
   box-shadow: 0 0 8px rgba(35, 133, 255, 0.55);
 }
 
-/* Actions */
+/* =========================================================
+   ACTIONS
+   ========================================================= */
 
 .tm-navbar__actions {
   justify-self: end;
 
   display: flex;
+
   align-items: center;
+
   gap: 12px;
 }
 
-/* Login / Signup */
+/* =========================================================
+   LOGIN / SIGNUP
+   ========================================================= */
 
 .tm-navbar__login,
 .tm-navbar__signup {
   min-width: 82px;
+
   min-height: 42px;
+
   padding: 0 17px;
 
   display: inline-flex;
+
   align-items: center;
+
   justify-content: center;
 
   box-sizing: border-box;
@@ -199,10 +264,13 @@
   border-radius: 8px;
 
   color: #ffffff;
+
   text-decoration: none;
 
   font: inherit;
+
   font-size: 13px;
+
   font-weight: 500;
 
   cursor: pointer;
@@ -237,7 +305,56 @@
   background: linear-gradient(135deg, #3497ff, #1474ef);
 }
 
-/* Tablet */
+/* =========================================================
+   HAMBURGER
+   Desktop এ থাকবে না
+   ========================================================= */
+
+.tm-navbar__menu {
+  display: none;
+
+  width: 36px;
+
+  height: 36px;
+
+  padding: 0;
+
+  border: 1px solid rgba(133, 171, 232, 0.45);
+
+  border-radius: 8px;
+
+  background: rgba(5, 30, 76, 0.8);
+
+  cursor: pointer;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-direction: column;
+
+  gap: 5px;
+}
+
+.tm-navbar__menu span {
+  display: block;
+
+  width: 19px;
+
+  height: 2px;
+
+  border-radius: 2px;
+
+  background: #ffffff;
+
+  transition:
+    transform 0.25s ease,
+    opacity 0.25s ease;
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
 
 @media (max-width: 1050px) {
   .tm-navbar {
@@ -250,6 +367,7 @@
 
   .tm-navbar__links {
     order: 3;
+
     grid-column: 1 / -1;
 
     width: 100%;
@@ -284,49 +402,235 @@
   }
 }
 
-/* Mobile */
+/* =========================================================
+   MOBILE
+   650px and below
+   ========================================================= */
 
 @media (max-width: 650px) {
   .tm-navbar {
-    padding: 0 12px 8px;
+    padding: 9px 12px;
 
-    gap: 8px 12px;
+    min-height: 60px;
+
+    grid-template-columns: 1fr auto;
+
+    gap: 8px;
   }
+
+  /* =======================================================
+     BRAND
+     ======================================================= */
 
   .tm-navbar__brand {
     font-size: 21px;
+
+    gap: 7px;
   }
 
   .tm-navbar__logo {
     width: 27px;
+
     height: 37px;
   }
 
-  .tm-navbar__links {
-    justify-content: flex-start;
+  /* =======================================================
+     ACTIONS
+     ======================================================= */
 
-    gap: 28px;
+  .tm-navbar__actions {
+    justify-self: end;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
   }
 
-  .tm-navbar__links button,
-  .tm-navbar__links a {
-    padding: 10px 0 9px;
+  /* =======================================================
+     LOGIN
+     ======================================================= */
+
+  .tm-navbar__login {
+    display: inline-flex;
+
+    min-width: 62px;
+
+    min-height: 34px;
+
+    padding: 0 9px;
+
+    font-size: 11px;
+  }
+
+  /* =======================================================
+     SIGNUP
+     ======================================================= */
+
+  .tm-navbar__signup {
+    display: inline-flex;
+
+    min-width: 65px;
+
+    min-height: 34px;
+
+    padding: 0 9px;
+
+    font-size: 11px;
+  }
+
+  /* =======================================================
+     HAMBURGER
+     ======================================================= */
+
+  .tm-navbar__menu {
+    display: flex;
+
+    width: 34px;
+
+    height: 34px;
+  }
+
+  /* =======================================================
+     MOBILE MENU
+     ======================================================= */
+
+  .tm-navbar__links {
+    position: absolute;
+
+    top: calc(100% + 5px);
+
+    left: 10px;
+
+    right: 10px;
+
+    width: auto;
+
+    display: none;
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 3px;
+
+    padding: 8px;
+
+    border: 1px solid rgba(115, 157, 224, 0.18);
+
+    border-radius: 12px;
+
+    background: #03143d;
+
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+
+    overflow: hidden;
+  }
+
+  /* =======================================================
+     MENU OPEN
+     ======================================================= */
+
+  .tm-navbar__links--open {
+    display: flex;
+  }
+
+  /* =======================================================
+     MOBILE MENU BUTTONS
+     ======================================================= */
+
+  .tm-navbar__links button {
+    width: 100%;
+
+    padding: 13px 14px;
+
+    text-align: left;
+
+    border-radius: 8px;
 
     font-size: 14px;
 
-    white-space: nowrap;
+    color: rgba(235, 242, 255, 0.85);
   }
 
-  .tm-navbar__login {
+  .tm-navbar__links button:hover {
+    background: rgba(35, 133, 255, 0.1) !important;
+  }
+
+  /* Remove desktop underline */
+
+  .tm-navbar__links button::after {
     display: none;
   }
 
-  .tm-navbar__signup {
-    min-width: 72px;
-    min-height: 38px;
+  /* Active menu item */
 
-    padding: 0 12px;
+  .tm-navbar__links button.active {
+    color: #ffffff;
 
-    font-size: 12px;
+    background: rgba(35, 133, 255, 0.12);
   }
+}
+
+/* =========================================================
+   SMALL MOBILE
+   400px and below
+   ========================================================= */
+
+@media (max-width: 400px) {
+  .tm-navbar {
+    padding-left: 8px;
+
+    padding-right: 8px;
+
+    gap: 5px;
+  }
+
+  .tm-navbar__brand {
+    font-size: 18px;
+  }
+
+  .tm-navbar__logo {
+    width: 23px;
+
+    height: 31px;
+  }
+
+  .tm-navbar__actions {
+    gap: 4px;
+  }
+
+  .tm-navbar__login,
+  .tm-navbar__signup {
+    min-width: 55px;
+
+    min-height: 32px;
+
+    padding: 0 7px;
+
+    font-size: 10px;
+  }
+
+  .tm-navbar__menu {
+    width: 32px;
+
+    height: 32px;
+  }
+}
+
+/* =========================================================
+   HAMBURGER ANIMATION
+   ========================================================= */
+
+.tm-navbar__menu--open span:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.tm-navbar__menu--open span:nth-child(2) {
+  opacity: 0;
+}
+
+.tm-navbar__menu--open span:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
 }
