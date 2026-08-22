@@ -30,3 +30,140 @@ body {
 
   flex: 1;
 }
+
+/* ==============================
+   MOBILE SIDEBAR OVERLAY
+   ============================== */
+
+.sidebar-overlay {
+  display: none;
+}
+
+/* ==============================
+   MOBILE MENU BUTTON
+   ============================== */
+
+.guide-menu-btn {
+  display: none;
+
+  border: none;
+  background: #eef3ff;
+  color: #05235c;
+
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.guide-menu-btn svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* ==============================
+   MOBILE
+   ============================== */
+
+@media (max-width: 768px) {
+  .guide-dashboard {
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  .dashboard-content {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .dashboard-body {
+    width: 100%;
+    padding: 16px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  .guide-menu-btn {
+    display: flex;
+  }
+
+  .sidebar-overlay {
+    display: block;
+
+    position: fixed;
+    inset: 0;
+
+    border: none;
+    padding: 0;
+
+    background: rgba(0, 0, 0, 0.35);
+
+    z-index: 999;
+    cursor: pointer;
+  }
+}
+/* ==============================
+   GUIDE MOBILE WIDTH FIX
+   ============================== */
+
+@media (max-width: 768px) {
+  .guide-dashboard {
+    display: block !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+
+  .dashboard-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .guide-header {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .dashboard-body {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-left: 0 !important;
+    padding: 16px !important;
+    box-sizing: border-box !important;
+  }
+
+  .dashboard-overview {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin-left: 0 !important;
+  }
+
+  .overview-grid,
+  .overview-grid--top,
+  .overview-grid--bottom {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .overview-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+}
