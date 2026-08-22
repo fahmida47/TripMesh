@@ -7,16 +7,9 @@ function badgeClass(status) {
   return `rb-badge rb-badge--${status.toLowerCase().replace(/\s+/g, "")}`;
 }
 
-/**
- * One row in the "My Requests" list. Purely presentational — actions are
- * forwarded to the parent via callbacks so MyRequests owns the state.
- */
 export default function TouristRequestCard({ request, onViewDetails, onCancel, onProceedToPayment }) {
   const { companyName, companyRating, status } = request;
 
-  // Matches the reference design: cancelling only makes sense while a
-  // request is still awaiting a response, and payment only unlocks once
-  // a guide company has accepted it.
   const canCancel = status === "Pending";
   const canPay = status === "Accepted";
 

@@ -25,14 +25,12 @@ function GuideTourServices() {
 
   const handleDeleteService = (id) => {
     const confirmed = window.confirm(
-      "Are you sure you want to delete this tour service?"
+      "Are you sure you want to delete this tour service?",
     );
 
     if (!confirmed) return;
 
-    setTourServices((prev) =>
-      prev.filter((service) => service.id !== id)
-    );
+    setTourServices((prev) => prev.filter((service) => service.id !== id));
   };
 
   return (
@@ -48,9 +46,7 @@ function GuideTourServices() {
             <div>
               <h1>Tour Services</h1>
 
-              <p>
-                Manage all your tour services and packages.
-              </p>
+              <p>Manage all your tour services and packages.</p>
             </div>
 
             <button
@@ -66,9 +62,7 @@ function GuideTourServices() {
           <section className="tour-service-summary">
             {/* TOTAL SERVICES */}
             <div className="total-services-card">
-              <div className="total-services-icon">
-                🧳
-              </div>
+              <div className="total-services-icon">🧳</div>
 
               <div>
                 <p>Total Services</p>
@@ -95,11 +89,7 @@ function GuideTourServices() {
                 <button
                   type="button"
                   className="top-tour-view-all"
-                  onClick={() =>
-                    navigate(
-                      "/guide-dashboard/tour-services"
-                    )
-                  }
+                  onClick={() => navigate("/guide-dashboard/tour-services")}
                 >
                   View All
                 </button>
@@ -123,31 +113,20 @@ function GuideTourServices() {
 
             {tourServices.length === 0 ? (
               <div className="tour-services-empty-state">
-                <div className="tour-services-empty-icon">
-                  🗺️
-                </div>
+                <div className="tour-services-empty-icon">🗺️</div>
 
                 <h2>No tour services added yet</h2>
 
-                <p>
-                  Add your first tour service to start
-                  creating packages.
-                </p>
+                <p>Add your first tour service to start creating packages.</p>
 
-                <button
-                  type="button"
-                  onClick={handleAddTourService}
-                >
+                <button type="button" onClick={handleAddTourService}>
                   + Add Tour Service
                 </button>
               </div>
             ) : (
               <div className="tour-services-list">
                 {tourServices.map((service) => (
-                  <div
-                    className="tour-service-row"
-                    key={service.id}
-                  >
+                  <div className="tour-service-row" key={service.id}>
                     {/* TOUR SERVICE */}
                     <div className="tour-service-name">
                       {service.image && (
@@ -159,41 +138,27 @@ function GuideTourServices() {
                       )}
 
                       <div>
-                        <strong>
-                          {service.title}
-                        </strong>
+                        <strong>{service.title}</strong>
 
-                        <span>
-                          {service.destination}
-                        </span>
+                        <span>{service.destination}</span>
                       </div>
                     </div>
 
                     {/* TOUR TYPE */}
-                    <span>
-                      {service.tourType}
-                    </span>
+                    <span>{service.tourType}</span>
 
                     {/* DURATION */}
-                    <span>
-                      {service.duration}
-                    </span>
+                    <span>{service.duration}</span>
 
                     {/* PRICE */}
-                    <strong>
-                      ৳ {service.price}
-                    </strong>
+                    <strong>৳ {service.price}</strong>
 
                     {/* ACTIONS */}
                     <div className="tour-service-actions">
                       <button
                         type="button"
                         className="edit-service-btn"
-                        onClick={() =>
-                          handleEditService(
-                            service.id
-                          )
-                        }
+                        onClick={() => handleEditService(service.id)}
                       >
                         Edit
                       </button>
@@ -201,11 +166,7 @@ function GuideTourServices() {
                       <button
                         type="button"
                         className="delete-service-btn"
-                        onClick={() =>
-                          handleDeleteService(
-                            service.id
-                          )
-                        }
+                        onClick={() => handleDeleteService(service.id)}
                       >
                         Delete
                       </button>

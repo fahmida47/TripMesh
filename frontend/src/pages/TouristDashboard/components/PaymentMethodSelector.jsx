@@ -22,11 +22,7 @@ export default function PaymentMethodSelector({ method, onChange }) {
         Choose a Payment Method
       </h2>
 
-      <div
-        className="cp-methods"
-        role="radiogroup"
-        aria-label="Payment method"
-      >
+      <div className="cp-methods" role="radiogroup" aria-label="Payment method">
         {PAYMENT_METHODS.map(({ id, label, hint, Icon }) => {
           const active = id === method;
 
@@ -36,9 +32,7 @@ export default function PaymentMethodSelector({ method, onChange }) {
               key={id}
               role="radio"
               aria-checked={active}
-              className={`cp-method ${
-                active ? "cp-method--active" : ""
-              }`}
+              className={`cp-method ${active ? "cp-method--active" : ""}`}
               onClick={() => onChange(id)}
             >
               {active && (
@@ -52,13 +46,9 @@ export default function PaymentMethodSelector({ method, onChange }) {
                 <Icon />
               </span>
 
-              <span className="cp-method-label">
-                {label}
-              </span>
+              <span className="cp-method-label">{label}</span>
 
-              <span className="cp-method-hint">
-                {hint}
-              </span>
+              <span className="cp-method-hint">{hint}</span>
             </button>
           );
         })}

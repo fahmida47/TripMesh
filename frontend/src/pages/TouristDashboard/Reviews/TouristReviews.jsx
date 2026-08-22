@@ -19,10 +19,7 @@ function TouristReviews() {
       submittedDate: new Date().toLocaleDateString(),
     };
 
-    setSubmittedReviews((prev) => [
-      newReview,
-      ...prev,
-    ]);
+    setSubmittedReviews((prev) => [newReview, ...prev]);
   };
 
   return (
@@ -37,8 +34,8 @@ function TouristReviews() {
           <h1>Reviews & Ratings</h1>
 
           <p>
-            Share your experience and help other tourists
-            choose the best guide companies.
+            Share your experience and help other tourists choose the best guide
+            companies.
           </p>
         </div>
 
@@ -59,32 +56,21 @@ function TouristReviews() {
 
           {submittedReviews.length === 0 ? (
             <div className="reviews-empty-state">
-              <div className="reviews-empty-icon">
-                ☆
-              </div>
+              <div className="reviews-empty-icon">☆</div>
 
               <h3>No reviews yet</h3>
 
-              <p>
-                Your submitted reviews will appear here.
-              </p>
+              <p>Your submitted reviews will appear here.</p>
             </div>
           ) : (
             <div className="submitted-reviews-list">
               {submittedReviews.map((review) => (
-                <article
-                  key={review.id}
-                  className="submitted-review-card"
-                >
+                <article key={review.id} className="submitted-review-card">
                   <div className="submitted-review-top">
                     <div>
-                      <h3>
-                        {review.companyName}
-                      </h3>
+                      <h3>{review.companyName}</h3>
 
-                      <span>
-                        Reviewed on {review.submittedDate}
-                      </span>
+                      <span>Reviewed on {review.submittedDate}</span>
                     </div>
 
                     <div className="submitted-review-rating">
@@ -103,9 +89,7 @@ function TouristReviews() {
                     </div>
                   </div>
 
-                  <p className="submitted-review-text">
-                    {review.reviewText}
-                  </p>
+                  <p className="submitted-review-text">{review.reviewText}</p>
                 </article>
               ))}
             </div>
@@ -114,17 +98,14 @@ function TouristReviews() {
 
         {/* ABOUT REVIEWS */}
         <section className="reviews-info-card">
-          <div className="reviews-info-icon">
-            i
-          </div>
+          <div className="reviews-info-icon">i</div>
 
           <div>
             <h3>About Reviews</h3>
 
             <p>
-              Be honest and respectful in your reviews.
-              Your feedback helps other tourists find
-              the best guide companies.
+              Be honest and respectful in your reviews. Your feedback helps
+              other tourists find the best guide companies.
             </p>
           </div>
         </section>

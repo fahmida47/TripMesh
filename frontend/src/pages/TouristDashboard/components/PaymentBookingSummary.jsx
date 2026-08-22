@@ -7,28 +7,26 @@ function formatMoney(value) {
   return `৳${Number(value).toLocaleString()}`;
 }
 
-/**
- * Right-hand "Booking Summary" card on the payment page. Every value comes
- * straight from the `booking` object passed in (the request/payment the
- * tourist is paying for) — there is no mock/placeholder data here. Missing
- * fields fall back to "—" until the backend actually supplies them.
- */
 export default function PaymentBookingSummary({ booking }) {
   const summary = useMemo(() => {
     if (!booking) return null;
 
-    const tourName = booking.tourTitle || booking.tourName || booking.destination || "—";
+    const tourName =
+      booking.tourTitle || booking.tourName || booking.destination || "—";
     const companyName = booking.companyName || "—";
     const rating = booking.companyRating;
     const destination = booking.destination || "—";
     const tourType = booking.tourType || "—";
     const travelers = booking.travelers;
-    const tourDate = booking.requestedDate || booking.bookingDate || booking.date;
+    const tourDate =
+      booking.requestedDate || booking.bookingDate || booking.date;
     const tourPrice = booking.budget ?? booking.amount ?? booking.tourPrice;
     const serviceFee = booking.serviceFee;
     const hasPrice = tourPrice !== undefined && tourPrice !== null;
     const hasFee = serviceFee !== undefined && serviceFee !== null;
-    const total = hasPrice ? Number(tourPrice) + (hasFee ? Number(serviceFee) : 0) : undefined;
+    const total = hasPrice
+      ? Number(tourPrice) + (hasFee ? Number(serviceFee) : 0)
+      : undefined;
 
     return {
       tourName,

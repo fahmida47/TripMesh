@@ -5,11 +5,6 @@ function badgeClass(status) {
   return `pm-badge pm-badge--${status.toLowerCase().replace(/\s+/g, "")}`;
 }
 
-/**
- * "View Details" modal for a single payment, opened from PaymentCard or the
- * table row's View Details button. Same shape/behaviour as
- * RequestDetailsModal.jsx.
- */
 export default function PaymentDetailsModal({ payment, onClose, onPayNow }) {
   // Close on Escape, and stop the page from scrolling behind the modal.
   useEffect(() => {
@@ -24,7 +19,8 @@ export default function PaymentDetailsModal({ payment, onClose, onPayNow }) {
 
   if (!payment) return null;
 
-  const { tourName, companyName, destination, date, status, transactionId } = payment;
+  const { tourName, companyName, destination, date, status, transactionId } =
+    payment;
   const canPay = status === "Pending";
 
   return (
@@ -44,7 +40,12 @@ export default function PaymentDetailsModal({ payment, onClose, onPayNow }) {
               <p>{companyName}</p>
             </div>
           </div>
-          <button type="button" className="pm-modal-close" onClick={onClose} aria-label="Close">
+          <button
+            type="button"
+            className="pm-modal-close"
+            onClick={onClose}
+            aria-label="Close"
+          >
             <FiX />
           </button>
         </div>
@@ -63,7 +64,11 @@ export default function PaymentDetailsModal({ payment, onClose, onPayNow }) {
             <div className="pm-modal-field">
               <span>Destination</span>
               <span>
-                <FiMapPin aria-hidden="true" style={{ verticalAlign: "-2px" }} /> {destination}
+                <FiMapPin
+                  aria-hidden="true"
+                  style={{ verticalAlign: "-2px" }}
+                />{" "}
+                {destination}
               </span>
             </div>
             <div className="pm-modal-field">
@@ -91,7 +96,11 @@ export default function PaymentDetailsModal({ payment, onClose, onPayNow }) {
             </button>
           )}
 
-          <button type="button" className="pm-btn pm-btn--ghost" onClick={onClose}>
+          <button
+            type="button"
+            className="pm-btn pm-btn--ghost"
+            onClick={onClose}
+          >
             Close
           </button>
         </div>

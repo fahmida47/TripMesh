@@ -107,7 +107,7 @@
 /* SEARCH BUTTON */
 
 .explore-advanced-button {
-   width: auto;
+  width: auto;
   height: auto;
 
   align-self: center;
@@ -135,13 +135,13 @@
 }
 
 .explore-advanced-button:hover {
-   background: transparent;
+  background: transparent;
   color: #0055d4;
   transform: none;
 }
 
 .explore-advanced-button:active {
-   transform: none;
+  transform: none;
 }
 
 /* RESPONSIVE */

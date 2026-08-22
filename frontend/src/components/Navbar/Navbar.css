@@ -107,7 +107,7 @@
   transition: color 0.2s ease;
 }
 
-/* Hover = শুধু text white */
+/* Hover = text white */
 
 .tm-navbar__links button:hover,
 .tm-navbar__links a:hover {
@@ -119,8 +119,6 @@
 
   background: transparent !important;
 }
-
-/* Focus / click এ box আসবে না */
 
 .tm-navbar__links button:focus,
 .tm-navbar__links button:focus-visible,
@@ -160,8 +158,6 @@
     opacity 0.2s ease,
     transform 0.2s ease;
 }
-
-/* শুধু active item-এর line */
 
 .tm-navbar__links button.active,
 .tm-navbar__links a.active {
@@ -225,11 +221,7 @@
 .tm-navbar__signup {
   border: 1px solid #2184ff;
 
-  background: linear-gradient(
-    135deg,
-    #258dff,
-    #0865e5
-  );
+  background: linear-gradient(135deg, #258dff, #0865e5);
 }
 
 .tm-navbar__login:hover,
@@ -242,11 +234,7 @@
 }
 
 .tm-navbar__signup:hover {
-  background: linear-gradient(
-    135deg,
-    #3497ff,
-    #1474ef
-  );
+  background: linear-gradient(135deg, #3497ff, #1474ef);
 }
 
 /* Tablet */

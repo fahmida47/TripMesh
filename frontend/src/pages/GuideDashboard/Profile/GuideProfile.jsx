@@ -222,9 +222,7 @@ function GuideProfile() {
           : "";
 
         setSuccessMessage(
-          data.message ||
-            validationErrors ||
-            "Failed to save experience.",
+          data.message || validationErrors || "Failed to save experience.",
         );
 
         return false;
@@ -235,9 +233,7 @@ function GuideProfile() {
     } catch (error) {
       console.error("Experience save error:", error);
 
-      setSuccessMessage(
-        "Something went wrong while saving the experience.",
-      );
+      setSuccessMessage("Something went wrong while saving the experience.");
 
       return false;
     }
@@ -265,9 +261,7 @@ function GuideProfile() {
 
     if (!response.ok) {
       console.error("Profile picture upload error:", data);
-      throw new Error(
-        data.message || "Profile picture upload failed.",
-      );
+      throw new Error(data.message || "Profile picture upload failed.");
     }
 
     return true;
@@ -279,17 +273,14 @@ function GuideProfile() {
     const formData = new FormData();
     formData.append("cover_photo", coverImage.file);
 
-    const response = await fetch(
-      `${API_BASE_URL}/guide/profile/cover-photo`,
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: formData,
+    const response = await fetch(`${API_BASE_URL}/guide/profile/cover-photo`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
       },
-    );
+      body: formData,
+    });
 
     const data = await response.json();
 
@@ -342,9 +333,7 @@ function GuideProfile() {
           : "";
 
         setSuccessMessage(
-          data.message ||
-            validationErrors ||
-            "Failed to save profile.",
+          data.message || validationErrors || "Failed to save profile.",
         );
 
         return;
@@ -367,9 +356,7 @@ function GuideProfile() {
           }
 
           if (!experience.description.trim()) {
-            setSuccessMessage(
-              "Please enter your experience description.",
-            );
+            setSuccessMessage("Please enter your experience description.");
             return;
           }
 
@@ -468,10 +455,7 @@ function GuideProfile() {
               <div className="profile-photo-wrapper">
                 <label className="profile-photo">
                   {profileImage ? (
-                    <img
-                      src={profileImage.preview}
-                      alt="Profile preview"
-                    />
+                    <img src={profileImage.preview} alt="Profile preview" />
                   ) : (
                     <span>👤</span>
                   )}
@@ -530,9 +514,7 @@ function GuideProfile() {
                 placeholder="Write about your company, experience, specialties, and what clients can expect..."
               />
 
-              <span className="character-count">
-                {profile.bio.length}/1000
-              </span>
+              <span className="character-count">{profile.bio.length}/1000</span>
             </section>
 
             <section className="profile-section-card">
@@ -584,9 +566,7 @@ function GuideProfile() {
             <section className="profile-section-card">
               <h2>Tour Services</h2>
 
-              <p>
-                Manage and showcase the tour services your company offers.
-              </p>
+              <p>Manage and showcase the tour services your company offers.</p>
 
               <div className="empty-tour-services">
                 <div className="tour-service-icon">🗺️</div>
@@ -708,9 +688,7 @@ function GuideProfile() {
 
           <div className="profile-final-save">
             {successMessage && (
-              <div className="profile-success-message">
-                {successMessage}
-              </div>
+              <div className="profile-success-message">{successMessage}</div>
             )}
 
             <button

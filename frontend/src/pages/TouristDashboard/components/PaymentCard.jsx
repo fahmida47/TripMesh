@@ -5,15 +5,6 @@ function badgeClass(status) {
   return `pm-badge pm-badge--${status.toLowerCase().replace(/\s+/g, "")}`;
 }
 
-/**
- * One row/card in the Payment History table. Purely presentational —
- * actions are forwarded to the parent via callbacks, same pattern as
- * TouristRequestCard.jsx.
- *
- * "Pay Now" only shows up for a Pending payment (matches the reference
- * design). Wiring it up to an actual payment flow is a follow-up — for now
- * it just reports the click back to PaymentHistory.
- */
 export default function PaymentCard({ payment, onViewDetails, onPayNow }) {
   const { tourName, companyName, destination, date, status } = payment;
   const canPay = status === "Pending";
@@ -51,12 +42,20 @@ export default function PaymentCard({ payment, onViewDetails, onPayNow }) {
       <div className="pm-cell pm-cell--actions">
         <div className="pm-actions">
           {canPay && (
-            <button type="button" className="pm-btn pm-btn--primary" onClick={() => onPayNow(payment)}>
+            <button
+              type="button"
+              className="pm-btn pm-btn--primary"
+              onClick={() => onPayNow(payment)}
+            >
               <FiCreditCard aria-hidden="true" /> Pay Now
             </button>
           )}
 
-          <button type="button" className="pm-btn pm-btn--ghost" onClick={() => onViewDetails(payment)}>
+          <button
+            type="button"
+            className="pm-btn pm-btn--ghost"
+            onClick={() => onViewDetails(payment)}
+          >
             <FiEye aria-hidden="true" /> View Details
           </button>
         </div>

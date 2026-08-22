@@ -178,7 +178,9 @@
   font: inherit;
   font-size: 9.5px;
   outline: none;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .tourist-profile-fields input,
@@ -310,23 +312,72 @@
   }
 }
 
-
 /* Larger typography and profile-only title icon */
-.tourist-profile-title-row { display:flex; align-items:center; gap:12px; }
-.tourist-profile-title-icon { width:46px; height:46px; border-radius:50%; background:#2563eb; color:#fff; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; }
-.tourist-profile-heading h1 { font-size:32px; margin:0; }
-.tourist-profile-heading p { font-size:17px; margin-top:8px; }
-.tourist-profile-card { padding:24px; margin-bottom:20px; }
-.tourist-profile-card-heading h2 { font-size:20px; }
-.tourist-profile-card-heading p { font-size:15px; }
-.tourist-profile-fields label > span { font-size:15px; }
-.tourist-profile-fields input, .tourist-profile-fields select, .tourist-profile-fields textarea { font-size:16px; }
-.tourist-profile-fields input, .tourist-profile-fields select { height:46px; }
-.tourist-profile-fields textarea { min-height:96px; }
-.tourist-profile-upload-button { font-size:13px; height:38px; min-width:125px; }
-.tourist-profile-photo-note { font-size:12px; }
-.tourist-profile-save-button { font-size:14px; height:40px; min-width:120px; }
-.tourist-profile-character-count { font-size:12px; }
+.tourist-profile-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.tourist-profile-title-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #2563eb;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.tourist-profile-heading h1 {
+  font-size: 32px;
+  margin: 0;
+}
+.tourist-profile-heading p {
+  font-size: 17px;
+  margin-top: 8px;
+}
+.tourist-profile-card {
+  padding: 24px;
+  margin-bottom: 20px;
+}
+.tourist-profile-card-heading h2 {
+  font-size: 20px;
+}
+.tourist-profile-card-heading p {
+  font-size: 15px;
+}
+.tourist-profile-fields label > span {
+  font-size: 15px;
+}
+.tourist-profile-fields input,
+.tourist-profile-fields select,
+.tourist-profile-fields textarea {
+  font-size: 16px;
+}
+.tourist-profile-fields input,
+.tourist-profile-fields select {
+  height: 46px;
+}
+.tourist-profile-fields textarea {
+  min-height: 96px;
+}
+.tourist-profile-upload-button {
+  font-size: 13px;
+  height: 38px;
+  min-width: 125px;
+}
+.tourist-profile-photo-note {
+  font-size: 12px;
+}
+.tourist-profile-save-button {
+  font-size: 14px;
+  height: 40px;
+  min-width: 120px;
+}
+.tourist-profile-character-count {
+  font-size: 12px;
+}
 
 /* Updated profile header to match the cover/profile layout */
 .tourist-profile-main-card {
@@ -423,7 +474,9 @@
   box-shadow: 0 4px 14px rgba(15, 23, 42, 0.16);
 }
 
-.tourist-profile-header-photo .tourist-profile-photo-wrap:focus-visible .tourist-profile-photo {
+.tourist-profile-header-photo
+  .tourist-profile-photo-wrap:focus-visible
+  .tourist-profile-photo {
   outline: 3px solid #93c5fd;
   outline-offset: 3px;
 }
@@ -459,7 +512,10 @@
   background: #2563eb;
   font-size: 15px;
   box-shadow: 0 4px 10px rgba(37, 99, 235, 0.24);
-  transition: background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .tourist-profile-save-button:hover {
@@ -780,8 +836,7 @@
 .tourist-profile-field textarea:focus {
   border-color: #2868f4;
 
-  box-shadow:
-    0 0 0 3px rgba(40, 104, 244, 0.08);
+  box-shadow: 0 0 0 3px rgba(40, 104, 244, 0.08);
 }
 
 .tourist-email-field {
@@ -832,8 +887,7 @@
 .tourist-address-grid {
   display: grid;
 
-  grid-template-columns:
-    repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 
   gap: 16px;
 }
@@ -933,4 +987,3 @@
     width: 100%;
   }
 }
-

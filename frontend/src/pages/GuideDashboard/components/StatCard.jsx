@@ -17,7 +17,9 @@ const StatCard = ({
       : value;
 
   const changeText =
-    format === "rating" ? `${change} from last month` : `${change}% from last month`;
+    format === "rating"
+      ? `${change} from last month`
+      : `${change}% from last month`;
 
   return (
     <article className="stat-card">
@@ -29,8 +31,10 @@ const StatCard = ({
         <div className="stat-card__content">
           <p className="stat-card__label">{label}</p>
           <p className="stat-card__value">
-          {formattedValue}
-          {format === "rating" && <FiStar className="stat-card__star" aria-label="star" />}
+            {formattedValue}
+            {format === "rating" && (
+              <FiStar className="stat-card__star" aria-label="star" />
+            )}
           </p>
         </div>
       </div>

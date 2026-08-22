@@ -24,9 +24,7 @@ const TopTourServices = () => {
 
       <div className="top-tour-services-empty">
         <p>No booking data yet</p>
-        <span>
-          Your most booked tour services will appear here.
-        </span>
+        <span>Your most booked tour services will appear here.</span>
       </div>
     </section>
   );

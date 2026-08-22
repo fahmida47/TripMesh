@@ -24,9 +24,15 @@
   font-size: 13px;
 }
 
-.ts-activity-icon--green { background: #16a34a; }
-.ts-activity-icon--orange { background: #f59e0b; }
-.ts-activity-icon--purple { background: #8b5cf6; }
+.ts-activity-icon--green {
+  background: #16a34a;
+}
+.ts-activity-icon--orange {
+  background: #f59e0b;
+}
+.ts-activity-icon--purple {
+  background: #8b5cf6;
+}
 
 .ts-activity-info {
   flex: 1;

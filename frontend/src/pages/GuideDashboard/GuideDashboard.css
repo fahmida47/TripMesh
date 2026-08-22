@@ -1,38 +1,32 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Inter,sans-serif;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Inter, sans-serif;
 }
 
-body{
-    background:#f5f7fb;
+body {
+  background: #f5f7fb;
 }
 
-.guide-dashboard{
+.guide-dashboard {
+  display: flex;
 
-    display:flex;
-
-    min-height:100vh;
-
+  min-height: 100vh;
 }
 
-.dashboard-content{
+.dashboard-content {
+  flex: 1;
 
-    flex:1;
+  display: flex;
 
-    display:flex;
-
-    flex-direction:column;
-
+  flex-direction: column;
 }
 
-.dashboard-body{
+.dashboard-body {
+  padding: 18px 22px;
 
-    padding:18px 22px;
+  background: #f5f7fb;
 
-    background:#f5f7fb;
-
-    flex:1;
-
+  flex: 1;
 }

@@ -9,13 +9,7 @@ const API_URL = "http://127.0.0.1:8000/api";
 const LogoIcon = () => (
   <svg viewBox="0 0 80 80" className="trip-logo" fill="none">
     <defs>
-      <linearGradient
-        id="tripGradient"
-        x1="0"
-        y1="0"
-        x2="1"
-        y2="1"
-      >
+      <linearGradient id="tripGradient" x1="0" y1="0" x2="1" y2="1">
         <stop offset="0%" stopColor="#38bdf8" />
         <stop offset="50%" stopColor="#2563eb" />
         <stop offset="100%" stopColor="#1e3a8a" />
@@ -93,27 +87,21 @@ const Login = () => {
     setSendingCode(true);
 
     try {
-      const response = await fetch(
-        `${API_URL}/auth/send-code`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify({
-            phone: phone,
-          }),
-        }
-      );
+      const response = await fetch(`${API_URL}/auth/send-code`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          phone: phone,
+        }),
+      });
 
       const result = await response.json();
 
       if (!response.ok) {
-        setError(
-          result.message ||
-            "Failed to send verification code."
-        );
+        setError(result.message || "Failed to send verification code.");
 
         setSendingCode(false);
         return;
@@ -121,9 +109,7 @@ const Login = () => {
 
       setCodeSent(true);
 
-      setSuccess(
-        "Verification code sent successfully."
-      );
+      setSuccess("Verification code sent successfully.");
 
       /*
        * Development mode:
@@ -138,7 +124,7 @@ const Login = () => {
       console.error("Send code error:", error);
 
       setError(
-        "Unable to connect to the server. Please make sure Laravel is running."
+        "Unable to connect to the server. Please make sure Laravel is running.",
       );
 
       setSendingCode(false);
@@ -156,8 +142,7 @@ const Login = () => {
     setSuccess("");
 
     const phone = formData.phone.trim();
-    const verificationCode =
-      formData.verificationCode.trim();
+    const verificationCode = formData.verificationCode.trim();
 
     if (!phone) {
       setError("Please enter your phone number.");
@@ -170,44 +155,34 @@ const Login = () => {
     }
 
     if (!verificationCode) {
-      setError(
-        "Please enter the verification code."
-      );
+      setError("Please enter the verification code.");
       return;
     }
 
     if (verificationCode.length !== 6) {
-      setError(
-        "Verification code must be 6 digits."
-      );
+      setError("Verification code must be 6 digits.");
       return;
     }
 
     setLoading(true);
 
     try {
-      const response = await fetch(
-        `${API_URL}/auth/verify-code`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
-          body: JSON.stringify({
-            phone: phone,
-            code: verificationCode,
-          }),
-        }
-      );
+      const response = await fetch(`${API_URL}/auth/verify-code`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          phone: phone,
+          code: verificationCode,
+        }),
+      });
 
       const result = await response.json();
 
       if (!response.ok) {
-        setError(
-          result.message ||
-            "Invalid verification code."
-        );
+        setError(result.message || "Invalid verification code.");
 
         setLoading(false);
         return;
@@ -217,24 +192,12 @@ const Login = () => {
       // EXISTING USER
       // ==========================================
 
-      if (
-        result.is_new_user === false &&
-        result.token
-      ) {
-        localStorage.setItem(
-          "token",
-          result.token
-        );
+      if (result.is_new_user === false && result.token) {
+        localStorage.setItem("token", result.token);
 
-        localStorage.setItem(
-          "user",
-          JSON.stringify(result.user)
-        );
+        localStorage.setItem("user", JSON.stringify(result.user));
 
-        localStorage.setItem(
-          "isLoggedIn",
-          "true"
-        );
+        localStorage.setItem("isLoggedIn", "true");
 
         // Role based dashboard
 
@@ -269,7 +232,7 @@ const Login = () => {
       console.error("Login error:", error);
 
       setError(
-        "Unable to connect to the server. Please make sure Laravel is running."
+        "Unable to connect to the server. Please make sure Laravel is running.",
       );
 
       setLoading(false);
@@ -286,7 +249,6 @@ const Login = () => {
       )}
 
       <div className="auth-container">
-
         {/* ================================
             LEFT SIDE
         ================================= */}
@@ -303,9 +265,7 @@ const Login = () => {
             `,
           }}
         >
-          <div className="logo">
-            ✈ TripMesh
-          </div>
+          <div className="logo">✈ TripMesh</div>
 
           <div className="hero-text">
             <h1>
@@ -328,21 +288,15 @@ const Login = () => {
 
         <div className="auth-right">
           <div className="auth-card">
-
             <div className="login-logo">
               <LogoIcon />
             </div>
 
-            <h2>
-              Welcome Back!
-            </h2>
+            <h2>Welcome Back!</h2>
 
-            <p className="subtitle">
-              Login to continue your adventure
-            </p>
+            <p className="subtitle">Login to continue your adventure</p>
 
             <form onSubmit={handleSubmit}>
-
               {/* PHONE */}
 
               <input
@@ -361,18 +315,12 @@ const Login = () => {
                 onClick={handleSendCode}
                 disabled={sendingCode}
               >
-                {sendingCode
-                  ? "Sending..."
-                  : "Send Verification Code"}
+                {sendingCode ? "Sending..." : "Send Verification Code"}
               </button>
 
               {/* SUCCESS */}
 
-              {success && (
-                <p className="login-success">
-                  {success}
-                </p>
-              )}
+              {success && <p className="login-success">{success}</p>}
 
               {/* VERIFICATION CODE */}
 
@@ -390,35 +338,21 @@ const Login = () => {
 
               {/* ERROR */}
 
-              {error && (
-                <p className="login-error">
-                  {error}
-                </p>
-              )}
+              {error && <p className="login-error">{error}</p>}
 
               {/* LOGIN */}
 
-              {codeSent && (
-                <button type="submit">
-                  Verify & Login
-                </button>
-              )}
-
+              {codeSent && <button type="submit">Verify & Login</button>}
             </form>
 
             {/* FOOTER */}
 
             <p className="footer-text">
               Don't have an account?
-
-              <Link to="/signup">
-                Sign Up
-              </Link>
+              <Link to="/signup">Sign Up</Link>
             </p>
-
           </div>
         </div>
-
       </div>
     </>
   );

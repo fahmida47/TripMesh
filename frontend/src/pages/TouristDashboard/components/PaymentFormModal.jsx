@@ -1,12 +1,6 @@
 import { useState } from "react";
 import { FiX, FiCreditCard, FiLock } from "react-icons/fi";
 
-/**
- * "Pay Now" payment form modal, opened from the Pay Now card on the
- * Payments overview. This is UI-only for now — Submit just reports the
- * values back to the parent (via onSubmit) and closes. Wiring it up to an
- * actual payment gateway is a follow-up.
- */
 export default function PaymentFormModal({ onClose, onSubmit }) {
   const [form, setForm] = useState({
     cardName: "",
@@ -45,7 +39,12 @@ export default function PaymentFormModal({ onClose, onSubmit }) {
               <p>Enter your card details to continue</p>
             </div>
           </div>
-          <button type="button" className="pm-modal-close" onClick={onClose} aria-label="Close">
+          <button
+            type="button"
+            className="pm-modal-close"
+            onClick={onClose}
+            aria-label="Close"
+          >
             <FiX />
           </button>
         </div>
@@ -121,12 +120,17 @@ export default function PaymentFormModal({ onClose, onSubmit }) {
             </div>
 
             <p className="pm-form-secure">
-              <FiLock aria-hidden="true" /> Your payment details are encrypted and secure.
+              <FiLock aria-hidden="true" /> Your payment details are encrypted
+              and secure.
             </p>
           </div>
 
           <div className="pm-modal-foot">
-            <button type="button" className="pm-btn pm-btn--ghost" onClick={onClose}>
+            <button
+              type="button"
+              className="pm-btn pm-btn--ghost"
+              onClick={onClose}
+            >
               Cancel
             </button>
             <button type="submit" className="pm-btn pm-btn--primary">

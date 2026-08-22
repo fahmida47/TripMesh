@@ -87,9 +87,7 @@ export default function TouristDashboard() {
             {/* PAYMENTS */}
             {isPayments && (
               <PaymentHistory
-                onPayNow={(booking) =>
-                  goToPayment(booking, "payments")
-                }
+                onPayNow={(booking) => goToPayment(booking, "payments")}
               />
             )}
 

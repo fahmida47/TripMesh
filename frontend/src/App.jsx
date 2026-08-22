@@ -1,9 +1,4 @@
-import {
-  Routes,
-  Route,
-  Link,
-  BrowserRouter,
-} from "react-router-dom";
+import { Routes, Route, Link, BrowserRouter } from "react-router-dom";
 
 import ScrollToTop from "./ScrollToTop";
 
@@ -36,56 +31,31 @@ function App() {
       <ScrollToTop />
 
       <Routes>
-
         {/* HOME */}
-        <Route
-          path="/"
-          element={<GlobalLandingPage />}
-        />
+        <Route path="/" element={<GlobalLandingPage />} />
 
         {/* EXPLORE */}
-        <Route
-          path="/explore"
-          element={<Explore />}
-        />
+        <Route path="/explore" element={<Explore />} />
 
         {/* ABOUT */}
-        <Route
-          path="/about"
-          element={<AboutUs />}
-        />
+        <Route path="/about" element={<AboutUs />} />
 
         {/* CONTACT */}
-        <Route
-          path="/contact"
-          element={<Contact />}
-        />
+        <Route path="/contact" element={<Contact />} />
 
         {/* LOGIN */}
-        <Route
-          path="/login"
-          element={<Login />}
-        />
+        <Route path="/login" element={<Login />} />
 
         {/* SIGNUP */}
-        <Route
-          path="/signup"
-          element={<Signup />}
-        />
+        <Route path="/signup" element={<Signup />} />
 
         {/* ======================
             GUIDE DASHBOARD
         ====================== */}
 
-        <Route
-          path="/guide-dashboard"
-          element={<GuideDashboard />}
-        />
+        <Route path="/guide-dashboard" element={<GuideDashboard />} />
 
-        <Route
-          path="/guide-dashboard/profile"
-          element={<GuideProfile />}
-        />
+        <Route path="/guide-dashboard/profile" element={<GuideProfile />} />
 
         <Route
           path="/guide-dashboard/tour-services"
@@ -97,34 +67,19 @@ function App() {
           element={<AddTourService />}
         />
 
-        <Route
-          path="/guide-dashboard/requests"
-          element={<GuideRequests />}
-        />
+        <Route path="/guide-dashboard/requests" element={<GuideRequests />} />
 
-        <Route
-          path="/guide-dashboard/bookings"
-          element={<GuideBookings />}
-        />
+        <Route path="/guide-dashboard/bookings" element={<GuideBookings />} />
 
-        <Route
-          path="/guide-dashboard/reviews"
-          element={<ReviewsRatings />}
-        />
+        <Route path="/guide-dashboard/reviews" element={<ReviewsRatings />} />
 
         {/* ======================
             TOURIST DASHBOARD
         ====================== */}
 
-        <Route
-          path="/tourist-dashboard"
-          element={<TouristDashboard />}
-        />
+        <Route path="/tourist-dashboard" element={<TouristDashboard />} />
 
-        <Route
-          path="/tourist-dashboard/profile"
-          element={<TouristProfile />}
-        />
+        <Route path="/tourist-dashboard/profile" element={<TouristProfile />} />
 
         <Route
           path="/tourist-dashboard/bookings"
@@ -141,16 +96,10 @@ function App() {
           element={<PaymentForm />}
         />
 
-          {/* Complete Payment */}
-        <Route
-          path="/tourist-dashboard/payment"
-          element={<PaymentPage />}
-        />
+        {/* Complete Payment */}
+        <Route path="/tourist-dashboard/payment" element={<PaymentPage />} />
 
-        <Route
-          path="/tourist-dashboard/reviews"
-          element={<TouristReviews />}
-        />
+        <Route path="/tourist-dashboard/reviews" element={<TouristReviews />} />
 
         {/* PAGE NOT FOUND */}
 
@@ -160,13 +109,10 @@ function App() {
             <div>
               <h2>Page Not Found</h2>
 
-              <Link to="/">
-                Go to Home
-              </Link>
+              <Link to="/">Go to Home</Link>
             </div>
           }
         />
-
       </Routes>
     </BrowserRouter>
   );

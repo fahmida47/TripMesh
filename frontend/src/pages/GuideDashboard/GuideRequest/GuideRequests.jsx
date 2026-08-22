@@ -4,14 +4,6 @@ import GuideSidebar from "../components/GuideSidebar";
 import "./GuideRequests.css";
 
 const GuideRequests = () => {
-  /*
-    এখন কোনো real request নেই।
-    তাই empty array দিয়ে শুরু করছি।
-
-    Future:
-    API/backend থেকে request আসলে
-    এই array-তে data থাকবে।
-  */
   const requests = [];
 
   // Request counts

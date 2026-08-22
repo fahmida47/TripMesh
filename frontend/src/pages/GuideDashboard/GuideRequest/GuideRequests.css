@@ -14,7 +14,6 @@
   box-sizing: border-box;
 }
 
-
 /* =========================================
    REQUESTS PAGE
 ========================================= */
@@ -23,7 +22,6 @@
   padding: 32px;
   box-sizing: border-box;
 }
-
 
 /* =========================================
    PAGE HEADER
@@ -45,7 +43,6 @@
   color: #64748b;
   font-size: 15px;
 }
-
 
 /* =========================================
    REQUEST SUMMARY CARDS
@@ -83,7 +80,6 @@
   flex-shrink: 0;
 }
 
-
 /* Icon backgrounds */
 
 .summary-card-icon.all {
@@ -106,7 +102,6 @@
   background: #f1f2f4;
 }
 
-
 /* Card text */
 
 .summary-card-content span {
@@ -123,7 +118,6 @@
   font-size: 25px;
   font-weight: 700;
 }
-
 
 /* =========================================
    EMPTY STATE
@@ -189,26 +183,21 @@
   color: #64748b;
 }
 
-
 /* =========================================
    RESPONSIVE - 1200px
 ========================================= */
 
 @media (max-width: 1200px) {
-
   .request-summary-grid {
     grid-template-columns: repeat(3, 1fr);
   }
-
 }
-
 
 /* =========================================
    RESPONSIVE - 900px
 ========================================= */
 
 @media (max-width: 900px) {
-
   .guide-main-content {
     margin-left: 240px;
     width: calc(100% - 240px);
@@ -225,16 +214,13 @@
   .request-summary-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-
 }
-
 
 /* =========================================
    RESPONSIVE - 600px
 ========================================= */
 
 @media (max-width: 600px) {
-
   .guide-main-content {
     margin-left: 0;
     width: 100%;
@@ -264,5 +250,4 @@
   .requests-empty-state p {
     font-size: 14px;
   }
-
 }

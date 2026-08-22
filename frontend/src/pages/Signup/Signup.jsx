@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import {
-  Link,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import "./Signup.css";
 import signupBg from "../../assets/login-bg.jpeg";
@@ -14,13 +10,7 @@ const API_URL = "http://127.0.0.1:8000/api";
 const LogoIcon = () => (
   <svg viewBox="0 0 80 80" className="trip-logo" fill="none">
     <defs>
-      <linearGradient
-        id="signupTripGradient"
-        x1="0"
-        y1="0"
-        x2="1"
-        y2="1"
-      >
+      <linearGradient id="signupTripGradient" x1="0" y1="0" x2="1" y2="1">
         <stop offset="0%" stopColor="#38bdf8" />
         <stop offset="50%" stopColor="#2563eb" />
         <stop offset="100%" stopColor="#1e3a8a" />
@@ -98,31 +88,25 @@ const Signup = () => {
     setLoading(true);
 
     try {
-      const response = await fetch(
-        `${API_URL}/auth/register`,
-        {
-          method: "POST",
+      const response = await fetch(`${API_URL}/auth/register`, {
+        method: "POST",
 
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-          },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
 
-          body: JSON.stringify({
-            name: name,
-            phone: phone,
-            role: data.role.toLowerCase(),
-          }),
-        }
-      );
+        body: JSON.stringify({
+          name: name,
+          phone: phone,
+          role: data.role.toLowerCase(),
+        }),
+      });
 
       const result = await response.json();
 
       if (!response.ok) {
-        setError(
-          result.message ||
-            "Registration failed. Please try again."
-        );
+        setError(result.message || "Registration failed. Please try again.");
 
         setLoading(false);
         return;
@@ -132,24 +116,15 @@ const Signup = () => {
       // SAVE JWT TOKEN
       // ==========================================
 
-      localStorage.setItem(
-        "token",
-        result.token
-      );
+      localStorage.setItem("token", result.token);
 
       // ==========================================
       // SAVE USER
       // ==========================================
 
-      localStorage.setItem(
-        "user",
-        JSON.stringify(result.user)
-      );
+      localStorage.setItem("user", JSON.stringify(result.user));
 
-      localStorage.setItem(
-        "isLoggedIn",
-        "true"
-      );
+      localStorage.setItem("isLoggedIn", "true");
 
       // ==========================================
       // ROLE BASED DASHBOARD
@@ -160,15 +135,11 @@ const Signup = () => {
       } else {
         navigate("/tourist-dashboard");
       }
-
     } catch (error) {
-      console.error(
-        "Registration error:",
-        error
-      );
+      console.error("Registration error:", error);
 
       setError(
-        "Unable to connect to the server. Please make sure Laravel is running."
+        "Unable to connect to the server. Please make sure Laravel is running.",
       );
 
       setLoading(false);
@@ -185,7 +156,6 @@ const Signup = () => {
       )}
 
       <div className="signup-container">
-
         {/* ================================
             BACKGROUND
         ================================= */}
@@ -208,13 +178,9 @@ const Signup = () => {
         ================================= */}
 
         <div className="signup-left">
-
-          <div className="signup-brand">
-            ✈ TripMesh
-          </div>
+          <div className="signup-brand">✈ TripMesh</div>
 
           <div className="signup-hero-text">
-
             <h1>
               Explore more.
               <br />
@@ -228,9 +194,7 @@ const Signup = () => {
               <br />
               unforgettable travel experiences.
             </p>
-
           </div>
-
         </div>
 
         {/* ================================
@@ -238,103 +202,68 @@ const Signup = () => {
         ================================= */}
 
         <div className="signup-right">
-
           <div className="signup-card">
-
             <div className="signup-logo">
               <LogoIcon />
             </div>
 
-            <h2>
-              Create Account
-            </h2>
+            <h2>Create Account</h2>
 
-            <p className="signup-subtitle">
-              Join TripMesh today
-            </p>
+            <p className="signup-subtitle">Join TripMesh today</p>
 
             <form onSubmit={handleSubmit}>
-
               {/* ROLE */}
 
-              <p className="role-title">
-                Choose your role
-              </p>
+              <p className="role-title">Choose your role</p>
 
               <div className="role-container">
-
                 {/* TOURIST */}
 
                 <label
                   className={`role-card ${
-                    data.role === "Tourist"
-                      ? "active"
-                      : ""
+                    data.role === "Tourist" ? "active" : ""
                   }`}
                 >
-
                   <input
                     type="radio"
                     name="role"
                     value="Tourist"
-                    checked={
-                      data.role === "Tourist"
-                    }
+                    checked={data.role === "Tourist"}
                     onChange={handleChange}
                   />
 
-                  <span className="role-icon">
-                    🧳
-                  </span>
+                  <span className="role-icon">🧳</span>
 
                   <div>
-                    <h4>
-                      Tourist
-                    </h4>
+                    <h4>Tourist</h4>
 
-                    <small>
-                      Explore & book trips
-                    </small>
+                    <small>Explore & book trips</small>
                   </div>
-
                 </label>
 
                 {/* GUIDE */}
 
                 <label
                   className={`role-card ${
-                    data.role === "Guide"
-                      ? "active"
-                      : ""
+                    data.role === "Guide" ? "active" : ""
                   }`}
                 >
-
                   <input
                     type="radio"
                     name="role"
                     value="Guide"
-                    checked={
-                      data.role === "Guide"
-                    }
+                    checked={data.role === "Guide"}
                     onChange={handleChange}
                   />
 
-                  <span className="role-icon">
-                    🗺️
-                  </span>
+                  <span className="role-icon">🗺️</span>
 
                   <div>
-                    <h4>
-                      Guide
-                    </h4>
+                    <h4>Guide</h4>
 
-                    <small>
-                      Provide travel services
-                    </small>
+                    <small>Provide travel services</small>
                   </div>
-
                 </label>
-
               </div>
 
               {/* NAME */}
@@ -361,36 +290,21 @@ const Signup = () => {
 
               {/* ERROR */}
 
-              {error && (
-                <p className="login-error">
-                  {error}
-                </p>
-              )}
+              {error && <p className="login-error">{error}</p>}
 
               {/* SIGN UP */}
 
-              <button type="submit">
-                Sign Up
-              </button>
-
+              <button type="submit">Sign Up</button>
             </form>
 
             {/* FOOTER */}
 
             <p className="signup-footer">
-
               Already have an account?
-
-              <Link to="/login">
-                Login
-              </Link>
-
+              <Link to="/login">Login</Link>
             </p>
-
           </div>
-
         </div>
-
       </div>
     </>
   );

@@ -25,9 +25,7 @@ const RecentRequests = () => {
       <div className="recent-requests-empty">
         <p>No requests yet</p>
 
-        <span>
-          New travel requests from tourists will appear here.
-        </span>
+        <span>New travel requests from tourists will appear here.</span>
       </div>
     </section>
   );

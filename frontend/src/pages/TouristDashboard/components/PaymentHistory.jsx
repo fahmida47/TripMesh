@@ -59,35 +59,25 @@ export default function PaymentHistory({ onPayNow }) {
 
   const totalPayments = payments.length;
 
-  const totalPages = Math.max(
-    1,
-    Math.ceil(payments.length / PAGE_SIZE)
-  );
+  const totalPages = Math.max(1, Math.ceil(payments.length / PAGE_SIZE));
 
   const currentPage = Math.min(page, totalPages);
 
   const pageItems = payments.slice(
     (currentPage - 1) * PAGE_SIZE,
-    currentPage * PAGE_SIZE
+    currentPage * PAGE_SIZE,
   );
 
   const rangeStart =
-    payments.length === 0
-      ? 0
-      : (currentPage - 1) * PAGE_SIZE + 1;
+    payments.length === 0 ? 0 : (currentPage - 1) * PAGE_SIZE + 1;
 
-  const rangeEnd = Math.min(
-    currentPage * PAGE_SIZE,
-    payments.length
-  );
+  const rangeEnd = Math.min(currentPage * PAGE_SIZE, payments.length);
 
   // ==============================
   // FIND PENDING PAYMENT
   // ==============================
 
-  const firstPending = payments.find(
-    (payment) => payment.status === "Pending"
-  );
+  const firstPending = payments.find((payment) => payment.status === "Pending");
 
   // ==============================
   // PAY NOW
@@ -110,9 +100,7 @@ export default function PaymentHistory({ onPayNow }) {
 
   const handleQuickPay = () => {
     if (!firstPending) {
-      showToast(
-        "No specific booking selected — opening the payment page."
-      );
+      showToast("No specific booking selected — opening the payment page.");
     }
 
     handlePayNow(firstPending || null);
@@ -164,7 +152,6 @@ export default function PaymentHistory({ onPayNow }) {
 
       {/* PAYMENT CONTENT */}
       <div className="pm-page">
-
         {/* ==============================
             HEADER
         ============================== */}
@@ -172,19 +159,14 @@ export default function PaymentHistory({ onPayNow }) {
         <div className="pm-header">
           <h1>Payments</h1>
 
-          <p>
-            View your all tour payments and their status.
-          </p>
+          <p>View your all tour payments and their status.</p>
         </div>
 
         {/* ==============================
             PAYMENT STATS
         ============================== */}
 
-        <section
-          className="pm-stats"
-          aria-label="Payment overview"
-        >
+        <section className="pm-stats" aria-label="Payment overview">
           <TouristStatCard
             icon={FiCreditCard}
             tone="blue"
@@ -194,15 +176,12 @@ export default function PaymentHistory({ onPayNow }) {
           />
 
           <article className="pm-pay-card">
-
             <div className="pm-pay-card-icon">
               <FiCreditCard aria-hidden="true" />
             </div>
 
             <div className="pm-pay-card-body">
-              <p className="pm-pay-card-label">
-                Make a Payment
-              </p>
+              <p className="pm-pay-card-label">Make a Payment</p>
 
               <p className="pm-pay-card-desc">
                 Pay for your pending tour bookings
@@ -215,7 +194,6 @@ export default function PaymentHistory({ onPayNow }) {
               onClick={handleQuickPay}
             >
               <FiCreditCard aria-hidden="true" />
-
               Pay Now
             </button>
           </article>
@@ -230,19 +208,13 @@ export default function PaymentHistory({ onPayNow }) {
           aria-label="Payment history"
           id="payment-history"
         >
-
           {/* PANEL HEADER */}
 
           <div className="pm-panel-header">
-
             <div className="pm-panel-title">
-
               <h2>Payment History</h2>
 
-              <span className="pm-count-pill">
-                {payments.length} Payments
-              </span>
-
+              <span className="pm-count-pill">{payments.length} Payments</span>
             </div>
           </div>
 
@@ -251,29 +223,19 @@ export default function PaymentHistory({ onPayNow }) {
           ============================== */}
 
           <div className="pm-col-header">
+            <span>Tour &amp; Company</span>
 
-            <span>
-              Tour &amp; Company
-            </span>
+            <span>Destination</span>
 
-            <span>
-              Destination
-            </span>
+            <span>Payment Date</span>
 
-            <span>
-              Payment Date
-            </span>
-
-            <span>
-              Status
-            </span>
+            <span>Status</span>
 
             <span
               style={{
                 textAlign: "right",
               }}
             />
-
           </div>
 
           {/* ==============================
@@ -281,11 +243,8 @@ export default function PaymentHistory({ onPayNow }) {
           ============================== */}
 
           <div className="pm-list">
-
             {pageItems.length === 0 ? (
-              <p className="pm-empty">
-                No payments yet.
-              </p>
+              <p className="pm-empty">No payments yet.</p>
             ) : (
               pageItems.map((payment) => (
                 <PaymentCard
@@ -296,7 +255,6 @@ export default function PaymentHistory({ onPayNow }) {
                 />
               ))
             )}
-
           </div>
 
           {/* ==============================
@@ -304,36 +262,25 @@ export default function PaymentHistory({ onPayNow }) {
           ============================== */}
 
           <div className="pm-footer">
-
             <span className="pm-footer-text">
-              Showing {rangeStart} to {rangeEnd} of{" "}
-              {payments.length} payments
+              Showing {rangeStart} to {rangeEnd} of {payments.length} payments
             </span>
 
             <div className="pm-pager">
-
               {/* PREVIOUS */}
 
               <button
                 type="button"
-                onClick={() =>
-                  setPage((p) => Math.max(1, p - 1))
-                }
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
                 disabled={currentPage === 1}
                 aria-label="Previous page"
               >
-                <ChevronLeftIcon
-                  width={14}
-                  height={14}
-                />
+                <ChevronLeftIcon width={14} height={14} />
               </button>
 
               {/* CURRENT PAGE */}
 
-              <button
-                type="button"
-                className="active"
-              >
+              <button type="button" className="active">
                 {currentPage}
               </button>
 
@@ -341,20 +288,12 @@ export default function PaymentHistory({ onPayNow }) {
 
               <button
                 type="button"
-                onClick={() =>
-                  setPage((p) =>
-                    Math.min(totalPages, p + 1)
-                  )
-                }
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
                 disabled={currentPage === totalPages}
                 aria-label="Next page"
               >
-                <ChevronRightIcon
-                  width={14}
-                  height={14}
-                />
+                <ChevronRightIcon width={14} height={14} />
               </button>
-
             </div>
           </div>
         </section>
@@ -376,14 +315,10 @@ export default function PaymentHistory({ onPayNow }) {
         ============================== */}
 
         {toast && (
-          <div
-            className="pm-toast"
-            role="status"
-          >
+          <div className="pm-toast" role="status">
             {toast}
           </div>
         )}
-
       </div>
     </>
   );

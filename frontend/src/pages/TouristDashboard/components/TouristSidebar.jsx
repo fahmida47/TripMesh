@@ -41,10 +41,7 @@ const NAV_ITEMS = [
   },
 ];
 
-export default function TouristSidebar({
-  isOpen = false,
-  onClose,
-}) {
+export default function TouristSidebar({ isOpen = false, onClose }) {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -94,9 +91,7 @@ export default function TouristSidebar({
                   to={item.path}
                   end={item.end}
                   className={({ isActive }) =>
-                    isActive
-                      ? "ts-sidebar-link active"
-                      : "ts-sidebar-link"
+                    isActive ? "ts-sidebar-link active" : "ts-sidebar-link"
                   }
                   onClick={() => onClose?.()}
                 >
@@ -108,11 +103,7 @@ export default function TouristSidebar({
           </nav>
         </div>
 
-        <button
-          type="button"
-          className="ts-logout-btn"
-          onClick={handleLogout}
-        >
+        <button type="button" className="ts-logout-btn" onClick={handleLogout}>
           <FiLogOut />
           <span>Logout</span>
         </button>

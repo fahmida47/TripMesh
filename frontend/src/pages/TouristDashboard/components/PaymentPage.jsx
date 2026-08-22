@@ -18,13 +18,10 @@ export default function PaymentPage({ booking, onSubmit }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const methodLabel =
-    PAYMENT_METHODS.find((item) => item.id === method)?.label ||
-    "bKash";
+    PAYMENT_METHODS.find((item) => item.id === method)?.label || "bKash";
 
   const canSubmit =
-    confirmed &&
-    accountNumber.trim() !== "" &&
-    paymentDateTime !== "";
+    confirmed && accountNumber.trim() !== "" && paymentDateTime !== "";
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -74,24 +71,14 @@ export default function PaymentPage({ booking, onSubmit }) {
 
       <main className="cp-content">
         <div className="cp-page">
-
           <div className="cp-header">
             <h1>Complete Your Payment</h1>
-            <p>
-              Please complete your payment to confirm your booking.
-            </p>
+            <p>Please complete your payment to confirm your booking.</p>
           </div>
 
-          <form
-            className="cp-grid"
-            onSubmit={handleSubmit}
-          >
+          <form className="cp-grid" onSubmit={handleSubmit}>
             <div className="cp-main">
-
-              <PaymentMethodSelector
-                method={method}
-                onChange={setMethod}
-              />
+              <PaymentMethodSelector method={method} onChange={setMethod} />
 
               <PaymentForm
                 methodLabel={methodLabel}
@@ -104,12 +91,10 @@ export default function PaymentPage({ booking, onSubmit }) {
                 canSubmit={canSubmit}
                 submitting={submitting}
               />
-
             </div>
 
             <PaymentBookingSummary booking={booking} />
           </form>
-
         </div>
       </main>
     </div>

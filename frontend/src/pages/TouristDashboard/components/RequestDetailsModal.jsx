@@ -7,11 +7,14 @@ function badgeClass(status) {
   return `rb-badge rb-badge--${status.toLowerCase().replace(/\s+/g, "")}`;
 }
 
-/**
- * Shared "View Details" modal for both My Requests and My Bookings.
- * `kind` is "request" | "booking" and controls which fields are shown.
- */
-export default function RequestDetailsModal({ kind, item, onClose, onCancel, onProceedToPayment, onPayNow }) {
+export default function RequestDetailsModal({
+  kind,
+  item,
+  onClose,
+  onCancel,
+  onProceedToPayment,
+  onPayNow,
+}) {
   // Close on Escape, and stop the page from scrolling behind the modal.
   useEffect(() => {
     const onKeyDown = (e) => e.key === "Escape" && onClose();
@@ -37,7 +40,9 @@ export default function RequestDetailsModal({ kind, item, onClose, onCancel, onP
   } = item;
 
   const canCancel = isRequest && status === "Pending";
-  const canPay = isRequest ? status === "Accepted" : status === "Pending Payment";
+  const canPay = isRequest
+    ? status === "Accepted"
+    : status === "Pending Payment";
 
   return (
     <div className="rb-modal-backdrop" onClick={onClose}>
@@ -50,17 +55,29 @@ export default function RequestDetailsModal({ kind, item, onClose, onCancel, onP
       >
         <div className="rb-modal-head">
           <div className="rb-modal-head-info">
-            <div className="rb-logo" style={{ background: logoColor(companyName) }}>
+            <div
+              className="rb-logo"
+              style={{ background: logoColor(companyName) }}
+            >
               {companyName.charAt(0)}
             </div>
             <div>
-              <h3 id="rb-modal-title">{isRequest ? item.destination : item.tourTitle}</h3>
+              <h3 id="rb-modal-title">
+                {isRequest ? item.destination : item.tourTitle}
+              </h3>
               <p>
-                {companyName} · <FiStar aria-hidden="true" style={{ verticalAlign: "-2px" }} /> {companyRating}
+                {companyName} ·{" "}
+                <FiStar aria-hidden="true" style={{ verticalAlign: "-2px" }} />{" "}
+                {companyRating}
               </p>
             </div>
           </div>
-          <button type="button" className="rb-modal-close" onClick={onClose} aria-label="Close">
+          <button
+            type="button"
+            className="rb-modal-close"
+            onClick={onClose}
+            aria-label="Close"
+          >
             <FiX />
           </button>
         </div>
@@ -90,7 +107,9 @@ export default function RequestDetailsModal({ kind, item, onClose, onCancel, onP
             </div>
             <div className="rb-modal-field">
               <span>Travelers</span>
-              <span>{travelers} {travelers === 1 ? "Person" : "People"}</span>
+              <span>
+                {travelers} {travelers === 1 ? "Person" : "People"}
+              </span>
             </div>
 
             {isRequest ? (
@@ -146,11 +165,16 @@ export default function RequestDetailsModal({ kind, item, onClose, onCancel, onP
                 onClose();
               }}
             >
-              <FiCreditCard aria-hidden="true" /> {isRequest ? "Proceed to Payment" : "Pay Now"}
+              <FiCreditCard aria-hidden="true" />{" "}
+              {isRequest ? "Proceed to Payment" : "Pay Now"}
             </button>
           )}
 
-          <button type="button" className="rb-btn rb-btn--ghost" onClick={onClose}>
+          <button
+            type="button"
+            className="rb-btn rb-btn--ghost"
+            onClick={onClose}
+          >
             Close
           </button>
         </div>

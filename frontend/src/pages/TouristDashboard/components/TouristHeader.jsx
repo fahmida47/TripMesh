@@ -1,7 +1,6 @@
 import { BellIcon, ChevronDownIcon, MenuIcon } from "./NavIcons";
 import "./TouristHeader.css";
 
-
 const TOP_LINKS = ["Home", "Explore", "About Us", "Contact Us"];
 
 export default function TouristHeader({
@@ -63,7 +62,9 @@ export default function TouristHeader({
             )}
           </span>
           <span className="ts-account-text">
-            <span className="ts-account-name">{profile?.fullName || "Guest"}</span>
+            <span className="ts-account-name">
+              {profile?.fullName || "Guest"}
+            </span>
             <span className="ts-account-role">Tourist</span>
           </span>
           <ChevronDownIcon className="ts-account-chevron" />

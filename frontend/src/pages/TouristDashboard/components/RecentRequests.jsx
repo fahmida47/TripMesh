@@ -60,7 +60,9 @@ export default function RecentRequests() {
             <div className="ts-request-info">
               <div className="ts-request-title-row">
                 <h3>{req.title}</h3>
-                <span className={`ts-badge ts-badge--${STATUS_TONE[req.status] || "neutral"}`}>
+                <span
+                  className={`ts-badge ts-badge--${STATUS_TONE[req.status] || "neutral"}`}
+                >
                   {req.status}
                 </span>
               </div>

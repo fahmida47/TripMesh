@@ -1,9 +1,6 @@
 import { useState } from "react";
 
-function ReviewForm({
-  guideCompanies,
-  onSubmitReview,
-}) {
+function ReviewForm({ guideCompanies, onSubmitReview }) {
   const [selectedCompany, setSelectedCompany] = useState("");
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState("");
@@ -28,7 +25,7 @@ function ReviewForm({
     }
 
     const selectedGuide = guideCompanies.find(
-      (company) => String(company.id) === selectedCompany
+      (company) => String(company.id) === selectedCompany,
     );
 
     if (!selectedGuide) {
@@ -59,27 +56,18 @@ function ReviewForm({
   return (
     <section className="write-review-card">
       <div className="write-review-heading">
-        <div className="write-review-icon">
-          ✎
-        </div>
+        <div className="write-review-icon">✎</div>
 
         <div>
           <h2>Write a Review</h2>
-          <p>
-            Select a guide company and share your experience.
-          </p>
+          <p>Select a guide company and share your experience.</p>
         </div>
       </div>
 
-      <form
-        className="tourist-review-form"
-        onSubmit={handleSubmit}
-      >
+      <form className="tourist-review-form" onSubmit={handleSubmit}>
         {/* GUIDE COMPANY */}
         <div className="review-form-field">
-          <label htmlFor="guide-company">
-            Select Guide Company
-          </label>
+          <label htmlFor="guide-company">Select Guide Company</label>
 
           <select
             id="guide-company"
@@ -97,10 +85,7 @@ function ReviewForm({
             </option>
 
             {guideCompanies.map((company) => (
-              <option
-                key={company.id}
-                value={company.id}
-              >
+              <option key={company.id} value={company.id}>
                 {company.companyName}
               </option>
             ))}
@@ -123,9 +108,7 @@ function ReviewForm({
                 key={star}
                 type="button"
                 className={
-                  star <= rating
-                    ? "star-button selected"
-                    : "star-button"
+                  star <= rating ? "star-button selected" : "star-button"
                 }
                 onClick={() => {
                   setRating(star);
@@ -138,16 +121,12 @@ function ReviewForm({
             ))}
           </div>
 
-          <span className="review-form-hint">
-            Click a star to rate
-          </span>
+          <span className="review-form-hint">Click a star to rate</span>
         </div>
 
         {/* REVIEW TEXT */}
         <div className="review-form-field">
-          <label htmlFor="review-text">
-            Your Review
-          </label>
+          <label htmlFor="review-text">Your Review</label>
 
           <textarea
             id="review-text"
@@ -165,11 +144,7 @@ function ReviewForm({
           </span>
         </div>
 
-        {message && (
-          <p className="review-form-message">
-            {message}
-          </p>
-        )}
+        {message && <p className="review-form-message">{message}</p>}
 
         {/* BUTTONS */}
         <div className="review-form-actions">
@@ -181,10 +156,7 @@ function ReviewForm({
             Cancel
           </button>
 
-          <button
-            type="submit"
-            className="review-submit-btn"
-          >
+          <button type="submit" className="review-submit-btn">
             Submit Review
           </button>
         </div>

@@ -7,7 +7,6 @@ import "./DashboardOverview.css";
 
 const DashboardOverview = () => (
   <section className="dashboard-overview" aria-label="Dashboard overview">
-
     <div className="overview-grid overview-grid--top">
       <RecentRequests />
       <ReviewsSection />
@@ -17,7 +16,6 @@ const DashboardOverview = () => (
       <UpcomingBookings />
       <TopTourServices />
     </div>
-
   </section>
 );
 

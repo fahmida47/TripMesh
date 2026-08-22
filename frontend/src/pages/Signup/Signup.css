@@ -6,7 +6,6 @@
   box-sizing: border-box;
 }
 
-
 /* ===============================
         FULL SCREEN
 ================================ */
@@ -21,7 +20,6 @@
 
   overflow: hidden;
 }
-
 
 /* ===============================
         BACKGROUND
@@ -41,7 +39,6 @@
   animation: imageMove 18s ease-in-out infinite alternate;
 }
 
-
 @keyframes imageMove {
   from {
     background-size: 100%;
@@ -51,7 +48,6 @@
     background-size: 115%;
   }
 }
-
 
 /* Background Overlay */
 
@@ -69,7 +65,6 @@
   );
 }
 
-
 /* ===============================
         LEFT SIDE
 ================================ */
@@ -83,7 +78,6 @@
 
   pointer-events: none;
 }
-
 
 /* ===============================
         BRAND
@@ -109,7 +103,6 @@
   animation: fadeDown 1s ease;
 }
 
-
 @keyframes fadeDown {
   from {
     opacity: 0;
@@ -123,7 +116,6 @@
     transform: translateY(0);
   }
 }
-
 
 /* ===============================
         HERO TEXT
@@ -147,7 +139,6 @@
   animation: heroShow 1.2s ease;
 }
 
-
 @keyframes heroShow {
   from {
     opacity: 0;
@@ -162,7 +153,6 @@
   }
 }
 
-
 .signup-hero-text h1 {
   margin: 0;
 
@@ -175,7 +165,6 @@
   letter-spacing: -3px;
 }
 
-
 .signup-hero-text p {
   margin-top: 25px;
 
@@ -185,7 +174,6 @@
 
   color: #e2e8f0;
 }
-
 
 /* ===============================
         RIGHT SIDE
@@ -204,7 +192,6 @@
 
   z-index: 5;
 }
-
 
 /* ===============================
         SIGNUP CARD
@@ -225,8 +212,7 @@
 
   border: 1px solid rgba(255, 255, 255, 0.6);
 
-  box-shadow:
-    0 40px 100px rgba(0, 0, 0, 0.35);
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.35);
 
   animation: cardAppear 1s ease;
 
@@ -234,7 +220,6 @@
 
   overflow: hidden;
 }
-
 
 @keyframes cardAppear {
   from {
@@ -249,7 +234,6 @@
     transform: translateY(0) scale(1);
   }
 }
-
 
 /* ===============================
         SHINE EFFECT
@@ -279,7 +263,6 @@
   animation: shineMove 7s infinite;
 }
 
-
 @keyframes shineMove {
   0% {
     left: -250px;
@@ -290,7 +273,6 @@
     left: 550px;
   }
 }
-
 
 /* ===============================
         LOGO
@@ -304,7 +286,6 @@
   margin-bottom: 8px;
 }
 
-
 .trip-logo {
   width: 60px;
 
@@ -313,11 +294,9 @@
   transition: 0.4s;
 }
 
-
 .trip-logo:hover {
   transform: scale(1.1) rotate(5deg);
 }
-
 
 /* ===============================
         TITLE
@@ -335,7 +314,6 @@
   margin: 0 0 4px;
 }
 
-
 /* ===============================
         SUBTITLE
 ================================ */
@@ -348,7 +326,6 @@
   margin: 4px 0 15px;
 }
 
-
 /* ===============================
         FORM
 ================================ */
@@ -356,7 +333,6 @@
 .signup-card form {
   width: 100%;
 }
-
 
 /* ===============================
         ROLE TITLE
@@ -372,7 +348,6 @@
   font-size: 14px;
 }
 
-
 /* ===============================
         ROLE CONTAINER
 ================================ */
@@ -386,7 +361,6 @@
 
   margin-bottom: 10px;
 }
-
 
 /* ===============================
         ROLE CARD
@@ -414,13 +388,11 @@
   transition: 0.3s;
 }
 
-
 /* Hide Radio */
 
 .role-card input[type="radio"] {
   display: none;
 }
-
 
 /* Icon */
 
@@ -429,7 +401,6 @@
 
   flex-shrink: 0;
 }
-
 
 /* Role Heading */
 
@@ -442,7 +413,6 @@
 
   font-weight: 800;
 }
-
 
 /* Role Description */
 
@@ -458,7 +428,6 @@
   line-height: 1.2;
 }
 
-
 /* Hover */
 
 .role-card:hover {
@@ -466,10 +435,8 @@
 
   border-color: #2563eb;
 
-  box-shadow:
-    0 8px 20px rgba(37, 99, 235, 0.12);
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.12);
 }
-
 
 /* Active */
 
@@ -480,10 +447,8 @@
 
   background: #eff6ff;
 
-  box-shadow:
-    0 10px 25px rgba(37, 99, 235, 0.15);
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.15);
 }
-
 
 /* ===============================
         INPUTS
@@ -514,7 +479,6 @@
   transition: 0.3s;
 }
 
-
 .signup-card input[type="text"]:focus,
 .signup-card input[type="email"]:focus,
 .signup-card input[type="tel"]:focus,
@@ -525,10 +489,8 @@
 
   background: white;
 
-  box-shadow:
-    0 0 0 5px rgba(37, 99, 235, 0.15);
+  box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.15);
 }
-
 
 /* ===============================
         SIGN UP BUTTON
@@ -555,12 +517,7 @@
 
   border-radius: 18px;
 
-  background:
-    linear-gradient(
-      135deg,
-      #2563eb,
-      #0ea5e9
-    );
+  background: linear-gradient(135deg, #2563eb, #0ea5e9);
 
   color: white;
 
@@ -574,18 +531,14 @@
 
   transition: 0.35s;
 
-  box-shadow:
-    0 15px 35px rgba(37, 99, 235, 0.35);
+  box-shadow: 0 15px 35px rgba(37, 99, 235, 0.35);
 }
-
 
 .signup-card button:hover {
   transform: translateY(-5px);
 
-  box-shadow:
-    0 25px 50px rgba(5, 34, 96, 0.45);
+  box-shadow: 0 25px 50px rgba(5, 34, 96, 0.45);
 }
-
 
 /* ===============================
         FOOTER
@@ -603,7 +556,6 @@
   font-size: 14px;
 }
 
-
 .signup-footer a {
   color: #2563eb;
 
@@ -612,18 +564,15 @@
   margin-left: 5px;
 }
 
-
 .signup-footer a:hover {
   text-decoration: underline;
 }
-
 
 /* ===============================
         MOBILE
 ================================ */
 
 @media (max-width: 900px) {
-
   .signup-hero-text {
     display: none;
   }
@@ -643,13 +592,11 @@
   }
 }
 
-
 /* ===============================
         SMALL DEVICE
 ================================ */
 
 @media (max-width: 500px) {
-
   .signup-card {
     padding: 25px 22px;
 

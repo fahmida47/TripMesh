@@ -5,14 +5,15 @@ function formatMoney(value) {
   return `৳${Number(value).toLocaleString()}`;
 }
 
-/**
- * Shown in place of the form once Submit Payment succeeds. Keeps the same
- * card layout as the rest of the page, just swaps the steps for a
- * confirmation state. `booking`/`method`/`accountNumber` are only used to
- * recap what was submitted — no invented data.
- */
-export default function PaymentSuccess({ booking, method, accountNumber, backLabel, onBack }) {
-  const tourName = booking?.tourTitle || booking?.tourName || booking?.destination;
+export default function PaymentSuccess({
+  booking,
+  method,
+  accountNumber,
+  backLabel,
+  onBack,
+}) {
+  const tourName =
+    booking?.tourTitle || booking?.tourName || booking?.destination;
   const amount = booking?.budget ?? booking?.amount ?? booking?.tourPrice;
 
   return (
@@ -23,8 +24,8 @@ export default function PaymentSuccess({ booking, method, accountNumber, backLab
 
       <h2>Payment Completed!</h2>
       <p>
-        Your {method} payment has been submitted successfully. We&apos;ll verify it and
-        confirm your booking shortly.
+        Your {method} payment has been submitted successfully. We&apos;ll verify
+        it and confirm your booking shortly.
       </p>
 
       <div className="cp-success-recap">
@@ -48,7 +49,11 @@ export default function PaymentSuccess({ booking, method, accountNumber, backLab
         )}
       </div>
 
-      <button type="button" className="cp-back cp-success-back" onClick={onBack}>
+      <button
+        type="button"
+        className="cp-back cp-success-back"
+        onClick={onBack}
+      >
         <FiArrowLeft aria-hidden="true" /> {backLabel}
       </button>
     </div>

@@ -14,7 +14,9 @@
   border-radius: 14px;
   padding: 18px;
   box-shadow: 0 2px 7px rgba(15, 31, 68, 0.04);
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  transition:
+    box-shadow 0.15s ease,
+    transform 0.15s ease;
 }
 
 .ts-stat-card:hover {
@@ -33,12 +35,22 @@
   font-size: 18px;
 }
 
-.ts-stat-icon--blue { background: #2563eb; }
-.ts-stat-icon--orange { background: #f59e0b; }
-.ts-stat-icon--green { background: #16a34a; }
-.ts-stat-icon--purple { background: #8b5cf6; }
+.ts-stat-icon--blue {
+  background: #2563eb;
+}
+.ts-stat-icon--orange {
+  background: #f59e0b;
+}
+.ts-stat-icon--green {
+  background: #16a34a;
+}
+.ts-stat-icon--purple {
+  background: #8b5cf6;
+}
 
-.ts-stat-body { min-width: 0; }
+.ts-stat-body {
+  min-width: 0;
+}
 
 .ts-stat-label {
   margin: 0 0 4px;
@@ -75,15 +87,31 @@
   white-space: nowrap;
 }
 
-.ts-stat-pill--positive { background: #dcfce7; color: #15803d; }
-.ts-stat-pill--warning { background: #fef3c7; color: #b45309; }
-.ts-stat-pill--info { background: #ede9fe; color: #6d28d9; }
-.ts-stat-pill--neutral { background: #e2e8f0; color: #334155; }
+.ts-stat-pill--positive {
+  background: #dcfce7;
+  color: #15803d;
+}
+.ts-stat-pill--warning {
+  background: #fef3c7;
+  color: #b45309;
+}
+.ts-stat-pill--info {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+.ts-stat-pill--neutral {
+  background: #e2e8f0;
+  color: #334155;
+}
 
 @media (max-width: 1180px) {
-  .ts-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .ts-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 560px) {
-  .ts-stats { grid-template-columns: 1fr; }
+  .ts-stats {
+    grid-template-columns: 1fr;
+  }
 }

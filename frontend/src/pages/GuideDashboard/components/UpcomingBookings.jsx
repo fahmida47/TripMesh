@@ -25,9 +25,7 @@ const UpcomingBookings = () => {
       <div className="upcoming-bookings-empty">
         <p>No bookings yet</p>
 
-        <span>
-          Accepted tour requests will appear here.
-        </span>
+        <span>Accepted tour requests will appear here.</span>
       </div>
     </section>
   );

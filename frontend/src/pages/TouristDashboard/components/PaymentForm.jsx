@@ -1,11 +1,5 @@
 import { FiSmartphone, FiCalendar, FiShield, FiSend } from "react-icons/fi";
 
-/**
- * Steps 2 & 3 of the payment page — account number + date/time for the
- * chosen method, then the confirm checkbox and Submit button.
- * Fully controlled by the parent (PaymentPage) so it can validate and
- * gather the values on submit.
- */
 export default function PaymentForm({
   methodLabel,
   accountNumber,
@@ -25,8 +19,9 @@ export default function PaymentForm({
         </h2>
 
         <p className="cp-note cp-note--info">
-          You will be redirected to {methodLabel} to complete the payment securely.
-          After successful payment, please submit the payment information.
+          You will be redirected to {methodLabel} to complete the payment
+          securely. After successful payment, please submit the payment
+          information.
         </p>
 
         <div className="cp-field">
@@ -60,8 +55,8 @@ export default function PaymentForm({
         </div>
 
         <p className="cp-note cp-note--warning">
-          <FiShield aria-hidden="true" /> Make sure the {methodLabel} number is correct.
-          Wrong information may cause payment verification failure.
+          <FiShield aria-hidden="true" /> Make sure the {methodLabel} number is
+          correct. Wrong information may cause payment verification failure.
         </p>
       </section>
 
@@ -79,7 +74,11 @@ export default function PaymentForm({
           I have completed the payment and the above information is correct.
         </label>
 
-        <button type="submit" className="cp-submit" disabled={!canSubmit || submitting}>
+        <button
+          type="submit"
+          className="cp-submit"
+          disabled={!canSubmit || submitting}
+        >
           <FiSend aria-hidden="true" /> Submit Payment
         </button>
       </section>

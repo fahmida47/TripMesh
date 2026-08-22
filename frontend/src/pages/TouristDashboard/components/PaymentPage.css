@@ -171,8 +171,7 @@
   border-color: #2563eb;
   background: #eff6ff;
 
-  box-shadow:
-    0 0 0 2px rgba(37, 99, 235, 0.06);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.06);
 }
 
 /* ========================================
@@ -364,8 +363,7 @@
 .cp-input:focus-within {
   border-color: #2563eb;
 
-  box-shadow:
-    0 0 0 3px rgba(37, 99, 235, 0.12);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
 .cp-input svg {
@@ -567,12 +565,7 @@
 
   font-size: 18px;
 
-  background:
-    linear-gradient(
-      135deg,
-      #93c5fd,
-      #2563eb
-    );
+  background: linear-gradient(135deg, #93c5fd, #2563eb);
 }
 
 .cp-summary-title {

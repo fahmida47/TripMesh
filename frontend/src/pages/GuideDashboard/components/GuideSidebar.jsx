@@ -98,12 +98,8 @@ const GuideSidebar = () => {
           </NavLink>
         </nav>
       </div>
-      
-      <button
-        type="button"
-        className="logout-btn"
-        onClick={handleLogout}
-      >
+
+      <button type="button" className="logout-btn" onClick={handleLogout}>
         <FiLogOut />
         <span>Logout</span>
       </button>

@@ -16,12 +16,10 @@ body {
   background: #020d2d;
 }
 
-/* Home route open থাকলে browser scrollbar বন্ধ */
 body.tripmesh-home-open {
   overflow: hidden;
 }
 
-/* Main landing container */
 .tm-landing {
   width: 100%;
   height: 100vh;
@@ -33,7 +31,6 @@ body.tripmesh-home-open {
   background: #020d2d;
 }
 
-/* প্রতিটা section */
 .tm-page-section {
   width: 100%;
   min-height: 100vh;
@@ -245,13 +242,10 @@ body.tripmesh-home-open {
   overflow: hidden;
 }
 
-/* Explore নিজের scrollbar use করবে */
 #explore .tm-section-content {
   overflow: hidden;
 }
 
-
-/* About + Contact scrollbar */
 #about .tm-section-content,
 #contact .tm-section-content {
   overflow-x: hidden;

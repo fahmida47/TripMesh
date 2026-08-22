@@ -82,10 +82,7 @@ function AddTourService() {
             </button>
           </div>
 
-          <form
-            className="add-tour-service-form"
-            onSubmit={handleSubmit}
-          >
+          <form className="add-tour-service-form" onSubmit={handleSubmit}>
             {/* TOUR IMAGE */}
             <section className="tour-form-card">
               <h2>Tour Image</h2>
@@ -93,10 +90,7 @@ function AddTourService() {
 
               <label className="tour-image-upload">
                 {tourImage ? (
-                  <img
-                    src={tourImage.preview}
-                    alt="Tour preview"
-                  />
+                  <img src={tourImage.preview} alt="Tour preview" />
                 ) : (
                   <div className="tour-image-placeholder">
                     <span>▧</span>
@@ -217,10 +211,7 @@ function AddTourService() {
                 Cancel
               </button>
 
-              <button
-                type="submit"
-                className="save-tour-btn"
-              >
+              <button type="submit" className="save-tour-btn">
                 Add Tour Service
               </button>
             </div>

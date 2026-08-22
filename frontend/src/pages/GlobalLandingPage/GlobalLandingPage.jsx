@@ -1,8 +1,4 @@
-import {
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { useLocation } from "react-router-dom";
 
@@ -37,16 +33,10 @@ const StarIcon = () => (
   </svg>
 );
 
-function FeatureItem({
-  icon,
-  title,
-  subtitle,
-}) {
+function FeatureItem({ icon, title, subtitle }) {
   return (
     <div className="tm-feature">
-      <div className="tm-feature__icon">
-        {icon}
-      </div>
+      <div className="tm-feature__icon">{icon}</div>
 
       <div className="tm-feature__text">
         <strong>{title}</strong>
@@ -61,16 +51,14 @@ function GlobalLandingPage() {
 
   const location = useLocation();
 
-  const [activeSection, setActiveSection] =
-    useState("home");
+  const [activeSection, setActiveSection] = useState("home");
 
   /* Navbar click করলে section change */
 
   const goToSection = (sectionId) => {
     const page = pageRef.current;
 
-    const section =
-      document.getElementById(sectionId);
+    const section = document.getElementById(sectionId);
 
     if (!page || !section) return;
 
@@ -81,8 +69,7 @@ function GlobalLandingPage() {
       নিজের scroll থাকলে আগে top-এ যাবে
     */
 
-    const sectionContent =
-      section.querySelector(".tm-section-content");
+    const sectionContent = section.querySelector(".tm-section-content");
 
     if (sectionContent) {
       sectionContent.scrollTop = 0;
@@ -105,9 +92,7 @@ function GlobalLandingPage() {
     window.history.replaceState(
       null,
       "",
-      sectionId === "home"
-        ? "/"
-        : `/#${sectionId}`
+      sectionId === "home" ? "/" : `/#${sectionId}`,
     );
   };
 
@@ -116,8 +101,7 @@ function GlobalLandingPage() {
   useEffect(() => {
     if (!location.hash) return;
 
-    const sectionId =
-      location.hash.replace("#", "");
+    const sectionId = location.hash.replace("#", "");
 
     const timer = setTimeout(() => {
       goToSection(sectionId);
@@ -129,14 +113,10 @@ function GlobalLandingPage() {
   /* Home page open থাকলে browser body scroll বন্ধ */
 
   useEffect(() => {
-    document.body.classList.add(
-      "tripmesh-home-open"
-    );
+    document.body.classList.add("tripmesh-home-open");
 
     return () => {
-      document.body.classList.remove(
-        "tripmesh-home-open"
-      );
+      document.body.classList.remove("tripmesh-home-open");
     };
   }, []);
 
@@ -145,22 +125,15 @@ function GlobalLandingPage() {
       ref={pageRef}
       className="tm-landing"
       style={{
-        "--tm-hero-image":
-          `url(${heroImage})`,
+        "--tm-hero-image": `url(${heroImage})`,
       }}
     >
       {/* =====================
           HOME
       ===================== */}
 
-      <section
-        id="home"
-        className="tm-page-section"
-      >
-        <Navbar
-          activeSection={activeSection}
-          onSectionChange={goToSection}
-        />
+      <section id="home" className="tm-page-section">
+        <Navbar activeSection={activeSection} onSectionChange={goToSection} />
 
         <div className="tm-hero">
           <div className="tm-hero__inner">
@@ -170,20 +143,13 @@ function GlobalLandingPage() {
               <h1>
                 Your Journey,
                 <br />
-
-                <span>
-                  Connected
-                </span>{" "}
-                Locally.
+                <span>Connected</span> Locally.
               </h1>
 
               <p className="tm-hero__description">
-                TripMesh connects travelers
-                with trusted local guides,
+                TripMesh connects travelers with trusted local guides,
                 <br className="tm-desktop-break" />
-                unique experiences, and
-                real-time offers — all in one
-                place.
+                unique experiences, and real-time offers — all in one place.
               </p>
 
               <div className="tm-features">
@@ -209,10 +175,7 @@ function GlobalLandingPage() {
 
             {/* Right visual */}
 
-            <div
-              className="tm-hero__visual"
-              aria-hidden="true"
-            >
+            <div className="tm-hero__visual" aria-hidden="true">
               <svg
                 className="tm-nearby-route"
                 viewBox="0 0 300 170"
@@ -220,11 +183,7 @@ function GlobalLandingPage() {
               >
                 <path d="M35 145 C78 38, 175 31, 236 55" />
 
-                <circle
-                  cx="35"
-                  cy="145"
-                  r="5"
-                />
+                <circle cx="35" cy="145" r="5" />
               </svg>
 
               <div className="tm-nearby-card">
@@ -233,17 +192,11 @@ function GlobalLandingPage() {
                 </div>
 
                 <div>
-                  <strong>
-                    Explore Nearby
-                  </strong>
+                  <strong>Explore Nearby</strong>
 
-                  <span>
-                    120+ experiences
-                  </span>
+                  <span>120+ experiences</span>
 
-                  <span>
-                    near you
-                  </span>
+                  <span>near you</span>
                 </div>
               </div>
             </div>
@@ -255,10 +208,7 @@ function GlobalLandingPage() {
           EXPLORE
       ===================== */}
 
-      <section
-        id="explore"
-        className="tm-page-section"
-      >
+      <section id="explore" className="tm-page-section">
         <div className="tm-section-content">
           <Explore embedded />
         </div>
@@ -268,10 +218,7 @@ function GlobalLandingPage() {
           ABOUT US
       ===================== */}
 
-      <section
-        id="about"
-        className="tm-page-section"
-      >
+      <section id="about" className="tm-page-section">
         <div className="tm-section-content">
           <AboutUs embedded />
         </div>
@@ -281,10 +228,7 @@ function GlobalLandingPage() {
           CONTACT US
       ===================== */}
 
-      <section
-        id="contact"
-        className="tm-page-section"
-      >
+      <section id="contact" className="tm-page-section">
         <div className="tm-section-content">
           <Contact embedded />
         </div>

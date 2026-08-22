@@ -12,15 +12,15 @@ function GuideBookings() {
   const totalBookings = bookings.length;
 
   const pendingBookings = bookings.filter(
-    (booking) => booking.status === "Pending"
+    (booking) => booking.status === "Pending",
   ).length;
 
   const completedBookings = bookings.filter(
-    (booking) => booking.status === "Completed"
+    (booking) => booking.status === "Completed",
   ).length;
 
   const cancelledBookings = bookings.filter(
-    (booking) => booking.status === "Cancelled"
+    (booking) => booking.status === "Cancelled",
   ).length;
 
   return (
@@ -77,17 +77,14 @@ function GuideBookings() {
                 <h2>No bookings yet</h2>
 
                 <p>
-                  Accepted tour requests will appear here when booking
-                  activity starts.
+                  Accepted tour requests will appear here when booking activity
+                  starts.
                 </p>
               </div>
             ) : (
               <div className="bookings-list">
                 {bookings.map((booking) => (
-                  <div
-                    className="booking-row"
-                    key={booking.id}
-                  >
+                  <div className="booking-row" key={booking.id}>
                     <div className="booking-customer">
                       <strong>{booking.customerName}</strong>
                     </div>
@@ -101,9 +98,7 @@ function GuideBookings() {
 
                     <span>{booking.travelers}</span>
 
-                    <strong>
-                      ৳ {booking.amount}
-                    </strong>
+                    <strong>৳ {booking.amount}</strong>
 
                     <span
                       className={`booking-status ${booking.status

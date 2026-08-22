@@ -1,10 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import {
-  Check,
-  Image as ImageIcon,
-  UserRound,
-  UserCog,
-} from "lucide-react";
+import { Check, Image as ImageIcon, UserRound, UserCog } from "lucide-react";
 
 import TouristSidebar from "../components/TouristSidebar";
 
@@ -204,7 +199,9 @@ const TouristProfile = () => {
       const validationErrors = data.errors
         ? Object.values(data.errors).flat().join(" ")
         : "";
-      throw new Error(data.message || validationErrors || "Image upload failed.");
+      throw new Error(
+        data.message || validationErrors || "Image upload failed.",
+      );
     }
 
     return data;
@@ -250,7 +247,9 @@ const TouristProfile = () => {
         const validationErrors = data.errors
           ? Object.values(data.errors).flat().join(" ")
           : "";
-        throw new Error(data.message || validationErrors || "Failed to save your profile.");
+        throw new Error(
+          data.message || validationErrors || "Failed to save your profile.",
+        );
       }
 
       await uploadImage(
@@ -302,9 +301,7 @@ const TouristProfile = () => {
           <div>
             <h1>My Profile</h1>
 
-            <p>
-              Manage your personal information and preferences
-            </p>
+            <p>Manage your personal information and preferences</p>
           </div>
         </div>
 
@@ -354,15 +351,10 @@ const TouristProfile = () => {
               <button
                 type="button"
                 className="tourist-profile-photo"
-                onClick={() =>
-                  profileInputRef.current?.click()
-                }
+                onClick={() => profileInputRef.current?.click()}
               >
                 {profileImage ? (
-                  <img
-                    src={profileImage.preview}
-                    alt="Tourist profile"
-                  />
+                  <img src={profileImage.preview} alt="Tourist profile" />
                 ) : (
                   <span>{profileInitials}</span>
                 )}
@@ -381,9 +373,7 @@ const TouristProfile = () => {
 
             {/* FULL NAME */}
             <div className="tourist-profile-field">
-              <label htmlFor="tourist-full-name">
-                Full Name
-              </label>
+              <label htmlFor="tourist-full-name">Full Name</label>
 
               <input
                 id="tourist-full-name"
@@ -397,9 +387,7 @@ const TouristProfile = () => {
 
             {/* PHONE */}
             <div className="tourist-profile-field">
-              <label htmlFor="tourist-phone">
-                Phone Number
-              </label>
+              <label htmlFor="tourist-phone">Phone Number</label>
 
               <input
                 id="tourist-phone"
@@ -413,9 +401,7 @@ const TouristProfile = () => {
 
             {/* EMAIL */}
             <div className="tourist-profile-field tourist-email-field">
-              <label htmlFor="tourist-email">
-                Email Address
-              </label>
+              <label htmlFor="tourist-email">Email Address</label>
 
               <input
                 id="tourist-email"
@@ -440,9 +426,7 @@ const TouristProfile = () => {
           </div>
 
           <div className="tourist-profile-field">
-            <label htmlFor="tourist-bio">
-              Bio
-            </label>
+            <label htmlFor="tourist-bio">Bio</label>
 
             <div className="tourist-bio-wrapper">
               <textarea
@@ -468,17 +452,13 @@ const TouristProfile = () => {
           <div className="tourist-profile-section-heading">
             <h2>Address Information</h2>
 
-            <p>
-              Add or update your current address information
-            </p>
+            <p>Add or update your current address information</p>
           </div>
 
           <div className="tourist-address-grid">
             {/* ADDRESS LINE 1 */}
             <div className="tourist-profile-field tourist-address-full">
-              <label htmlFor="address-line-1">
-                Address Line 1
-              </label>
+              <label htmlFor="address-line-1">Address Line 1</label>
 
               <input
                 id="address-line-1"
@@ -492,9 +472,7 @@ const TouristProfile = () => {
 
             {/* ADDRESS LINE 2 */}
             <div className="tourist-profile-field tourist-address-full">
-              <label htmlFor="address-line-2">
-                Address Line 2 (Optional)
-              </label>
+              <label htmlFor="address-line-2">Address Line 2 (Optional)</label>
 
               <input
                 id="address-line-2"
@@ -508,9 +486,7 @@ const TouristProfile = () => {
 
             {/* CITY */}
             <div className="tourist-profile-field">
-              <label htmlFor="tourist-city">
-                City
-              </label>
+              <label htmlFor="tourist-city">City</label>
 
               <input
                 id="tourist-city"
@@ -524,9 +500,7 @@ const TouristProfile = () => {
 
             {/* STATE */}
             <div className="tourist-profile-field">
-              <label htmlFor="tourist-state">
-                State / Province
-              </label>
+              <label htmlFor="tourist-state">State / Province</label>
 
               <input
                 id="tourist-state"
@@ -540,9 +514,7 @@ const TouristProfile = () => {
 
             {/* ZIP */}
             <div className="tourist-profile-field">
-              <label htmlFor="tourist-zip">
-                Zip / Postal Code
-              </label>
+              <label htmlFor="tourist-zip">Zip / Postal Code</label>
 
               <input
                 id="tourist-zip"
@@ -556,9 +528,7 @@ const TouristProfile = () => {
 
             {/* COUNTRY */}
             <div className="tourist-profile-field">
-              <label htmlFor="tourist-country">
-                Country
-              </label>
+              <label htmlFor="tourist-country">Country</label>
 
               <select
                 id="tourist-country"
@@ -566,15 +536,10 @@ const TouristProfile = () => {
                 value={formData.country}
                 onChange={handleChange}
               >
-                <option value="">
-                  Select country
-                </option>
+                <option value="">Select country</option>
 
                 {COUNTRIES.map((country) => (
-                  <option
-                    key={country}
-                    value={country}
-                  >
+                  <option key={country} value={country}>
                     {country}
                   </option>
                 ))}
@@ -595,9 +560,7 @@ const TouristProfile = () => {
           )}
 
           {error && (
-            <div className="tourist-profile-saved-message">
-              {error}
-            </div>
+            <div className="tourist-profile-saved-message">{error}</div>
           )}
 
           <button
@@ -612,6 +575,6 @@ const TouristProfile = () => {
       </main>
     </div>
   );
-}
+};
 
 export default TouristProfile;

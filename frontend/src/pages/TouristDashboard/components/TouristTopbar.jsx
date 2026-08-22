@@ -57,9 +57,7 @@ export default function TouristTopbar({ onMenuClick, onProfileClick }) {
           <FiUser />
         </span>
 
-        <span className="ts-dashtopbar-profile-text">
-          {touristName}
-        </span>
+        <span className="ts-dashtopbar-profile-text">{touristName}</span>
 
         <FiChevronDown className="ts-dashtopbar-chevron" />
       </button>

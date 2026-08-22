@@ -52,7 +52,9 @@ export default function RecentActivity() {
           const Icon = item.icon;
           return (
             <li key={item.id} className="ts-activity-row">
-              <span className={`ts-activity-icon ts-activity-icon--${item.tone}`}>
+              <span
+                className={`ts-activity-icon ts-activity-icon--${item.tone}`}
+              >
                 <Icon aria-hidden="true" />
               </span>
 
@@ -62,7 +64,9 @@ export default function RecentActivity() {
                 <p className="ts-activity-date">{item.date}</p>
               </div>
 
-              {item.amount && <span className="ts-activity-amount">{item.amount}</span>}
+              {item.amount && (
+                <span className="ts-activity-amount">{item.amount}</span>
+              )}
               {item.rating && (
                 <span className="ts-activity-rating">
                   <FiStar aria-hidden="true" /> {item.rating}

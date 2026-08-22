@@ -23,7 +23,12 @@ body {
   display: block;
   overflow-x: hidden;
   font-family:
-    Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
 #root {
@@ -42,4 +47,3 @@ body {
     left: 550px;
   }
 }
-
