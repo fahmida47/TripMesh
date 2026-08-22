@@ -31,6 +31,7 @@ export default function TouristTopbar({ onMenuClick, onProfileClick }) {
 
   return (
     <header className="ts-dashtopbar">
+      {/* MOBILE MENU */}
       <button
         type="button"
         className="ts-dashtopbar-menu"
@@ -40,27 +41,38 @@ export default function TouristTopbar({ onMenuClick, onProfileClick }) {
         <FiMenu />
       </button>
 
+      {/* WELCOME SECTION */}
       <div className="ts-dashtopbar-welcome">
-        <h2>Welcome back, {touristName}! 👋</h2>
+        <div className="ts-dashtopbar-title-row">
+          <h2>Welcome back, {touristName}!</h2>
+
+          <span className="ts-dashtopbar-wave">👋</span>
+        </div>
+
         <p>{formattedDate}</p>
       </div>
 
-      <div className="ts-dashtopbar-spacer" />
+      {/* RIGHT SIDE */}
+      <div className="ts-dashtopbar-actions">
+        <button
+          type="button"
+          className="ts-dashtopbar-account"
+          onClick={onProfileClick}
+          aria-label="Open profile"
+        >
+          <span className="ts-dashtopbar-avatar">
+            <FiUser />
+          </span>
 
-      <button
-        type="button"
-        className="ts-dashtopbar-account"
-        onClick={onProfileClick}
-        aria-label="Open profile"
-      >
-        <span className="ts-dashtopbar-avatar">
-          <FiUser />
-        </span>
+          <span className="ts-dashtopbar-profile-info">
+            <span className="ts-dashtopbar-profile-text">{touristName}</span>
 
-        <span className="ts-dashtopbar-profile-text">{touristName}</span>
+            <span className="ts-dashtopbar-profile-role">Tourist</span>
+          </span>
 
-        <FiChevronDown className="ts-dashtopbar-chevron" />
-      </button>
+          <FiChevronDown className="ts-dashtopbar-chevron" />
+        </button>
+      </div>
     </header>
   );
 }
