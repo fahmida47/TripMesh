@@ -1,18 +1,13 @@
 import { FiStar } from "react-icons/fi";
-import GuideSidebar from "../components/GuideSidebar";
-import GuideHeader from "../components/GuideHeader";
+
 import "./ReviewsRatings.css";
 
 const ReviewsRatings = () => {
   return (
     <div className="reviews-page">
-      {/* Existing Guide Sidebar */}
-      <GuideSidebar />
-
-      {/* Main Content */}
       <main className="reviews-main-content">
         <div className="reviews-page-container">
-          {/* Page Header */}
+          {/* PAGE HEADER */}
           <div className="reviews-page-header">
             <div>
               <h1>Reviews & Ratings</h1>
@@ -23,7 +18,7 @@ const ReviewsRatings = () => {
             </div>
           </div>
 
-          {/* Rating Summary */}
+          {/* RATING SUMMARY */}
           <section className="reviews-rating-summary">
             <div className="reviews-rating-icon">
               <FiStar />
@@ -38,7 +33,7 @@ const ReviewsRatings = () => {
             </div>
           </section>
 
-          {/* Customer Reviews */}
+          {/* CUSTOMER REVIEWS */}
           <section className="customer-reviews">
             <div className="customer-reviews-header">
               <div>
@@ -50,7 +45,7 @@ const ReviewsRatings = () => {
               <span className="reviews-total">0 Reviews</span>
             </div>
 
-            {/* Empty State */}
+            {/* EMPTY STATE */}
             <div className="reviews-empty-state">
               <div className="reviews-empty-icon">
                 <FiStar />
