@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import "./GuideProfile.css";
 
 const API_BASE_URL = "http://127.0.0.1:8000/api";
@@ -13,6 +12,8 @@ function GuideProfile() {
     phone: "",
     email: "",
     address: "",
+    price: "",
+    tourTypes: [],
   });
 
   const [profileImage, setProfileImage] = useState(null);
@@ -21,6 +22,12 @@ function GuideProfile() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+
+  const tourTypeOptions = [
+    "Single Tour",
+    "Dual Tour",
+    "Group Tour",
+  ];
 
   useEffect(() => {
     loadProfile();
@@ -31,7 +38,7 @@ function GuideProfile() {
       const token = localStorage.getItem("token");
 
       if (!token) {
-        console.error("Authentication token not found.");
+        setSuccessMessage("You are not logged in.");
         setLoading(false);
         return;
       }
@@ -52,7 +59,7 @@ function GuideProfile() {
       }
 
       if (!response.ok) {
-        throw new Error(data.message || "Failed to load guide profile.");
+        throw new Error(data.message || "Failed to load profile.");
       }
 
       const savedProfile = data.profile;
@@ -69,6 +76,10 @@ function GuideProfile() {
         phone: savedProfile.phone || "",
         email: savedProfile.email || "",
         address: savedProfile.address || "",
+        price: savedProfile.price ?? "",
+        tourTypes: Array.isArray(savedProfile.tour_types)
+          ? savedProfile.tour_types
+          : [],
       });
 
       if (savedProfile.profile_picture) {
@@ -94,11 +105,12 @@ function GuideProfile() {
                   preview: `${STORAGE_URL}/${experience.photo}`,
                 }
               : null,
-          })),
+          }))
         );
       }
     } catch (error) {
       console.error("Load profile error:", error);
+      setSuccessMessage("Failed to load guide profile.");
     } finally {
       setLoading(false);
     }
@@ -111,6 +123,19 @@ function GuideProfile() {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const handleTourTypeChange = (type) => {
+    setProfile((prev) => {
+      const alreadySelected = prev.tourTypes.includes(type);
+
+      return {
+        ...prev,
+        tourTypes: alreadySelected
+          ? prev.tourTypes.filter((item) => item !== type)
+          : [...prev.tourTypes, type],
+      };
+    });
   };
 
   const handleProfileImage = (e) => {
@@ -143,8 +168,8 @@ function GuideProfile() {
               ...experience,
               [field]: value,
             }
-          : experience,
-      ),
+          : experience
+      )
     );
   };
 
@@ -161,8 +186,8 @@ function GuideProfile() {
                 preview: URL.createObjectURL(file),
               },
             }
-          : experience,
-      ),
+          : experience
+      )
     );
   };
 
@@ -205,40 +230,38 @@ function GuideProfile() {
             Authorization: `Bearer ${token}`,
           },
           body: formData,
-        },
+        }
       );
 
       const data = await response.json();
 
       if (!response.ok) {
-        console.error("Experience save error:", data);
-
         const validationErrors = data.errors
           ? Object.values(data.errors).flat().join("\n")
           : "";
 
         setSuccessMessage(
-          data.message || validationErrors || "Failed to save experience.",
+          data.message ||
+            validationErrors ||
+            "Failed to save experience."
         );
 
         return false;
       }
 
-      console.log("Experience added:", data.experience);
       return true;
     } catch (error) {
       console.error("Experience save error:", error);
-
-      setSuccessMessage("Something went wrong while saving the experience.");
-
+      setSuccessMessage("Failed to save experience.");
       return false;
     }
   };
 
   const uploadProfilePicture = async (token) => {
-    if (!profileImage?.file) return true;
+    if (!profileImage?.file) return;
 
     const formData = new FormData();
+
     formData.append("profile_picture", profileImage.file);
 
     const response = await fetch(
@@ -250,42 +273,44 @@ function GuideProfile() {
           Authorization: `Bearer ${token}`,
         },
         body: formData,
-      },
+      }
     );
 
     const data = await response.json();
 
     if (!response.ok) {
-      console.error("Profile picture upload error:", data);
-      throw new Error(data.message || "Profile picture upload failed.");
+      throw new Error(
+        data.message || "Profile picture upload failed."
+      );
     }
-
-    return true;
   };
 
   const uploadCoverPhoto = async (token) => {
-    if (!coverImage?.file) return true;
+    if (!coverImage?.file) return;
 
     const formData = new FormData();
+
     formData.append("cover_photo", coverImage.file);
 
-    const response = await fetch(`${API_BASE_URL}/guide/profile/cover-photo`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: formData,
-    });
+    const response = await fetch(
+      `${API_BASE_URL}/guide/profile/cover-photo`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: formData,
+      }
+    );
 
     const data = await response.json();
 
     if (!response.ok) {
-      console.error("Cover photo upload error:", data);
-      throw new Error(data.message || "Cover photo upload failed.");
+      throw new Error(
+        data.message || "Cover photo upload failed."
+      );
     }
-
-    return true;
   };
 
   const handleSave = async () => {
@@ -301,40 +326,43 @@ function GuideProfile() {
         return;
       }
 
-      const response = await fetch(`${API_BASE_URL}/guide/profile`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          company_name: profile.companyName,
-          contact_person: profile.ownerName,
-          bio: profile.bio,
-          phone: profile.phone,
-          email: profile.email,
-          address: profile.address,
-        }),
-      });
+      const response = await fetch(
+        `${API_BASE_URL}/guide/profile`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            company_name: profile.companyName,
+            contact_person: profile.ownerName,
+            bio: profile.bio,
+            phone: profile.phone,
+            email: profile.email,
+            address: profile.address,
+            price: profile.price,
+            tour_types: profile.tourTypes,
+          }),
+        }
+      );
 
       const data = await response.json();
 
       if (!response.ok) {
-        console.error("Save error:", data);
-
         const validationErrors = data.errors
           ? Object.values(data.errors).flat().join("\n")
           : "";
 
         setSuccessMessage(
-          data.message || validationErrors || "Failed to save profile.",
+          data.message ||
+            validationErrors ||
+            "Failed to save profile."
         );
 
         return;
       }
-
-      console.log("Profile saved:", data.profile);
 
       await uploadProfilePicture(token);
       await uploadCoverPhoto(token);
@@ -342,12 +370,16 @@ function GuideProfile() {
       for (const experience of experiences) {
         if (String(experience.id).startsWith("new-")) {
           if (!experience.title.trim()) {
-            setSuccessMessage("Please enter an experience title.");
+            setSuccessMessage(
+              "Please enter an experience title."
+            );
             return;
           }
 
           if (!experience.description.trim()) {
-            setSuccessMessage("Please enter your experience description.");
+            setSuccessMessage(
+              "Please enter your experience description."
+            );
             return;
           }
 
@@ -370,7 +402,8 @@ function GuideProfile() {
       console.error("Save profile error:", error);
 
       setSuccessMessage(
-        error.message || "Something went wrong while saving the profile.",
+        error.message ||
+          "Something went wrong while saving the profile."
       );
     } finally {
       setSaving(false);
@@ -394,12 +427,18 @@ function GuideProfile() {
 
   return (
     <div className="guide-profile-page">
+
+      {/* PAGE HEADING */}
       <div className="guide-profile-heading">
         <h1>My Profile</h1>
-        <p>Manage your company information and preferences</p>
+        <p>
+          Manage your company information and preferences
+        </p>
       </div>
 
+      {/* PROFILE HEADER */}
       <section className="profile-main-card">
+
         <div
           className="profile-cover"
           style={
@@ -419,6 +458,7 @@ function GuideProfile() {
 
           <label className="edit-cover-btn">
             Edit Cover Photo
+
             <input
               type="file"
               accept=".jpg,.jpeg,.png,.webp"
@@ -429,10 +469,15 @@ function GuideProfile() {
         </div>
 
         <div className="profile-header-info">
+
           <div className="profile-photo-wrapper">
             <label className="profile-photo">
+
               {profileImage ? (
-                <img src={profileImage.preview} alt="Profile preview" />
+                <img
+                  src={profileImage.preview}
+                  alt="Profile preview"
+                />
               ) : (
                 <span>👤</span>
               )}
@@ -443,6 +488,7 @@ function GuideProfile() {
                 onChange={handleProfileImage}
                 hidden
               />
+
             </label>
 
             <p>Profile Picture</p>
@@ -471,15 +517,20 @@ function GuideProfile() {
               placeholder="Enter owner or contact person name"
             />
           </div>
+
         </div>
       </section>
 
+      {/* BASIC INFORMATION */}
       <div className="profile-content-grid">
+
+        {/* BIO */}
         <section className="profile-section-card">
           <h2>Bio</h2>
 
           <p>
-            Tell clients about your company and what makes your tours unique.
+            Tell clients about your company and what makes
+            your tours unique.
           </p>
 
           <textarea
@@ -490,15 +541,22 @@ function GuideProfile() {
             placeholder="Write about your company, experience, specialties, and what clients can expect..."
           />
 
-          <span className="character-count">{profile.bio.length}/1000</span>
+          <span className="character-count">
+            {profile.bio.length}/1000
+          </span>
         </section>
 
+        {/* CONTACT */}
         <section className="profile-section-card">
           <h2>Contact Information</h2>
 
-          <p>Update your contact details so clients can reach you easily.</p>
+          <p>
+            Update your contact details so clients can reach
+            you easily.
+          </p>
 
           <div className="contact-grid">
+
             <div className="profile-field">
               <label>Phone Number</label>
 
@@ -522,6 +580,7 @@ function GuideProfile() {
                 placeholder="Enter email address"
               />
             </div>
+
           </div>
 
           <div className="profile-field">
@@ -537,74 +596,171 @@ function GuideProfile() {
           </div>
         </section>
 
+        {/* TOUR PRICING */}
         <section className="profile-section-card">
-          <h2>Tour Services</h2>
+          <h2>Tour Pricing</h2>
 
-          <p>Manage and showcase the tour services your company offers.</p>
+          <p>
+            Set the starting price for your guide service.
+          </p>
 
-          <div className="empty-tour-services">
-            <div className="tour-service-icon">🗺️</div>
+          <div className="profile-field">
+            <label>Starting Price (BDT)</label>
 
-            <h3>You haven't added any tour services yet.</h3>
-
-            <p>Add your tour services to start getting bookings.</p>
-
-            <div className="tour-service-buttons">
-              <button type="button" onClick={goToTourServices}>
-                Go to Tour Services →
-              </button>
-
-              <button
-                type="button"
-                className="secondary-btn"
-                onClick={goToTourServices}
-              >
-                + Add Tour Service
-              </button>
-            </div>
+            <input
+              type="number"
+              name="price"
+              min="0"
+              value={profile.price}
+              onChange={handleChange}
+              placeholder="Example: 2500"
+            />
           </div>
         </section>
 
+        {/* TOUR TYPES */}
         <section className="profile-section-card">
-          <div className="experience-header">
-            <div>
-              <h2>Completed Tour Experience</h2>
+          <h2>Tour Types</h2>
 
-              <p>
-                Share your completed tours and experiences with potential
-                clients.
-              </p>
-            </div>
+          <p>
+            Select the types of tours your company provides.
+          </p>
+
+          <div className="tour-type-options">
+
+            {tourTypeOptions.map((type) => (
+              <label
+                className="tour-type-option"
+                key={type}
+              >
+                <input
+                  type="checkbox"
+                  checked={profile.tourTypes.includes(type)}
+                  onChange={() =>
+                    handleTourTypeChange(type)
+                  }
+                />
+
+                <span>{type}</span>
+              </label>
+            ))}
+
+          </div>
+        </section>
+
+      </div>
+
+      {/* TOUR SERVICES - FULL WIDTH */}
+      <section className="profile-section-card full-width-card">
+
+        <h2>Tour Services</h2>
+
+        <p>
+          Manage and showcase the tour services your company
+          offers.
+        </p>
+
+        <div className="empty-tour-services">
+
+          <div className="tour-service-icon">
+            🗺️
+          </div>
+
+          <h3>
+            You haven't added any tour services yet.
+          </h3>
+
+          <p>
+            Add your tour services to start getting bookings.
+          </p>
+
+          <div className="tour-service-buttons">
 
             <button
               type="button"
-              className="add-experience-btn"
-              onClick={handleAddExperience}
+              onClick={goToTourServices}
             >
-              + Add Experience
+              Go to Tour Services →
             </button>
+
+            <button
+              type="button"
+              className="secondary-btn"
+              onClick={goToTourServices}
+            >
+              + Add Tour Service
+            </button>
+
           </div>
 
+        </div>
+
+      </section>
+
+      {/* COMPLETED EXPERIENCE - FULL WIDTH */}
+      <section className="profile-section-card full-width-card">
+
+        <div className="experience-header">
+
+          <div>
+            <h2>Completed Tour Experience</h2>
+
+            <p>
+              Share your completed tours and experiences with
+              potential clients.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            className="add-experience-btn"
+            onClick={handleAddExperience}
+          >
+            + Add Experience
+          </button>
+
+        </div>
+
+        {experiences.length === 0 ? (
+          <div className="no-experience-message">
+            <div className="no-experience-icon">
+              📸
+            </div>
+
+            <h3>No completed tour experiences yet</h3>
+
+            <p>
+              Add your completed tours to showcase your
+              experience to potential clients.
+            </p>
+          </div>
+        ) : (
           <div className="experience-grid">
+
             {experiences.map((experience) => (
-              <div className="experience-item" key={experience.id}>
+
+              <div
+                className="experience-item"
+                key={experience.id}
+              >
+
+                {/* IMAGE */}
                 <label className="experience-upload">
+
                   {experience.image ? (
                     <img
                       src={experience.image.preview}
                       alt="Experience preview"
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                        borderRadius: "7px",
-                      }}
                     />
                   ) : (
                     <>
                       <span>▧</span>
+
                       <p>Upload Photo</p>
-                      <small>JPG, PNG, WEBP</small>
+
+                      <small>
+                        JPG, PNG, WEBP
+                      </small>
                     </>
                   )}
 
@@ -613,12 +769,19 @@ function GuideProfile() {
                     accept=".jpg,.jpeg,.png,.webp"
                     hidden
                     onChange={(e) =>
-                      handleExperienceImage(experience.id, e.target.files?.[0])
+                      handleExperienceImage(
+                        experience.id,
+                        e.target.files?.[0]
+                      )
                     }
                   />
+
                 </label>
 
-                <label>Experience Title</label>
+                {/* TITLE */}
+                <label>
+                  Experience Title
+                </label>
 
                 <input
                   type="text"
@@ -627,13 +790,16 @@ function GuideProfile() {
                     handleExperienceChange(
                       experience.id,
                       "title",
-                      e.target.value,
+                      e.target.value
                     )
                   }
                   placeholder="Enter a short title"
                 />
 
-                <label>Your Experience</label>
+                {/* DESCRIPTION */}
+                <label>
+                  Your Experience
+                </label>
 
                 <textarea
                   value={experience.description}
@@ -642,7 +808,7 @@ function GuideProfile() {
                     handleExperienceChange(
                       experience.id,
                       "description",
-                      e.target.value,
+                      e.target.value
                     )
                   }
                   placeholder="Write about this experience..."
@@ -651,15 +817,23 @@ function GuideProfile() {
                 <span className="experience-count">
                   {experience.description.length} / 300
                 </span>
-              </div>
-            ))}
-          </div>
-        </section>
-      </div>
 
+              </div>
+
+            ))}
+
+          </div>
+        )}
+
+      </section>
+
+      {/* SAVE */}
       <div className="profile-final-save">
+
         {successMessage && (
-          <div className="profile-success-message">{successMessage}</div>
+          <div className="profile-success-message">
+            {successMessage}
+          </div>
         )}
 
         <button
@@ -670,7 +844,9 @@ function GuideProfile() {
         >
           {saving ? "Saving..." : "Save Changes"}
         </button>
+
       </div>
+
     </div>
   );
 }
