@@ -6,17 +6,44 @@ use App\Http\Controllers\Guide\GuideProfileController;
 use App\Http\Controllers\TouristProfileController;
 use Illuminate\Support\Facades\Route;
 
+
 /*
 |--------------------------------------------------------------------------
 | Authentication Routes
 |--------------------------------------------------------------------------
 */
 
-Route::post('/auth/send-code', [AuthController::class, 'sendCode']);
+Route::post('/auth/send-code', [
+    AuthController::class,
+    'sendCode'
+]);
 
-Route::post('/auth/verify-code', [AuthController::class, 'verifyCode']);
+Route::post('/auth/verify-code', [
+    AuthController::class,
+    'verifyCode'
+]);
 
-Route::post('/auth/register', [AuthController::class, 'register']);
+Route::post('/auth/register', [
+    AuthController::class,
+    'register'
+]);
+
+
+/*
+|--------------------------------------------------------------------------
+| Explore Guide Services
+|--------------------------------------------------------------------------
+|
+| Public route
+| Server-side search + filtering + sorting + pagination
+|
+*/
+
+Route::get('/guides/explore', [
+    GuideProfileController::class,
+    'explore'
+]);
+
 
 /*
 |--------------------------------------------------------------------------
@@ -26,11 +53,17 @@ Route::post('/auth/register', [AuthController::class, 'register']);
 
 Route::middleware('auth:api')->group(function () {
 
-    Route::get('/auth/user', [AuthController::class, 'user']);
+    Route::get('/auth/user', [
+        AuthController::class,
+        'user'
+    ]);
 
-    Route::post('/auth/logout', [AuthController::class, 'logout']);
-
+    Route::post('/auth/logout', [
+        AuthController::class,
+        'logout'
+    ]);
 });
+
 
 /*
 |--------------------------------------------------------------------------
@@ -42,48 +75,42 @@ Route::middleware('auth:api')
     ->prefix('guide/profile')
     ->group(function () {
 
-        // Get guide profile
         Route::get('/', [
             GuideProfileController::class,
             'show'
         ]);
 
-        // Update guide profile
         Route::put('/', [
             GuideProfileController::class,
             'update'
         ]);
 
-        // Upload profile picture
         Route::post('/profile-picture', [
             GuideProfileController::class,
             'uploadProfilePicture'
         ]);
 
-        // Upload cover photo
         Route::post('/cover-photo', [
             GuideProfileController::class,
             'uploadCoverPhoto'
         ]);
 
-        // Add experience
         Route::post('/experiences', [
             GuideExperienceController::class,
             'store'
         ]);
 
-        // Update experience
         Route::put('/experiences/{id}', [
             GuideExperienceController::class,
             'update'
         ]);
 
-        // Delete experience
         Route::delete('/experiences/{id}', [
             GuideExperienceController::class,
             'destroy'
         ]);
     });
+
 
 /*
 |--------------------------------------------------------------------------
@@ -94,8 +121,24 @@ Route::middleware('auth:api')
 Route::middleware('auth:api')
     ->prefix('tourist/profile')
     ->group(function () {
-        Route::get('/', [TouristProfileController::class, 'show']);
-        Route::put('/', [TouristProfileController::class, 'update']);
-        Route::post('/profile-picture', [TouristProfileController::class, 'uploadProfilePicture']);
-        Route::post('/cover-photo', [TouristProfileController::class, 'uploadCoverPhoto']);
+
+        Route::get('/', [
+            TouristProfileController::class,
+            'show'
+        ]);
+
+        Route::put('/', [
+            TouristProfileController::class,
+            'update'
+        ]);
+
+        Route::post('/profile-picture', [
+            TouristProfileController::class,
+            'uploadProfilePicture'
+        ]);
+
+        Route::post('/cover-photo', [
+            TouristProfileController::class,
+            'uploadCoverPhoto'
+        ]);
     });

@@ -1,12 +1,11 @@
 :root {
-  --explore-primary: #0767f2;
-  --explore-primary-dark: #0055d4;
-  --explore-navy: #031b46;
-  --explore-text: #101b35;
-  --explore-muted: #65708a;
-  --explore-border: #dce3ef;
-  --explore-background: #f7f9fc;
-  --explore-card: #ffffff;
+  --primary: #0767f2;
+  --primary-dark: #0055d4;
+  --text: #101b35;
+  --muted: #65708a;
+  --border: #dce3ef;
+  --background: #f7f9fc;
+  --white: #ffffff;
 }
 
 * {
@@ -16,298 +15,79 @@
 .explore-page {
   width: 100%;
   min-height: 100vh;
+  background: var(--background);
+  color: var(--text);
   overflow-x: hidden;
-  background: var(--explore-background);
-  color: var(--explore-text);
+}
+
+.explore-main {
+  width: min(1500px, calc(100% - 80px));
+  margin: 0 auto;
+  padding: 30px 0 60px;
+}
+
+.explore-listing-section {
+  width: 100%;
 }
 
 /* =========================
-   HERO SECTION
+   EXPLORE TITLE
 ========================= */
 
-.explore-top-section {
-  min-height: 280px;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
+.explore-title-section {
+  width: 100%;
+  margin-bottom: 28px;
 }
 
-.explore-hero-content {
-  width: min(calc(100% - 76px), 1500px);
-  margin: 0 auto;
-  padding-top: 42px;
-  color: #ffffff;
+.explore-title-section h1 {
+  margin: 0 0 7px;
+  color: #101b35;
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.2;
 }
 
-.explore-hero-content h1 {
-  max-width: 950px;
-  margin: 0 0 14px;
-  font-size: clamp(34px, 3.1vw, 52px);
-  line-height: 1.12;
-  font-weight: 750;
-}
-
-.explore-hero-content p {
+.explore-title-section p {
   margin: 0;
-  color: rgba(255, 255, 255, 0.96);
-  font-size: 19px;
+  color: #65708a;
+  font-size: 14px;
   line-height: 1.6;
 }
 
 /* =========================
-   MAIN LAYOUT
-========================= */
-
-.explore-main {
-  width: min(calc(100% - 76px), 1500px);
-  margin: 0 auto;
-  padding: 26px 0 46px;
-  display: grid;
-  grid-template-columns: 310px minmax(0, 1fr);
-  gap: 38px;
-  align-items: start;
-}
-
-/* =========================
-   FILTER SIDEBAR
-========================= */
-
-.explore-filter-sidebar {
-  width: 100%;
-  padding: 24px;
-  background: var(--explore-card);
-  border: 1px solid var(--explore-border);
-  border-radius: 14px;
-  box-shadow: 0 6px 22px rgba(206, 211, 217, 0.06);
-}
-
-.explore-filter-header {
-  width: 100%;
-  min-height: 45px;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  column-gap: 20px;
-  padding-bottom: 10px;
-}
-
-.explore-filter-header h2 {
-  margin: 0;
-  color: var(--explore-text);
-  font-size: 25px;
-  font-weight: 750;
-  line-height: 1.2;
-}
-
-.explore-reset-button {
-  justify-self: end;
-  margin: 0;
-  padding: 5px 0 5px 10px;
-  border: none;
-  background: transparent;
-  color: var(--explore-primary);
-  font-family: inherit;
-  font-size: 14px;
-  font-weight: 500;
-  line-height: 1;
-  white-space: nowrap;
-  cursor: pointer;
-}
-
-.explore-reset-button:hover {
-  color: var(--explore-primary-dark);
-  text-decoration: underline;
-}
-
-.explore-filter-group {
-  padding: 20px 0;
-  border-bottom: 1px solid #e5e9f1;
-}
-
-.explore-filter-group:last-of-type {
-  border-bottom: none;
-}
-
-.explore-filter-group h3 {
-  margin: 0 0 15px;
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  color: var(--explore-text);
-  font-size: 16px;
-  font-weight: 700;
-}
-
-.explore-collapse-icon {
-  margin-left: auto;
-  font-size: 16px;
-}
-
-.explore-filter-options {
-  display: flex;
-  flex-direction: column;
-  gap: 11px;
-}
-
-.explore-checkbox-label,
-.explore-radio-label {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #202941;
-  font-size: 15px;
-  cursor: pointer;
-}
-
-.explore-checkbox-label input,
-.explore-radio-label input {
-  width: 18px;
-  height: 18px;
-  flex: 0 0 auto;
-  margin: 0;
-  accent-color: var(--explore-primary);
-  cursor: pointer;
-}
-
-.explore-apply-filter-button {
-  width: 100%;
-  margin-top: 18px;
-  padding: 14px 16px;
-  border: none;
-  border-radius: 8px;
-  background: var(--explore-primary);
-  color: #ffffff;
-  font-family: inherit;
-  font-size: 15px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    transform 0.2s ease;
-}
-
-.explore-apply-filter-button:hover {
-  background: var(--explore-primary-dark);
-  transform: translateY(-1px);
-}
-
-/* =========================
-   LISTING SECTION
-========================= */
-
-.explore-listing-section {
-  min-width: 0;
-}
-
-/* =========================
-   SEARCH AND SORT
+   SEARCH + SORT
 ========================= */
 
 .explore-search-sort-row {
+  width: 100%;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
+  gap: 30px;
   align-items: center;
-  gap: 42px;
-}
-
-.explore-search-form {
-  width: 100%;
-  min-width: 0;
-  height: 58px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 5px 5px 5px 18px;
-  overflow: hidden;
-  background: #ffffff;
-  border: 1px solid var(--explore-border);
-  border-radius: 12px;
-  box-shadow: 0 5px 16px rgba(26, 50, 89, 0.07);
-}
-
-.explore-search-icon {
-  flex: 0 0 auto;
-  color: #15294e;
-  font-size: 27px;
-  line-height: 1;
-}
-
-.explore-search-form input {
-  min-width: 0;
-  width: 100%;
-  flex: 1 1 auto;
-  padding: 0;
-  border: none;
-  outline: none;
-  background: transparent;
-  color: #1c2942;
-  font-family: inherit;
-  font-size: 15px;
-}
-
-.explore-search-form input::placeholder {
-  color: #8a94a8;
-  opacity: 1;
-}
-
-.explore-search-form button {
-  width: 140px;
-  min-width: 140px;
-  height: 46px;
-  flex: 0 0 auto;
-  margin: 0;
-  padding: 0 24px;
-  border: none;
-  border-radius: 9px;
-  background: var(--explore-primary);
-  color: #ffffff;
-  font-family: inherit;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-  transform: translateY(-2px);
-  transition:
-    background-color 0.2s ease,
-    transform 0.2s ease;
-}
-
-.explore-search-form button:hover {
-  background: var(--explore-primary-dark);
-  transform: translateY(-2px) scale(1.01);
-}
-
-.explore-search-form button:active {
-  transform: translateY(-2px) scale(0.98);
 }
 
 .explore-sort-control {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 9px;
   white-space: nowrap;
 }
 
 .explore-sort-control label {
-  color: var(--explore-text);
   font-size: 14px;
   font-weight: 700;
 }
 
 .explore-sort-control select {
-  min-width: 185px;
-  padding: 12px 40px 12px 15px;
-  border: 1px solid var(--explore-border);
-  border-radius: 9px;
+  width: 175px;
+  height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
   outline: none;
-  background: #ffffff;
-  color: var(--explore-text);
-  font-family: inherit;
+  background: white;
+  color: var(--text);
   font-size: 14px;
-  cursor: pointer;
 }
 
 /* =========================
@@ -315,53 +95,50 @@
 ========================= */
 
 .explore-listing-header {
-  min-height: 72px;
+  min-height: 65px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
 }
 
 .explore-listing-header p {
   margin: 0;
-  color: #3e4861;
+  color: #4d5870;
   font-size: 14px;
 }
 
 .explore-view-buttons {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .explore-view-buttons button {
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
   display: grid;
   place-items: center;
-  padding: 0;
-  border: 1px solid var(--explore-border);
+  border: 1px solid var(--border);
   border-radius: 7px;
-  background: #ffffff;
-  color: #0d244c;
-  font-size: 19px;
+  background: white;
+  color: #16345f;
   cursor: pointer;
 }
 
 .explore-view-buttons button.active {
-  border-color: var(--explore-primary);
-  background: var(--explore-primary);
-  color: #ffffff;
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
 }
 
 /* =========================
-   GUIDE CARD GRID
+   CARD GRID
 ========================= */
 
 .explore-guide-grid {
+  width: 100%;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 22px;
+  gap: 20px;
 }
 
 /* =========================
@@ -369,227 +146,256 @@
 ========================= */
 
 .explore-guide-card {
+  width: 100%;
   min-width: 0;
-  overflow: hidden;
-  background: var(--explore-card);
-  border: 1px solid var(--explore-border);
-  border-radius: 14px;
-  box-shadow: 0 7px 20px rgba(22, 49, 85, 0.08);
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 5px 16px rgba(20, 40, 70, 0.07);
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
 }
 
 .explore-guide-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 28px rgba(22, 49, 85, 0.14);
-}
-
-.explore-guide-image-wrapper {
-  position: relative;
-  height: 190px;
-  overflow: hidden;
-}
-
-.explore-guide-image {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.explore-guide-card:hover .explore-guide-image {
-  transform: scale(1.025);
-}
-
-.explore-favorite-button {
-  position: absolute;
-  top: 13px;
-  right: 13px;
-  width: 36px;
-  height: 36px;
-  display: grid;
-  place-items: center;
-  padding: 0;
-  border: none;
-  background: transparent;
-  color: #ffffff;
-  font-size: 34px;
-  line-height: 1;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-  cursor: pointer;
-}
-
-.explore-guide-content {
-  padding: 0 16px 15px;
-}
-
-.explore-company-heading {
-  position: relative;
-  min-height: 68px;
-  display: grid;
-  grid-template-columns: 58px minmax(0, 1fr);
-  align-items: center;
-  gap: 11px;
-}
-
-.explore-company-logo {
-  width: 58px;
-  height: 58px;
-  margin-top: -25px;
-  display: grid;
-  place-items: center;
-  border: 5px solid #ffffff;
-  border-radius: 50%;
-  background: linear-gradient(145deg, #0470f9, #00398d);
-  color: #ffffff;
-  font-size: 23px;
-  font-weight: 800;
-  box-shadow: 0 3px 11px rgba(26, 49, 82, 0.17);
-}
-
-.explore-company-title-wrapper {
-  min-width: 0;
-}
-
-.explore-company-title-wrapper h3 {
-  margin: 0 0 5px;
-  overflow: hidden;
-  color: #131d34;
-  font-size: 18px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.explore-location {
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  color: #34415d;
-  font-size: 12px;
-}
-
-/* =========================
-   TOUR BADGES
-========================= */
-
-.explore-tour-badges {
-  min-height: 28px;
-  margin: 1px 0 10px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px;
-}
-
-.explore-tour-badge {
-  padding: 5px 9px;
-  border-radius: 8px;
-  font-size: 10px;
-  font-weight: 600;
-  white-space: nowrap;
-}
-
-.explore-tour-badge.single-tour {
-  background: #deedff;
-  color: #0063d9;
-}
-
-.explore-tour-badge.dual-tour {
-  background: #dff5e6;
-  color: #08753b;
-}
-
-.explore-tour-badge.group-tour {
-  background: #ece5ff;
-  color: #5730c4;
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px rgba(20, 40, 70, 0.12);
 }
 
 /* =========================
    CARD CONTENT
 ========================= */
 
-.explore-guide-description {
-  min-height: 52px;
-  margin: 4px 0 14px;
-  color: #2c354c;
-  font-size: 12px;
-  line-height: 1.5;
+.explore-card-content {
+  width: 100%;
+  padding: 20px;
 }
+
+/* =========================
+   COMPANY
+========================= */
+
+.explore-company-heading {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-bottom: 16px;
+}
+
+.explore-company-logo {
+  width: 54px;
+  height: 54px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(
+    145deg,
+    #0470f9,
+    #00398d
+  );
+  color: white;
+  font-size: 21px;
+  font-weight: 800;
+}
+
+.explore-company-title {
+  min-width: 0;
+}
+
+.explore-company-title h3 {
+  margin: 0 0 5px;
+  color: #131d34;
+  font-size: 18px;
+  font-weight: 700;
+  word-break: break-word;
+}
+
+.explore-location {
+  margin: 0;
+  color: #536078;
+  font-size: 12px;
+}
+
+/* =========================
+   TOUR TYPES
+========================= */
+
+.explore-tour-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+
+.explore-tour-badge {
+  padding: 5px 9px;
+  border-radius: 6px;
+  background: #deedff;
+  color: #0063d9;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+/* =========================
+   DESCRIPTION
+========================= */
+
+.explore-guide-description {
+  margin: 0 0 16px;
+  color: #3b455b;
+  font-size: 12px;
+  line-height: 1.6;
+  min-height: 38px;
+}
+
+/* =========================
+   EXPERIENCES
+========================= */
+
+.explore-experiences {
+  margin-bottom: 16px;
+}
+
+.experience-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 9px;
+}
+
+.experience-heading h4 {
+  margin: 0;
+  color: #18243d;
+  font-size: 13px;
+}
+
+.experience-heading span {
+  min-width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #eef5ff;
+  color: var(--primary);
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.experience-item {
+  display: flex;
+  gap: 9px;
+  padding: 8px;
+  margin-bottom: 7px;
+  border: 1px solid #e7ebf2;
+  border-radius: 7px;
+  background: #fafbfe;
+}
+
+.experience-item img,
+.experience-placeholder {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.experience-placeholder {
+  display: grid;
+  place-items: center;
+  background: #eaf2ff;
+  font-size: 18px;
+}
+
+.experience-text {
+  min-width: 0;
+}
+
+.experience-text strong {
+  display: block;
+  margin-bottom: 3px;
+  color: #18243d;
+  font-size: 11px;
+}
+
+.experience-text p {
+  margin: 0;
+  color: #68738a;
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+/* =========================
+   RATING + PRICE
+========================= */
 
 .explore-guide-meta {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   gap: 10px;
   margin-bottom: 15px;
+  padding-top: 2px;
 }
 
 .explore-rating {
   display: flex;
   align-items: center;
   gap: 4px;
-  color: #5f687b;
-  font-size: 11px;
+  color: #697389;
+  font-size: 10px;
 }
 
 .explore-rating strong {
-  color: #15213a;
-  font-size: 13px;
+  color: #1a2943;
+  font-size: 12px;
 }
 
 .explore-star {
-  color: #ffae00;
-  font-size: 18px;
+  color: #ffad00;
+  font-size: 15px;
 }
 
 .explore-price {
   display: flex;
   align-items: baseline;
-  gap: 5px;
+  gap: 4px;
   color: #6b7488;
-  font-size: 11px;
+  font-size: 10px;
 }
 
 .explore-price strong {
   color: #0061d8;
-  font-size: 17px;
+  font-size: 16px;
 }
 
+/* =========================
+   BUTTONS
+========================= */
+
 .explore-card-actions {
+  width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 11px;
+  gap: 9px;
 }
 
 .explore-card-actions button {
-  min-height: 38px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0;
-  border-radius: 6px;
-  font-family: inherit;
-  font-size: 12px;
+  width: 100%;
+  height: 38px;
+  padding: 0 8px;
+  border-radius: 7px;
+  font-size: 11px;
   font-weight: 700;
-  line-height: 1;
-  text-align: center;
   cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    transform 0.2s ease;
-}
-
-.explore-card-actions button:active {
-  transform: scale(0.98);
+  white-space: nowrap;
 }
 
 .explore-secondary-button {
-  border: 1px solid var(--explore-primary);
-  background: #ffffff;
-  color: var(--explore-primary);
+  border: 1px solid var(--primary);
+  background: white;
+  color: var(--primary);
 }
 
 .explore-secondary-button:hover {
@@ -597,28 +403,103 @@
 }
 
 .explore-primary-button {
-  border: 1px solid var(--explore-primary);
-  background: var(--explore-primary);
-  color: #ffffff;
+  border: 1px solid var(--primary);
+  background: var(--primary);
+  color: white;
 }
 
 .explore-primary-button:hover {
-  background: var(--explore-primary-dark);
+  background: var(--primary-dark);
 }
 
 /* =========================
-   RESPONSIVE: LAPTOP
+   NO RESULTS
 ========================= */
 
-@media (max-width: 1250px) {
-  .explore-main,
-  .explore-hero-content {
-    width: min(calc(100% - 44px), 1200px);
-  }
+.explore-no-results {
+  grid-column: 1 / -1;
+  padding: 60px 20px;
+  text-align: center;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
 
+.explore-no-results h3 {
+  margin: 0 0 8px;
+  font-size: 21px;
+}
+
+.explore-no-results p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+/* =========================
+   LIST VIEW
+========================= */
+
+.explore-guide-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.explore-guide-list .explore-guide-card {
+  width: 100%;
+}
+
+.explore-guide-list .explore-card-content {
+  padding: 20px;
+}
+
+/* =========================
+   PAGINATION
+========================= */
+
+.explore-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  margin-top: 30px;
+}
+
+.explore-pagination button {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: white;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.explore-pagination button:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.explore-pagination button.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: white;
+}
+
+.explore-pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 1100px) {
   .explore-main {
-    grid-template-columns: 270px minmax(0, 1fr);
-    gap: 26px;
+    width: calc(100% - 40px);
   }
 
   .explore-guide-grid {
@@ -626,30 +507,8 @@
   }
 
   .explore-search-sort-row {
-    gap: 24px;
-  }
-}
-
-/* =========================
-   RESPONSIVE: TABLET
-========================= */
-
-@media (max-width: 900px) {
-  .explore-top-section {
-    min-height: 245px;
-  }
-
-  .explore-main {
     grid-template-columns: 1fr;
-  }
-
-  .explore-filter-sidebar {
-    position: static;
-  }
-
-  .explore-search-sort-row {
-    grid-template-columns: 1fr;
-    gap: 14px;
+    gap: 15px;
   }
 
   .explore-sort-control {
@@ -658,836 +517,82 @@
 }
 
 /* =========================
-   RESPONSIVE: MOBILE
+   MOBILE
 ========================= */
 
-@media (max-width: 620px) {
-  .explore-main,
-  .explore-hero-content {
-    width: min(calc(100% - 24px), 100%);
-  }
-
-  .explore-top-section {
-    min-height: 230px;
-  }
-
-  .explore-hero-content {
-    padding-top: 28px;
-  }
-
-  .explore-hero-content h1 {
-    font-size: 31px;
-  }
-
-  .explore-hero-content p {
-    font-size: 15px;
-  }
-
-  .explore-hero-content p br {
-    display: none;
-  }
-
+@media (max-width: 650px) {
   .explore-main {
-    padding-top: 18px;
+    width: calc(100% - 24px);
+    padding-top: 20px;
   }
 
-  .explore-filter-sidebar {
-    padding: 19px;
+  .explore-title-section h1 {
+    font-size: 27px;
   }
 
-  .explore-filter-header {
-    column-gap: 12px;
-  }
-
-  .explore-filter-header h2 {
-    font-size: 22px;
-  }
-
-  .explore-reset-button {
+  .explore-title-section p {
     font-size: 13px;
   }
 
-  .explore-search-form {
-    height: 50px;
-    gap: 8px;
-    padding: 4px 4px 4px 12px;
+  .explore-guide-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
   }
 
-  .explore-search-icon {
-    font-size: 22px;
+  .explore-guide-list {
+    grid-template-columns: 1fr;
   }
 
-  .explore-search-form input {
-    font-size: 13px;
-  }
-
-  .explore-search-form button {
-    width: 90px;
-    min-width: 90px;
-    height: 40px;
-    padding: 0 12px;
-    font-size: 13px;
-    transform: translateY(-1px);
-  }
-
-  .explore-search-form button:hover {
-    transform: translateY(-1px) scale(1.01);
-  }
-
-  .explore-search-form button:active {
-    transform: translateY(-1px) scale(0.98);
+  .explore-card-content {
+    padding: 17px;
   }
 
   .explore-sort-control {
     width: 100%;
-    justify-content: stretch;
+    justify-content: space-between;
   }
 
   .explore-sort-control select {
-    min-width: 0;
     flex: 1;
+    width: auto;
   }
 
   .explore-listing-header {
-    gap: 10px;
+    min-height: 58px;
   }
 
-  .explore-guide-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .explore-guide-image-wrapper {
-    height: 185px;
+  .explore-card-actions button {
+    height: 40px;
   }
 }
-.explore-no-results {
-  grid-column: 1 / -1;
-  padding: 70px 24px;
-  text-align: center;
-  background: #ffffff;
-  border: 1px solid var(--explore-border);
-  border-radius: 14px;
-}
 
-.explore-no-results h3 {
-  margin: 0 0 10px;
-  color: var(--explore-text);
-  font-size: 22px;
-}
-
-.explore-no-results p {
-  margin: 0;
-  color: var(--explore-muted);
-  font-size: 14px;
-}
-.explore-page {
-  width: 100%;
-  height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.explore-top-section {
-  width: 100%;
-}
-
-.explore-main {
-  overflow: visible;
-}
-/* Filter sidebar removed */
-
-.explore-main-no-filter {
-  grid-template-columns: minmax(0, 1fr);
-}
-/* ========================================
-   EXPLORE WITHOUT FILTER SIDEBAR
-======================================== */
-
-.explore-main-no-filter {
-  width: min(calc(100% - 76px), 1500px);
-  margin: 0 auto;
-
-  display: block;
-
-  padding: 26px 0 46px;
-}
-
-.explore-main-no-filter .explore-listing-section {
-  width: 100%;
-}
-
-/* Keep cards at normal size */
-
-.explore-main-no-filter .explore-guide-grid {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 22px;
-}
-
-/* Make sure full page can scroll */
-
-.explore-page {
-  width: 100%;
-  height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.explore-main-no-filter {
-  padding-bottom: 80px;
-}
-
-.explore-guide-grid {
-  padding-bottom: 30px;
-}
 /* =========================
-   GRID / LIST VIEW
+   SMALL MOBILE
 ========================= */
 
-/* LIST MODE = 2 COLUMNS */
-
-.explore-guide-list {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 22px;
-}
-
-/* Horizontal card */
-
-.explore-guide-list .explore-guide-card {
-  display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
-
-  width: 100%;
-  min-width: 0;
-  min-height: 220px;
-
-  overflow: hidden;
-}
-
-/* Image */
-
-.explore-guide-list .explore-guide-image-wrapper {
-  width: 100%;
-  height: 100%;
-  min-height: 220px;
-}
-
-/* Image fit */
-
-.explore-guide-list .explore-guide-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-/* Content */
-
-.explore-guide-list .explore-guide-content {
-  min-width: 0;
-  padding: 15px 16px;
-}
-
-/* Company section */
-
-.explore-guide-list .explore-company-heading {
-  min-height: 58px;
-  grid-template-columns: 50px minmax(0, 1fr);
-  gap: 9px;
-}
-
-/* Logo */
-
-.explore-guide-list .explore-company-logo {
-  width: 50px;
-  height: 50px;
-
-  margin-top: 0;
-
-  border-width: 4px;
-  font-size: 20px;
-}
-
-/* Company title full visible */
-
-.explore-guide-list .explore-company-title-wrapper h3 {
-  font-size: 17px;
-
-  overflow: visible;
-  text-overflow: unset;
-  white-space: normal;
-}
-
-/* Tour badges */
-
-.explore-guide-list .explore-tour-badges {
-  margin: 5px 0 9px;
-}
-
-/* Description */
-
-.explore-guide-list .explore-guide-description {
-  min-height: 45px;
-
-  margin: 4px 0 12px;
-
-  font-size: 12px;
-}
-
-/* Rating + Price */
-
-.explore-guide-list .explore-guide-meta {
-  margin-bottom: 12px;
-}
-
-/* Buttons */
-
-.explore-guide-list .explore-card-actions {
-  gap: 8px;
-}
-
-.explore-guide-list .explore-card-actions button {
-  min-height: 36px;
-}
-
-/* Smaller screen */
-
-@media (max-width: 1100px) {
-  .explore-guide-list {
-    grid-template-columns: 1fr;
+@media (max-width: 380px) {
+  .explore-main {
+    width: calc(100% - 18px);
   }
 
-  .explore-guide-list .explore-guide-card {
-    grid-template-columns: 260px minmax(0, 1fr);
-  }
-}
-
-/* Mobile */
-
-@media (max-width: 650px) {
-  .explore-guide-list {
-    grid-template-columns: 1fr;
+  .explore-card-content {
+    padding: 14px;
   }
 
-  .explore-guide-list .explore-guide-card {
-    display: block;
-  }
-
-  .explore-guide-list .explore-guide-image-wrapper {
-    height: 185px;
-    min-height: 185px;
-  }
-
-  .explore-guide-list .explore-guide-content {
-    padding: 0 16px 15px;
-  }
-
-  .explore-guide-list .explore-company-logo {
-    margin-top: -25px;
-  }
-}
-
-/* ========================================
-   MOBILE CARD - KEEP DESKTOP STYLE
-======================================== */
-
-@media (max-width: 650px) {
-
-  /* Main explore width */
-  .explore-main-no-filter {
-    width: calc(100% - 24px);
-    margin: 0 auto;
-    padding: 18px 0 60px;
-  }
-
-  /* Search */
-  .explore-search-sort-row {
-    width: 100%;
-  }
-
-  /* Cards - one card per row */
-  .explore-guide-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
-    width: 100%;
-  }
-
-  /* Keep desktop card appearance */
-  .explore-guide-card {
-    width: 100%;
-    min-width: 0;
-    border-radius: 14px;
-    overflow: hidden;
-  }
-
-  /* Image same style as desktop */
-  .explore-guide-image-wrapper {
-    width: 100%;
-    height: 190px;
-    min-height: 190px;
-  }
-
-  .explore-guide-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  /* Card content */
-  .explore-guide-content {
-    width: 100%;
-    padding: 0 16px 15px;
-  }
-
-  /* Company heading */
-  .explore-company-heading {
-    min-height: 68px;
-    grid-template-columns: 58px minmax(0, 1fr);
-    gap: 11px;
-  }
-
-  /* Company logo */
   .explore-company-logo {
-    width: 58px;
-    height: 58px;
-    margin-top: -25px;
-    border-width: 5px;
-    font-size: 23px;
+    width: 48px;
+    height: 48px;
   }
 
-  /* Company name */
-  .explore-company-title-wrapper h3 {
-    margin: 0 0 5px;
-    font-size: 18px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+  .explore-company-title h3 {
+    font-size: 16px;
   }
 
-  /* Location */
-  .explore-location {
-    font-size: 12px;
-  }
-
-  /* Tour badges */
-  .explore-tour-badges {
-    min-height: 28px;
-    margin: 1px 0 10px;
+  .explore-card-actions {
     gap: 6px;
   }
 
-  .explore-tour-badge {
-    padding: 5px 9px;
+  .explore-card-actions button {
     font-size: 10px;
-  }
-
-  /* Description */
-  .explore-guide-description {
-    min-height: 52px;
-    margin: 4px 0 14px;
-    font-size: 12px;
-    line-height: 1.5;
-  }
-
-  /* Rating + Price */
-  .explore-guide-meta {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 15px;
-  }
-
-  /* Buttons */
-  .explore-card-actions {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 11px;
-  }
-
-  .explore-card-actions button {
-    min-height: 38px;
-    font-size: 12px;
-  }
-
-  /* ========================================
-     LIST VIEW ON MOBILE
-     Also keep same card style
-  ======================================== */
-
-  .explore-guide-list {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-
-  .explore-guide-list .explore-guide-card {
-    display: block;
-    width: 100%;
-    min-height: 0;
-  }
-
-  .explore-guide-list .explore-guide-image-wrapper {
-    width: 100%;
-    height: 190px;
-    min-height: 190px;
-  }
-
-  .explore-guide-list .explore-guide-content {
-    width: 100%;
-    padding: 0 16px 15px;
-  }
-
-  .explore-guide-list .explore-company-heading {
-    min-height: 68px;
-    grid-template-columns: 58px minmax(0, 1fr);
-    gap: 11px;
-  }
-
-  .explore-guide-list .explore-company-logo {
-    width: 58px;
-    height: 58px;
-    margin-top: -25px;
-    border-width: 5px;
-    font-size: 23px;
-  }
-
-  .explore-guide-list .explore-company-title-wrapper h3 {
-    font-size: 18px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .explore-guide-list .explore-guide-description {
-    min-height: 52px;
-    font-size: 12px;
-  }
-
-  .explore-guide-list .explore-card-actions {
-    grid-template-columns: 1fr 1fr;
-    gap: 11px;
-  }
-
-}
-/* ========================================
-   MOBILE GUIDE CARDS - FINAL FIX
-======================================== */
-
-@media (max-width: 650px) {
-
-  /* Explore main container */
-  .explore-main-no-filter {
-    width: calc(100% - 24px);
-    max-width: 100%;
-    margin: 0 auto;
-    padding: 18px 0 60px;
-  }
-
-  /* ========================================
-     GUIDE GRID
-     MOBILE = ONE CARD PER ROW
-  ======================================== */
-
-  .explore-guide-grid {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) !important;
-    gap: 20px;
-    width: 100%;
-  }
-
-  /* ========================================
-     CARD
-  ======================================== */
-
-  .explore-guide-card {
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-    display: block;
-    overflow: hidden;
-    border-radius: 14px;
-  }
-
-  /* ========================================
-     IMAGE
-  ======================================== */
-
-  .explore-guide-image-wrapper {
-    width: 100%;
-    height: 200px;
-    min-height: 200px;
-  }
-
-  .explore-guide-image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  /* ========================================
-     CARD CONTENT
-  ======================================== */
-
-  .explore-guide-content {
-    width: 100%;
-    min-width: 0;
-    padding: 0 16px 16px;
-  }
-
-  /* ========================================
-     COMPANY INFO
-  ======================================== */
-
-  .explore-company-heading {
-    width: 100%;
-    min-height: 70px;
-
-    display: grid;
-    grid-template-columns: 58px minmax(0, 1fr);
-
-    align-items: center;
-    gap: 12px;
-  }
-
-  .explore-company-logo {
-    width: 58px;
-    height: 58px;
-
-    margin-top: -25px;
-
-    border: 5px solid #ffffff;
-    border-radius: 50%;
-
-    font-size: 23px;
-  }
-
-  .explore-company-title-wrapper {
-    min-width: 0;
-  }
-
-  .explore-company-title-wrapper h3 {
-    margin: 0 0 5px;
-
-    max-width: 100%;
-
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-
-    font-size: 18px;
-  }
-
-  .explore-location {
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-
-    font-size: 12px;
-  }
-
-  /* ========================================
-     TOUR BADGES
-  ======================================== */
-
-  .explore-tour-badges {
-    width: 100%;
-
-    min-height: 28px;
-
-    margin: 1px 0 12px;
-
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-
-    gap: 7px;
-  }
-
-  .explore-tour-badge {
-    padding: 5px 9px;
-    font-size: 10px;
-  }
-
-  /* ========================================
-     DESCRIPTION
-  ======================================== */
-
-  .explore-guide-description {
-    width: 100%;
-    min-height: auto;
-
-    margin: 5px 0 16px;
-
-    color: #2c354c;
-
-    font-size: 13px;
-    line-height: 1.55;
-  }
-
-  /* ========================================
-     RATING + PRICE
-  ======================================== */
-
-  .explore-guide-meta {
-    width: 100%;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 12px;
-
-    margin-bottom: 16px;
-  }
-
-  .explore-rating {
-    font-size: 12px;
-  }
-
-  .explore-rating strong {
-    font-size: 14px;
-  }
-
-  .explore-star {
-    font-size: 18px;
-  }
-
-  .explore-price {
-    font-size: 12px;
-  }
-
-  .explore-price strong {
-    font-size: 18px;
-  }
-
-  /* ========================================
-     BUTTONS
-  ======================================== */
-
-  .explore-card-actions {
-    width: 100%;
-
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-
-    gap: 10px;
-  }
-
-  .explore-card-actions button {
-    width: 100%;
-    min-width: 0;
-    min-height: 40px;
-
-    padding: 0 10px;
-
-    font-size: 12px;
-  }
-
-
-  /* ========================================
-     LIST VIEW
-     ALSO ONE CARD PER ROW
-  ======================================== */
-
-  .explore-guide-list {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) !important;
-    gap: 20px;
-    width: 100%;
-  }
-
-  .explore-guide-list .explore-guide-card {
-    width: 100%;
-    display: block;
-    min-height: 0;
-  }
-
-  .explore-guide-list .explore-guide-image-wrapper {
-    width: 100%;
-    height: 200px;
-    min-height: 200px;
-  }
-
-  .explore-guide-list .explore-guide-content {
-    width: 100%;
-    padding: 0 16px 16px;
-  }
-
-  .explore-guide-list .explore-company-heading {
-    min-height: 70px;
-    grid-template-columns: 58px minmax(0, 1fr);
-    gap: 12px;
-  }
-
-  .explore-guide-list .explore-company-logo {
-    width: 58px;
-    height: 58px;
-    margin-top: -25px;
-  }
-
-  .explore-guide-list .explore-company-title-wrapper h3 {
-    font-size: 18px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .explore-guide-list .explore-guide-description {
-    min-height: auto;
-    font-size: 13px;
-    line-height: 1.55;
-  }
-
-  .explore-guide-list .explore-card-actions {
-    grid-template-columns: 1fr 1fr;
-  }
-
-}
-
-
-/* ========================================
-   VERY SMALL PHONES
-======================================== */
-
-@media (max-width: 380px) {
-
-  .explore-main-no-filter {
-    width: calc(100% - 20px);
-  }
-
-  .explore-guide-image-wrapper,
-  .explore-guide-list .explore-guide-image-wrapper {
-    height: 180px;
-    min-height: 180px;
-  }
-
-  .explore-guide-content,
-  .explore-guide-list .explore-guide-content {
-    padding-left: 14px;
-    padding-right: 14px;
-  }
-
-  .explore-company-heading,
-  .explore-guide-list .explore-company-heading {
-    grid-template-columns: 52px minmax(0, 1fr);
-    gap: 10px;
-  }
-
-  .explore-company-logo,
-  .explore-guide-list .explore-company-logo {
-    width: 52px;
-    height: 52px;
-    font-size: 21px;
-  }
-
-  .explore-guide-description,
-  .explore-guide-list .explore-guide-description {
-    font-size: 12px;
-  }
-
-  .explore-card-actions button {
-    font-size: 11px;
   }
 }

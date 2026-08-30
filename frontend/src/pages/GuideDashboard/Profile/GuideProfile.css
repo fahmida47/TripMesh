@@ -74,30 +74,24 @@
 .profile-cover {
   position: relative;
   z-index: 1;
-
   width: 100%;
   height: 165px;
-
   border-radius: 9px;
   background: #f0f2ff;
   background-position: center;
   background-size: cover;
   background-repeat: no-repeat;
-
   border: 1px solid #dfe4f3;
-
   overflow: hidden;
 }
 
 .cover-placeholder {
   position: absolute;
   inset: 0;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   color: #76829a;
 }
 
@@ -114,47 +108,35 @@
 
 .edit-cover-btn {
   position: absolute;
-
   top: 50%;
   right: 18px;
-
   transform: translateY(-50%);
-
   padding: 10px 15px;
-
   border: 1px solid #d7deea;
   border-radius: 7px;
-
   background: #ffffff;
   color: #273755;
-
   font-size: 12px;
   font-weight: 600;
-
   cursor: pointer;
-
   box-shadow: 0 2px 7px rgba(12, 29, 64, 0.07);
 }
 
+.edit-cover-btn:hover {
+  background: #f7f9fd;
+}
+
 /* =========================
-   PROFILE HEADER INFO
+   PROFILE HEADER
 ========================= */
 
 .profile-header-info {
   position: relative;
   z-index: 5;
-
   display: grid;
-
-  grid-template-columns:
-    175px
-    minmax(220px, 1fr)
-    minmax(220px, 1fr)
-    auto;
-
+  grid-template-columns: 175px minmax(220px, 1fr) minmax(220px, 1fr);
   gap: 26px;
   align-items: center;
-
   padding: 18px 14px 4px;
 }
 
@@ -165,32 +147,25 @@
 .profile-photo-wrapper {
   position: relative;
   z-index: 10;
-
   align-self: start;
   text-align: center;
-
   margin-top: -72px;
 }
 
 .profile-photo {
   width: 105px;
   height: 105px;
-
   margin: 0 auto 9px;
-
   border-radius: 50%;
   border: 5px solid #ffffff;
-
   background: #f7f8fc;
-
   box-shadow: 0 3px 12px rgba(18, 38, 80, 0.16);
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   overflow: hidden;
   cursor: pointer;
+  box-sizing: border-box;
 }
 
 .profile-photo img {
@@ -222,12 +197,9 @@
 .profile-field label,
 .experience-item > label {
   display: block;
-
   margin-bottom: 6px;
-
   font-size: 11px;
   font-weight: 700;
-
   color: #263651;
 }
 
@@ -236,23 +208,15 @@
 .experience-item input,
 .experience-item textarea {
   width: 100%;
-
   box-sizing: border-box;
-
   border: 1px solid #dce2ed;
   border-radius: 7px;
-
   background: #ffffff;
   color: #243451;
-
   font-family: inherit;
   font-size: 13px;
-
   outline: none;
-
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .profile-field input,
@@ -289,24 +253,17 @@
 .profile-save-btn {
   min-width: 170px;
   height: 48px;
-
   padding: 0 20px;
-
   border: none;
   border-radius: 8px;
-
   background: #2868f4;
   color: #ffffff;
-
   font-size: 14px;
   font-weight: 700;
-
   cursor: pointer;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   text-align: center;
   line-height: 1;
 }
@@ -315,17 +272,20 @@
   background: #1658e2;
 }
 
+.profile-save-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
 /* =========================
    CONTENT GRID
 ========================= */
 
 .profile-content-grid {
   display: grid;
-  grid-template-columns:
-    minmax(0, 0.85fr)
-    minmax(0, 1.25fr);
-
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 18px;
+  align-items: stretch;
 }
 
 /* =========================
@@ -338,14 +298,10 @@
 
 .character-count {
   display: block;
-
   position: relative;
-
   margin-top: -24px;
   margin-right: 8px;
-
   text-align: right;
-
   font-size: 10px;
   color: #8e98aa;
 }
@@ -357,7 +313,6 @@
 .contact-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-
   gap: 12px;
   margin-bottom: 12px;
 }
@@ -365,9 +320,59 @@
 .social-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-
   gap: 10px;
   margin-top: 12px;
+}
+
+/* =========================
+   TOUR PRICING
+========================= */
+
+.profile-section-card input[type="number"] {
+  width: 100%;
+}
+
+/* =========================
+   TOUR TYPES
+========================= */
+
+.tour-type-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.tour-type-option {
+  min-height: 42px;
+  padding: 10px 12px;
+  border: 1px solid #dce2ed;
+  border-radius: 8px;
+  background: #fafbfe;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  color: #33415c;
+  box-sizing: border-box;
+}
+
+.tour-type-option:hover {
+  border-color: #7b9cf8;
+  background: #f7f9ff;
+}
+
+.tour-type-option input {
+  width: 15px;
+  height: 15px;
+  accent-color: #2868f4;
+  cursor: pointer;
+}
+
+.tour-type-option span {
+  line-height: 1.2;
 }
 
 /* =========================
@@ -376,20 +381,16 @@
 
 .empty-tour-services {
   min-height: 205px;
-
   padding: 22px;
-
   border: 1px solid #e1e6f0;
   border-radius: 9px;
-
   background: #fbfcff;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   text-align: center;
+  box-sizing: border-box;
 }
 
 .tour-service-icon {
@@ -399,21 +400,18 @@
 
 .empty-tour-services h3 {
   margin: 0 0 5px;
-
   font-size: 13px;
   color: #243451;
 }
 
 .empty-tour-services p {
   margin: 0;
-
   font-size: 11px;
   color: #8791a3;
 }
 
 .tour-service-buttons {
   display: flex;
-
   gap: 12px;
   margin-top: 18px;
 }
@@ -421,18 +419,13 @@
 .tour-service-buttons button {
   min-width: 150px;
   height: 40px;
-
   padding: 0 15px;
-
   border: 1px solid #2868f4;
   border-radius: 7px;
-
   background: #2868f4;
   color: #ffffff;
-
   font-size: 12px;
   font-weight: 700;
-
   cursor: pointer;
 }
 
@@ -451,127 +444,236 @@
 
 .experience-header {
   display: flex;
-
   align-items: flex-start;
   justify-content: space-between;
-
   gap: 20px;
+  margin-bottom: 18px;
+}
+
+.experience-header > div {
+  min-width: 0;
+}
+
+.experience-header p {
+  margin-bottom: 0;
 }
 
 .add-experience-btn {
   flex: 0 0 auto;
-
-  padding: 8px 13px;
-
+  padding: 9px 14px;
   border: 1px solid #4a79f6;
   border-radius: 7px;
-
   background: #ffffff;
   color: #2868f4;
-
   font-size: 11px;
   font-weight: 700;
-
   cursor: pointer;
+  white-space: nowrap;
+}
+
+.add-experience-btn:hover {
+  background: #f4f7ff;
 }
 
 /* =========================
-   EXPERIENCE CARDS
+   EXPERIENCE GRID
 ========================= */
 
 .experience-grid {
   display: grid;
-
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-
-  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  width: 100%;
 }
+
+/* =========================
+   EXPERIENCE CARD
+========================= */
 
 .experience-item {
-  padding: 10px;
-
+  width: 100%;
+  min-width: 0;
+  padding: 14px;
   border: 1px solid #e1e6ef;
-  border-radius: 8px;
-
+  border-radius: 10px;
   background: #ffffff;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
-.experience-upload {
-  height: 90px;
+/* =========================
+   EXPERIENCE IMAGE
+   SQUARE + MEDIUM
+========================= */
 
-  margin-bottom: 10px;
+.experience-upload {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  max-width: 100%;
+  margin: 0 auto 15px;
 
   border: 1px dashed #ccd5e4;
-  border-radius: 8px;
-
+  border-radius: 9px;
   background: #fafbfe;
 
   display: flex !important;
   flex-direction: column;
-
   align-items: center;
   justify-content: center;
 
   cursor: pointer;
-
   color: #7d8799 !important;
+
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.experience-upload:hover {
+  border-color: #8ca8f5;
+  background: #f8faff;
+}
+
+/* Image stays fully visible */
+.experience-upload img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  border-radius: 8px;
+  background: #f7f8fc;
 }
 
 .experience-upload span {
-  font-size: 21px;
+  font-size: 30px;
 }
 
 .experience-upload p {
-  margin: 4px 0 0;
-  font-size: 10px;
+  margin: 7px 0 0;
+  font-size: 11px;
+  font-weight: 600;
 }
 
 .experience-upload small {
-  margin-top: 2px;
+  margin-top: 3px;
   font-size: 9px;
-}
-
-.experience-item input {
-  margin-bottom: 10px;
-}
-
-.experience-item textarea {
-  height: 75px;
-}
-
-.experience-count {
-  display: block;
-
-  position: relative;
-
-  margin-top: -20px;
-  padding-right: 6px;
-
-  text-align: right;
-
-  font-size: 9px;
-  color: #8c96a7;
+  color: #929bad;
 }
 
 /* =========================
-   FIXED SIDEBAR LAYOUT
+   EXPERIENCE LABELS
+========================= */
+
+.experience-item > label:not(.experience-upload) {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #263651;
+}
+
+/* =========================
+   EXPERIENCE TITLE
+========================= */
+
+.experience-item input {
+  width: 100%;
+  height: 44px;
+  margin-bottom: 14px;
+  padding: 0 12px;
+  border: 1px solid #dce2ed;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #243451;
+  font-family: inherit;
+  font-size: 13px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+/* =========================
+   EXPERIENCE DESCRIPTION
+========================= */
+
+.experience-item textarea {
+  width: 100%;
+  min-height: 115px;
+  height: 115px;
+  padding: 12px;
+  border: 1px solid #dce2ed;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #243451;
+  font-family: inherit;
+  font-size: 13px;
+  resize: vertical;
+  outline: none;
+  box-sizing: border-box;
+}
+
+/* =========================
+   EXPERIENCE CHARACTER COUNT
+========================= */
+
+.experience-count {
+  display: block;
+  position: relative;
+  margin-top: -23px;
+  padding-right: 8px;
+  text-align: right;
+  font-size: 10px;
+  color: #8c96a7;
+  pointer-events: none;
+}
+
+/* =========================
+   FIXED SIDEBAR
 ========================= */
 
 .guide-dashboard {
   width: 100%;
   min-height: 100vh;
-
   background: #f6f8fc;
 }
 
 .dashboard-content {
   margin-left: 280px;
-
   width: calc(100% - 280px);
-
   min-height: 100vh;
-
   box-sizing: border-box;
+}
+
+/* =========================
+   FINAL SAVE
+========================= */
+
+.profile-final-save {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 15px;
+  margin-top: 20px;
+  padding: 0 20px 20px 0;
+  box-sizing: border-box;
+}
+
+.profile-final-save .profile-save-btn {
+  min-width: 170px;
+}
+
+.profile-success-message {
+  margin-bottom: 0;
+  padding: 12px 18px;
+  border-radius: 8px;
+  background: #e8f7ee;
+  color: #198754;
+  border: 1px solid #b7e4c7;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
 }
 
 /* =========================
@@ -580,21 +682,25 @@
 
 @media (max-width: 1150px) {
   .profile-header-info {
-    grid-template-columns:
-      150px
-      minmax(0, 1fr)
-      minmax(0, 1fr);
-  }
-
-  .profile-save-btn {
-    grid-column: 2 / 4;
-    justify-self: end;
+    grid-template-columns: 150px minmax(0, 1fr) minmax(0, 1fr);
   }
 
   .profile-content-grid {
     grid-template-columns: 1fr;
   }
+
+  .experience-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tour-type-options {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
+
+/* =========================
+   TABLET
+========================= */
 
 @media (max-width: 900px) {
   .dashboard-content {
@@ -614,18 +720,25 @@
     margin-top: -70px;
   }
 
-  .profile-save-btn {
-    grid-column: auto;
-    width: 100%;
+  .contact-grid {
+    grid-template-columns: 1fr 1fr;
   }
 
-  .contact-grid,
   .social-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tour-type-options {
     grid-template-columns: 1fr;
   }
 
   .experience-grid {
     grid-template-columns: 1fr;
+  }
+
+  .experience-upload {
+    width: 220px;
+    height: 220px;
   }
 
   .tour-service-buttons {
@@ -638,7 +751,15 @@
   }
 }
 
+/* =========================
+   MOBILE
+========================= */
+
 @media (max-width: 600px) {
+  .guide-profile-page {
+    padding: 12px;
+  }
+
   .profile-cover {
     height: 135px;
   }
@@ -647,12 +768,23 @@
     top: auto;
     right: 10px;
     bottom: 10px;
-
     transform: none;
   }
 
   .guide-profile-heading h1 {
     font-size: 24px;
+  }
+
+  .profile-section-card {
+    padding: 16px;
+  }
+
+  .profile-header-info {
+    gap: 16px;
+  }
+
+  .contact-grid {
+    grid-template-columns: 1fr;
   }
 
   .experience-header {
@@ -662,29 +794,28 @@
   .add-experience-btn {
     width: 100%;
   }
-}
-.profile-final-save {
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  margin-top: 20px;
-  padding: 0 20px 20px 0;
-  box-sizing: border-box;
-}
 
-.profile-final-save .profile-save-btn {
-  min-width: 170px;
-}
+  .experience-grid {
+    grid-template-columns: 1fr;
+  }
 
-.profile-success-message {
-  margin-bottom: 15px;
-  padding: 12px 18px;
-  border-radius: 8px;
-  background: #e8f7ee;
-  color: #198754;
-  border: 1px solid #b7e4c7;
-  font-size: 14px;
-  font-weight: 600;
-  text-align: center;
+  .experience-upload {
+    width: 200px;
+    height: 200px;
+  }
+
+  .profile-final-save {
+    flex-direction: column;
+    align-items: stretch;
+    padding-right: 0;
+  }
+
+  .profile-success-message {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .profile-final-save .profile-save-btn {
+    width: 100%;
+  }
 }

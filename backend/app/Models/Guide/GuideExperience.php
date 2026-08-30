@@ -2,15 +2,11 @@
 
 namespace App\Models\Guide;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class GuideExperience extends Model
 {
-    use HasFactory;
-
-    protected $table = 'guide_experiences';
-
     protected $fillable = [
         'guide_profile_id',
         'title',
@@ -18,7 +14,7 @@ class GuideExperience extends Model
         'photo',
     ];
 
-    public function guideProfile()
+    public function guideProfile(): BelongsTo
     {
         return $this->belongsTo(
             GuideProfile::class,
