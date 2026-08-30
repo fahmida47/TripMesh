@@ -67,7 +67,6 @@ const Login = () => {
   // ==========================================
   // SEND VERIFICATION CODE
   // ==========================================
-
   const handleSendCode = async () => {
     setError("");
     setSuccess("");
@@ -102,22 +101,13 @@ const Login = () => {
 
       if (!response.ok) {
         setError(result.message || "Failed to send verification code.");
-
         setSendingCode(false);
         return;
       }
 
+      // OTP successfully sent
       setCodeSent(true);
-
       setSuccess("Verification code sent successfully.");
-
-      /*
-       * Development mode:
-       * Backend currently returns the OTP because
-       * no SMS provider is connected yet.
-       *
-       * OTP is NOT printed in the console.
-       */
 
       setSendingCode(false);
     } catch (error) {
@@ -134,7 +124,6 @@ const Login = () => {
   // ==========================================
   // VERIFY CODE + LOGIN
   // ==========================================
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -183,7 +172,6 @@ const Login = () => {
 
       if (!response.ok) {
         setError(result.message || "Invalid verification code.");
-
         setLoading(false);
         return;
       }
@@ -191,16 +179,12 @@ const Login = () => {
       // ==========================================
       // EXISTING USER
       // ==========================================
-
       if (result.is_new_user === false && result.token) {
         localStorage.setItem("token", result.token);
-
         localStorage.setItem("user", JSON.stringify(result.user));
-
         localStorage.setItem("isLoggedIn", "true");
 
         // Role based dashboard
-
         if (result.user.role === "guide") {
           navigate("/guide-dashboard");
         } else {
@@ -213,7 +197,6 @@ const Login = () => {
       // ==========================================
       // NEW USER
       // ==========================================
-
       if (result.is_new_user === true) {
         setLoading(false);
 
@@ -252,7 +235,6 @@ const Login = () => {
         {/* ================================
             LEFT SIDE
         ================================= */}
-
         <div
           className="auth-left"
           style={{
@@ -285,7 +267,6 @@ const Login = () => {
         {/* ================================
             RIGHT SIDE
         ================================= */}
-
         <div className="auth-right">
           <div className="auth-card">
             <div className="login-logo">
@@ -294,11 +275,12 @@ const Login = () => {
 
             <h2>Welcome Back!</h2>
 
-            <p className="subtitle">Login to continue your adventure</p>
+            <p className="subtitle">
+              Login to continue your adventure
+            </p>
 
             <form onSubmit={handleSubmit}>
               {/* PHONE */}
-
               <input
                 type="tel"
                 name="phone"
@@ -309,21 +291,26 @@ const Login = () => {
               />
 
               {/* SEND CODE */}
-
-              <button
-                type="button"
-                onClick={handleSendCode}
-                disabled={sendingCode}
-              >
-                {sendingCode ? "Sending..." : "Send Verification Code"}
-              </button>
+              {!codeSent && (
+                <button
+                  type="button"
+                  onClick={handleSendCode}
+                  disabled={sendingCode}
+                >
+                  {sendingCode
+                    ? "Sending..."
+                    : "Send Verification Code"}
+                </button>
+              )}
 
               {/* SUCCESS */}
-
-              {success && <p className="login-success">{success}</p>}
+              {success && (
+                <p className="login-success">
+                  {success}
+                </p>
+              )}
 
               {/* VERIFICATION CODE */}
-
               {codeSent && (
                 <input
                   type="text"
@@ -337,16 +324,21 @@ const Login = () => {
               )}
 
               {/* ERROR */}
-
-              {error && <p className="login-error">{error}</p>}
+              {error && (
+                <p className="login-error">
+                  {error}
+                </p>
+              )}
 
               {/* LOGIN */}
-
-              {codeSent && <button type="submit">Verify & Login</button>}
+              {codeSent && (
+                <button type="submit">
+                  Verify & Login
+                </button>
+              )}
             </form>
 
             {/* FOOTER */}
-
             <p className="footer-text">
               Don't have an account?
               <Link to="/signup">Sign Up</Link>

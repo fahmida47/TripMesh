@@ -1,9 +1,4 @@
-import {
-  Routes,
-  Route,
-  Link,
-  BrowserRouter,
-} from "react-router-dom";
+import { Routes, Route, Link, BrowserRouter } from "react-router-dom";
 
 import ScrollToTop from "./ScrollToTop";
 
@@ -14,6 +9,10 @@ import Signup from "./pages/Signup/Signup";
 import AboutUs from "./pages/AboutUs/AboutUs";
 import Contact from "./pages/Contact/Contact";
 
+/* =========================
+   GUIDE DASHBOARD
+========================= */
+import GuideLayout from "./pages/GuideDashboard/GuideLayout";
 import GuideDashboard from "./pages/GuideDashboard/GuideDashboard";
 import GuideProfile from "./pages/GuideDashboard/Profile/GuideProfile";
 import GuideTourServices from "./pages/GuideDashboard/TourServices/GuideTourServices";
@@ -22,6 +21,9 @@ import GuideRequests from "./pages/GuideDashboard/GuideRequest/GuideRequests";
 import GuideBookings from "./pages/GuideDashboard/Bookings/GuideBookings";
 import ReviewsRatings from "./pages/GuideDashboard/Rating/ReviewsRatings";
 
+/* =========================
+   TOURIST DASHBOARD
+========================= */
 import TouristDashboard from "./pages/TouristDashboard/TouristDashboard";
 import TouristProfile from "./pages/TouristDashboard/Profile/TouristProfile";
 import TouristReviews from "./pages/TouristDashboard/Reviews/TouristReviews";
@@ -37,85 +39,67 @@ function App() {
       <ScrollToTop />
 
       <Routes>
+        {/* =========================
+            PUBLIC PAGES
+        ========================= */}
 
-        {/* HOME */}
-        <Route
-          path="/"
-          element={<GlobalLandingPage />}
-        />
+        <Route path="/" element={<GlobalLandingPage />} />
 
-        {/* EXPLORE */}
-        <Route
-          path="/explore"
-          element={<Explore />}
-        />
+        <Route path="/explore" element={<Explore />} />
 
-        {/* ABOUT */}
-        <Route
-          path="/about"
-          element={<AboutUs />}
-        />
+        <Route path="/about" element={<AboutUs />} />
 
-        {/* CONTACT */}
-        <Route
-          path="/contact"
-          element={<Contact />}
-        />
+        <Route path="/contact" element={<Contact />} />
 
-        {/* LOGIN */}
-        <Route
-          path="/login"
-          element={<Login />}
-        />
+        <Route path="/login" element={<Login />} />
 
-        {/* SIGNUP */}
-        <Route
-          path="/signup"
-          element={<Signup />}
-        />
+        <Route path="/signup" element={<Signup />} />
 
-        {/* ======================
+        {/* =========================
             GUIDE DASHBOARD
-        ====================== */}
+        ========================= */}
 
-        <Route
-          path="/guide-dashboard"
-          element={<GuideDashboard />}
-        />
+        <Route path="/guide-dashboard" element={<GuideLayout />}>
+          {/* /guide-dashboard */}
+          <Route index element={<GuideDashboard />} />
 
-        <Route
-          path="/guide-dashboard/profile"
-          element={<GuideProfile />}
-        />
+          {/* /guide-dashboard/profile */}
+          <Route path="profile" element={<GuideProfile />} />
 
-        <Route
-          path="/guide-dashboard/tour-services"
-          element={<GuideTourServices />}
-        />
+          {/* /guide-dashboard/tour-services */}
+          <Route
+            path="tour-services"
+            element={<GuideTourServices />}
+          />
 
-        <Route
-          path="/guide-dashboard/tour-services/add"
-          element={<AddTourService />}
-        />
+          {/* /guide-dashboard/tour-services/add */}
+          <Route
+            path="tour-services/add"
+            element={<AddTourService />}
+          />
 
-        <Route
-          path="/guide-dashboard/requests"
-          element={<GuideRequests />}
-        />
+          {/* /guide-dashboard/requests */}
+          <Route
+            path="requests"
+            element={<GuideRequests />}
+          />
 
-        <Route
-          path="/guide-dashboard/bookings"
-          element={<GuideBookings />}
-        />
+          {/* /guide-dashboard/bookings */}
+          <Route
+            path="bookings"
+            element={<GuideBookings />}
+          />
 
-        <Route
-          path="/guide-dashboard/reviews"
-          element={<ReviewsRatings />}
-        />
+          {/* /guide-dashboard/reviews */}
+          <Route
+            path="reviews"
+            element={<ReviewsRatings />}
+          />
+        </Route>
 
-        {/* ======================
+        {/* =========================
             TOURIST DASHBOARD
-        ====================== */}
+        ========================= */}
 
         <Route
           path="/tourist-dashboard"
@@ -142,7 +126,6 @@ function App() {
           element={<PaymentForm />}
         />
 
-          {/* Complete Payment */}
         <Route
           path="/tourist-dashboard/payment"
           element={<PaymentPage />}
@@ -158,21 +141,25 @@ function App() {
           element={<ReviewForm />}
         />
 
-        {/* PAGE NOT FOUND */}
+        {/* =========================
+            PAGE NOT FOUND
+        ========================= */}
 
         <Route
           path="*"
           element={
-            <div>
+            <div
+              style={{
+                padding: "40px",
+                textAlign: "center",
+              }}
+            >
               <h2>Page Not Found</h2>
 
-              <Link to="/">
-                Go to Home
-              </Link>
+              <Link to="/">Go to Home</Link>
             </div>
           }
         />
-
       </Routes>
     </BrowserRouter>
   );
