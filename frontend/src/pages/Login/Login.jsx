@@ -54,6 +54,7 @@ const Login = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [codeSent, setCodeSent] = useState(false);
+  const [showRetry, setShowRetry] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -64,9 +65,7 @@ const Login = () => {
     setError("");
   };
 
-  // ==========================================
-  // SEND VERIFICATION CODE
-  // ==========================================
+  // SEND / RETRY VERIFICATION CODE
   const handleSendCode = async () => {
     setError("");
     setSuccess("");
@@ -105,25 +104,28 @@ const Login = () => {
         return;
       }
 
-      // OTP successfully sent
       setCodeSent(true);
-      setSuccess("Verification code sent successfully.");
 
+      setFormData((prev) => ({
+        ...prev,
+        verificationCode: "",
+      }));
+
+      setSuccess("Verification code sent successfully.");
+      setShowRetry(false);
       setSendingCode(false);
-    } catch (error) {
-      console.error("Send code error:", error);
+    } catch (err) {
+      console.error("Send code error:", err);
 
       setError(
-        "Unable to connect to the server. Please make sure Laravel is running.",
+        "Unable to connect to the server. Please make sure Laravel is running."
       );
 
       setSendingCode(false);
     }
   };
 
-  // ==========================================
   // VERIFY CODE + LOGIN
-  // ==========================================
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -172,19 +174,20 @@ const Login = () => {
 
       if (!response.ok) {
         setError(result.message || "Invalid verification code.");
+
+        // Retry only appears when OTP is wrong
+        setShowRetry(true);
+
         setLoading(false);
         return;
       }
 
-      // ==========================================
       // EXISTING USER
-      // ==========================================
       if (result.is_new_user === false && result.token) {
         localStorage.setItem("token", result.token);
         localStorage.setItem("user", JSON.stringify(result.user));
         localStorage.setItem("isLoggedIn", "true");
 
-        // Role based dashboard
         if (result.user.role === "guide") {
           navigate("/guide-dashboard");
         } else {
@@ -194,9 +197,7 @@ const Login = () => {
         return;
       }
 
-      // ==========================================
       // NEW USER
-      // ==========================================
       if (result.is_new_user === true) {
         setLoading(false);
 
@@ -211,11 +212,11 @@ const Login = () => {
 
       setError("Something went wrong.");
       setLoading(false);
-    } catch (error) {
-      console.error("Login error:", error);
+    } catch (err) {
+      console.error("Login error:", err);
 
       setError(
-        "Unable to connect to the server. Please make sure Laravel is running.",
+        "Unable to connect to the server. Please make sure Laravel is running."
       );
 
       setLoading(false);
@@ -232,9 +233,7 @@ const Login = () => {
       )}
 
       <div className="auth-container">
-        {/* ================================
-            LEFT SIDE
-        ================================= */}
+        {/* LEFT SIDE */}
         <div
           className="auth-left"
           style={{
@@ -264,9 +263,7 @@ const Login = () => {
           </div>
         </div>
 
-        {/* ================================
-            RIGHT SIDE
-        ================================= */}
+        {/* RIGHT SIDE */}
         <div className="auth-right">
           <div className="auth-card">
             <div className="login-logo">
@@ -290,7 +287,7 @@ const Login = () => {
                 required
               />
 
-              {/* SEND CODE */}
+              {/* SEND VERIFICATION CODE */}
               {!codeSent && (
                 <button
                   type="button"
@@ -303,14 +300,14 @@ const Login = () => {
                 </button>
               )}
 
-              {/* SUCCESS */}
+              {/* SUCCESS MESSAGE */}
               {success && (
                 <p className="login-success">
                   {success}
                 </p>
               )}
 
-              {/* VERIFICATION CODE */}
+              {/* OTP INPUT */}
               {codeSent && (
                 <input
                   type="text"
@@ -323,14 +320,30 @@ const Login = () => {
                 />
               )}
 
-              {/* ERROR */}
+              {/* ERROR MESSAGE */}
               {error && (
                 <p className="login-error">
                   {error}
                 </p>
               )}
 
-              {/* LOGIN */}
+              {/* RETRY - ONLY AFTER WRONG OTP */}
+              {codeSent && showRetry && (
+                <div className="retry-container">
+                  <span>Didn't receive the code?</span>
+
+                  <button
+                    type="button"
+                    className="retry-button"
+                    onClick={handleSendCode}
+                    disabled={sendingCode}
+                  >
+                    {sendingCode ? "Sending..." : "Retry"}
+                  </button>
+                </div>
+              )}
+
+              {/* VERIFY & LOGIN */}
               {codeSent && (
                 <button type="submit">
                   Verify & Login

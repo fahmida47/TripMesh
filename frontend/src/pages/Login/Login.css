@@ -270,6 +270,8 @@
   color: #0f172a;
 
   transition: 0.3s;
+
+  box-sizing: border-box;
 }
 
 .auth-card input::placeholder {
@@ -314,6 +316,7 @@
   text-decoration: underline;
 }
 
+/* Main buttons */
 .auth-card button {
   width: 100%;
 
@@ -358,6 +361,99 @@
   transform: translateY(-1px);
 }
 
+.auth-card button:disabled {
+  opacity: 0.7;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+/* ==========================================
+   RETRY BUTTON
+   Small text-style button under OTP
+========================================== */
+
+.retry-container {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 5px;
+
+  margin: -3px 0 16px;
+
+  font-size: 13px;
+
+  color: #64748b;
+
+  line-height: 1.4;
+}
+
+.auth-card .retry-button {
+  width: auto;
+
+  height: auto;
+
+  display: inline;
+
+  padding: 0;
+
+  margin: 0;
+
+  border: none;
+
+  border-radius: 0;
+
+  background: transparent;
+
+  color: #2563eb;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  line-height: 1.4;
+
+  cursor: pointer;
+
+  box-shadow: none;
+
+  transition: 0.25s;
+}
+
+.auth-card .retry-button:hover {
+  color: #1d4ed8;
+
+  text-decoration: underline;
+
+  transform: none;
+
+  box-shadow: none;
+}
+
+.auth-card .retry-button:active {
+  transform: none;
+
+  box-shadow: none;
+}
+
+.auth-card .retry-button:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+
+  transform: none;
+
+  box-shadow: none;
+}
+
+/* ==========================================
+   FOOTER
+========================================== */
+
 .footer-text {
   position: relative;
 
@@ -388,6 +484,10 @@
   text-decoration: underline;
 }
 
+/* ==========================================
+   ERROR & SUCCESS
+========================================== */
+
 .login-error {
   margin: -3px 0 12px;
 
@@ -399,6 +499,22 @@
 
   line-height: 1.4;
 }
+
+.login-success {
+  margin: -3px 0 12px;
+
+  color: #16a34a;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  line-height: 1.4;
+}
+
+/* ==========================================
+   RESPONSIVE
+========================================== */
 
 @media (max-width: 900px) {
   .hero-text {
@@ -449,6 +565,7 @@
 
   .trip-logo {
     width: 58px;
+
     height: 58px;
   }
 
@@ -463,12 +580,14 @@
 
     font-size: 17px;
   }
-}
 
-.login-success {
-  margin: -3px 0 12px;
-  color: #16a34a;
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1.4;
+  .retry-container {
+    font-size: 12px;
+
+    margin-bottom: 15px;
+  }
+
+  .auth-card .retry-button {
+    font-size: 12px;
+  }
 }
