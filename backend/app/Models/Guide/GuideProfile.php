@@ -2,16 +2,11 @@
 
 namespace App\Models\Guide;
 
-use App\Models\User;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class GuideProfile extends Model
 {
-    use HasFactory;
-
-    protected $table = 'guide_profiles';
-
     protected $fillable = [
         'user_id',
         'company_name',
@@ -22,14 +17,22 @@ class GuideProfile extends Model
         'address',
         'profile_picture',
         'cover_photo',
+        'price',
+        'rating',
+        'reviews',
+        'popularity',
+        'tour_types',
     ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    protected $casts = [
+        'price' => 'float',
+        'rating' => 'float',
+        'reviews' => 'integer',
+        'popularity' => 'integer',
+        'tour_types' => 'array',
+    ];
 
-    public function experiences()
+    public function experiences(): HasMany
     {
         return $this->hasMany(
             GuideExperience::class,
