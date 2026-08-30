@@ -1,37 +1,188 @@
-import { Routes, Route, Link, BrowserRouter } from "react-router-dom";
+import { Routes, Route, Link, BrowserRouter, Navigate } from "react-router-dom";
 
 import ScrollToTop from "./ScrollToTop";
 
 import GlobalLandingPage from "./pages/GlobalLandingPage/GlobalLandingPage";
+
 import Explore from "./pages/Explore/Explore";
+
 import Login from "./pages/Login/Login";
+
 import Signup from "./pages/Signup/Signup";
+
 import AboutUs from "./pages/AboutUs/AboutUs";
+
 import Contact from "./pages/Contact/Contact";
 
 /* =========================
    GUIDE DASHBOARD
 ========================= */
+
 import GuideLayout from "./pages/GuideDashboard/GuideLayout";
+
 import GuideDashboard from "./pages/GuideDashboard/GuideDashboard";
+
 import GuideProfile from "./pages/GuideDashboard/Profile/GuideProfile";
+
 import GuideTourServices from "./pages/GuideDashboard/TourServices/GuideTourServices";
+
 import AddTourService from "./pages/GuideDashboard/TourServices/AddTourService";
+
 import GuideRequests from "./pages/GuideDashboard/GuideRequest/GuideRequests";
+
 import GuideBookings from "./pages/GuideDashboard/Bookings/GuideBookings";
+
 import ReviewsRatings from "./pages/GuideDashboard/Rating/ReviewsRatings";
 
 /* =========================
    TOURIST DASHBOARD
 ========================= */
+
 import TouristDashboard from "./pages/TouristDashboard/TouristDashboard";
+
 import TouristProfile from "./pages/TouristDashboard/Profile/TouristProfile";
+
 import TouristReviews from "./pages/TouristDashboard/Reviews/TouristReviews";
+
 import RequestsBookings from "./pages/TouristDashboard/components/RequestsBookings";
+
 import PaymentHistory from "./pages/TouristDashboard/components/PaymentHistory";
+
 import PaymentForm from "./pages/TouristDashboard/components/PaymentForm";
+
 import PaymentPage from "./pages/TouristDashboard/components/PaymentPage";
+
 import ReviewForm from "./pages/TouristDashboard/Reviews/ReviewForm";
+
+/* =========================
+   AUTH HELPER
+========================= */
+
+function getLoggedInUser() {
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const storedUser = localStorage.getItem("user");
+
+  if (isLoggedIn !== "true" || !storedUser) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(storedUser);
+  } catch (error) {
+    console.error("Invalid user data:", error);
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("isLoggedIn");
+
+    return null;
+  }
+}
+
+/* =========================
+   LANDING PAGE PROTECTION
+========================= */
+
+function LandingPageRedirect() {
+  const user = getLoggedInUser();
+
+  // User is NOT logged in
+  if (!user) {
+    return <GlobalLandingPage />;
+  }
+
+  // Logged-in Guide
+  if (user.role === "guide") {
+    return <Navigate to="/guide-dashboard" replace />;
+  }
+
+  // Logged-in Tourist
+  if (user.role === "tourist") {
+    return <Navigate to="/tourist-dashboard" replace />;
+  }
+
+  return <GlobalLandingPage />;
+}
+
+/* =========================
+   LOGIN PROTECTION
+========================= */
+
+function LoginRedirect() {
+  const user = getLoggedInUser();
+
+  // Not logged in → Login page
+  if (!user) {
+    return <Login />;
+  }
+
+  // Guide → Guide Dashboard
+  if (user.role === "guide") {
+    return <Navigate to="/guide-dashboard" replace />;
+  }
+
+  // Tourist → Tourist Dashboard
+  if (user.role === "tourist") {
+    return <Navigate to="/tourist-dashboard" replace />;
+  }
+
+  return <Login />;
+}
+
+/* =========================
+   SIGNUP PROTECTION
+========================= */
+
+function SignupRedirect() {
+  const user = getLoggedInUser();
+
+  // Not logged in → Signup page
+  if (!user) {
+    return <Signup />;
+  }
+
+  // Guide → Guide Dashboard
+  if (user.role === "guide") {
+    return <Navigate to="/guide-dashboard" replace />;
+  }
+
+  // Tourist → Tourist Dashboard
+  if (user.role === "tourist") {
+    return <Navigate to="/tourist-dashboard" replace />;
+  }
+
+  return <Signup />;
+}
+
+/* =========================
+   PROTECTED DASHBOARD
+========================= */
+
+function ProtectedDashboard({ children, role }) {
+  const user = getLoggedInUser();
+
+  // User is not logged in
+  if (!user) {
+    return <Navigate to="/login" replace />;
+  }
+
+  // Wrong role trying to access dashboard
+  if (user.role !== role) {
+    if (user.role === "guide") {
+      return <Navigate to="/guide-dashboard" replace />;
+    }
+
+    if (user.role === "tourist") {
+      return <Navigate to="/tourist-dashboard" replace />;
+    }
+  }
+
+  return children;
+}
+
+/* =========================
+   APP
+========================= */
 
 function App() {
   return (
@@ -43,23 +194,36 @@ function App() {
             PUBLIC PAGES
         ========================= */}
 
-        <Route path="/" element={<GlobalLandingPage />} />
+        {/* Landing Page */}
+        <Route path="/" element={<LandingPageRedirect />} />
 
+        {/* Explore */}
         <Route path="/explore" element={<Explore />} />
 
+        {/* About */}
         <Route path="/about" element={<AboutUs />} />
 
+        {/* Contact */}
         <Route path="/contact" element={<Contact />} />
 
-        <Route path="/login" element={<Login />} />
+        {/* Login */}
+        <Route path="/login" element={<LoginRedirect />} />
 
-        <Route path="/signup" element={<Signup />} />
+        {/* Signup */}
+        <Route path="/signup" element={<SignupRedirect />} />
 
         {/* =========================
             GUIDE DASHBOARD
         ========================= */}
 
-        <Route path="/guide-dashboard" element={<GuideLayout />}>
+        <Route
+          path="/guide-dashboard"
+          element={
+            <ProtectedDashboard role="guide">
+              <GuideLayout />
+            </ProtectedDashboard>
+          }
+        >
           {/* /guide-dashboard */}
           <Route index element={<GuideDashboard />} />
 
@@ -103,42 +267,74 @@ function App() {
 
         <Route
           path="/tourist-dashboard"
-          element={<TouristDashboard />}
+          element={
+            <ProtectedDashboard role="tourist">
+              <TouristDashboard />
+            </ProtectedDashboard>
+          }
         />
 
         <Route
           path="/tourist-dashboard/profile"
-          element={<TouristProfile />}
+          element={
+            <ProtectedDashboard role="tourist">
+              <TouristProfile />
+            </ProtectedDashboard>
+          }
         />
 
         <Route
           path="/tourist-dashboard/bookings"
-          element={<RequestsBookings />}
+          element={
+            <ProtectedDashboard role="tourist">
+              <RequestsBookings />
+            </ProtectedDashboard>
+          }
         />
 
         <Route
           path="/tourist-dashboard/payments"
-          element={<PaymentHistory />}
+          element={
+            <ProtectedDashboard role="tourist">
+              <PaymentHistory />
+            </ProtectedDashboard>
+          }
         />
 
         <Route
           path="/tourist-dashboard/payments/form"
-          element={<PaymentForm />}
+          element={
+            <ProtectedDashboard role="tourist">
+              <PaymentForm />
+            </ProtectedDashboard>
+          }
         />
 
         <Route
           path="/tourist-dashboard/payment"
-          element={<PaymentPage />}
+          element={
+            <ProtectedDashboard role="tourist">
+              <PaymentPage />
+            </ProtectedDashboard>
+          }
         />
 
         <Route
           path="/tourist-dashboard/reviews"
-          element={<TouristReviews />}
+          element={
+            <ProtectedDashboard role="tourist">
+              <TouristReviews />
+            </ProtectedDashboard>
+          }
         />
 
         <Route
           path="/tourist-dashboard/reviews/form"
-          element={<ReviewForm />}
+          element={
+            <ProtectedDashboard role="tourist">
+              <ReviewForm />
+            </ProtectedDashboard>
+          }
         />
 
         {/* =========================
