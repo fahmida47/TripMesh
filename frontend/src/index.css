@@ -16,12 +16,16 @@ body,
 
 html {
   scroll-behavior: smooth;
+
+  /* Global base font size */
+  font-size: 16px;
 }
 
 body {
   min-height: 100vh;
   display: block;
   overflow-x: hidden;
+
   font-family:
     Inter,
     system-ui,
@@ -29,11 +33,42 @@ body {
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
+
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
 }
 
 #root {
   width: 100%;
   min-height: 100vh;
+}
+
+/* Smaller laptop screens */
+@media (max-width: 1366px) and (min-width: 769px) {
+  html {
+    font-size: 17px;
+  }
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  html {
+    font-size: 15px;
+  }
 }
 
 /* Signup glass card shine animation */
