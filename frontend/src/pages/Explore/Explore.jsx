@@ -1,10 +1,34 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import "./Explore.css";
+
 import ExploreHero from "./ExploreHero";
 import ExploreSearch from "./ExploreSearch";
 
 const API_BASE_URL = "http://127.0.0.1:8000/api";
 const STORAGE_URL = "http://127.0.0.1:8000/storage";
+
+function getLoggedInUser() {
+  const isLoggedIn = localStorage.getItem("isLoggedIn");
+  const storedUser = localStorage.getItem("user");
+
+  if (isLoggedIn !== "true" || !storedUser) {
+    return null;
+  }
+
+  try {
+    return JSON.parse(storedUser);
+  } catch (error) {
+    console.error("Invalid user data:", error);
+
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    localStorage.removeItem("isLoggedIn");
+
+    return null;
+  }
+}
 
 function GuideCard({ guide, onSendRequest }) {
   return (
@@ -127,14 +151,18 @@ function GuideCard({ guide, onSendRequest }) {
 }
 
 function Explore({ embedded = false }) {
+  const navigate = useNavigate();
+
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+
   const [selectedTourType, setSelectedTourType] = useState("");
   const [searchTourType, setSearchTourType] = useState("");
+
   const [priceRange, setPriceRange] = useState("");
   const [searchPriceRange, setSearchPriceRange] = useState("");
-  const [sortBy, setSortBy] = useState("popular");
 
+  const [sortBy, setSortBy] = useState("popular");
   const [viewMode, setViewMode] = useState("grid");
 
   const [guides, setGuides] = useState([]);
@@ -145,18 +173,20 @@ function Explore({ embedded = false }) {
   const [lastPage, setLastPage] = useState(1);
   const [totalGuides, setTotalGuides] = useState(0);
 
-  // Request Modal States
+  // Request Modal
   const [selectedGuide, setSelectedGuide] = useState(null);
   const [travelDate, setTravelDate] = useState("");
   const [requestDetails, setRequestDetails] = useState("");
   const [selectedExperience, setSelectedExperience] = useState("");
+
   const [requestLoading, setRequestLoading] = useState(false);
   const [requestSuccess, setRequestSuccess] = useState("");
   const [requestError, setRequestError] = useState("");
 
-  // Get today's date for date input
+  // Today's date
   const getTodayDate = () => {
     const today = new Date();
+
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, "0");
     const day = String(today.getDate()).padStart(2, "0");
@@ -249,6 +279,7 @@ function Explore({ embedded = false }) {
     }
 
     setCurrentPage(page);
+
     fetchGuides(page);
 
     window.scrollTo({
@@ -257,8 +288,35 @@ function Explore({ embedded = false }) {
     });
   };
 
-  // Open Request Modal
+  // Open Request
   const handleOpenRequest = (guide) => {
+    const user = getLoggedInUser();
+
+    /*
+      IMPORTANT:
+      Explore page is public.
+      Anyone can view guides.
+
+      But only authenticated users can send requests.
+    */
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+
+    /*
+      Only Tourist can send travel requests.
+    */
+    if (user.role !== "tourist") {
+      if (user.role === "guide") {
+        navigate("/guide-dashboard");
+      } else {
+        navigate("/login");
+      }
+
+      return;
+    }
+
     setSelectedGuide(guide);
     setTravelDate("");
     setRequestDetails("");
@@ -267,7 +325,7 @@ function Explore({ embedded = false }) {
     setRequestError("");
   };
 
-  // Close Request Modal
+  // Close Request
   const handleCloseRequest = () => {
     if (requestLoading) {
       return;
@@ -288,11 +346,29 @@ function Explore({ embedded = false }) {
     setRequestError("");
     setRequestSuccess("");
 
+    const user = getLoggedInUser();
     const token = localStorage.getItem("token");
 
-    if (!token) {
+    /*
+      Double protection:
+      Even if modal somehow opens without authentication,
+      request cannot be submitted.
+    */
+    if (!user || !token) {
       setRequestError(
         "Please login first to send a travel request."
+      );
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 800);
+
+      return;
+    }
+
+    if (user.role !== "tourist") {
+      setRequestError(
+        "Only tourists can send travel requests."
       );
       return;
     }
@@ -321,12 +397,17 @@ function Explore({ embedded = false }) {
 
     const requestData = {
       guide_profile_id: Number(guideProfileId),
+
       guide_experience_id: experienceId
         ? Number(experienceId)
         : null,
+
       travel_date: travelDate,
+
       amount: Number(selectedGuide.price || 0),
-      request_details: requestDetails.trim() || null,
+
+      request_details:
+        requestDetails.trim() || null,
     };
 
     try {
@@ -336,11 +417,13 @@ function Explore({ embedded = false }) {
         `${API_BASE_URL}/travel-requests`,
         {
           method: "POST",
+
           headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
             Authorization: `Bearer ${token}`,
           },
+
           body: JSON.stringify(requestData),
         }
       );
@@ -393,6 +476,7 @@ function Explore({ embedded = false }) {
 
       <main className="explore-main">
         <section className="explore-listing-section">
+
           {/* Search */}
           <div className="explore-search-sort-row">
             <ExploreSearch
@@ -437,8 +521,10 @@ function Explore({ embedded = false }) {
           {/* Result Header */}
           <div className="explore-listing-header">
             <p>
-              Showing <strong>{guides.length}</strong> of{" "}
-              <strong>{totalGuides}</strong> guide services
+              Showing{" "}
+              <strong>{guides.length}</strong> of{" "}
+              <strong>{totalGuides}</strong>{" "}
+              guide services
             </p>
 
             <div className="explore-view-buttons">
@@ -478,7 +564,10 @@ function Explore({ embedded = false }) {
           {loading && (
             <div className="explore-no-results">
               <div className="explore-loader"></div>
-              <h3>Loading guide services...</h3>
+
+              <h3>
+                Loading guide services...
+              </h3>
             </div>
           )}
 
@@ -502,10 +591,13 @@ function Explore({ embedded = false }) {
               </div>
             ) : (
               <div className="explore-no-results">
-                <h3>No guide companies found</h3>
+                <h3>
+                  No guide companies found
+                </h3>
+
                 <p>
-                  Try another destination, price range,
-                  or tour type.
+                  Try another destination, price
+                  range, or tour type.
                 </p>
               </div>
             )
@@ -532,7 +624,9 @@ function Explore({ embedded = false }) {
                   key={page}
                   type="button"
                   className={
-                    currentPage === page ? "active" : ""
+                    currentPage === page
+                      ? "active"
+                      : ""
                   }
                   onClick={() =>
                     handlePageChange(page)
@@ -544,9 +638,13 @@ function Explore({ embedded = false }) {
 
               <button
                 type="button"
-                disabled={currentPage === lastPage}
+                disabled={
+                  currentPage === lastPage
+                }
                 onClick={() =>
-                  handlePageChange(currentPage + 1)
+                  handlePageChange(
+                    currentPage + 1
+                  )
                 }
               >
                 Next
@@ -576,7 +674,9 @@ function Explore({ embedded = false }) {
                 </div>
 
                 <div>
-                  <h2>Send Travel Request</h2>
+                  <h2>
+                    Send Travel Request
+                  </h2>
 
                   <p>
                     Request a tour from{" "}
@@ -603,7 +703,9 @@ function Explore({ embedded = false }) {
             {requestSuccess && (
               <div className="request-success-wrapper">
                 <div className="request-success-message">
-                  <div className="success-icon">✓</div>
+                  <div className="success-icon">
+                    ✓
+                  </div>
 
                   <div>
                     <strong>
@@ -611,8 +713,8 @@ function Explore({ embedded = false }) {
                     </strong>
 
                     <p>
-                      Your travel request has been sent
-                      to{" "}
+                      Your travel request has
+                      been sent to{" "}
                       {selectedGuide.companyName ||
                         "the guide"}.
                     </p>
@@ -674,7 +776,8 @@ function Explore({ embedded = false }) {
 
                 {/* Experience */}
                 {selectedGuide.experiences &&
-                  selectedGuide.experiences.length > 0 && (
+                  selectedGuide.experiences.length >
+                    0 && (
                     <div className="request-form-group">
                       <label htmlFor="experience">
                         Tour / Experience
@@ -775,7 +878,10 @@ function Explore({ embedded = false }) {
                 {/* Amount */}
                 <div className="request-amount-box">
                   <div>
-                    <span>Estimated Amount</span>
+                    <span>
+                      Estimated Amount
+                    </span>
+
                     <small>
                       Final price may vary based on
                       your request.
