@@ -21,6 +21,13 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasOne(TouristProfile::class);
     }
+    public function guideProfile()
+{
+    return $this->hasOne(
+        \App\Models\Guide\GuideProfile::class,
+        'user_id'
+    );
+}
 
     /**
      * JWT identifier.

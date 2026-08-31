@@ -16,8 +16,6 @@ body,
 
 html {
   scroll-behavior: smooth;
-
-  /* Global base font size */
   font-size: 16px;
 }
 
@@ -34,7 +32,7 @@ body {
     "Segoe UI",
     sans-serif;
 
-  font-size: 1rem;
+  font-size: 16px;
   line-height: 1.5;
 }
 
@@ -50,28 +48,10 @@ textarea {
   min-height: 100vh;
 }
 
-/* Smaller laptop screens */
-@media (max-width: 1366px) and (min-width: 769px) {
-  html {
-    font-size: 17px;
-  }
-}
+/* =========================================
+   SIGNUP GLASS CARD SHINE ANIMATION
+========================================= */
 
-/* Tablet */
-@media (max-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-/* Mobile */
-@media (max-width: 480px) {
-  html {
-    font-size: 15px;
-  }
-}
-
-/* Signup glass card shine animation */
 @keyframes shineMove {
   0% {
     left: -250px;

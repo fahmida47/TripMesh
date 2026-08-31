@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Guide\GuideExperienceController;
 use App\Http\Controllers\Guide\GuideProfileController;
 use App\Http\Controllers\TouristProfileController;
+use App\Http\Controllers\TravelRequestController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -64,6 +65,46 @@ Route::middleware('auth:api')->group(function () {
     ]);
 });
 
+/*
+|--------------------------------------------------------------------------
+| Travel Request Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware('auth:api')
+    ->prefix('travel-requests')
+    ->group(function () {
+
+        // Tourist sends a travel request
+        Route::post('/', [
+            TravelRequestController::class,
+            'store'
+        ]);
+
+        // Guide views received requests
+        Route::get('/guide', [
+            TravelRequestController::class,
+            'guideRequests'
+        ]);
+
+        // Guide accepts a request
+        Route::put('/guide/{id}/accept', [
+            TravelRequestController::class,
+            'accept'
+        ]);
+
+        // Guide rejects a request
+        Route::put('/guide/{id}/reject', [
+            TravelRequestController::class,
+            'reject'
+        ]);
+
+        // Guide cancels a request
+        Route::put('/guide/{id}/cancel', [
+            TravelRequestController::class,
+            'cancel'
+        ]);
+    });
 
 /*
 |--------------------------------------------------------------------------
