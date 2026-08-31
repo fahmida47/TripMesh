@@ -11,18 +11,22 @@ use Illuminate\Http\Request;
 class TravelRequestController extends Controller
 {
     /**
-     * Tourist sends a new travel request.
+     * Create a new travel request.
+     *
+     * Only authenticated tourists can send requests.
      */
     public function store(Request $request): JsonResponse
     {
         $user = auth('api')->user();
 
+        // Check authentication and tourist role
         if (!$user || $user->role !== 'tourist') {
             return response()->json([
                 'message' => 'Only tourists can send travel requests.',
             ], 403);
         }
 
+        // Validate request data
         $validated = $request->validate([
             'guide_profile_id' => [
                 'required',
@@ -55,6 +59,7 @@ class TravelRequestController extends Controller
             ],
         ]);
 
+        // Get the authenticated tourist profile
         $touristProfile = $user->touristProfile;
 
         if (!$touristProfile) {
@@ -63,6 +68,7 @@ class TravelRequestController extends Controller
             ], 404);
         }
 
+        // Make sure the selected guide exists
         $guideProfile = GuideProfile::find(
             $validated['guide_profile_id']
         );
@@ -73,12 +79,9 @@ class TravelRequestController extends Controller
             ], 404);
         }
 
-        /*
-         * Make sure selected experience belongs
-         * to the selected guide.
-         */
+        // If an experience is provided,
+        // make sure it belongs to the selected guide.
         if (!empty($validated['guide_experience_id'])) {
-
             $experience = GuideExperience::where(
                 'id',
                 $validated['guide_experience_id']
@@ -97,6 +100,7 @@ class TravelRequestController extends Controller
             }
         }
 
+        // Create the travel request
         $travelRequest = TravelRequest::create([
             'tourist_profile_id' => $touristProfile->id,
             'guide_profile_id' => $guideProfile->id,
@@ -109,6 +113,7 @@ class TravelRequestController extends Controller
             'status' => 'pending',
         ]);
 
+        // Return the newly created request
         $travelRequest->load([
             'tourist',
             'guide',
@@ -121,27 +126,21 @@ class TravelRequestController extends Controller
         ], 201);
     }
 
-
     /**
-     * Get all travel requests received by
-     * the authenticated guide.
+     * Get all travel requests received by the authenticated guide.
      */
     public function guideRequests(): JsonResponse
     {
         $user = auth('api')->user();
 
-        /*
-         * Only guides can access this endpoint.
-         */
+        // Check authentication and guide role
         if (!$user || $user->role !== 'guide') {
             return response()->json([
                 'message' => 'Only guides can view travel requests.',
             ], 403);
         }
 
-        /*
-         * Get authenticated guide profile.
-         */
+        // Get the authenticated guide profile
         $guideProfile = $user->guideProfile;
 
         if (!$guideProfile) {
@@ -150,107 +149,51 @@ class TravelRequestController extends Controller
             ], 404);
         }
 
-        /*
-         * Get only requests belonging to
-         * the authenticated guide.
-         */
+        // Fetch only requests belonging to this guide
         $requests = TravelRequest::with([
             'tourist',
             'guide',
             'experience',
         ])
-            ->where(
-                'guide_profile_id',
-                $guideProfile->id
-            )
+            ->where('guide_profile_id', $guideProfile->id)
             ->latest()
             ->get();
 
-        /*
-         * Request counts.
-         */
+        // Calculate request counts
         $counts = [
             'all' => $requests->count(),
-
             'pending' => $requests
                 ->where('status', 'pending')
                 ->count(),
-
             'accepted' => $requests
                 ->where('status', 'accepted')
                 ->count(),
-
             'rejected' => $requests
                 ->where('status', 'rejected')
                 ->count(),
-
             'cancelled' => $requests
                 ->where('status', 'cancelled')
                 ->count(),
         ];
 
-        /*
-         * Empty response.
-         */
-        if ($requests->isEmpty()) {
-            return response()->json([
-                'message' => 'No travel requests found.',
-                'counts' => $counts,
-                'requests' => [],
-            ]);
-        }
-
         return response()->json([
-            'message' => 'Travel requests retrieved successfully.',
+            'message' => 'Guide requests fetched successfully.',
             'counts' => $counts,
             'requests' => $requests,
         ]);
     }
-
 
     /**
      * Accept a travel request.
      */
     public function accept($id): JsonResponse
     {
-        return $this->updateStatus($id, 'accepted');
-    }
-
-
-    /**
-     * Reject a travel request.
-     */
-    public function reject($id): JsonResponse
-    {
-        return $this->updateStatus($id, 'rejected');
-    }
-
-
-    /**
-     * Cancel a travel request.
-     */
-    public function cancel($id): JsonResponse
-    {
-        return $this->updateStatus($id, 'cancelled');
-    }
-
-
-    /**
-     * Update request status.
-     *
-     * A guide can only update requests
-     * belonging to their own guide profile.
-     */
-    private function updateStatus(
-        $id,
-        string $status
-    ): JsonResponse {
-
         $user = auth('api')->user();
 
+        // Only guides can accept requests
         if (!$user || $user->role !== 'guide') {
             return response()->json([
-                'message' => 'Only guides can manage travel requests.',
+                'message' => 'Only guides can accept travel requests.',
             ], 403);
         }
 
@@ -262,18 +205,9 @@ class TravelRequestController extends Controller
             ], 404);
         }
 
-        /*
-         * Important:
-         * Search by BOTH request ID and guide_profile_id.
-         *
-         * This prevents one guide from modifying
-         * another guide's request.
-         */
+        // Make sure this request belongs to the authenticated guide
         $travelRequest = TravelRequest::where('id', $id)
-            ->where(
-                'guide_profile_id',
-                $guideProfile->id
-            )
+            ->where('guide_profile_id', $guideProfile->id)
             ->first();
 
         if (!$travelRequest) {
@@ -282,20 +216,19 @@ class TravelRequestController extends Controller
             ], 404);
         }
 
-        /*
-         * Only pending requests can be changed.
-         */
+        // Only pending requests can be accepted
         if ($travelRequest->status !== 'pending') {
             return response()->json([
-                'message' =>
-                    'Only pending requests can be updated.',
+                'message' => 'Only pending requests can be accepted.',
             ], 422);
         }
 
+        // Update status
         $travelRequest->update([
-            'status' => $status,
+            'status' => 'accepted',
         ]);
 
+        // Return updated request
         $travelRequest->load([
             'tourist',
             'guide',
@@ -303,8 +236,126 @@ class TravelRequestController extends Controller
         ]);
 
         return response()->json([
-            'message' =>
-                'Travel request ' . $status . ' successfully.',
+            'message' => 'Travel request accepted successfully.',
+            'request' => $travelRequest,
+        ]);
+    }
+
+    /**
+     * Reject a travel request.
+     */
+    public function reject($id): JsonResponse
+    {
+        $user = auth('api')->user();
+
+        // Only guides can reject requests
+        if (!$user || $user->role !== 'guide') {
+            return response()->json([
+                'message' => 'Only guides can reject travel requests.',
+            ], 403);
+        }
+
+        $guideProfile = $user->guideProfile;
+
+        if (!$guideProfile) {
+            return response()->json([
+                'message' => 'Guide profile not found.',
+            ], 404);
+        }
+
+        // Make sure this request belongs to the authenticated guide
+        $travelRequest = TravelRequest::where('id', $id)
+            ->where('guide_profile_id', $guideProfile->id)
+            ->first();
+
+        if (!$travelRequest) {
+            return response()->json([
+                'message' => 'Travel request not found.',
+            ], 404);
+        }
+
+        // Only pending requests can be rejected
+        if ($travelRequest->status !== 'pending') {
+            return response()->json([
+                'message' => 'Only pending requests can be rejected.',
+            ], 422);
+        }
+
+        // Update status
+        $travelRequest->update([
+            'status' => 'rejected',
+        ]);
+
+        // Return updated request
+        $travelRequest->load([
+            'tourist',
+            'guide',
+            'experience',
+        ]);
+
+        return response()->json([
+            'message' => 'Travel request rejected successfully.',
+            'request' => $travelRequest,
+        ]);
+    }
+
+    /**
+     * Cancel a travel request.
+     */
+    public function cancel($id): JsonResponse
+    {
+        $user = auth('api')->user();
+
+        // Only guides can cancel requests
+        if (!$user || $user->role !== 'guide') {
+            return response()->json([
+                'message' => 'Only guides can cancel travel requests.',
+            ], 403);
+        }
+
+        $guideProfile = $user->guideProfile;
+
+        if (!$guideProfile) {
+            return response()->json([
+                'message' => 'Guide profile not found.',
+            ], 404);
+        }
+
+        // Make sure this request belongs to the authenticated guide
+        $travelRequest = TravelRequest::where('id', $id)
+            ->where('guide_profile_id', $guideProfile->id)
+            ->first();
+
+        if (!$travelRequest) {
+            return response()->json([
+                'message' => 'Travel request not found.',
+            ], 404);
+        }
+
+        // Pending or accepted requests can be cancelled
+        if (!in_array($travelRequest->status, [
+            'pending',
+            'accepted',
+        ])) {
+            return response()->json([
+                'message' => 'This travel request cannot be cancelled.',
+            ], 422);
+        }
+
+        // Update status
+        $travelRequest->update([
+            'status' => 'cancelled',
+        ]);
+
+        // Return updated request
+        $travelRequest->load([
+            'tourist',
+            'guide',
+            'experience',
+        ]);
+
+        return response()->json([
+            'message' => 'Travel request cancelled successfully.',
             'request' => $travelRequest,
         ]);
     }
