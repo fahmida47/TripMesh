@@ -1,27 +1,28 @@
 .explore-advanced-search {
   width: 100%;
   min-width: 0;
-  height: 64px;
+  height: 82px;
 
   display: grid;
   grid-template-columns:
-    minmax(240px, 1.7fr)
+    minmax(260px, 1.5fr)
     minmax(180px, 1fr)
-    minmax(170px, 1fr)
+    minmax(220px, 1fr)
     120px;
 
   align-items: stretch;
 
-  overflow: hidden;
-
   background: #ffffff;
   border: 1px solid #dce3ef;
-  border-radius: 12px;
+  border-radius: 14px;
 
   box-shadow: 0 5px 16px rgba(26, 50, 89, 0.07);
+
+  overflow: hidden;
 }
 
-/* EACH FIELD */
+
+/* FIELD */
 
 .explore-advanced-field {
   min-width: 0;
@@ -29,22 +30,11 @@
   display: flex;
   align-items: center;
 
-  gap: 10px;
-  padding: 8px 14px;
+  padding: 10px 18px;
 
   border-right: 1px solid #e3e8f0;
 }
 
-/* ICON */
-
-.explore-advanced-icon {
-  flex: 0 0 auto;
-
-  color: #0767f2;
-
-  font-size: 18px;
-  font-weight: 700;
-}
 
 /* CONTENT */
 
@@ -54,9 +44,9 @@
 
   display: flex;
   flex-direction: column;
-
-  gap: 3px;
+  gap: 7px;
 }
+
 
 /* LABEL */
 
@@ -65,60 +55,61 @@
 
   color: #101b35;
 
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
-
-  line-height: 1.2;
 }
 
-/* INPUT + SELECT */
 
-.explore-advanced-content input,
-.explore-advanced-content select {
+/* INPUT */
+
+.explore-advanced-content input {
   width: 100%;
-  min-width: 0;
+  height: 38px;
 
-  height: 27px;
+  padding: 0 12px;
 
-  margin: 0;
-  padding: 0;
+  border: 1px solid #dce3ef;
+  border-radius: 8px;
 
-  border: none;
   outline: none;
 
-  background: transparent;
+  background: #ffffff;
 
   color: #263653;
 
   font-family: inherit;
   font-size: 14px;
   font-weight: 500;
+
+  box-sizing: border-box;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
+
 
 .explore-advanced-content input::placeholder {
   color: #8a94a8;
-  opacity: 1;
 }
 
-.explore-advanced-content select {
-  cursor: pointer;
+
+.explore-advanced-content input:focus {
+  border-color: #0767f2;
+  box-shadow: 0 0 0 3px rgba(7, 103, 242, 0.1);
 }
+
 
 /* SEARCH BUTTON */
 
 .explore-advanced-button {
-  width: auto;
-  height: auto;
-
-  align-self: center;
-
-  margin: 0;
-  padding: 0 18px;
+  width: 100%;
+  height: 100%;
 
   border: none;
-  border-radius: 0;
 
   background: transparent;
+
   color: #0767f2;
 
   font-family: inherit;
@@ -131,63 +122,40 @@
   align-items: center;
   justify-content: center;
 
-  transition: color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
+
 
 .explore-advanced-button:hover {
-  background: transparent;
+  background: #f2f7ff;
   color: #0055d4;
-  transform: none;
 }
 
-.explore-advanced-button:active {
-  transform: none;
-}
 
-/* RESPONSIVE */
+/* TABLET */
 
-@media (max-width: 1050px) {
-  .explore-advanced-search {
-    grid-template-columns:
-      minmax(190px, 1.5fr)
-      minmax(150px, 1fr)
-      minmax(145px, 1fr)
-      105px;
-  }
-
-  .explore-advanced-field {
-    padding: 8px 10px;
-  }
-
-  .explore-advanced-content input,
-  .explore-advanced-content select {
-    font-size: 13px;
-  }
-
-  .explore-advanced-button {
-    width: 96px;
-    font-size: 14px;
-  }
-}
-
-@media (max-width: 800px) {
+@media (max-width: 900px) {
   .explore-advanced-search {
     height: auto;
     grid-template-columns: 1fr 1fr;
   }
 
   .explore-advanced-field {
-    min-height: 58px;
+    min-height: 76px;
     border-bottom: 1px solid #e3e8f0;
   }
 
   .explore-advanced-button {
-    width: auto;
-    margin: 7px;
+    min-height: 60px;
   }
 }
 
-@media (max-width: 550px) {
+
+/* MOBILE */
+
+@media (max-width: 600px) {
   .explore-advanced-search {
     display: flex;
     flex-direction: column;
@@ -199,7 +167,6 @@
   }
 
   .explore-advanced-button {
-    width: calc(100% - 16px);
-    margin: 8px;
+    min-height: 52px;
   }
 }

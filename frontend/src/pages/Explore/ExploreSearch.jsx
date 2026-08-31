@@ -1,4 +1,3 @@
-import { useState } from "react";
 import "./ExploreSearch.css";
 
 function ExploreSearch({
@@ -17,71 +16,72 @@ function ExploreSearch({
 
   return (
     <form className="explore-advanced-search" onSubmit={handleSubmit}>
-      {/* Destination */}
+      {/* Guide Company Name */}
       <div className="explore-advanced-field">
-        <span className="explore-advanced-icon">⌖</span>
-
         <div className="explore-advanced-content">
-          <label htmlFor="explore-destination">Destination</label>
+          <label htmlFor="explore-company-name">
+            Guide Company Name
+          </label>
 
           <input
-            id="explore-destination"
-            type="search"
+            id="explore-company-name"
+            type="text"
             value={searchInput}
-            onChange={(event) => onSearchInputChange(event.target.value)}
-            placeholder="Where do you want to explore?"
+            onChange={(event) =>
+              onSearchInputChange(event.target.value)
+            }
+            placeholder="Search by guide company name"
+            autoComplete="off"
           />
         </div>
       </div>
 
-      {/* Price Range */}
+      {/* Price */}
       <div className="explore-advanced-field">
-        <span className="explore-advanced-icon">৳</span>
-
         <div className="explore-advanced-content">
-          <label htmlFor="explore-price-range">Price Range</label>
+          <label htmlFor="explore-price">
+            Price
+          </label>
 
-          <select
-            id="explore-price-range"
+          <input
+            id="explore-price"
+            type="text"
+            inputMode="numeric"
             value={priceRange}
-            onChange={(event) => onPriceRangeChange(event.target.value)}
-          >
-            <option value="">All Prices</option>
-
-            <option value="low">৳2,000 - ৳2,500</option>
-
-            <option value="medium">৳2,501 - ৳3,000</option>
-
-            <option value="high">৳3,001+</option>
-          </select>
+            onChange={(event) =>
+              onPriceRangeChange(event.target.value)
+            }
+            placeholder="Enter price"
+            autoComplete="off"
+          />
         </div>
       </div>
 
       {/* Tour Type */}
       <div className="explore-advanced-field">
-        <span className="explore-advanced-icon">♙</span>
-
         <div className="explore-advanced-content">
-          <label htmlFor="explore-tour-type">Tour Type</label>
+          <label htmlFor="explore-tour-type">
+            Tour Type
+          </label>
 
-          <select
+          <input
             id="explore-tour-type"
+            type="text"
             value={tourType}
-            onChange={(event) => onTourTypeChange(event.target.value)}
-          >
-            <option value="">All Tour Types</option>
-
-            <option value="Single Tour">Single Tour</option>
-
-            <option value="Dual Tour">Dual Tour</option>
-
-            <option value="Group Tour">Group Tour</option>
-          </select>
+            onChange={(event) =>
+              onTourTypeChange(event.target.value)
+            }
+            placeholder="Enter tour type"
+            autoComplete="off"
+          />
         </div>
       </div>
 
-      {/* Search */}
-      <button type="submit" className="explore-advanced-button">
+      {/* Search Button */}
+      <button
+        type="submit"
+        className="explore-advanced-button"
+      >
         Search
       </button>
     </form>
