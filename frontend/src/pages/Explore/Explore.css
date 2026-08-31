@@ -12,18 +12,102 @@
   box-sizing: border-box;
 }
 
+/* =========================
+   EXPLORE PAGE
+========================= */
+
 .explore-page {
   width: 100%;
-  min-height: 100vh;
+  height: 100%;
+  min-height: 0;
+
+  display: flex;
+  flex-direction: column;
+
   background: var(--background);
   color: var(--text);
-  overflow-x: hidden;
+
+  overflow: hidden;
 }
 
-.explore-main {
+/* =========================
+   EXPLORE HERO
+========================= */
+
+.explore-top-section {
+  width: 100%;
+
+  height: 330px;
+  min-height: 330px;
+
+  flex-shrink: 0;
+
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+
+  overflow: hidden;
+}
+
+.explore-hero-content {
   width: min(1500px, calc(100% - 80px));
   margin: 0 auto;
-  padding: 30px 0 60px;
+
+  position: relative;
+  z-index: 2;
+
+  color: #ffffff;
+}
+
+.explore-hero-content h1 {
+  max-width: 760px;
+
+  margin: 0 0 16px;
+
+  color: #ffffff;
+
+  font-size: clamp(2.2rem, 4vw, 4rem);
+  font-weight: 800;
+  line-height: 1.08;
+}
+
+.explore-hero-content p {
+  max-width: 650px;
+
+  margin: 0;
+
+  color: #ffffff;
+
+  font-size: clamp(1rem, 1.4vw, 1.25rem);
+  line-height: 1.6;
+}
+
+/* =========================
+   MAIN SCROLLABLE CONTENT
+========================= */
+
+.explore-main {
+  width: 100%;
+
+  flex: 1;
+  min-height: 0;
+
+  margin: 0;
+
+  padding:
+    30px
+    max(40px, calc((100% - 1500px) / 2))
+    60px;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  overscroll-behavior: contain;
 }
 
 .explore-listing-section {
@@ -60,8 +144,10 @@
 
 .explore-search-sort-row {
   width: 100%;
+
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
+
   gap: 30px;
   align-items: center;
 }
@@ -69,7 +155,9 @@
 .explore-sort-control {
   display: flex;
   align-items: center;
+
   gap: 9px;
+
   white-space: nowrap;
 }
 
@@ -81,12 +169,18 @@
 .explore-sort-control select {
   width: 175px;
   height: 44px;
+
   padding: 0 12px;
+
   border: 1px solid var(--border);
   border-radius: 8px;
+
   outline: none;
+
   background: white;
+
   color: var(--text);
+
   font-size: 14px;
 }
 
@@ -96,6 +190,7 @@
 
 .explore-listing-header {
   min-height: 65px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -103,7 +198,9 @@
 
 .explore-listing-header p {
   margin: 0;
+
   color: #4d5870;
+
   font-size: 14px;
 }
 
@@ -115,18 +212,24 @@
 .explore-view-buttons button {
   width: 34px;
   height: 34px;
+
   display: grid;
   place-items: center;
+
   border: 1px solid var(--border);
   border-radius: 7px;
+
   background: white;
+
   color: #16345f;
+
   cursor: pointer;
 }
 
 .explore-view-buttons button.active {
   background: var(--primary);
   border-color: var(--primary);
+
   color: white;
 }
 
@@ -136,8 +239,10 @@
 
 .explore-guide-grid {
   width: 100%;
+
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+
   gap: 20px;
 }
 
@@ -148,10 +253,14 @@
 .explore-guide-card {
   width: 100%;
   min-width: 0;
+
   background: white;
+
   border: 1px solid var(--border);
   border-radius: 12px;
+
   box-shadow: 0 5px 16px rgba(20, 40, 70, 0.07);
+
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
@@ -159,6 +268,7 @@
 
 .explore-guide-card:hover {
   transform: translateY(-3px);
+
   box-shadow: 0 10px 24px rgba(20, 40, 70, 0.12);
 }
 
@@ -178,23 +288,31 @@
 .explore-company-heading {
   display: flex;
   align-items: center;
+
   gap: 13px;
+
   margin-bottom: 16px;
 }
 
 .explore-company-logo {
   width: 54px;
   height: 54px;
+
   flex-shrink: 0;
+
   display: grid;
   place-items: center;
+
   border-radius: 50%;
+
   background: linear-gradient(
     145deg,
     #0470f9,
     #00398d
   );
+
   color: white;
+
   font-size: 21px;
   font-weight: 800;
 }
@@ -205,15 +323,20 @@
 
 .explore-company-title h3 {
   margin: 0 0 5px;
+
   color: #131d34;
+
   font-size: 18px;
   font-weight: 700;
+
   word-break: break-word;
 }
 
 .explore-location {
   margin: 0;
+
   color: #536078;
+
   font-size: 12px;
 }
 
@@ -224,15 +347,21 @@
 .explore-tour-badges {
   display: flex;
   flex-wrap: wrap;
+
   gap: 6px;
+
   margin-bottom: 14px;
 }
 
 .explore-tour-badge {
   padding: 5px 9px;
+
   border-radius: 6px;
+
   background: #deedff;
+
   color: #0063d9;
+
   font-size: 10px;
   font-weight: 600;
 }
@@ -243,9 +372,12 @@
 
 .explore-guide-description {
   margin: 0 0 16px;
+
   color: #3b455b;
+
   font-size: 12px;
   line-height: 1.6;
+
   min-height: 38px;
 }
 
@@ -261,34 +393,46 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   margin-bottom: 9px;
 }
 
 .experience-heading h4 {
   margin: 0;
+
   color: #18243d;
+
   font-size: 13px;
 }
 
 .experience-heading span {
   min-width: 22px;
   height: 22px;
+
   display: grid;
   place-items: center;
+
   border-radius: 50%;
+
   background: #eef5ff;
+
   color: var(--primary);
+
   font-size: 10px;
   font-weight: 700;
 }
 
 .experience-item {
   display: flex;
+
   gap: 9px;
+
   padding: 8px;
   margin-bottom: 7px;
+
   border: 1px solid #e7ebf2;
   border-radius: 7px;
+
   background: #fafbfe;
 }
 
@@ -296,15 +440,20 @@
 .experience-placeholder {
   width: 48px;
   height: 48px;
+
   flex-shrink: 0;
+
   border-radius: 6px;
+
   object-fit: cover;
 }
 
 .experience-placeholder {
   display: grid;
   place-items: center;
+
   background: #eaf2ff;
+
   font-size: 18px;
 }
 
@@ -314,14 +463,19 @@
 
 .experience-text strong {
   display: block;
+
   margin-bottom: 3px;
+
   color: #18243d;
+
   font-size: 11px;
 }
 
 .experience-text p {
   margin: 0;
+
   color: #68738a;
+
   font-size: 10px;
   line-height: 1.4;
 }
@@ -334,7 +488,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   gap: 10px;
+
   margin-bottom: 15px;
   padding-top: 2px;
 }
@@ -342,31 +498,40 @@
 .explore-rating {
   display: flex;
   align-items: center;
+
   gap: 4px;
+
   color: #697389;
+
   font-size: 10px;
 }
 
 .explore-rating strong {
   color: #1a2943;
+
   font-size: 12px;
 }
 
 .explore-star {
   color: #ffad00;
+
   font-size: 15px;
 }
 
 .explore-price {
   display: flex;
   align-items: baseline;
+
   gap: 4px;
+
   color: #6b7488;
+
   font-size: 10px;
 }
 
 .explore-price strong {
   color: #0061d8;
+
   font-size: 16px;
 }
 
@@ -376,25 +541,34 @@
 
 .explore-card-actions {
   width: 100%;
+
   display: grid;
   grid-template-columns: 1fr 1fr;
+
   gap: 9px;
 }
 
 .explore-card-actions button {
   width: 100%;
   height: 38px;
+
   padding: 0 8px;
+
   border-radius: 7px;
+
   font-size: 11px;
   font-weight: 700;
+
   cursor: pointer;
+
   white-space: nowrap;
 }
 
 .explore-secondary-button {
   border: 1px solid var(--primary);
+
   background: white;
+
   color: var(--primary);
 }
 
@@ -404,7 +578,9 @@
 
 .explore-primary-button {
   border: 1px solid var(--primary);
+
   background: var(--primary);
+
   color: white;
 }
 
@@ -418,21 +594,28 @@
 
 .explore-no-results {
   grid-column: 1 / -1;
+
   padding: 60px 20px;
+
   text-align: center;
+
   background: white;
+
   border: 1px solid var(--border);
   border-radius: 12px;
 }
 
 .explore-no-results h3 {
   margin: 0 0 8px;
+
   font-size: 21px;
 }
 
 .explore-no-results p {
   margin: 0;
+
   color: var(--muted);
+
   font-size: 14px;
 }
 
@@ -460,36 +643,48 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
   gap: 7px;
+
   margin-top: 30px;
 }
 
 .explore-pagination button {
   min-width: 36px;
   height: 36px;
+
   padding: 0 10px;
+
   border: 1px solid var(--border);
   border-radius: 7px;
+
   background: white;
+
   color: var(--text);
+
   cursor: pointer;
+
   font-size: 12px;
   font-weight: 600;
 }
 
 .explore-pagination button:hover {
   border-color: var(--primary);
+
   color: var(--primary);
 }
 
 .explore-pagination button.active {
   background: var(--primary);
+
   border-color: var(--primary);
+
   color: white;
 }
 
 .explore-pagination button:disabled {
   opacity: 0.5;
+
   cursor: not-allowed;
 }
 
@@ -498,8 +693,25 @@
 ========================= */
 
 @media (max-width: 1100px) {
-  .explore-main {
+  .explore-top-section {
+    height: 300px;
+    min-height: 300px;
+
+    background-position: center center;
+  }
+
+  .explore-hero-content {
     width: calc(100% - 40px);
+  }
+
+  .explore-hero-content h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+  }
+
+  .explore-main {
+    width: 100%;
+
+    padding: 25px 20px 50px;
   }
 
   .explore-guide-grid {
@@ -508,6 +720,7 @@
 
   .explore-search-sort-row {
     grid-template-columns: 1fr;
+
     gap: 15px;
   }
 
@@ -521,9 +734,32 @@
 ========================= */
 
 @media (max-width: 650px) {
+  .explore-top-section {
+    height: 280px;
+    min-height: 280px;
+
+    background-position: 58% center;
+  }
+
+  .explore-hero-content {
+    width: calc(100% - 32px);
+  }
+
+  .explore-hero-content h1 {
+    font-size: clamp(1.8rem, 8vw, 2.6rem);
+
+    margin-bottom: 12px;
+  }
+
+  .explore-hero-content p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
   .explore-main {
-    width: calc(100% - 24px);
-    padding-top: 20px;
+    width: 100%;
+
+    padding: 20px 12px 45px;
   }
 
   .explore-title-section h1 {
@@ -536,6 +772,7 @@
 
   .explore-guide-grid {
     grid-template-columns: 1fr;
+
     gap: 18px;
   }
 
@@ -549,11 +786,13 @@
 
   .explore-sort-control {
     width: 100%;
+
     justify-content: space-between;
   }
 
   .explore-sort-control select {
     flex: 1;
+
     width: auto;
   }
 
@@ -571,8 +810,27 @@
 ========================= */
 
 @media (max-width: 380px) {
+  .explore-top-section {
+    height: 250px;
+    min-height: 250px;
+  }
+
+  .explore-hero-content {
+    width: calc(100% - 24px);
+  }
+
+  .explore-hero-content h1 {
+    font-size: 1.75rem;
+  }
+
+  .explore-hero-content p {
+    font-size: 0.9rem;
+  }
+
   .explore-main {
-    width: calc(100% - 18px);
+    width: 100%;
+
+    padding: 18px 9px 40px;
   }
 
   .explore-card-content {
