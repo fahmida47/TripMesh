@@ -1,9 +1,9 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import TouristSidebar from "./components/TouristSidebar";
 import TouristTopbar from "./components/TouristTopbar";
 import RequestsBookings from "./components/RequestsBookings";
-import TouristProfile from "./Profile/TouristProfile";
 import PaymentHistory from "./components/PaymentHistory";
 import PaymentPage from "./components/PaymentPage";
 import Explore from "../Explore/Explore";
@@ -11,6 +11,7 @@ import Explore from "../Explore/Explore";
 import "./TouristDashboard.css";
 
 export default function TouristDashboard() {
+  const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeKey, setActiveKey] = useState("dashboard");
 
@@ -18,7 +19,6 @@ export default function TouristDashboard() {
   const [paymentTarget, setPaymentTarget] = useState(null);
 
   const isRequestsBookings = activeKey === "bookings";
-  const isProfile = activeKey === "profile";
   const isPayments = activeKey === "payments";
   const isCompletePayment = activeKey === "complete-payment";
 
@@ -55,13 +55,10 @@ export default function TouristDashboard() {
         <div className="ts-shell-main">
           <TouristTopbar
             onMenuClick={() => setSidebarOpen(true)}
-            onProfileClick={() => setActiveKey("profile")}
+            onProfileClick={() => navigate("/tourist-dashboard/profile")}
           />
 
           <main className="ts-shell-content">
-            {/* PROFILE */}
-            {isProfile && <TouristProfile />}
-
             {/* PAYMENT PAGE */}
             {isCompletePayment && (
               <PaymentPage
@@ -92,8 +89,7 @@ export default function TouristDashboard() {
             )}
 
             {/* DASHBOARD / EXPLORE */}
-            {!isProfile &&
-              !isCompletePayment &&
+            {!isCompletePayment &&
               !isRequestsBookings &&
               !isPayments && <Explore embedded />}
           </main>
