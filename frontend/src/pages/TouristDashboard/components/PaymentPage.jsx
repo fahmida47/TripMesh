@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { FiArrowLeft } from "react-icons/fi";
 import PaymentMethodSelector, {
   PAYMENT_METHODS,
 } from "./PaymentMethodSelector";
@@ -8,7 +9,7 @@ import PaymentSuccess from "./PaymentSuccess";
 import TouristSidebar from "./TouristSidebar";
 import "./PaymentPage.css";
 
-export default function PaymentPage({ booking, onSubmit }) {
+export default function PaymentPage({ booking, backLabel, onBack, onSubmit }) {
   const [method, setMethod] = useState("bkash");
   const [accountNumber, setAccountNumber] = useState("");
   const [paymentDateTime, setPaymentDateTime] = useState("");
@@ -72,6 +73,17 @@ export default function PaymentPage({ booking, onSubmit }) {
       <main className="cp-content">
         <div className="cp-page">
           <div className="cp-header">
+            {onBack && (
+              <button
+                type="button"
+                className="cp-back-btn"
+                onClick={onBack}
+              >
+                <FiArrowLeft aria-hidden="true" />
+                {backLabel || "Back"}
+              </button>
+            )}
+
             <h1>Complete Your Payment</h1>
             <p>Please complete your payment to confirm your booking.</p>
           </div>
