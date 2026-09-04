@@ -14,6 +14,8 @@ class TravelRequest extends Model
         'tourist_profile_id',
         'guide_profile_id',
         'guide_experience_id',
+        'destination',
+        'travelers',
         'travel_date',
         'amount',
         'request_details',
@@ -23,6 +25,7 @@ class TravelRequest extends Model
     protected $casts = [
         'travel_date' => 'date',
         'amount' => 'float',
+        'travelers' => 'integer',
     ];
 
     public function tourist(): BelongsTo
