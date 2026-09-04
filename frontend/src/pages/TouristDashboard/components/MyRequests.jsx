@@ -1,14 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { FiInbox } from "react-icons/fi";
-
 import { ChevronLeftIcon, ChevronRightIcon } from "./NavIcons";
-
 import TouristRequestCard from "./TouristRequestCard";
-
 import RequestDetailsModal from "./RequestDetailsModal";
-
 import "./RequestsBookings.css";
 
 const PAGE_SIZE = 5;
@@ -18,13 +13,13 @@ export default function MyRequests({
   onProceedToPayment,
 }) {
   const navigate = useNavigate();
+
   const [requests, setRequests] = useState([]);
   const [page, setPage] = useState(1);
   const [activeRequest, setActiveRequest] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  // Get authentication token
   const getToken = () => {
     return (
       localStorage.getItem("token") ||
@@ -34,7 +29,6 @@ export default function MyRequests({
     );
   };
 
-  // Fetch bookings from backend
   useEffect(() => {
     const fetchBookings = async () => {
       try {
@@ -67,6 +61,8 @@ export default function MyRequests({
           );
         }
 
+        console.log("Bookings API response:", data);
+
         if (Array.isArray(data?.bookings)) {
           setRequests(data.bookings);
         } else {
@@ -89,7 +85,6 @@ export default function MyRequests({
     fetchBookings();
   }, []);
 
-  // Pagination
   const totalPages = Math.max(
     1,
     Math.ceil(requests.length / PAGE_SIZE)
@@ -114,7 +109,17 @@ export default function MyRequests({
     requests.length
   );
 
-  // Pay Now
+  const handleViewDetails = (booking) => {
+    console.log("View Details booking:", booking);
+
+    console.log(
+      "FULL BOOKING DATA:",
+      JSON.stringify(booking, null, 2)
+    );
+
+    setActiveRequest(booking);
+  };
+
   const handleProceedToPayment = (booking) => {
     if (!booking?.id) {
       onToast?.("Booking ID not found.");
@@ -134,14 +139,12 @@ export default function MyRequests({
     });
   };
 
-  // Cancel
   const handleCancel = (id) => {
     onToast?.(
       "Cancellation is currently handled by the backend."
     );
   };
 
-  // Loading state
   if (loading) {
     return (
       <section
@@ -172,7 +175,6 @@ export default function MyRequests({
     );
   }
 
-  // Error state
   if (error) {
     return (
       <section
@@ -207,7 +209,6 @@ export default function MyRequests({
       aria-label="My requests"
       id="my-requests"
     >
-      {/* Header */}
       <div className="rb-panel-header">
         <div className="rb-panel-title">
           <h2>My Requests</h2>
@@ -218,14 +219,10 @@ export default function MyRequests({
         </div>
       </div>
 
-      {/* Column Header */}
       <div className="rb-col-header">
         <span>Guide / Guide Company</span>
-
         <span>Tour / Experience</span>
-
         <span>Date</span>
-
         <span>Status</span>
 
         <span style={{ textAlign: "right" }}>
@@ -233,7 +230,6 @@ export default function MyRequests({
         </span>
       </div>
 
-      {/* Requests */}
       <div className="rb-list">
         {pageItems.length === 0 ? (
           <div className="rb-empty-state">
@@ -253,17 +249,14 @@ export default function MyRequests({
             <TouristRequestCard
               key={booking.id}
               request={booking}
-              onViewDetails={setActiveRequest}
+              onViewDetails={handleViewDetails}
               onCancel={handleCancel}
-              onProceedToPayment={
-                handleProceedToPayment
-              }
+              onProceedToPayment={handleProceedToPayment}
             />
           ))
         )}
       </div>
 
-      {/* Footer */}
       <div className="rb-footer">
         <span className="rb-footer-text">
           Showing {rangeStart} to {rangeEnd} of{" "}
@@ -304,9 +297,7 @@ export default function MyRequests({
                 )
               );
             }}
-            disabled={
-              currentPage === totalPages
-            }
+            disabled={currentPage === totalPages}
             aria-label="Next page"
           >
             <ChevronRightIcon
@@ -317,18 +308,12 @@ export default function MyRequests({
         </div>
       </div>
 
-      {/* Details Modal */}
       {activeRequest && (
         <RequestDetailsModal
-          kind="request"
           item={activeRequest}
-          onClose={() => {
-            setActiveRequest(null);
-          }}
+          onClose={() => setActiveRequest(null)}
           onCancel={handleCancel}
-          onProceedToPayment={
-            handleProceedToPayment
-          }
+          onPayNow={handleProceedToPayment}
         />
       )}
     </section>
