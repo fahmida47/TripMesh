@@ -64,4 +64,9 @@ class Booking extends Model
             'booking_id'
         );
     }
+
+    public function review(): HasOne
+    {
+        return $this->hasOne(Review::class);
+    }
 }

@@ -292,6 +292,10 @@
   color: #d14343;
 }
 
+.review-form-message.success {
+  color: #198754;
+}
+
 /* =========================
    FORM BUTTONS
 ========================= */

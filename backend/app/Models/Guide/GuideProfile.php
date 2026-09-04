@@ -4,6 +4,7 @@ namespace App\Models\Guide;
 
 use App\Models\User;
 use App\Models\Payout;
+use App\Models\Review;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -51,5 +52,10 @@ class GuideProfile extends Model
     public function payouts(): HasMany
     {
         return $this->hasMany(Payout::class, 'guide_profile_id');
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class, 'guide_profile_id');
     }
 }

@@ -1,12 +1,12 @@
 import { useState } from "react";
 
-function ReviewForm({ guideCompanies, onSubmitReview }) {
+function ReviewForm({ guideCompanies, onSubmitReview, loading }) {
   const [selectedCompany, setSelectedCompany] = useState("");
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState("");
   const [message, setMessage] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!selectedCompany) {
@@ -33,17 +33,20 @@ function ReviewForm({ guideCompanies, onSubmitReview }) {
       return;
     }
 
-    onSubmitReview({
-      companyId: selectedGuide.id,
-      companyName: selectedGuide.companyName,
-      rating,
-      reviewText: reviewText.trim(),
-    });
+    try {
+      await onSubmitReview({
+        bookingId: selectedGuide.id,
+        rating,
+        reviewText: reviewText.trim(),
+      });
 
-    setSelectedCompany("");
-    setRating(0);
-    setReviewText("");
-    setMessage("");
+      setSelectedCompany("");
+      setRating(0);
+      setReviewText("");
+      setMessage("Review submitted successfully.");
+    } catch (error) {
+      setMessage(error.message || "Unable to submit review.");
+    }
   };
 
   const handleCancel = () => {
@@ -76,10 +79,12 @@ function ReviewForm({ guideCompanies, onSubmitReview }) {
               setSelectedCompany(e.target.value);
               setMessage("");
             }}
-            disabled={guideCompanies.length === 0}
+            disabled={loading || guideCompanies.length === 0}
           >
             <option value="">
-              {guideCompanies.length === 0
+              {loading
+                ? "Loading eligible guide companies..."
+                : guideCompanies.length === 0
                 ? "No guide companies available yet"
                 : "Select Guide Company"}
             </option>
@@ -87,11 +92,12 @@ function ReviewForm({ guideCompanies, onSubmitReview }) {
             {guideCompanies.map((company) => (
               <option key={company.id} value={company.id}>
                 {company.companyName}
+                {company.experienceName ? ` — ${company.experienceName}` : ""}
               </option>
             ))}
           </select>
 
-          {guideCompanies.length === 0 && (
+          {!loading && guideCompanies.length === 0 && (
             <span className="review-form-hint">
               Registered guide companies will appear here.
             </span>
@@ -144,7 +150,15 @@ function ReviewForm({ guideCompanies, onSubmitReview }) {
           </span>
         </div>
 
-        {message && <p className="review-form-message">{message}</p>}
+        {message && (
+          <p
+            className={`review-form-message${
+              message === "Review submitted successfully." ? " success" : ""
+            }`}
+          >
+            {message}
+          </p>
+        )}
 
         {/* BUTTONS */}
         <div className="review-form-actions">
@@ -156,8 +170,8 @@ function ReviewForm({ guideCompanies, onSubmitReview }) {
             Cancel
           </button>
 
-          <button type="submit" className="review-submit-btn">
-            Submit Review
+          <button type="submit" className="review-submit-btn" disabled={loading}>
+            {loading ? "Loading..." : "Submit Review"}
           </button>
         </div>
       </form>
