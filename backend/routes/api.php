@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Guide\GuideExperienceController;
 use App\Http\Controllers\Guide\GuideProfileController;
+use App\Http\Controllers\Guide\GuideReviewController;
 use App\Http\Controllers\TouristProfileController;
 use App\Http\Controllers\TravelRequestController;
 use App\Http\Controllers\BookingController;
@@ -181,6 +182,7 @@ Route::middleware('auth:api')
 */
 
 Route::middleware('auth:api')->group(function () {
+    Route::get('/guide/reviews', [GuideReviewController::class, 'index']);
     Route::get('/guide/payouts', [PayoutController::class, 'guideIndex']);
     Route::get('/admin/payouts', [PayoutController::class, 'adminIndex']);
     Route::post('/admin/payouts/{payout}/release', [PayoutController::class, 'release']);
