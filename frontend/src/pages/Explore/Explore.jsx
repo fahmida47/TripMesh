@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import "./Explore.css";
-
 import ExploreHero from "./ExploreHero";
 import ExploreSearch from "./ExploreSearch";
 
@@ -155,20 +153,15 @@ function Explore({ embedded = false }) {
 
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-
   const [selectedTourType, setSelectedTourType] = useState("");
   const [searchTourType, setSearchTourType] = useState("");
-
   const [priceRange, setPriceRange] = useState("");
   const [searchPriceRange, setSearchPriceRange] = useState("");
-
   const [sortBy, setSortBy] = useState("popular");
   const [viewMode, setViewMode] = useState("grid");
-
   const [guides, setGuides] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [totalGuides, setTotalGuides] = useState(0);
@@ -176,9 +169,10 @@ function Explore({ embedded = false }) {
   // Request Modal
   const [selectedGuide, setSelectedGuide] = useState(null);
   const [travelDate, setTravelDate] = useState("");
+  const [destination, setDestination] = useState("");
+  const [travelers, setTravelers] = useState(1);
   const [requestDetails, setRequestDetails] = useState("");
   const [selectedExperience, setSelectedExperience] = useState("");
-
   const [requestLoading, setRequestLoading] = useState(false);
   const [requestSuccess, setRequestSuccess] = useState("");
   const [requestError, setRequestError] = useState("");
@@ -279,7 +273,6 @@ function Explore({ embedded = false }) {
     }
 
     setCurrentPage(page);
-
     fetchGuides(page);
 
     window.scrollTo({
@@ -296,7 +289,6 @@ function Explore({ embedded = false }) {
       IMPORTANT:
       Explore page is public.
       Anyone can view guides.
-
       But only authenticated users can send requests.
     */
     if (!user) {
@@ -319,6 +311,8 @@ function Explore({ embedded = false }) {
 
     setSelectedGuide(guide);
     setTravelDate("");
+    setDestination("");
+    setTravelers(1);
     setRequestDetails("");
     setSelectedExperience("");
     setRequestSuccess("");
@@ -333,6 +327,8 @@ function Explore({ embedded = false }) {
 
     setSelectedGuide(null);
     setTravelDate("");
+    setDestination("");
+    setTravelers(1);
     setRequestDetails("");
     setSelectedExperience("");
     setRequestSuccess("");
@@ -370,11 +366,25 @@ function Explore({ embedded = false }) {
       setRequestError(
         "Only tourists can send travel requests."
       );
+
       return;
     }
 
     if (!selectedGuide) {
       setRequestError("Guide information is missing.");
+      return;
+    }
+
+    if (!destination.trim()) {
+      setRequestError("Please enter your destination.");
+      return;
+    }
+
+    if (!travelers || Number(travelers) < 1) {
+      setRequestError(
+        "Please enter at least 1 traveler."
+      );
+
       return;
     }
 
@@ -395,12 +405,19 @@ function Explore({ embedded = false }) {
 
     const experienceId = selectedExperience || null;
 
+    /*
+      Data sent to Laravel backend.
+    */
     const requestData = {
       guide_profile_id: Number(guideProfileId),
 
       guide_experience_id: experienceId
         ? Number(experienceId)
         : null,
+
+      destination: destination.trim(),
+
+      travelers: Number(travelers),
 
       travel_date: travelDate,
 
@@ -457,6 +474,8 @@ function Explore({ embedded = false }) {
       );
 
       setTravelDate("");
+      setDestination("");
+      setTravelers(1);
       setRequestDetails("");
       setSelectedExperience("");
     } catch (err) {
@@ -476,7 +495,6 @@ function Explore({ embedded = false }) {
 
       <main className="explore-main">
         <section className="explore-listing-section">
-
           {/* Search */}
           <div className="explore-search-sort-row">
             <ExploreSearch
@@ -817,6 +835,71 @@ function Explore({ embedded = false }) {
                     </div>
                   )}
 
+                {/* Destination */}
+                <div className="request-form-group">
+                  <label htmlFor="destination">
+                    Destination
+                  </label>
+
+                  <div className="request-input-wrapper">
+                    <span className="request-input-icon">
+                      📍
+                    </span>
+
+                    <input
+                      id="destination"
+                      type="text"
+                      value={destination}
+                      onChange={(event) =>
+                        setDestination(
+                          event.target.value
+                        )
+                      }
+                      placeholder="Where do you want to travel?"
+                      maxLength={255}
+                      required
+                    />
+                  </div>
+
+                  <small>
+                    Enter the destination you want to
+                    visit.
+                  </small>
+                </div>
+
+                {/* Travelers */}
+                <div className="request-form-group">
+                  <label htmlFor="travelers">
+                    Number of Travelers
+                  </label>
+
+                  <div className="request-input-wrapper">
+                    <span className="request-input-icon">
+                      👥
+                    </span>
+
+                    <input
+                      id="travelers"
+                      type="number"
+                      min="1"
+                      max="100"
+                      value={travelers}
+                      onChange={(event) =>
+                        setTravelers(
+                          event.target.value
+                        )
+                      }
+                      placeholder="Number of travelers"
+                      required
+                    />
+                  </div>
+
+                  <small>
+                    Enter the total number of people
+                    joining the tour.
+                  </small>
+                </div>
+
                 {/* Travel Date */}
                 <div className="request-form-group">
                   <label htmlFor="travel-date">
@@ -865,7 +948,7 @@ function Explore({ embedded = false }) {
                         event.target.value
                       )
                     }
-                    placeholder="Tell the guide about your trip, preferences, group size, special requirements, etc."
+                    placeholder="Tell the guide about your preferences or any special requirements."
                     maxLength={2000}
                     rows={5}
                   />
