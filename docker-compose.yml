@@ -1,0 +1,70 @@
+services:
+
+  mysql:
+    image: mysql:8.4
+    container_name: tripmesh-mysql
+    restart: unless-stopped
+
+    environment:
+      MYSQL_DATABASE: tripmesh
+      MYSQL_ROOT_PASSWORD: root
+
+    ports:
+      - "3306:3306"
+
+    volumes:
+      - tripmesh_mysql_data:/var/lib/mysql
+
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+
+    container_name: tripmesh-backend
+    restart: unless-stopped
+
+    working_dir: /var/www
+
+    ports:
+      - "8000:8000"
+
+    volumes:
+      - ./backend:/var/www
+      - tripmesh_backend_vendor:/var/www/vendor
+
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+
+    container_name: tripmesh-frontend
+    restart: unless-stopped
+
+    working_dir: /app
+
+    ports:
+      - "5173:5173"
+
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+
+    depends_on:
+      - backend
+
+
+volumes:
+  tripmesh_mysql_data:
+  tripmesh_backend_vendor:
