@@ -8,15 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class TravelRequest extends Model
+class Booking extends Model
 {
     protected $fillable = [
+        'travel_request_id',
         'tourist_profile_id',
         'guide_profile_id',
         'guide_experience_id',
         'travel_date',
         'amount',
-        'request_details',
         'status',
     ];
 
@@ -24,6 +24,14 @@ class TravelRequest extends Model
         'travel_date' => 'date',
         'amount' => 'float',
     ];
+
+    public function travelRequest(): BelongsTo
+    {
+        return $this->belongsTo(
+            TravelRequest::class,
+            'travel_request_id'
+        );
+    }
 
     public function tourist(): BelongsTo
     {
@@ -49,17 +57,11 @@ class TravelRequest extends Model
         );
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Booking
-    |--------------------------------------------------------------------------
-    */
-
-    public function booking(): HasOne
+    public function payment(): HasOne
     {
         return $this->hasOne(
-            Booking::class,
-            'travel_request_id'
+            Payment::class,
+            'booking_id'
         );
     }
 }

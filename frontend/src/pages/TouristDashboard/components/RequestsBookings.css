@@ -8,13 +8,14 @@
   margin-left: 280px;
   padding: 28px;
   box-sizing: border-box;
-  background: #f8fafc;
+  background: #eaf2ff;
 }
 
 .rb-content {
   width: 100%;
   box-sizing: border-box;
 }
+
 
 /* ========================================
    PAGE HEADER
@@ -28,7 +29,7 @@
   margin: 0;
   font-size: 28px;
   font-weight: 800;
-  color: #101b35;
+  color: #111827;
   line-height: 1.2;
 }
 
@@ -39,6 +40,7 @@
   line-height: 1.5;
 }
 
+
 /* ========================================
    MAIN PANEL
    ======================================== */
@@ -46,11 +48,13 @@
 .rb-panel {
   width: 100%;
   background: #ffffff;
-  border: 1px solid #e6eaf1;
+  border: 1px solid #bfdbfe;
   border-radius: 16px;
   overflow: hidden;
   box-sizing: border-box;
+  box-shadow: 0 4px 18px rgba(37, 99, 235, 0.08);
 }
+
 
 /* ========================================
    PANEL HEADER
@@ -74,7 +78,7 @@
   margin: 0;
   font-size: 18px;
   font-weight: 800;
-  color: #101b35;
+  color: #1e3a8a;
 }
 
 .rb-count-pill {
@@ -83,12 +87,13 @@
   justify-content: center;
   padding: 5px 10px;
   border-radius: 999px;
-  background: #eff6ff;
+  background: #dbeafe;
   color: #2563eb;
   font-size: 12px;
   font-weight: 700;
   white-space: nowrap;
 }
+
 
 /* ========================================
    FILTER
@@ -105,7 +110,7 @@
   -webkit-appearance: none;
   min-width: 135px;
   padding: 9px 34px 9px 12px;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #93c5fd;
   border-radius: 8px;
   background: #ffffff;
   color: #334155;
@@ -113,11 +118,14 @@
   font-weight: 600;
   outline: none;
   cursor: pointer;
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .rb-filter select:focus {
   border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
 .rb-filter svg {
@@ -125,9 +133,10 @@
   right: 10px;
   width: 15px;
   height: 15px;
-  color: #64748b;
+  color: #2563eb;
   pointer-events: none;
 }
+
 
 /* ========================================
    COLUMN HEADER
@@ -135,17 +144,23 @@
 
 .rb-col-header {
   display: grid;
-  grid-template-columns: minmax(0, 1.5fr) 1fr 0.9fr 0.9fr 230px;
+  grid-template-columns:
+    minmax(0, 1.5fr)
+    1fr
+    0.9fr
+    0.9fr
+    230px;
   align-items: center;
   gap: 16px;
   padding: 13px 22px;
-  background: #f8fafc;
-  border-top: 1px solid #e6eaf1;
-  border-bottom: 1px solid #e6eaf1;
-  color: #64748b;
+  background: #dbeafe;
+  border-top: 1px solid #bfdbfe;
+  border-bottom: 1px solid #bfdbfe;
+  color: #1e40af;
   font-size: 12px;
   font-weight: 700;
 }
+
 
 /* ========================================
    REQUEST LIST
@@ -158,11 +173,22 @@
 
 .rb-row {
   display: grid;
-  grid-template-columns: minmax(0, 1.5fr) 1fr 0.9fr 0.9fr 230px;
+  grid-template-columns:
+    minmax(0, 1.5fr)
+    1fr
+    0.9fr
+    0.9fr
+    230px;
   align-items: center;
   gap: 16px;
   padding: 16px 22px;
-  border-bottom: 1px solid #eef1f6;
+  border-bottom: 1px solid #e5edff;
+  background: #ffffff;
+  transition: background 0.15s ease;
+}
+
+.rb-row:hover {
+  background: #f0f6ff;
 }
 
 .rb-row:last-child {
@@ -176,6 +202,7 @@
 .rb-cell-label {
   display: none;
 }
+
 
 /* ========================================
    GUIDE / GUIDE COMPANY
@@ -195,10 +222,13 @@
   border-radius: 10px;
   display: grid;
   place-items: center;
+  background: #2563eb;
   color: #ffffff;
   font-size: 16px;
   font-weight: 700;
   text-transform: uppercase;
+  border: 1px solid #1d4ed8;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
 }
 
 .rb-company-info {
@@ -209,7 +239,7 @@
   margin: 0 0 2px;
   font-size: 14px;
   font-weight: 700;
-  color: #101b35;
+  color: #1e3a8a;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -239,6 +269,7 @@
   color: #f59e0b;
 }
 
+
 /* ========================================
    TOUR / EXPERIENCE
    ======================================== */
@@ -247,7 +278,7 @@
   margin: 0 0 2px;
   font-size: 13.5px;
   font-weight: 700;
-  color: #101b35;
+  color: #1e3a8a;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -264,9 +295,10 @@
 .rb-destination svg {
   width: 13px;
   height: 13px;
-  color: #94a3b8;
+  color: #2563eb;
   flex-shrink: 0;
 }
+
 
 /* ========================================
    DATE
@@ -276,6 +308,7 @@
   font-size: 13.5px;
   color: #334155;
 }
+
 
 /* ========================================
    STATUS BADGES
@@ -291,9 +324,10 @@
   white-space: nowrap;
 }
 
-.rb-badge--pending {
-  background: #fef3c7;
-  color: #b45309;
+.rb-badge--pending,
+.rb-badge--pendingpayment {
+  background: #fff4d6;
+  color: #a16207;
 }
 
 .rb-badge--accepted {
@@ -305,6 +339,22 @@
   background: #fee2e2;
   color: #b91c1c;
 }
+
+.rb-badge--rejected {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.rb-badge--paid {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.rb-badge--completed {
+  background: #e0e7ff;
+  color: #4338ca;
+}
+
 
 /* ========================================
    ACTIONS
@@ -337,7 +387,13 @@
   transition:
     background 0.15s ease,
     border-color 0.15s ease,
-    color 0.15s ease;
+    color 0.15s ease,
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.rb-btn:hover {
+  transform: translateY(-1px);
 }
 
 .rb-btn svg {
@@ -345,27 +401,45 @@
   height: 14px;
 }
 
+
+/* ========================================
+   BLUE PRIMARY BUTTON
+   ======================================== */
+
 .rb-btn--primary {
   background: #2563eb;
   border-color: #2563eb;
   color: #ffffff;
+  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.18);
 }
 
 .rb-btn--primary:hover:not(:disabled) {
   background: #1d4ed8;
   border-color: #1d4ed8;
+  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.24);
 }
+
+
+/* ========================================
+   GHOST BUTTON
+   ======================================== */
 
 .rb-btn--ghost {
   background: #ffffff;
-  border-color: #e2e8f0;
-  color: #334155;
+  border-color: #93c5fd;
+  color: #2563eb;
 }
 
 .rb-btn--ghost:hover {
-  background: #f8fafc;
-  border-color: #cbd5e1;
+  background: #eff6ff;
+  border-color: #60a5fa;
+  color: #1d4ed8;
 }
+
+
+/* ========================================
+   DANGER BUTTON
+   ======================================== */
 
 .rb-btn--danger {
   background: #fef2f2;
@@ -377,6 +451,7 @@
   background: #fee2e2;
   border-color: #fca5a5;
 }
+
 
 /* ========================================
    EMPTY STATE
@@ -407,7 +482,7 @@
   display: grid;
   place-items: center;
   margin-bottom: 16px;
-  background: #eff6ff;
+  background: #dbeafe;
   color: #2563eb;
   font-size: 24px;
 }
@@ -421,7 +496,7 @@
   margin: 0 0 6px;
   font-size: 16px;
   font-weight: 800;
-  color: #101b35;
+  color: #1e3a8a;
 }
 
 .rb-empty-state p {
@@ -431,6 +506,7 @@
   color: #64748b;
   line-height: 1.6;
 }
+
 
 /* ========================================
    DETAILS MODAL
@@ -444,7 +520,7 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background: rgba(11, 22, 56, 0.5);
+  background: rgba(30, 64, 175, 0.4);
   box-sizing: border-box;
 }
 
@@ -455,7 +531,10 @@
   overflow-y: auto;
   background: #ffffff;
   border-radius: 16px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  border: 1px solid #bfdbfe;
+  box-shadow:
+    0 20px 50px rgba(37, 99, 235, 0.2),
+    0 5px 18px rgba(15, 23, 42, 0.08);
 }
 
 .rb-modal-head {
@@ -464,7 +543,7 @@
   justify-content: space-between;
   gap: 12px;
   padding: 20px 22px;
-  border-bottom: 1px solid #eef1f6;
+  border-bottom: 1px solid #dbeafe;
 }
 
 .rb-modal-head-info {
@@ -478,7 +557,7 @@
   margin: 0 0 3px;
   font-size: 16px;
   font-weight: 800;
-  color: #101b35;
+  color: #1e3a8a;
 }
 
 .rb-modal-head-info p {
@@ -498,14 +577,23 @@
   place-items: center;
   border: none;
   border-radius: 8px;
-  background: #f1f5f9;
-  color: #475569;
+  background: #eff6ff;
+  color: #64748b;
   cursor: pointer;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
 }
 
 .rb-modal-close:hover {
-  background: #e2e8f0;
+  background: #dbeafe;
+  color: #2563eb;
 }
+
+
+/* ========================================
+   MODAL BODY
+   ======================================== */
 
 .rb-modal-body {
   padding: 20px 22px;
@@ -518,7 +606,7 @@
   padding: 12px 14px;
   margin-bottom: 18px;
   border-radius: 10px;
-  background: #f8fafc;
+  background: #eff6ff;
   font-size: 13px;
   font-weight: 600;
   color: #475569;
@@ -547,8 +635,42 @@
 .rb-modal-field span:last-child {
   font-size: 14px;
   font-weight: 600;
-  color: #101b35;
+  color: #1e3a8a;
 }
+
+
+/* ========================================
+   MODAL REQUEST DETAILS
+   ======================================== */
+
+.rb-modal-request-details {
+  margin-top: 18px;
+  padding: 14px;
+  border-radius: 10px;
+  background: #f0f6ff;
+  border: 1px solid #bfdbfe;
+}
+
+.rb-modal-request-details > span {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #2563eb;
+  text-transform: uppercase;
+}
+
+.rb-modal-request-details p {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.6;
+  color: #64748b;
+}
+
+
+/* ========================================
+   MODAL FOOTER
+   ======================================== */
 
 .rb-modal-foot {
   display: flex;
@@ -556,9 +678,11 @@
   justify-content: flex-end;
   gap: 10px;
   padding: 16px 22px;
-  border-top: 1px solid #eef1f6;
+  border-top: 1px solid #dbeafe;
+  background: #f8fbff;
   flex-wrap: wrap;
 }
+
 
 /* ========================================
    FOOTER
@@ -570,7 +694,7 @@
   justify-content: space-between;
   gap: 20px;
   padding: 16px 22px;
-  border-top: 1px solid #e6eaf1;
+  border-top: 1px solid #bfdbfe;
   background: #ffffff;
 }
 
@@ -578,6 +702,7 @@
   color: #64748b;
   font-size: 12px;
 }
+
 
 /* ========================================
    PAGINATION
@@ -593,7 +718,7 @@
   width: 30px;
   height: 30px;
   padding: 0;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #93c5fd;
   border-radius: 7px;
   background: #ffffff;
   color: #475569;
@@ -608,13 +733,10 @@
 }
 
 .rb-pager button:hover:not(:disabled) {
-  background: #f8fafc;
-  border-color: #cbd5e1;
+  background: #eff6ff;
+  border-color: #60a5fa;
+  color: #2563eb;
 }
-
-/* ========================================
-   ACTIVE PAGE - ALWAYS BLUE
-   ======================================== */
 
 .rb-pager button.active {
   background: #2563eb !important;
@@ -623,8 +745,8 @@
 }
 
 .rb-pager button.active:hover {
-  background: #2563eb !important;
-  border-color: #2563eb !important;
+  background: #1d4ed8 !important;
+  border-color: #1d4ed8 !important;
   color: #ffffff !important;
 }
 
@@ -640,6 +762,7 @@
   cursor: not-allowed;
 }
 
+
 /* ========================================
    TOAST
    ======================================== */
@@ -651,12 +774,13 @@
   z-index: 100;
   padding: 12px 18px;
   border-radius: 10px;
-  background: #0b1638;
+  background: #2563eb;
   color: #ffffff;
   font-size: 13px;
   font-weight: 600;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.25);
 }
+
 
 /* ========================================
    RESPONSIVE - TABLET
@@ -677,7 +801,6 @@
     padding: 15px 18px;
   }
 
-  /* Column header is redundant once rows become stacked cards */
   .rb-col-header {
     display: none;
   }
@@ -712,6 +835,7 @@
     justify-content: center;
   }
 }
+
 
 /* ========================================
    RESPONSIVE - MOBILE
@@ -779,6 +903,7 @@
   }
 }
 
+
 /* ========================================
    SMALL MOBILE
    ======================================== */
@@ -805,5 +930,16 @@
 
   .rb-footer-text {
     font-size: 11px;
+  }
+
+  .rb-modal-backdrop {
+    padding: 12px;
+  }
+
+  .rb-modal-head,
+  .rb-modal-body,
+  .rb-modal-foot {
+    padding-left: 16px;
+    padding-right: 16px;
   }
 }

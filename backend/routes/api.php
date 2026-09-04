@@ -5,6 +5,8 @@ use App\Http\Controllers\Guide\GuideExperienceController;
 use App\Http\Controllers\Guide\GuideProfileController;
 use App\Http\Controllers\TouristProfileController;
 use App\Http\Controllers\TravelRequestController;
+use App\Http\Controllers\BookingController;
+
 use Illuminate\Support\Facades\Route;
 
 
@@ -65,6 +67,7 @@ Route::middleware('auth:api')->group(function () {
     ]);
 });
 
+
 /*
 |--------------------------------------------------------------------------
 | Travel Request Routes
@@ -105,6 +108,31 @@ Route::middleware('auth:api')
             'cancel'
         ]);
     });
+
+
+/*
+|--------------------------------------------------------------------------
+| Booking Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware('auth:api')
+    ->prefix('bookings')
+    ->group(function () {
+
+        // Tourist sees their own bookings
+        Route::get('/', [
+            BookingController::class,
+            'index'
+        ]);
+
+        // Tourist sees one specific booking
+        Route::get('/{id}', [
+            BookingController::class,
+            'show'
+        ]);
+    });
+
 
 /*
 |--------------------------------------------------------------------------
