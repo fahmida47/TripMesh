@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
 import PaymentMethodSelector, {
   PAYMENT_METHODS,
@@ -10,6 +11,9 @@ import TouristSidebar from "./TouristSidebar";
 import "./PaymentPage.css";
 
 export default function PaymentPage({ booking, backLabel, onBack, onSubmit }) {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const selectedBooking = booking || location.state?.booking;
   const [method, setMethod] = useState("bkash");
   const [accountNumber, setAccountNumber] = useState("");
   const [paymentDateTime, setPaymentDateTime] = useState("");
@@ -22,24 +26,53 @@ export default function PaymentPage({ booking, backLabel, onBack, onSubmit }) {
     PAYMENT_METHODS.find((item) => item.id === method)?.label || "bKash";
 
   const canSubmit =
-    confirmed && accountNumber.trim() !== "" && paymentDateTime !== "";
+    confirmed &&
+    accountNumber.trim() !== "" &&
+    paymentDateTime !== "";
 
-  const handleSubmit = (e) => {
+  const submitDirectPayment = async (paymentData) => {
+    const token = localStorage.getItem("token");
+    const response = await fetch("http://127.0.0.1:8000/api/payments/complete", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        booking_id: paymentData.bookingId,
+        method: paymentData.method,
+        account_number: paymentData.accountNumber,
+        payment_date_time: paymentData.paymentDateTime,
+      }),
+    });
+    const responseData = await response.json();
+
+    if (!response.ok) {
+      throw new Error(responseData?.message || "Unable to submit payment.");
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!canSubmit) return;
 
     setSubmitting(true);
 
-    onSubmit?.({
-      bookingId: booking?.id,
-      method,
-      accountNumber,
-      paymentDateTime,
-    });
-
-    setSubmitting(false);
-    setSubmitted(true);
+    try {
+      await (onSubmit || submitDirectPayment)({
+        bookingId: selectedBooking?.id,
+        method,
+        accountNumber,
+        paymentDateTime,
+      });
+      setSubmitted(true);
+    } catch (error) {
+      window.alert(error?.message || "Unable to submit payment.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -53,9 +86,11 @@ export default function PaymentPage({ booking, backLabel, onBack, onSubmit }) {
         <main className="cp-content">
           <div className="cp-page">
             <PaymentSuccess
-              booking={booking}
+              booking={selectedBooking}
               method={methodLabel}
               accountNumber={accountNumber}
+              backLabel={backLabel || "Back to My Requests"}
+              onBack={onBack || (() => navigate(location.state?.from || "/tourist-dashboard/bookings"))}
             />
           </div>
         </main>
@@ -73,11 +108,11 @@ export default function PaymentPage({ booking, backLabel, onBack, onSubmit }) {
       <main className="cp-content">
         <div className="cp-page">
           <div className="cp-header">
-            {onBack && (
+            {(onBack || location.state?.from) && (
               <button
                 type="button"
                 className="cp-back-btn"
-                onClick={onBack}
+                onClick={onBack || (() => navigate(location.state?.from || "/tourist-dashboard/bookings"))}
               >
                 <FiArrowLeft aria-hidden="true" />
                 {backLabel || "Back"}
@@ -105,7 +140,7 @@ export default function PaymentPage({ booking, backLabel, onBack, onSubmit }) {
               />
             </div>
 
-            <PaymentBookingSummary booking={booking} />
+            <PaymentBookingSummary booking={selectedBooking} />
           </form>
         </div>
       </main>

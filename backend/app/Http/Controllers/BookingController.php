@@ -37,7 +37,7 @@ class BookingController extends Controller
         $bookings = Booking::with([
             'guide',
             'experience',
-            'payment',
+            'payment.payout',
             'travelRequest'
         ])
         ->where(
@@ -83,7 +83,7 @@ class BookingController extends Controller
         $booking = Booking::with([
             'guide',
             'experience',
-            'payment',
+            'payment.payout',
             'travelRequest'
         ])
         ->where('id', $id)

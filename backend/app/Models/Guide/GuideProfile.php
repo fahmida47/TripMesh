@@ -2,7 +2,10 @@
 
 namespace App\Models\Guide;
 
+use App\Models\User;
+use App\Models\Payout;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class GuideProfile extends Model
@@ -32,11 +35,21 @@ class GuideProfile extends Model
         'tour_types' => 'array',
     ];
 
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
     public function experiences(): HasMany
     {
         return $this->hasMany(
             GuideExperience::class,
             'guide_profile_id'
         );
+    }
+
+    public function payouts(): HasMany
+    {
+        return $this->hasMany(Payout::class, 'guide_profile_id');
     }
 }

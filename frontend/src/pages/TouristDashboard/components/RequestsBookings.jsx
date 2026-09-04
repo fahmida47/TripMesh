@@ -5,7 +5,7 @@ import TouristSidebar from "./TouristSidebar";
 
 import "./RequestsBookings.css";
 
-export default function RequestsBookings() {
+export default function RequestsBookings({ onProceedToPayment }) {
   const [toast, setToast] = useState(null);
   const toastTimer = useRef(null);
 
@@ -33,7 +33,10 @@ export default function RequestsBookings() {
           <p>Manage your tour requests in one place.</p>
         </div>
 
-        <MyRequests onToast={showToast} />
+        <MyRequests
+          onToast={showToast}
+          onProceedToPayment={onProceedToPayment}
+        />
 
         {toast && (
           <div className="rb-toast" role="status">

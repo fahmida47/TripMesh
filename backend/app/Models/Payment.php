@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Payment extends Model
 {
@@ -30,5 +31,10 @@ class Payment extends Model
             Booking::class,
             'booking_id'
         );
+    }
+
+    public function payout(): HasOne
+    {
+        return $this->hasOne(Payout::class);
     }
 }

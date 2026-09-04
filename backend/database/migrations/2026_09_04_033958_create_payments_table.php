@@ -11,10 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('payments', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+        // The payments table is defined by 2026_09_04_032917.
+        // Keep this historical migration as a no-op so fresh migrations do
+        // not attempt to create the same table twice.
     }
 
     /**
@@ -22,6 +21,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('payments');
+        // See up().
     }
 };
