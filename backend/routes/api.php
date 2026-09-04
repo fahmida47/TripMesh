@@ -8,6 +8,7 @@ use App\Http\Controllers\TravelRequestController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PayoutController;
+use App\Http\Controllers\ReviewController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -133,6 +134,20 @@ Route::middleware('auth:api')
             BookingController::class,
             'show'
         ]);
+    });
+
+/*
+|--------------------------------------------------------------------------
+| Tourist Review Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware('auth:api')
+    ->prefix('reviews')
+    ->group(function () {
+        Route::get('/eligible', [ReviewController::class, 'eligible']);
+        Route::post('/', [ReviewController::class, 'store']);
+        Route::get('/', [ReviewController::class, 'index']);
     });
 
 /*

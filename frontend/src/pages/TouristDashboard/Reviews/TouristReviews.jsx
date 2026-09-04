@@ -1,28 +1,107 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import "./TouristReviews.css";
 import ReviewForm from "./ReviewForm";
 
 import TouristSidebar from "../components/TouristSidebar";
 
+const API_BASE_URL = "http://127.0.0.1:8000/api";
+
+const formatReview = (review) => ({
+  id: review.id,
+  bookingId: review.booking_id,
+  companyName:
+    review.guide?.company_name ||
+    review.booking?.guide?.company_name ||
+    "Guide company",
+  rating: review.rating,
+  reviewText: review.review,
+  submittedDate: review.submitted_at
+    ? new Date(review.submitted_at).toLocaleDateString()
+    : "",
+});
+
 function TouristReviews() {
-  // No mock guide company data
-  const [guideCompanies] = useState([]);
-
-  // No mock review data
+  const [guideCompanies, setGuideCompanies] = useState([]);
   const [submittedReviews, setSubmittedReviews] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState("");
 
-  const handleReviewSubmit = (review) => {
-    const newReview = {
-      id: Date.now(),
-      ...review,
-      submittedDate: new Date().toLocaleDateString(),
+  useEffect(() => {
+    const loadReviewData = async () => {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        setLoadError("Please login first.");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const headers = {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        };
+        const [eligibleResponse, reviewsResponse] = await Promise.all([
+          fetch(`${API_BASE_URL}/reviews/eligible`, { headers }),
+          fetch(`${API_BASE_URL}/reviews`, { headers }),
+        ]);
+        const [eligibleData, reviewsData] = await Promise.all([
+          eligibleResponse.json(),
+          reviewsResponse.json(),
+        ]);
+
+        if (!eligibleResponse.ok) {
+          throw new Error(eligibleData.message || "Failed to load eligible bookings.");
+        }
+
+        if (!reviewsResponse.ok) {
+          throw new Error(reviewsData.message || "Failed to load your reviews.");
+        }
+
+        setGuideCompanies((eligibleData.bookings || []).map((booking) => ({
+          id: booking.id,
+          companyName: booking.guide?.company_name || "Guide company",
+          experienceName: booking.experience?.title || booking.experience?.name,
+        })));
+        setSubmittedReviews((reviewsData.reviews || []).map(formatReview));
+      } catch (error) {
+        setLoadError(error.message || "Unable to load reviews.");
+      } finally {
+        setLoading(false);
+      }
     };
 
+    loadReviewData();
+  }, []);
+
+  const handleReviewSubmit = async ({ bookingId, rating, reviewText }) => {
+    const token = localStorage.getItem("token");
+
+    const response = await fetch(`${API_BASE_URL}/reviews`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        booking_id: bookingId,
+        rating,
+        review: reviewText,
+      }),
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.message || "Unable to submit review.");
+    }
+
     setSubmittedReviews((prev) => [
-      newReview,
+      formatReview(data.review),
       ...prev,
     ]);
+    setGuideCompanies((prev) => prev.filter((company) => company.id !== bookingId));
   };
 
   return (
@@ -46,7 +125,10 @@ function TouristReviews() {
         <ReviewForm
           guideCompanies={guideCompanies}
           onSubmitReview={handleReviewSubmit}
+          loading={loading}
         />
+
+        {loadError && <p className="review-form-message">{loadError}</p>}
 
         {/* MY REVIEWS */}
         <section className="my-reviews-card">
@@ -57,7 +139,11 @@ function TouristReviews() {
             </div>
           </div>
 
-          {submittedReviews.length === 0 ? (
+          {loading ? (
+            <div className="reviews-empty-state">
+              <p>Loading reviews...</p>
+            </div>
+          ) : submittedReviews.length === 0 ? (
             <div className="reviews-empty-state">
               <div className="reviews-empty-icon">
                 ☆
