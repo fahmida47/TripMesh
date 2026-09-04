@@ -3,9 +3,14 @@
 // Each request is expected to carry both `guideName` (the individual guide)
 // and `companyName` (the guide company) as separate fields.
 
-// Request statuses shown in the UI. Only these two are used for now:
-// "Pending" | "Accepted"
-export const REQUEST_STATUS_OPTIONS = ["All Status", "Pending", "Accepted"];
+// Request statuses shown in the UI:
+// "Pending" | "Accepted" | "Cancelled"
+export const REQUEST_STATUS_OPTIONS = [
+  "All Status",
+  "Pending",
+  "Accepted",
+  "Cancelled",
+];
 
 // Turns a "2026-08-15" style date into "15 Aug 2026" for display.
 export function formatDisplayDate(isoDate) {

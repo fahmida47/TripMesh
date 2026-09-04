@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { FiChevronDown } from "react-icons/fi";
+import { FiChevronDown, FiInbox } from "react-icons/fi";
 
 import { ChevronLeftIcon, ChevronRightIcon } from "./NavIcons";
 import TouristRequestCard from "./TouristRequestCard";
@@ -83,14 +83,32 @@ export default function MyRequests({ onToast, onProceedToPayment }) {
       </div>
 
       <div className="rb-col-header">
-        <span>Guide Company</span>
+        <span>Guide / Guide Company</span>
+        <span>Tour / Experience</span>
+        <span>Date</span>
         <span>Status</span>
-        <span style={{ textAlign: "right" }}>Actions</span>
+        <span style={{ textAlign: "right" }}>Action</span>
       </div>
 
       <div className="rb-list">
         {pageItems.length === 0 ? (
-          <p className="rb-empty">No requests match this filter yet.</p>
+          <div className="rb-empty-state">
+            <div className="rb-empty-icon">
+              <FiInbox aria-hidden="true" />
+            </div>
+
+            <h3>
+              {requests.length === 0
+                ? "No booking requests yet"
+                : "No requests match this filter"}
+            </h3>
+
+            <p>
+              {requests.length === 0
+                ? "Once you send a request to a guide or tour company, it will show up here so you can track its status."
+                : "Try selecting a different status filter to see your other requests."}
+            </p>
+          </div>
         ) : (
           pageItems.map((request) => (
             <TouristRequestCard
