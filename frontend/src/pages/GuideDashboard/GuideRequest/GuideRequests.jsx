@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+
 import "./GuideRequests.css";
 
 const API_BASE_URL = "http://127.0.0.1:8000/api";
 
 const GuideRequests = () => {
   const [requests, setRequests] = useState([]);
+
   const [counts, setCounts] = useState({
     all: 0,
     pending: 0,
@@ -44,7 +46,9 @@ const GuideRequests = () => {
 
       if (!response.ok) {
         throw new Error(
-          data.message || "Failed to fetch travel requests."
+          data.error ||
+            data.message ||
+            "Failed to fetch travel requests."
         );
       }
 
@@ -59,7 +63,10 @@ const GuideRequests = () => {
       });
     } catch (err) {
       console.error("Guide requests error:", err);
-      setError(err.message || "Unable to load travel requests.");
+
+      setError(
+        err.message || "Unable to load travel requests."
+      );
     } finally {
       setLoading(false);
     }
@@ -77,7 +84,9 @@ const GuideRequests = () => {
       const token = localStorage.getItem("token");
 
       if (!token) {
-        setError("Authentication token not found. Please login again.");
+        setError(
+          "Authentication token not found. Please login again."
+        );
         return;
       }
 
@@ -95,16 +104,25 @@ const GuideRequests = () => {
 
       const data = await response.json();
 
+      // Show the actual backend error
       if (!response.ok) {
+        console.error("Backend error response:", data);
+
         throw new Error(
-          data.message || `Unable to ${action} request.`
+          data.error ||
+            data.message ||
+            `Unable to ${action} request.`
         );
       }
 
       await fetchRequests();
     } catch (err) {
       console.error(`Request ${action} error:`, err);
-      setError(err.message || `Unable to ${action} request.`);
+
+      setError(
+        err.message ||
+          `Unable to ${action} request.`
+      );
     } finally {
       setActionLoading(null);
     }
@@ -112,6 +130,7 @@ const GuideRequests = () => {
 
   const getStatusClass = (status) => {
     if (!status) return "pending";
+
     return status.toLowerCase();
   };
 
@@ -139,6 +158,7 @@ const GuideRequests = () => {
 
   return (
     <section className="guide-requests-page">
+
       {/* Page Header */}
       <div className="guide-requests-header">
         <div>
@@ -172,6 +192,7 @@ const GuideRequests = () => {
 
           <div>
             <strong>Something went wrong</strong>
+
             <p>{error}</p>
           </div>
 
@@ -186,6 +207,7 @@ const GuideRequests = () => {
 
       {/* Summary Cards */}
       <div className="request-summary-grid">
+
         <div className="request-summary-card all-card">
           <div className="summary-card-icon">
             <span>▣</span>
@@ -240,6 +262,7 @@ const GuideRequests = () => {
             <strong>{counts.cancelled}</strong>
           </div>
         </div>
+
       </div>
 
       {/* Loading */}
@@ -256,32 +279,37 @@ const GuideRequests = () => {
       )}
 
       {/* Empty State */}
-      {!loading && requests.length === 0 && !error && (
-        <div className="requests-empty-state">
-          <div className="requests-empty-icon">
-            <span>✉</span>
+      {!loading &&
+        requests.length === 0 &&
+        !error && (
+          <div className="requests-empty-state">
+
+            <div className="requests-empty-icon">
+              <span>✉</span>
+            </div>
+
+            <h2>No Requests Yet</h2>
+
+            <p>
+              You don't have any travel requests at the moment.
+              New requests from tourists will appear here.
+            </p>
+
+            <button
+              type="button"
+              onClick={fetchRequests}
+              className="empty-refresh-button"
+            >
+              Refresh Requests
+            </button>
+
           </div>
-
-          <h2>No Requests Yet</h2>
-
-          <p>
-            You don't have any travel requests at the moment.
-            New requests from tourists will appear here.
-          </p>
-
-          <button
-            type="button"
-            onClick={fetchRequests}
-            className="empty-refresh-button"
-          >
-            Refresh Requests
-          </button>
-        </div>
-      )}
+        )}
 
       {/* Requests */}
       {!loading && requests.length > 0 && (
         <div className="requests-section">
+
           <div className="requests-section-header">
             <div>
               <h2>Recent Requests</h2>
@@ -294,6 +322,7 @@ const GuideRequests = () => {
           </div>
 
           <div className="guide-requests-list">
+
             {requests.map((request) => {
               const tourist = request.tourist || {};
               const guide = request.guide || {};
@@ -305,7 +334,8 @@ const GuideRequests = () => {
                 "Tourist";
 
               const experienceTitle =
-                experience.title || "General Tour";
+                experience.title ||
+                "General Tour";
 
               const status =
                 request.status || "pending";
@@ -321,9 +351,12 @@ const GuideRequests = () => {
                   className="guide-request-card"
                   key={request.id}
                 >
+
                   {/* Card Top */}
                   <div className="request-card-top">
+
                     <div className="request-id-wrapper">
+
                       <div className="request-icon">
                         <span>✦</span>
                       </div>
@@ -337,6 +370,7 @@ const GuideRequests = () => {
                           Request #{request.id}
                         </h3>
                       </div>
+
                     </div>
 
                     <span
@@ -347,24 +381,33 @@ const GuideRequests = () => {
                       {status.charAt(0).toUpperCase() +
                         status.slice(1)}
                     </span>
+
                   </div>
 
                   {/* Tourist */}
                   <div className="tourist-profile-row">
+
                     <div className="tourist-avatar">
                       {getTouristInitial(touristName)}
                     </div>
 
                     <div className="tourist-profile-text">
+
                       <span>REQUEST FROM</span>
 
-                      <strong>{touristName}</strong>
+                      <strong>
+                        {touristName}
+                      </strong>
+
                     </div>
+
                   </div>
 
                   {/* Details */}
                   <div className="guide-request-details">
+
                     <div className="request-detail-item">
+
                       <div className="detail-icon">
                         ◈
                       </div>
@@ -378,9 +421,11 @@ const GuideRequests = () => {
                           {experienceTitle}
                         </strong>
                       </div>
+
                     </div>
 
                     <div className="request-detail-item">
+
                       <div className="detail-icon">
                         ◷
                       </div>
@@ -396,9 +441,11 @@ const GuideRequests = () => {
                           )}
                         </strong>
                       </div>
+
                     </div>
 
                     <div className="request-detail-item">
+
                       <div className="detail-icon amount-icon">
                         ৳
                       </div>
@@ -415,9 +462,11 @@ const GuideRequests = () => {
                           ).toLocaleString()}
                         </strong>
                       </div>
+
                     </div>
 
                     <div className="request-detail-item">
+
                       <div className="detail-icon">
                         ♙
                       </div>
@@ -432,13 +481,17 @@ const GuideRequests = () => {
                             "WonderHub"}
                         </strong>
                       </div>
+
                     </div>
+
                   </div>
 
                   {/* Request Details */}
                   {request.request_details && (
                     <div className="request-message">
+
                       <div className="message-header">
+
                         <span className="message-icon">
                           "
                         </span>
@@ -446,17 +499,21 @@ const GuideRequests = () => {
                         <span>
                           Request Details
                         </span>
+
                       </div>
 
                       <p>
                         {request.request_details}
                       </p>
+
                     </div>
                   )}
 
                   {/* Actions */}
+
                   {status === "pending" && (
                     <div className="guide-request-actions">
+
                       <button
                         type="button"
                         className="request-action-button reject"
@@ -492,11 +549,14 @@ const GuideRequests = () => {
                           ? "Processing..."
                           : "Accept Request"}
                       </button>
+
                     </div>
                   )}
 
+                  {/* Accepted */}
                   {status === "accepted" && (
                     <div className="guide-request-actions accepted-actions">
+
                       <button
                         type="button"
                         className="request-action-button cancel"
@@ -514,28 +574,40 @@ const GuideRequests = () => {
                           ? "Processing..."
                           : "Cancel Request"}
                       </button>
+
                     </div>
                   )}
 
+                  {/* Rejected */}
                   {status === "rejected" && (
                     <div className="request-final-state rejected-final">
+
                       <span>×</span>
+
                       This request has been rejected.
+
                     </div>
                   )}
 
+                  {/* Cancelled */}
                   {status === "cancelled" && (
                     <div className="request-final-state cancelled-final">
+
                       <span>↪</span>
+
                       This request has been cancelled.
+
                     </div>
                   )}
+
                 </article>
               );
             })}
+
           </div>
         </div>
       )}
+
     </section>
   );
 };
