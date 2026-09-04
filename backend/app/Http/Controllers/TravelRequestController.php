@@ -7,7 +7,6 @@ use App\Models\Guide\GuideProfile;
 use App\Models\TravelRequest;
 use App\Models\Booking;
 use App\Models\Payment;
-
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -42,6 +41,18 @@ class TravelRequestController extends Controller
                 'nullable',
                 'integer',
                 'exists:guide_experiences,id',
+            ],
+
+            'destination' => [
+                'required',
+                'string',
+                'max:255',
+            ],
+
+            'travelers' => [
+                'required',
+                'integer',
+                'min:1',
             ],
 
             'travel_date' => [
@@ -86,7 +97,6 @@ class TravelRequestController extends Controller
         // If an experience is provided,
         // make sure it belongs to the selected guide.
         if (!empty($validated['guide_experience_id'])) {
-
             $experience = GuideExperience::where(
                 'id',
                 $validated['guide_experience_id']
@@ -107,12 +117,20 @@ class TravelRequestController extends Controller
 
         // Create the travel request
         $travelRequest = TravelRequest::create([
-            'tourist_profile_id' => $touristProfile->id,
+            'tourist_profile_id' =>
+                $touristProfile->id,
 
-            'guide_profile_id' => $guideProfile->id,
+            'guide_profile_id' =>
+                $guideProfile->id,
 
             'guide_experience_id' =>
                 $validated['guide_experience_id'] ?? null,
+
+            'destination' =>
+                $validated['destination'],
+
+            'travelers' =>
+                $validated['travelers'],
 
             'travel_date' =>
                 $validated['travel_date'],
@@ -138,7 +156,6 @@ class TravelRequestController extends Controller
             'request' => $travelRequest,
         ], 201);
     }
-
 
     /**
      * Get all travel requests received by the authenticated guide.
@@ -204,7 +221,6 @@ class TravelRequestController extends Controller
         ]);
     }
 
-
     /**
      * Accept a travel request.
      *
@@ -262,12 +278,10 @@ class TravelRequestController extends Controller
         */
 
         try {
-
             $result = DB::transaction(function () use (
                 $travelRequest,
                 $guideProfile
             ) {
-
                 /*
                 |--------------------------------------------------------------------------
                 | 1. Update Travel Request
@@ -277,7 +291,6 @@ class TravelRequestController extends Controller
                 $travelRequest->update([
                     'status' => 'accepted',
                 ]);
-
 
                 /*
                 |--------------------------------------------------------------------------
@@ -308,7 +321,6 @@ class TravelRequestController extends Controller
                         'pending_payment',
                 ]);
 
-
                 /*
                 |--------------------------------------------------------------------------
                 | 3. Create Pending Payment
@@ -326,13 +338,11 @@ class TravelRequestController extends Controller
                         'pending',
                 ]);
 
-
                 return [
                     'booking' => $booking,
                     'payment' => $payment,
                 ];
             });
-
 
             /*
             |--------------------------------------------------------------------------
@@ -347,7 +357,6 @@ class TravelRequestController extends Controller
                 'booking',
             ]);
 
-
             $result['booking']->load([
                 'tourist',
                 'guide',
@@ -355,7 +364,6 @@ class TravelRequestController extends Controller
                 'payment',
                 'travelRequest',
             ]);
-
 
             /*
             |--------------------------------------------------------------------------
@@ -376,9 +384,7 @@ class TravelRequestController extends Controller
                 'payment' =>
                     $result['payment'],
             ], 200);
-
         } catch (\Throwable $e) {
-
             /*
             |--------------------------------------------------------------------------
             | Error Response
@@ -394,7 +400,6 @@ class TravelRequestController extends Controller
             ], 500);
         }
     }
-
 
     /**
      * Reject a travel request.
@@ -456,7 +461,6 @@ class TravelRequestController extends Controller
             'request' => $travelRequest,
         ]);
     }
-
 
     /**
      * Cancel a travel request.
