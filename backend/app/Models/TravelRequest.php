@@ -6,6 +6,7 @@ use App\Models\Guide\GuideExperience;
 use App\Models\Guide\GuideProfile;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class TravelRequest extends Model
 {
@@ -45,6 +46,20 @@ class TravelRequest extends Model
         return $this->belongsTo(
             GuideExperience::class,
             'guide_experience_id'
+        );
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Booking
+    |--------------------------------------------------------------------------
+    */
+
+    public function booking(): HasOne
+    {
+        return $this->hasOne(
+            Booking::class,
+            'travel_request_id'
         );
     }
 }
