@@ -78,9 +78,20 @@ export default function PaymentForm({
           type="submit"
           className="cp-submit"
           disabled={!canSubmit || submitting}
+          title={
+            !canSubmit
+              ? "Enter your payment number, select both date and time, and confirm the payment."
+              : undefined
+          }
         >
           <FiSend aria-hidden="true" /> Submit Payment
         </button>
+        {!canSubmit && (
+          <p className="cp-submit-hint" role="status">
+            Enter your payment number, select both the payment date and time,
+            then confirm the checkbox to enable submission.
+          </p>
+        )}
       </section>
     </>
   );

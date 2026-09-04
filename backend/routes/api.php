@@ -6,6 +6,8 @@ use App\Http\Controllers\Guide\GuideProfileController;
 use App\Http\Controllers\TouristProfileController;
 use App\Http\Controllers\TravelRequestController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\PayoutController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -132,6 +134,42 @@ Route::middleware('auth:api')
             'show'
         ]);
     });
+
+/*
+|--------------------------------------------------------------------------
+| Payment Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware('auth:api')
+    ->prefix('payments')
+    ->group(function () {
+        // Fetch (or initialise) the pending payment for a tourist booking.
+        Route::post('/initiate', [PaymentController::class, 'initiate']);
+
+        // Complete a bKash or Nagad payment.
+        Route::post('/complete', [PaymentController::class, 'complete']);
+
+        // Kept as the direct submit endpoint for the current Payment page.
+        Route::post('/', [PaymentController::class, 'complete']);
+
+        Route::get('/booking/{bookingId}', [
+            PaymentController::class,
+            'showByBooking',
+        ]);
+    });
+
+/*
+|--------------------------------------------------------------------------
+| Payout Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware('auth:api')->group(function () {
+    Route::get('/guide/payouts', [PayoutController::class, 'guideIndex']);
+    Route::get('/admin/payouts', [PayoutController::class, 'adminIndex']);
+    Route::post('/admin/payouts/{payout}/release', [PayoutController::class, 'release']);
+});
 
 
 /*

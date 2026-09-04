@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import { FiInbox } from "react-icons/fi";
 
@@ -16,6 +17,7 @@ export default function MyRequests({
   onToast,
   onProceedToPayment,
 }) {
+  const navigate = useNavigate();
   const [requests, setRequests] = useState([]);
   const [page, setPage] = useState(1);
   const [activeRequest, setActiveRequest] = useState(null);
@@ -119,7 +121,17 @@ export default function MyRequests({
       return;
     }
 
-    onProceedToPayment?.(booking);
+    if (onProceedToPayment) {
+      onProceedToPayment(booking);
+      return;
+    }
+
+    navigate("/tourist-dashboard/payment", {
+      state: {
+        booking,
+        from: "/tourist-dashboard/bookings",
+      },
+    });
   };
 
   // Cancel

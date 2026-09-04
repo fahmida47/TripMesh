@@ -24,8 +24,7 @@ export default function PaymentSuccess({
 
       <h2>Payment Completed!</h2>
       <p>
-        Your {method} payment has been submitted successfully. We&apos;ll verify
-        it and confirm your booking shortly.
+        Your {method} payment was completed and your booking is confirmed.
       </p>
 
       <div className="cp-success-recap">
@@ -54,7 +53,7 @@ export default function PaymentSuccess({
         className="cp-back cp-success-back"
         onClick={onBack}
       >
-        <FiArrowLeft aria-hidden="true" /> {backLabel}
+        <FiArrowLeft aria-hidden="true" /> {backLabel || "Back"}
       </button>
     </div>
   );

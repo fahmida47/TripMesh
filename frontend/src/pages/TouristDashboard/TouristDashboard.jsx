@@ -36,6 +36,40 @@ export default function TouristDashboard() {
     setPaymentTarget(null);
   };
 
+  const submitPayment = async ({
+    bookingId,
+    method,
+    accountNumber,
+    paymentDateTime,
+    transactionReference,
+  }) => {
+    const token = localStorage.getItem("token");
+    const response = await fetch("http://127.0.0.1:8000/api/payments/complete", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        booking_id: bookingId,
+        method,
+        account_number: accountNumber,
+        payment_date_time: paymentDateTime,
+        transaction_reference: transactionReference,
+      }),
+    });
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data?.message || "Unable to submit payment.");
+    }
+
+    setPaymentTarget((current) =>
+      current ? { ...current, booking: data.booking } : current
+    );
+  };
+
   return (
     <div className="ts-shell">
       <div className="ts-shell-body">
@@ -69,15 +103,16 @@ export default function TouristDashboard() {
                     : "Back to My Requests"
                 }
                 onBack={handleBackFromPayment}
+                onSubmit={submitPayment}
               />
             )}
 
             {/* BOOKINGS */}
             {isRequestsBookings && (
-              <RequestsBookings
+            <RequestsBookings
                 onProceedToPayment={(booking) =>
                   goToPayment(booking, "bookings")
-                }
+              }
               />
             )}
 

@@ -1,33 +1,26 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FiCreditCard } from "react-icons/fi";
 
 import { ChevronLeftIcon, ChevronRightIcon } from "./NavIcons";
 import TouristStatCard from "./TouristStatCard";
 import PaymentCard from "./PaymentCard";
 import PaymentDetailsModal from "./PaymentDetailsModal";
-import PaymentPage from "./PaymentPage";
 import TouristSidebar from "./TouristSidebar";
 
 import "./PaymentHistory.css";
 
 const PAGE_SIZE = 5;
 
-// No mock data.
-// This will be replaced with backend/API data later.
-const PAYMENTS = [];
-
 export default function PaymentHistory({ onPayNow }) {
-  const [payments] = useState(PAYMENTS);
+  const navigate = useNavigate();
+  const [payments, setPayments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   const [page, setPage] = useState(1);
 
   const [activePayment, setActivePayment] = useState(null);
-
-  // Controls whether Complete Your Payment page is visible
-  const [showPaymentPage, setShowPaymentPage] = useState(false);
-
-  // Stores the payment/booking that triggered Pay Now
-  const [paymentBooking, setPaymentBooking] = useState(null);
 
   const [toast, setToast] = useState(null);
 
@@ -51,6 +44,60 @@ export default function PaymentHistory({ onPayNow }) {
     return () => {
       clearTimeout(toastTimer.current);
     };
+  }, []);
+
+  useEffect(() => {
+    const loadPayments = async () => {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        setError("Please login first.");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch("http://127.0.0.1:8000/api/bookings", {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data?.message || "Failed to load payments.");
+        }
+
+        setPayments((data.bookings || []).map((booking) => {
+          const payment = booking.payment;
+          const guide = booking.guide || {};
+          const experience = booking.experience || {};
+          const request = booking.travel_request || booking.travelRequest || {};
+
+          return {
+            id: payment?.id || `booking-${booking.id}`,
+            booking,
+            tourName: experience.title || experience.name || "Travel Experience",
+            companyName: guide.company_name || guide.business_name || "Guide",
+            destination: experience.destination || experience.location || request.destination || "—",
+            date: payment?.payment_date_time || payment?.paid_at || null,
+            status: payment?.status === "paid"
+              ? payment?.payout?.status === "pending"
+                ? "Held by Admin"
+                : "Paid"
+              : "Pending",
+            transactionId: payment?.transaction_reference || null,
+          };
+        }));
+      } catch (loadError) {
+        setError(loadError.message || "Failed to load payments.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadPayments();
   }, []);
 
   // ==============================
@@ -84,14 +131,22 @@ export default function PaymentHistory({ onPayNow }) {
   // ==============================
 
   const handlePayNow = (payment) => {
-    // Keep the parent callback if one exists
-    onPayNow?.(payment);
+    if (!payment?.booking) {
+      showToast("No pending booking is available for payment.");
+      return;
+    }
 
-    // Store selected payment/booking
-    setPaymentBooking(payment || null);
+    if (onPayNow) {
+      onPayNow(payment.booking);
+      return;
+    }
 
-    // Open payment page
-    setShowPaymentPage(true);
+    navigate("/tourist-dashboard/payment", {
+      state: {
+        booking: payment.booking,
+        from: "/tourist-dashboard/payments",
+      },
+    });
   };
 
   // ==============================
@@ -107,47 +162,11 @@ export default function PaymentHistory({ onPayNow }) {
   };
 
   // ==============================
-  // BACK FROM PAYMENT PAGE
-  // ==============================
-
-  const handlePaymentBack = () => {
-    setShowPaymentPage(false);
-    setPaymentBooking(null);
-  };
-
-  // ==============================
-  // PAYMENT SUBMIT
-  // ==============================
-
-  const handlePaymentSubmit = (data) => {
-    console.log("Payment submitted:", data);
-
-    showToast("Payment information submitted successfully.");
-  };
-
-  // =====================================================
-  // IMPORTANT:
-  // SHOW PAYMENT PAGE INSTEAD OF PAYMENT HISTORY
-  // =====================================================
-
-  if (showPaymentPage) {
-    return (
-      <PaymentPage
-        booking={paymentBooking}
-        backLabel="Back to Payments"
-        onBack={handlePaymentBack}
-        onSubmit={handlePaymentSubmit}
-      />
-    );
-  }
-
-  // ==============================
   // PAYMENT HISTORY PAGE
   // ==============================
 
   return (
     <>
-      {/* TOURIST SIDEBAR */}
       <TouristSidebar />
 
       {/* PAYMENT CONTENT */}
@@ -243,7 +262,11 @@ export default function PaymentHistory({ onPayNow }) {
           ============================== */}
 
           <div className="pm-list">
-            {pageItems.length === 0 ? (
+            {loading ? (
+              <p className="pm-empty">Loading payments...</p>
+            ) : error ? (
+              <p className="pm-empty">{error}</p>
+            ) : pageItems.length === 0 ? (
               <p className="pm-empty">No payments yet.</p>
             ) : (
               pageItems.map((payment) => (
