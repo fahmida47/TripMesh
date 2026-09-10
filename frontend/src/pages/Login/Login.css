@@ -77,7 +77,6 @@
   content: "";
   position: absolute;
   inset: 0;
-
   background: linear-gradient(
     90deg,
     rgba(2, 6, 23, 0.75),
@@ -90,35 +89,26 @@
   top: 45px;
   left: 60px;
   z-index: 2;
-
   font-size: 36px;
   font-weight: 900;
   color: white;
   letter-spacing: -1px;
-
   animation: fadeDown 1s ease;
 }
 
 .hero-text {
   position: absolute;
-
   left: 70px;
   top: 50%;
-
   transform: translateY(-50%);
-
   z-index: 2;
-
   color: white;
-
   max-width: 520px;
-
   animation: heroShow 1.2s ease;
 }
 
 .hero-text h1 {
   margin: 0;
-
   font-size: 65px;
   line-height: 1.05;
   font-weight: 900;
@@ -127,88 +117,61 @@
 
 .hero-text p {
   margin-top: 25px;
-
   font-size: 19px;
   line-height: 1.7;
-
   color: #e2e8f0;
 }
 
 .auth-right {
   position: absolute;
-
   right: 8%;
   top: 50%;
-
   transform: translateY(-50%);
-
   width: 430px;
-
   z-index: 5;
 }
 
 .auth-card {
   width: 100%;
-
   padding: 38px 45px;
-
   background: rgba(255, 255, 255, 0.93);
-
   backdrop-filter: blur(25px);
-
   border-radius: 30px;
-
   border: 1px solid rgba(255, 255, 255, 0.6);
-
   box-shadow: 0 40px 100px rgba(0, 0, 0, 0.35);
-
   animation: cardAppear 1s ease;
-
   position: relative;
-
   overflow: hidden;
 }
 
 .auth-card::before {
   content: "";
-
   position: absolute;
-
   width: 150px;
   height: 500px;
-
   background: linear-gradient(
     transparent,
     rgba(255, 255, 255, 0.8),
     transparent
   );
-
   transform: rotate(35deg);
-
   top: -200px;
   left: -250px;
-
   animation: shineMove 7s infinite;
-
   pointer-events: none;
 }
 
 .login-logo {
   display: flex;
-
   justify-content: center;
-
   margin-bottom: 15px;
-
   position: relative;
-
   z-index: 2;
 }
 
 .trip-logo {
   width: 65px;
   height: 65px;
-
   transition: 0.4s;
 }
 
@@ -219,58 +182,38 @@
 .auth-card h2 {
   position: relative;
   z-index: 2;
-
   text-align: center;
-
   font-size: 40px;
-
   font-weight: 900;
-
   color: #0f172a;
-
   margin: 0 0 8px;
 }
 
 .subtitle {
   position: relative;
   z-index: 2;
-
   text-align: center;
-
   color: #64748b;
-
   margin: 8px 0 25px;
 }
 
 .auth-card form {
   width: 100%;
-
   position: relative;
-
   z-index: 2;
 }
 
 .auth-card input {
   width: 100%;
-
   height: 55px;
-
   padding: 0 18px;
-
   margin-bottom: 14px;
-
   border-radius: 15px;
-
   border: 1px solid #cbd5e1;
-
   background: #f8fafc;
-
   font-size: 16px;
-
   color: #0f172a;
-
   transition: 0.3s;
-
   box-sizing: border-box;
 }
 
@@ -280,80 +223,53 @@
 
 .auth-card input:focus {
   outline: none;
-
   border-color: #1552d7;
-
   background: white;
-
   box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.15);
 }
 
 .forgot-password {
   display: block;
-
   text-align: right;
-
   margin-top: 2px;
-
   margin-bottom: 22px;
-
   font-size: 14px;
-
   font-weight: 600;
 }
 
 .forgot-password a {
   color: #2563eb;
-
   text-decoration: none;
-
   transition: 0.3s;
 }
 
 .forgot-password a:hover {
   color: #0f4fc4;
-
   text-decoration: underline;
 }
 
 /* Main buttons */
 .auth-card button {
   width: 100%;
-
   height: 55px;
-
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
   padding: 0;
-
   border: none;
-
   border-radius: 18px;
-
   background: linear-gradient(135deg, #2563eb, #0ea5e9);
-
   color: white;
-
   font-size: 18px;
-
   font-weight: 800;
-
   text-align: center;
-
   cursor: pointer;
-
   transition: 0.35s;
-
   box-shadow: 0 15px 35px rgba(37, 99, 235, 0.35);
 }
 
 .auth-card button:hover {
   transform: translateY(-5px);
-
   box-shadow: 0 25px 50px rgba(5, 34, 96, 0.45);
 }
 
@@ -363,120 +279,144 @@
 
 .auth-card button:disabled {
   opacity: 0.7;
-
   cursor: not-allowed;
-
   transform: none;
 }
 
-/* ==========================================
-   RETRY BUTTON
-   Small text-style button under OTP
-========================================== */
+/* OTP timer */
+.otp-timer {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: -3px 0 14px;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+}
 
+.otp-timer strong {
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.otp-progress {
+  width: 100%;
+  height: 3px;
+  margin-top: 3px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: #e2e8f0;
+}
+
+.otp-progress-fill {
+  height: 100%;
+  border-radius: 10px;
+  background: linear-gradient(
+    90deg,
+    #2563eb,
+    #38bdf8
+  );
+  transition: width 1s linear;
+}
+
+/* Retry countdown */
+.retry-wait {
+  margin: -3px 0 14px;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.retry-wait strong {
+  color: #2563eb;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Retry button */
 .retry-container {
   display: flex;
-
   align-items: center;
-
   justify-content: center;
-
   gap: 5px;
-
   margin: -3px 0 16px;
-
   font-size: 13px;
-
   color: #64748b;
-
   line-height: 1.4;
 }
 
 .auth-card .retry-button {
   width: auto;
-
   height: auto;
-
   display: inline;
-
   padding: 0;
-
   margin: 0;
-
   border: none;
-
   border-radius: 0;
-
   background: transparent;
-
   color: #2563eb;
-
   font-size: 13px;
-
   font-weight: 700;
-
   line-height: 1.4;
-
   cursor: pointer;
-
   box-shadow: none;
-
   transition: 0.25s;
 }
 
 .auth-card .retry-button:hover {
   color: #1d4ed8;
-
   text-decoration: underline;
-
   transform: none;
-
   box-shadow: none;
 }
 
 .auth-card .retry-button:active {
   transform: none;
-
   box-shadow: none;
 }
 
 .auth-card .retry-button:disabled {
   opacity: 0.6;
-
   cursor: not-allowed;
-
   transform: none;
-
   box-shadow: none;
 }
 
-/* ==========================================
-   FOOTER
-========================================== */
+/* Disabled verify button */
+.auth-card button.verify-disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
 
+.auth-card button.verify-disabled:hover {
+  opacity: 0.55;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Footer */
 .footer-text {
   position: relative;
-
   z-index: 2;
-
   text-align: center;
-
   margin: 25px 0 0;
-
   color: #64748b;
-
   line-height: 1.6;
-
   font-size: 14px;
 }
 
 .footer-text a {
   color: #2563eb;
-
   font-weight: 700;
-
   margin-left: 5px;
-
   text-decoration: none;
 }
 
@@ -484,38 +424,24 @@
   text-decoration: underline;
 }
 
-/* ==========================================
-   ERROR & SUCCESS
-========================================== */
-
+/* Error & Success */
 .login-error {
   margin: -3px 0 12px;
-
   color: #dc2626;
-
   font-size: 13px;
-
   font-weight: 600;
-
   line-height: 1.4;
 }
 
 .login-success {
   margin: -3px 0 12px;
-
   color: #16a34a;
-
   font-size: 13px;
-
   font-weight: 600;
-
   line-height: 1.4;
 }
 
-/* ==========================================
-   RESPONSIVE
-========================================== */
-
+/* Responsive */
 @media (max-width: 900px) {
   .hero-text {
     display: none;
@@ -523,15 +449,12 @@
 
   .auth-right {
     right: 50%;
-
     transform: translate(50%, -50%);
-
     width: 90%;
   }
 
   .logo {
     left: 50%;
-
     transform: translateX(-50%);
   }
 }
@@ -539,7 +462,6 @@
 @media (max-width: 500px) {
   .auth-card {
     padding: 30px 22px;
-
     border-radius: 22px;
   }
 
@@ -549,13 +471,11 @@
 
   .subtitle {
     font-size: 14px;
-
     margin-bottom: 20px;
   }
 
   .logo {
     top: 25px;
-
     font-size: 28px;
   }
 
@@ -565,29 +485,35 @@
 
   .trip-logo {
     width: 58px;
-
     height: 58px;
   }
 
   .auth-card input {
     height: 52px;
-
     font-size: 15px;
   }
 
   .auth-card button {
     height: 52px;
-
     font-size: 17px;
   }
 
   .retry-container {
     font-size: 12px;
-
     margin-bottom: 15px;
   }
 
   .auth-card .retry-button {
+    font-size: 12px;
+  }
+
+  .otp-timer,
+  .retry-wait {
+    font-size: 12px;
+  }
+
+  .otp-timer strong,
+  .retry-wait strong {
     font-size: 12px;
   }
 }

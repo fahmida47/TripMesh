@@ -52,7 +52,7 @@ class AuthController extends Controller
         error_log('========================================');
         error_log('Phone: ' . $phone);
         error_log('OTP:   ' . $code);
-        error_log('Expires: 5 minutes');
+        error_log('Expires: 2 minutes');
         error_log('========================================');
         error_log('');
 
@@ -60,18 +60,17 @@ class AuthController extends Controller
         |--------------------------------------------------------------------------
         | Store OTP temporarily in Laravel Cache
         |--------------------------------------------------------------------------
+        | OTP automatically expires after 2 minutes.
         | This does NOT create a database record.
-        | OTP automatically expires after 5 minutes.
         |--------------------------------------------------------------------------
         */
 
         Cache::put(
             'verification_code_' . $phone,
             $code,
-            now()->addMinutes(5)
+            now()->addMinutes(2)
         );
 
-        // IMPORTANT:
         // OTP is NOT included in this response.
         return response()->json([
             'message' => 'Verification code sent successfully.',
@@ -109,14 +108,24 @@ class AuthController extends Controller
 
         $storedCode = Cache::get($cacheKey);
 
-        // No OTP found
+        /*
+        |--------------------------------------------------------------------------
+        | OTP expired or does not exist
+        |--------------------------------------------------------------------------
+        */
+
         if (!$storedCode) {
             return response()->json([
                 'message' => 'Verification code is invalid or expired.',
             ], 401);
         }
 
-        // OTP does not match
+        /*
+        |--------------------------------------------------------------------------
+        | OTP does not match
+        |--------------------------------------------------------------------------
+        */
+
         if ($storedCode !== $code) {
             return response()->json([
                 'message' => 'Invalid verification code.',
@@ -129,10 +138,15 @@ class AuthController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        // Delete OTP immediately after successful verification
+        // Delete OTP immediately after successful verification.
         Cache::forget($cacheKey);
 
-        // Check whether this phone already belongs to a user
+        /*
+        |--------------------------------------------------------------------------
+        | Check whether this phone already belongs to a user
+        |--------------------------------------------------------------------------
+        */
+
         $user = User::where('phone', $phone)->first();
 
         /*
@@ -225,6 +239,12 @@ class AuthController extends Controller
                 'phone' => $user->phone,
             ]);
         }
+
+        /*
+        |--------------------------------------------------------------------------
+        | Automatically Create Tourist Profile
+        |--------------------------------------------------------------------------
+        */
 
         if ($user->role === 'tourist') {
             TouristProfile::create([
