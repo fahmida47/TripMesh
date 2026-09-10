@@ -1,10 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 import loginBg from "../../assets/login-bg.jpeg";
 import Loading from "../../components/Loading/Loading";
 
 const API_URL = "http://127.0.0.1:8000/api";
+
+const OTP_DURATION = 120;
+const RETRY_DELAY = 20;
 
 const LogoIcon = () => (
   <svg viewBox="0 0 80 80" className="trip-logo" fill="none">
@@ -25,13 +28,7 @@ const LogoIcon = () => (
     />
 
     <path
-      d="
-        M40 18
-        C29 18 21 26 21 37
-        C21 51 40 64 40 64
-        C40 64 59 51 59 37
-        C59 26 51 18 40 18Z
-      "
+      d="M40 18 C29 18 21 26 21 37 C21 51 40 64 40 64 C40 64 59 51 59 37 C59 26 51 18 40 18Z"
       fill="url(#tripGradient)"
     />
 
@@ -54,18 +51,72 @@ const Login = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [codeSent, setCodeSent] = useState(false);
+
+  const [otpTimeLeft, setOtpTimeLeft] = useState(OTP_DURATION);
+  const [retryTimeLeft, setRetryTimeLeft] = useState(0);
   const [showRetry, setShowRetry] = useState(false);
 
+  // Normal OTP timer
+  useEffect(() => {
+    if (!codeSent || otpTimeLeft <= 0 || retryTimeLeft > 0) {
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setOtpTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+
+          setOtpTimeLeft(0);
+          setRetryTimeLeft(RETRY_DELAY);
+          setShowRetry(false);
+
+          return 0;
+        }
+
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [codeSent, otpTimeLeft, retryTimeLeft]);
+
+  // Retry countdown
+  useEffect(() => {
+    if (retryTimeLeft <= 0) {
+      return;
+    }
+
+    const timer = setInterval(() => {
+      setRetryTimeLeft((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+
+          setRetryTimeLeft(0);
+          setShowRetry(true);
+
+          return 0;
+        }
+
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [retryTimeLeft]);
+
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
 
     setError("");
   };
 
-  // SEND / RETRY VERIFICATION CODE
+  // Send / Retry OTP
   const handleSendCode = async () => {
     setError("");
     setSuccess("");
@@ -82,6 +133,10 @@ const Login = () => {
       return;
     }
 
+    if (sendingCode) {
+      return;
+    }
+
     setSendingCode(true);
 
     try {
@@ -91,15 +146,15 @@ const Login = () => {
           "Content-Type": "application/json",
           Accept: "application/json",
         },
-        body: JSON.stringify({
-          phone: phone,
-        }),
+        body: JSON.stringify({ phone }),
       });
 
       const result = await response.json();
 
       if (!response.ok) {
-        setError(result.message || "Failed to send verification code.");
+        setError(
+          result.message || "Failed to send verification code."
+        );
         setSendingCode(false);
         return;
       }
@@ -112,7 +167,14 @@ const Login = () => {
       }));
 
       setSuccess("Verification code sent successfully.");
+
+      // New OTP starts from 02:00
+      setOtpTimeLeft(OTP_DURATION);
+
+      // Remove retry countdown
+      setRetryTimeLeft(0);
       setShowRetry(false);
+
       setSendingCode(false);
     } catch (err) {
       console.error("Send code error:", err);
@@ -125,7 +187,7 @@ const Login = () => {
     }
   };
 
-  // VERIFY CODE + LOGIN
+  // Verify OTP + Login
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -155,6 +217,16 @@ const Login = () => {
       return;
     }
 
+    // OTP expired
+    if (otpTimeLeft <= 0) {
+      return;
+    }
+
+    // Retry cooldown active
+    if (retryTimeLeft > 0) {
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -165,27 +237,34 @@ const Login = () => {
           Accept: "application/json",
         },
         body: JSON.stringify({
-          phone: phone,
+          phone,
           code: verificationCode,
         }),
       });
 
       const result = await response.json();
 
+      // Wrong / expired OTP
       if (!response.ok) {
-        setError(result.message || "Invalid verification code.");
+        setError(
+          result.message || "Invalid verification code."
+        );
 
-        // Retry only appears when OTP is wrong
-        setShowRetry(true);
+        // Start 20 second retry countdown
+        setRetryTimeLeft(RETRY_DELAY);
+        setShowRetry(false);
 
         setLoading(false);
         return;
       }
 
-      // EXISTING USER
+      // Existing user
       if (result.is_new_user === false && result.token) {
         localStorage.setItem("token", result.token);
-        localStorage.setItem("user", JSON.stringify(result.user));
+        localStorage.setItem(
+          "user",
+          JSON.stringify(result.user)
+        );
         localStorage.setItem("isLoggedIn", "true");
 
         if (result.user.role === "guide") {
@@ -197,13 +276,13 @@ const Login = () => {
         return;
       }
 
-      // NEW USER
+      // New user
       if (result.is_new_user === true) {
         setLoading(false);
 
         navigate("/signup", {
           state: {
-            phone: phone,
+            phone,
           },
         });
 
@@ -223,6 +302,17 @@ const Login = () => {
     }
   };
 
+  const formatTime = (seconds) => {
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = seconds % 60;
+
+    return `${String(minutes).padStart(2, "0")}:${String(
+      remainingSeconds
+    ).padStart(2, "0")}`;
+  };
+
+  const otpProgress = (otpTimeLeft / OTP_DURATION) * 100;
+
   return (
     <>
       {loading && (
@@ -233,7 +323,6 @@ const Login = () => {
       )}
 
       <div className="auth-container">
-        {/* LEFT SIDE */}
         <div
           className="auth-left"
           style={{
@@ -263,7 +352,6 @@ const Login = () => {
           </div>
         </div>
 
-        {/* RIGHT SIDE */}
         <div className="auth-right">
           <div className="auth-card">
             <div className="login-logo">
@@ -277,7 +365,6 @@ const Login = () => {
             </p>
 
             <form onSubmit={handleSubmit}>
-              {/* PHONE */}
               <input
                 type="tel"
                 name="phone"
@@ -287,7 +374,6 @@ const Login = () => {
                 required
               />
 
-              {/* SEND VERIFICATION CODE */}
               {!codeSent && (
                 <button
                   type="button"
@@ -300,14 +386,12 @@ const Login = () => {
                 </button>
               )}
 
-              {/* SUCCESS MESSAGE */}
               {success && (
                 <p className="login-success">
                   {success}
                 </p>
               )}
 
-              {/* OTP INPUT */}
               {codeSent && (
                 <input
                   type="text"
@@ -316,42 +400,86 @@ const Login = () => {
                   value={formData.verificationCode}
                   onChange={handleChange}
                   maxLength={6}
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
                   required
                 />
               )}
 
-              {/* ERROR MESSAGE */}
               {error && (
                 <p className="login-error">
                   {error}
                 </p>
               )}
 
-              {/* RETRY - ONLY AFTER WRONG OTP */}
-              {codeSent && showRetry && (
-                <div className="retry-container">
-                  <span>Didn't receive the code?</span>
+              {/* Normal OTP timer */}
+              {codeSent &&
+                otpTimeLeft > 0 &&
+                retryTimeLeft === 0 && (
+                  <div className="otp-timer">
+                    <span>Code expires in</span>
 
-                  <button
-                    type="button"
-                    className="retry-button"
-                    onClick={handleSendCode}
-                    disabled={sendingCode}
-                  >
-                    {sendingCode ? "Sending..." : "Retry"}
-                  </button>
+                    <strong>
+                      {formatTime(otpTimeLeft)}
+                    </strong>
+
+                    <div className="otp-progress">
+                      <div
+                        className="otp-progress-fill"
+                        style={{
+                          width: `${otpProgress}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                )}
+
+              {/* 20 second retry countdown */}
+              {codeSent && retryTimeLeft > 0 && (
+                <div className="retry-wait">
+                  Retry available in{" "}
+                  <strong>{retryTimeLeft}s</strong>
                 </div>
               )}
 
-              {/* VERIFY & LOGIN */}
+              {/* Retry button after 20 seconds */}
+              {codeSent &&
+                showRetry &&
+                retryTimeLeft === 0 && (
+                  <div className="retry-container">
+                    <span>Didn't receive the code?</span>
+
+                    <button
+                      type="button"
+                      className="retry-button"
+                      onClick={handleSendCode}
+                      disabled={sendingCode}
+                    >
+                      {sendingCode ? "Sending..." : "Retry"}
+                    </button>
+                  </div>
+                )}
+
               {codeSent && (
-                <button type="submit">
+                <button
+                  type="submit"
+                  disabled={
+                    otpTimeLeft <= 0 ||
+                    retryTimeLeft > 0 ||
+                    sendingCode
+                  }
+                  className={
+                    otpTimeLeft <= 0 ||
+                    retryTimeLeft > 0
+                      ? "verify-disabled"
+                      : ""
+                  }
+                >
                   Verify & Login
                 </button>
               )}
             </form>
 
-            {/* FOOTER */}
             <p className="footer-text">
               Don't have an account?
               <Link to="/signup">Sign Up</Link>
