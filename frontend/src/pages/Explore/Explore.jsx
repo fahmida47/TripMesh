@@ -153,26 +153,36 @@ function Explore({ embedded = false }) {
 
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
+
   const [selectedTourType, setSelectedTourType] = useState("");
   const [searchTourType, setSearchTourType] = useState("");
+
   const [priceRange, setPriceRange] = useState("");
   const [searchPriceRange, setSearchPriceRange] = useState("");
+
   const [sortBy, setSortBy] = useState("popular");
   const [viewMode, setViewMode] = useState("grid");
+
   const [guides, setGuides] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+
   const [currentPage, setCurrentPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
   const [totalGuides, setTotalGuides] = useState(0);
 
   // Request Modal
   const [selectedGuide, setSelectedGuide] = useState(null);
-  const [travelDate, setTravelDate] = useState("");
+
+  // Date Range
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+
   const [destination, setDestination] = useState("");
   const [travelers, setTravelers] = useState(1);
   const [requestDetails, setRequestDetails] = useState("");
   const [selectedExperience, setSelectedExperience] = useState("");
+
   const [requestLoading, setRequestLoading] = useState(false);
   const [requestSuccess, setRequestSuccess] = useState("");
   const [requestError, setRequestError] = useState("");
@@ -310,11 +320,14 @@ function Explore({ embedded = false }) {
     }
 
     setSelectedGuide(guide);
-    setTravelDate("");
+
+    setFromDate("");
+    setToDate("");
     setDestination("");
     setTravelers(1);
     setRequestDetails("");
     setSelectedExperience("");
+
     setRequestSuccess("");
     setRequestError("");
   };
@@ -326,11 +339,14 @@ function Explore({ embedded = false }) {
     }
 
     setSelectedGuide(null);
-    setTravelDate("");
+
+    setFromDate("");
+    setToDate("");
     setDestination("");
     setTravelers(1);
     setRequestDetails("");
     setSelectedExperience("");
+
     setRequestSuccess("");
     setRequestError("");
   };
@@ -388,8 +404,24 @@ function Explore({ embedded = false }) {
       return;
     }
 
-    if (!travelDate) {
-      setRequestError("Please select a travel date.");
+    // From Date validation
+    if (!fromDate) {
+      setRequestError("Please select a From Date.");
+      return;
+    }
+
+    // To Date validation
+    if (!toDate) {
+      setRequestError("Please select a To Date.");
+      return;
+    }
+
+    // Date range validation
+    if (toDate < fromDate) {
+      setRequestError(
+        "To Date cannot be earlier than From Date."
+      );
+
       return;
     }
 
@@ -419,8 +451,14 @@ function Explore({ embedded = false }) {
 
       travelers: Number(travelers),
 
-      travel_date: travelDate,
+      from_date: fromDate,
 
+      to_date: toDate,
+
+      /*
+        Keep amount in API payload for backend compatibility.
+        It is NOT displayed in the request form UI.
+      */
       amount: Number(selectedGuide.price || 0),
 
       request_details:
@@ -473,7 +511,8 @@ function Explore({ embedded = false }) {
         "Travel request sent successfully!"
       );
 
-      setTravelDate("");
+      setFromDate("");
+      setToDate("");
       setDestination("");
       setTravelers(1);
       setRequestDetails("");
@@ -495,6 +534,7 @@ function Explore({ embedded = false }) {
 
       <main className="explore-main">
         <section className="explore-listing-section">
+
           {/* Search */}
           <div className="explore-search-sort-row">
             <ExploreSearch
@@ -590,8 +630,9 @@ function Explore({ embedded = false }) {
           )}
 
           {/* Cards */}
-          {!loading && !error && (
-            guides.length > 0 ? (
+          {!loading &&
+            !error &&
+            (guides.length > 0 ? (
               <div
                 className={
                   viewMode === "list"
@@ -618,8 +659,7 @@ function Explore({ embedded = false }) {
                   range, or tour type.
                 </p>
               </div>
-            )
-          )}
+            ))}
 
           {/* Pagination */}
           {!loading && lastPage > 1 && (
@@ -792,11 +832,11 @@ function Explore({ embedded = false }) {
                   </div>
                 </div>
 
-                {/* Experience */}
+                {/* Tour / Experience */}
                 {selectedGuide.experiences &&
                   selectedGuide.experiences.length >
                     0 && (
-                    <div className="request-form-group">
+                    <div className="request-form-group request-experience-group">
                       <label htmlFor="experience">
                         Tour / Experience
                       </label>
@@ -867,7 +907,7 @@ function Explore({ embedded = false }) {
                   </small>
                 </div>
 
-                {/* Travelers */}
+                {/* Number of Travelers */}
                 <div className="request-form-group">
                   <label htmlFor="travelers">
                     Number of Travelers
@@ -900,38 +940,81 @@ function Explore({ embedded = false }) {
                   </small>
                 </div>
 
-                {/* Travel Date */}
-                <div className="request-form-group">
-                  <label htmlFor="travel-date">
-                    Travel Date
-                  </label>
+                {/* Date Range */}
+                <div className="request-date-range">
+                  {/* From Date */}
+                  <div className="request-form-group">
+                    <label htmlFor="from-date">
+                      From Date
+                    </label>
 
-                  <div className="request-input-wrapper">
-                    <span className="request-input-icon">
-                      📅
-                    </span>
+                    <div className="request-input-wrapper">
+                      <span className="request-input-icon">
+                        📅
+                      </span>
 
-                    <input
-                      id="travel-date"
-                      type="date"
-                      value={travelDate}
-                      min={getTodayDate()}
-                      onChange={(event) =>
-                        setTravelDate(
-                          event.target.value
-                        )
-                      }
-                      required
-                    />
+                      <input
+                        id="from-date"
+                        type="date"
+                        value={fromDate}
+                        min={getTodayDate()}
+                        onChange={(event) => {
+                          const value =
+                            event.target.value;
+
+                          setFromDate(value);
+
+                          if (
+                            toDate &&
+                            value > toDate
+                          ) {
+                            setToDate("");
+                          }
+                        }}
+                        required
+                      />
+                    </div>
+
+                    <small>
+                      Select your starting travel date.
+                    </small>
                   </div>
 
-                  <small>
-                    Choose your preferred travel date.
-                  </small>
+                  {/* To Date */}
+                  <div className="request-form-group">
+                    <label htmlFor="to-date">
+                      To Date
+                    </label>
+
+                    <div className="request-input-wrapper">
+                      <span className="request-input-icon">
+                        📅
+                      </span>
+
+                      <input
+                        id="to-date"
+                        type="date"
+                        value={toDate}
+                        min={
+                          fromDate || getTodayDate()
+                        }
+                        onChange={(event) =>
+                          setToDate(
+                            event.target.value
+                          )
+                        }
+                        required
+                      />
+                    </div>
+
+                    <small>
+                      Select your ending travel date.
+                    </small>
+                  </div>
                 </div>
 
                 {/* Request Details */}
-                <div className="request-form-group">
+                <div className="request-form-group request-details-group">
                   <div className="request-label-row">
                     <label htmlFor="request-details">
                       Request Details
@@ -950,33 +1033,12 @@ function Explore({ embedded = false }) {
                     }
                     placeholder="Tell the guide about your preferences or any special requirements."
                     maxLength={2000}
-                    rows={5}
+                    rows={3}
                   />
 
                   <small className="request-character-count">
                     {requestDetails.length}/2000
                   </small>
-                </div>
-
-                {/* Amount */}
-                <div className="request-amount-box">
-                  <div>
-                    <span>
-                      Estimated Amount
-                    </span>
-
-                    <small>
-                      Final price may vary based on
-                      your request.
-                    </small>
-                  </div>
-
-                  <strong>
-                    ৳
-                    {Number(
-                      selectedGuide.price || 0
-                    ).toLocaleString()}
-                  </strong>
                 </div>
 
                 {/* Actions */}
