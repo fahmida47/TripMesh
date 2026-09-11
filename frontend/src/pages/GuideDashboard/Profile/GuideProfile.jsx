@@ -3,6 +3,60 @@ import "./GuideProfile.css";
 
 const API_BASE_URL = "http://127.0.0.1:8000/api";
 const STORAGE_URL = "http://127.0.0.1:8000/storage";
+const MAX_UPLOAD_SIZE = 5 * 1024 * 1024;
+
+const compressImage = (file) =>
+  new Promise((resolve, reject) => {
+    const image = new Image();
+    const objectUrl = URL.createObjectURL(file);
+
+    image.onload = () => {
+      URL.revokeObjectURL(objectUrl);
+
+      const maxDimension = 1600;
+      const scale = Math.min(
+        1,
+        maxDimension / Math.max(image.naturalWidth, image.naturalHeight)
+      );
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+      canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+
+      const context = canvas.getContext("2d");
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+      let quality = 0.82;
+      const createBlob = () => {
+        canvas.toBlob((blob) => {
+          if (!blob) {
+            reject(new Error("Could not process the selected image."));
+            return;
+          }
+
+          if (blob.size <= MAX_UPLOAD_SIZE || quality <= 0.45) {
+            resolve(
+              new File([blob], `${file.name.replace(/\.[^.]+$/, "")}.jpg`, {
+                type: "image/jpeg",
+              })
+            );
+            return;
+          }
+
+          quality -= 0.1;
+          createBlob();
+        }, "image/jpeg", quality);
+      };
+
+      createBlob();
+    };
+
+    image.onerror = () => {
+      URL.revokeObjectURL(objectUrl);
+      reject(new Error("The selected file is not a valid image."));
+    };
+
+    image.src = objectUrl;
+  });
 
 function GuideProfile() {
   const [profile, setProfile] = useState({
@@ -13,6 +67,8 @@ function GuideProfile() {
     email: "",
     address: "",
     price: "",
+    minPrice: "",
+    maxPrice: "",
     tourTypes: [],
   });
 
@@ -77,6 +133,8 @@ function GuideProfile() {
         email: savedProfile.email || "",
         address: savedProfile.address || "",
         price: savedProfile.price ?? "",
+        minPrice: savedProfile.min_price ?? savedProfile.price ?? "",
+        maxPrice: savedProfile.max_price ?? savedProfile.price ?? "",
         tourTypes: Array.isArray(savedProfile.tour_types)
           ? savedProfile.tour_types
           : [],
@@ -138,26 +196,36 @@ function GuideProfile() {
     });
   };
 
-  const handleProfileImage = (e) => {
+  const handleProfileImage = async (e) => {
     const file = e.target.files?.[0];
 
     if (!file) return;
 
-    setProfileImage({
-      file,
-      preview: URL.createObjectURL(file),
-    });
+    try {
+      const compressedFile = await compressImage(file);
+      setProfileImage({
+        file: compressedFile,
+        preview: URL.createObjectURL(compressedFile),
+      });
+    } catch (error) {
+      setSuccessMessage(error.message);
+    }
   };
 
-  const handleCoverImage = (e) => {
+  const handleCoverImage = async (e) => {
     const file = e.target.files?.[0];
 
     if (!file) return;
 
-    setCoverImage({
-      file,
-      preview: URL.createObjectURL(file),
-    });
+    try {
+      const compressedFile = await compressImage(file);
+      setCoverImage({
+        file: compressedFile,
+        preview: URL.createObjectURL(compressedFile),
+      });
+    } catch (error) {
+      setSuccessMessage(error.message);
+    }
   };
 
   const handleExperienceChange = (id, field, value) => {
@@ -173,22 +241,27 @@ function GuideProfile() {
     );
   };
 
-  const handleExperienceImage = (id, file) => {
+  const handleExperienceImage = async (id, file) => {
     if (!file) return;
 
-    setExperiences((prev) =>
-      prev.map((experience) =>
-        experience.id === id
-          ? {
-              ...experience,
-              image: {
-                file,
-                preview: URL.createObjectURL(file),
-              },
-            }
-          : experience
-      )
-    );
+    try {
+      const compressedFile = await compressImage(file);
+      setExperiences((prev) =>
+        prev.map((experience) =>
+          experience.id === id
+            ? {
+                ...experience,
+                image: {
+                  file: compressedFile,
+                  preview: URL.createObjectURL(compressedFile),
+                },
+              }
+            : experience
+        )
+      );
+    } catch (error) {
+      setSuccessMessage(error.message);
+    }
   };
 
   const handleAddExperience = () => {
@@ -241,8 +314,8 @@ function GuideProfile() {
           : "";
 
         setSuccessMessage(
-          data.message ||
-            validationErrors ||
+          validationErrors ||
+            data.message ||
             "Failed to save experience."
         );
 
@@ -343,6 +416,8 @@ function GuideProfile() {
             email: profile.email,
             address: profile.address,
             price: profile.price,
+            min_price: profile.minPrice,
+            max_price: profile.maxPrice,
             tour_types: profile.tourTypes,
           }),
         }
@@ -356,8 +431,8 @@ function GuideProfile() {
           : "";
 
         setSuccessMessage(
-          data.message ||
-            validationErrors ||
+          validationErrors ||
+            data.message ||
             "Failed to save profile."
         );
 
@@ -601,20 +676,35 @@ function GuideProfile() {
           <h2>Tour Pricing</h2>
 
           <p>
-            Set the starting price for your guide service.
+            Set the minimum and maximum price for your guide service.
           </p>
 
           <div className="profile-field">
-            <label>Starting Price (BDT)</label>
+            <div className="contact-grid">
+              <div className="profile-field">
+                <label>Minimum Price (BDT)</label>
+                <input
+                  type="number"
+                  name="minPrice"
+                  min="0"
+                  value={profile.minPrice}
+                  onChange={handleChange}
+                  placeholder="Example: 2500"
+                />
+              </div>
 
-            <input
-              type="number"
-              name="price"
-              min="0"
-              value={profile.price}
-              onChange={handleChange}
-              placeholder="Example: 2500"
-            />
+              <div className="profile-field">
+                <label>Maximum Price (BDT)</label>
+                <input
+                  type="number"
+                  name="maxPrice"
+                  min="0"
+                  value={profile.maxPrice}
+                  onChange={handleChange}
+                  placeholder="Example: 10000"
+                />
+              </div>
+            </div>
           </div>
         </section>
 
