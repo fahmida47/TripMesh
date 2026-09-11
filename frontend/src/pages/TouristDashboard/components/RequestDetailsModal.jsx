@@ -26,6 +26,18 @@ function formatDate(date) {
   });
 }
 
+function formatDateRange(fromDate, toDate) {
+  if (!fromDate && !toDate) {
+    return "Not specified";
+  }
+
+  if (!toDate || fromDate === toDate) {
+    return formatDate(fromDate);
+  }
+
+  return `${formatDate(fromDate)} - ${formatDate(toDate)}`;
+}
+
 function formatAmount(amount) {
   return Number(amount || 0).toLocaleString("en-BD");
 }
@@ -166,7 +178,11 @@ export default function RequestDetailsModal({
   // Travel Date
   // ----------------------------------------
 
-  const travelDate =
+  const travelFromDate =
+    booking.from_date ||
+    booking.fromDate ||
+    travelRequest.from_date ||
+    travelRequest.fromDate ||
     booking.travel_date ||
     booking.travelDate ||
     travelRequest.travel_date ||
@@ -174,6 +190,15 @@ export default function RequestDetailsModal({
     booking.requested_date ||
     booking.requestedDate ||
     null;
+
+  const travelToDate =
+    booking.to_date ||
+    booking.toDate ||
+    travelRequest.to_date ||
+    travelRequest.toDate ||
+    null;
+
+  const travelDate = formatDateRange(travelFromDate, travelToDate);
 
   // ----------------------------------------
   // Amount
