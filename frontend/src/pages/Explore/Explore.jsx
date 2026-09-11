@@ -43,9 +43,7 @@ function GuideCard({ guide, onSendRequest }) {
           <div className="explore-company-title">
             <h3>{guide.companyName || "Guide Company"}</h3>
 
-            <p className="explore-location">
-              {guide.location || "Bangladesh"}
-            </p>
+            <p className="explore-location">{guide.location || "Bangladesh"}</p>
           </div>
         </div>
 
@@ -53,10 +51,7 @@ function GuideCard({ guide, onSendRequest }) {
         {guide.tourTypes && guide.tourTypes.length > 0 && (
           <div className="explore-tour-badges">
             {guide.tourTypes.map((type, index) => (
-              <span
-                className="explore-tour-badge"
-                key={`${type}-${index}`}
-              >
+              <span className="explore-tour-badge" key={`${type}-${index}`}>
                 {type}
               </span>
             ))}
@@ -89,9 +84,7 @@ function GuideCard({ guide, onSendRequest }) {
                 )}
 
                 <div className="experience-text">
-                  <strong>
-                    {experience.title || "Tour Experience"}
-                  </strong>
+                  <strong>{experience.title || "Tour Experience"}</strong>
 
                   <p>
                     {experience.description ||
@@ -108,30 +101,21 @@ function GuideCard({ guide, onSendRequest }) {
           <div className="explore-rating">
             <span className="explore-star">★</span>
 
-            <strong>
-              {Number(guide.rating || 0).toFixed(1)}
-            </strong>
+            <strong>{Number(guide.rating || 0).toFixed(1)}</strong>
 
-            <span>
-              ({guide.reviews || 0} reviews)
-            </span>
+            <span>({guide.reviews || 0} reviews)</span>
           </div>
 
           <div className="explore-price">
             <span>From</span>
 
-            <strong>
-              ৳{Number(guide.price || 0).toLocaleString()}
-            </strong>
+            <strong>৳{Number(guide.price || 0).toLocaleString()}</strong>
           </div>
         </div>
 
         {/* Buttons */}
         <div className="explore-card-actions">
-          <button
-            type="button"
-            className="explore-secondary-button"
-          >
+          <button type="button" className="explore-secondary-button">
             View Details
           </button>
 
@@ -223,7 +207,7 @@ function Explore({ embedded = false }) {
       params.append("per_page", 6);
 
       const response = await fetch(
-        `${API_BASE_URL}/guides/explore?${params.toString()}`
+        `${API_BASE_URL}/guides/explore?${params.toString()}`,
       );
 
       if (!response.ok) {
@@ -367,9 +351,7 @@ function Explore({ embedded = false }) {
       request cannot be submitted.
     */
     if (!user || !token) {
-      setRequestError(
-        "Please login first to send a travel request."
-      );
+      setRequestError("Please login first to send a travel request.");
 
       setTimeout(() => {
         navigate("/login");
@@ -379,9 +361,7 @@ function Explore({ embedded = false }) {
     }
 
     if (user.role !== "tourist") {
-      setRequestError(
-        "Only tourists can send travel requests."
-      );
+      setRequestError("Only tourists can send travel requests.");
 
       return;
     }
@@ -397,9 +377,7 @@ function Explore({ embedded = false }) {
     }
 
     if (!travelers || Number(travelers) < 1) {
-      setRequestError(
-        "Please enter at least 1 traveler."
-      );
+      setRequestError("Please enter at least 1 traveler.");
 
       return;
     }
@@ -418,9 +396,7 @@ function Explore({ embedded = false }) {
 
     // Date range validation
     if (toDate < fromDate) {
-      setRequestError(
-        "To Date cannot be earlier than From Date."
-      );
+      setRequestError("To Date cannot be earlier than From Date.");
 
       return;
     }
@@ -443,9 +419,7 @@ function Explore({ embedded = false }) {
     const requestData = {
       guide_profile_id: Number(guideProfileId),
 
-      guide_experience_id: experienceId
-        ? Number(experienceId)
-        : null,
+      guide_experience_id: experienceId ? Number(experienceId) : null,
 
       destination: destination.trim(),
 
@@ -461,27 +435,23 @@ function Explore({ embedded = false }) {
       */
       amount: Number(selectedGuide.price || 0),
 
-      request_details:
-        requestDetails.trim() || null,
+      request_details: requestDetails.trim() || null,
     };
 
     try {
       setRequestLoading(true);
 
-      const response = await fetch(
-        `${API_BASE_URL}/travel-requests`,
-        {
-          method: "POST",
+      const response = await fetch(`${API_BASE_URL}/travel-requests`, {
+        method: "POST",
 
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
 
-          body: JSON.stringify(requestData),
-        }
-      );
+        body: JSON.stringify(requestData),
+      });
 
       const data = await response.json();
 
@@ -492,24 +462,17 @@ function Explore({ embedded = false }) {
           const firstError = Object.values(data.errors)[0];
 
           setRequestError(
-            Array.isArray(firstError)
-              ? firstError[0]
-              : "Validation error."
+            Array.isArray(firstError) ? firstError[0] : "Validation error.",
           );
         } else {
-          setRequestError(
-            data.message ||
-              "Failed to send travel request."
-          );
+          setRequestError(data.message || "Failed to send travel request.");
         }
 
         return;
       }
 
       // Success
-      setRequestSuccess(
-        "Travel request sent successfully!"
-      );
+      setRequestSuccess("Travel request sent successfully!");
 
       setFromDate("");
       setToDate("");
@@ -520,9 +483,7 @@ function Explore({ embedded = false }) {
     } catch (err) {
       console.error("Send request error:", err);
 
-      setRequestError(
-        "Unable to send request. Please try again."
-      );
+      setRequestError("Unable to send request. Please try again.");
     } finally {
       setRequestLoading(false);
     }
@@ -534,7 +495,6 @@ function Explore({ embedded = false }) {
 
       <main className="explore-main">
         <section className="explore-listing-section">
-
           {/* Search */}
           <div className="explore-search-sort-row">
             <ExploreSearch
@@ -548,30 +508,20 @@ function Explore({ embedded = false }) {
             />
 
             <div className="explore-sort-control">
-              <label htmlFor="guide-sort">
-                Sort by:
-              </label>
+              <label htmlFor="guide-sort">Sort by:</label>
 
               <select
                 id="guide-sort"
                 value={sortBy}
                 onChange={handleSortChange}
               >
-                <option value="popular">
-                  Most Popular
-                </option>
+                <option value="popular">Most Popular</option>
 
-                <option value="rating">
-                  Highest Rated
-                </option>
+                <option value="rating">Highest Rated</option>
 
-                <option value="low-price">
-                  Lowest Price
-                </option>
+                <option value="low-price">Lowest Price</option>
 
-                <option value="high-price">
-                  Highest Price
-                </option>
+                <option value="high-price">Highest Price</option>
               </select>
             </div>
           </div>
@@ -579,18 +529,14 @@ function Explore({ embedded = false }) {
           {/* Result Header */}
           <div className="explore-listing-header">
             <p>
-              Showing{" "}
-              <strong>{guides.length}</strong> of{" "}
-              <strong>{totalGuides}</strong>{" "}
-              guide services
+              Showing <strong>{guides.length}</strong> of{" "}
+              <strong>{totalGuides}</strong> guide services
             </p>
 
             <div className="explore-view-buttons">
               <button
                 type="button"
-                className={
-                  viewMode === "grid" ? "active" : ""
-                }
+                className={viewMode === "grid" ? "active" : ""}
                 onClick={() => setViewMode("grid")}
                 aria-label="Grid view"
               >
@@ -599,9 +545,7 @@ function Explore({ embedded = false }) {
 
               <button
                 type="button"
-                className={
-                  viewMode === "list" ? "active" : ""
-                }
+                className={viewMode === "list" ? "active" : ""}
                 onClick={() => setViewMode("list")}
                 aria-label="List view"
               >
@@ -623,9 +567,7 @@ function Explore({ embedded = false }) {
             <div className="explore-no-results">
               <div className="explore-loader"></div>
 
-              <h3>
-                Loading guide services...
-              </h3>
+              <h3>Loading guide services...</h3>
             </div>
           )}
 
@@ -650,14 +592,9 @@ function Explore({ embedded = false }) {
               </div>
             ) : (
               <div className="explore-no-results">
-                <h3>
-                  No guide companies found
-                </h3>
+                <h3>No guide companies found</h3>
 
-                <p>
-                  Try another destination, price
-                  range, or tour type.
-                </p>
+                <p>Try another destination, price range, or tour type.</p>
               </div>
             ))}
 
@@ -667,43 +604,28 @@ function Explore({ embedded = false }) {
               <button
                 type="button"
                 disabled={currentPage === 1}
-                onClick={() =>
-                  handlePageChange(currentPage - 1)
-                }
+                onClick={() => handlePageChange(currentPage - 1)}
               >
                 Previous
               </button>
 
-              {Array.from(
-                { length: lastPage },
-                (_, index) => index + 1
-              ).map((page) => (
-                <button
-                  key={page}
-                  type="button"
-                  className={
-                    currentPage === page
-                      ? "active"
-                      : ""
-                  }
-                  onClick={() =>
-                    handlePageChange(page)
-                  }
-                >
-                  {page}
-                </button>
-              ))}
+              {Array.from({ length: lastPage }, (_, index) => index + 1).map(
+                (page) => (
+                  <button
+                    key={page}
+                    type="button"
+                    className={currentPage === page ? "active" : ""}
+                    onClick={() => handlePageChange(page)}
+                  >
+                    {page}
+                  </button>
+                ),
+              )}
 
               <button
                 type="button"
-                disabled={
-                  currentPage === lastPage
-                }
-                onClick={() =>
-                  handlePageChange(
-                    currentPage + 1
-                  )
-                }
+                disabled={currentPage === lastPage}
+                onClick={() => handlePageChange(currentPage + 1)}
               >
                 Next
               </button>
@@ -714,33 +636,23 @@ function Explore({ embedded = false }) {
 
       {/* Send Request Modal */}
       {selectedGuide && (
-        <div
-          className="request-modal-overlay"
-          onClick={handleCloseRequest}
-        >
+        <div className="request-modal-overlay" onClick={handleCloseRequest}>
           <div
             className="request-modal"
-            onClick={(event) =>
-              event.stopPropagation()
-            }
+            onClick={(event) => event.stopPropagation()}
           >
             {/* Modal Header */}
             <div className="request-modal-header">
               <div className="request-modal-heading">
-                <div className="request-modal-icon">
-                  ✈
-                </div>
+                <div className="request-modal-icon">✈</div>
 
                 <div>
-                  <h2>
-                    Send Travel Request
-                  </h2>
+                  <h2>Send Travel Request</h2>
 
                   <p>
                     Request a tour from{" "}
                     <strong>
-                      {selectedGuide.companyName ||
-                        "Guide Company"}
+                      {selectedGuide.companyName || "Guide Company"}
                     </strong>
                   </p>
                 </div>
@@ -761,20 +673,14 @@ function Explore({ embedded = false }) {
             {requestSuccess && (
               <div className="request-success-wrapper">
                 <div className="request-success-message">
-                  <div className="success-icon">
-                    ✓
-                  </div>
+                  <div className="success-icon">✓</div>
 
                   <div>
-                    <strong>
-                      Request Sent Successfully!
-                    </strong>
+                    <strong>Request Sent Successfully!</strong>
 
                     <p>
-                      Your travel request has
-                      been sent to{" "}
-                      {selectedGuide.companyName ||
-                        "the guide"}.
+                      Your travel request has been sent to{" "}
+                      {selectedGuide.companyName || "the guide"}.
                     </p>
                   </div>
                 </div>
@@ -807,9 +713,7 @@ function Explore({ embedded = false }) {
                 <div className="request-guide-info">
                   <div className="request-guide-avatar">
                     {selectedGuide.companyName
-                      ? selectedGuide.companyName
-                          .charAt(0)
-                          .toUpperCase()
+                      ? selectedGuide.companyName.charAt(0).toUpperCase()
                       : "G"}
                   </div>
 
@@ -819,104 +723,64 @@ function Explore({ embedded = false }) {
                     </span>
 
                     <strong>
-                      {selectedGuide.companyName ||
-                        "Guide Company"}
+                      {selectedGuide.companyName || "Guide Company"}
                     </strong>
 
                     <span className="request-guide-price">
                       Starting from ৳
-                      {Number(
-                        selectedGuide.price || 0
-                      ).toLocaleString()}
+                      {Number(selectedGuide.price || 0).toLocaleString()}
                     </span>
                   </div>
                 </div>
 
                 {/* Tour / Experience */}
-                {selectedGuide.experiences &&
-                  selectedGuide.experiences.length >
-                    0 && (
-                    <div className="request-form-group request-experience-group">
-                      <label htmlFor="experience">
-                        Tour / Experience
-                      </label>
-
-                      <div className="request-input-wrapper">
-                        <span className="request-input-icon">
-                          🗺
-                        </span>
-
-                        <select
-                          id="experience"
-                          value={selectedExperience}
-                          onChange={(event) =>
-                            setSelectedExperience(
-                              event.target.value
-                            )
-                          }
-                        >
-                          <option value="">
-                            General Tour
-                          </option>
-
-                          {selectedGuide.experiences.map(
-                            (experience) => (
-                              <option
-                                key={experience.id}
-                                value={experience.id}
-                              >
-                                {experience.title ||
-                                  "Tour Experience"}
-                              </option>
-                            )
-                          )}
-                        </select>
-                      </div>
-                    </div>
-                  )}
-
-                {/* Destination */}
-                <div className="request-form-group">
-                  <label htmlFor="destination">
-                    Destination
-                  </label>
+                <div className="request-form-group request-experience-group">
+                  <label htmlFor="experience">Which Tour / Experience?</label>
 
                   <div className="request-input-wrapper">
-                    <span className="request-input-icon">
-                      📍
-                    </span>
+                    <span className="request-input-icon">🗺️</span>
+
+                    <input
+                      id="experience"
+                      type="text"
+                      value={selectedExperience}
+                      onChange={(event) =>
+                        setSelectedExperience(event.target.value)
+                      }
+                      placeholder="Enter tour experience"
+                      maxLength={255}
+                    />
+                  </div>
+
+                  <small>Enter your preferred tour experience.</small>
+                </div>
+                {/* Destination */}
+                <div className="request-form-group">
+                  <label htmlFor="destination">Destination</label>
+
+                  <div className="request-input-wrapper">
+                    <span className="request-input-icon">📍</span>
 
                     <input
                       id="destination"
                       type="text"
                       value={destination}
-                      onChange={(event) =>
-                        setDestination(
-                          event.target.value
-                        )
-                      }
+                      onChange={(event) => setDestination(event.target.value)}
                       placeholder="Where do you want to travel?"
                       maxLength={255}
                       required
                     />
                   </div>
 
-                  <small>
-                    Enter the destination you want to
-                    visit.
-                  </small>
+                  <small>Enter the destination you want to visit.</small>
                 </div>
 
                 {/* Number of Travelers */}
                 <div className="request-form-group">
-                  <label htmlFor="travelers">
-                    Number of Travelers
-                  </label>
+                  <label htmlFor="travelers">Number of Travelers</label>
 
                   <div className="request-input-wrapper">
-                    <span className="request-input-icon">
-                      👥
-                    </span>
+                    <span className="request-input-icon">👥</span>
 
                     <input
                       id="travelers"
@@ -924,19 +788,14 @@ function Explore({ embedded = false }) {
                       min="1"
                       max="100"
                       value={travelers}
-                      onChange={(event) =>
-                        setTravelers(
-                          event.target.value
-                        )
-                      }
+                      onChange={(event) => setTravelers(event.target.value)}
                       placeholder="Number of travelers"
                       required
                     />
                   </div>
 
                   <small>
-                    Enter the total number of people
-                    joining the tour.
+                    Enter the total number of people joining the tour.
                   </small>
                 </div>
 
@@ -944,14 +803,10 @@ function Explore({ embedded = false }) {
                 <div className="request-date-range">
                   {/* From Date */}
                   <div className="request-form-group">
-                    <label htmlFor="from-date">
-                      From Date
-                    </label>
+                    <label htmlFor="from-date">From Date</label>
 
                     <div className="request-input-wrapper">
-                      <span className="request-input-icon">
-                        📅
-                      </span>
+                      <span className="request-input-icon">📅</span>
 
                       <input
                         id="from-date"
@@ -959,15 +814,11 @@ function Explore({ embedded = false }) {
                         value={fromDate}
                         min={getTodayDate()}
                         onChange={(event) => {
-                          const value =
-                            event.target.value;
+                          const value = event.target.value;
 
                           setFromDate(value);
 
-                          if (
-                            toDate &&
-                            value > toDate
-                          ) {
+                          if (toDate && value > toDate) {
                             setToDate("");
                           }
                         }}
@@ -975,50 +826,34 @@ function Explore({ embedded = false }) {
                       />
                     </div>
 
-                    <small>
-                      Select your starting travel date.
-                    </small>
+                    <small>Select your starting travel date.</small>
                   </div>
 
                   {/* To Date */}
                   <div className="request-form-group">
-                    <label htmlFor="to-date">
-                      To Date
-                    </label>
+                    <label htmlFor="to-date">To Date</label>
 
                     <div className="request-input-wrapper">
-                      <span className="request-input-icon">
-                        📅
-                      </span>
+                      <span className="request-input-icon">📅</span>
 
                       <input
                         id="to-date"
                         type="date"
                         value={toDate}
-                        min={
-                          fromDate || getTodayDate()
-                        }
-                        onChange={(event) =>
-                          setToDate(
-                            event.target.value
-                          )
-                        }
+                        min={fromDate || getTodayDate()}
+                        onChange={(event) => setToDate(event.target.value)}
                         required
                       />
                     </div>
 
-                    <small>
-                      Select your ending travel date.
-                    </small>
+                    <small>Select your ending travel date.</small>
                   </div>
                 </div>
 
                 {/* Request Details */}
                 <div className="request-form-group request-details-group">
                   <div className="request-label-row">
-                    <label htmlFor="request-details">
-                      Request Details
-                    </label>
+                    <label htmlFor="request-details">Request Details</label>
 
                     <span>Optional</span>
                   </div>
@@ -1026,11 +861,7 @@ function Explore({ embedded = false }) {
                   <textarea
                     id="request-details"
                     value={requestDetails}
-                    onChange={(event) =>
-                      setRequestDetails(
-                        event.target.value
-                      )
-                    }
+                    onChange={(event) => setRequestDetails(event.target.value)}
                     placeholder="Tell the guide about your preferences or any special requirements."
                     maxLength={2000}
                     rows={3}
