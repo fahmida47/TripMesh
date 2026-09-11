@@ -150,6 +150,17 @@ const GuideRequests = () => {
     });
   };
 
+  const formatDateRange = (request) => {
+    const fromDate =
+      request.from_date || request.fromDate || request.travel_date;
+    const toDate = request.to_date || request.toDate;
+
+    if (!fromDate && !toDate) return "Not specified";
+    if (!toDate || fromDate === toDate) return formatDate(fromDate);
+
+    return `${formatDate(fromDate)} - ${formatDate(toDate)}`;
+  };
+
   const getTouristInitial = (name) => {
     if (!name) return "T";
 
@@ -334,6 +345,7 @@ const GuideRequests = () => {
                 "Tourist";
 
               const experienceTitle =
+                request.experience_name ||
                 experience.title ||
                 "General Tour";
 
@@ -436,9 +448,25 @@ const GuideRequests = () => {
                         </span>
 
                         <strong>
-                          {formatDate(
-                            request.travel_date
-                          )}
+                          {formatDateRange(request)}
+                        </strong>
+                      </div>
+
+                    </div>
+
+                    <div className="request-detail-item">
+
+                      <div className="detail-icon">
+                        ♙
+                      </div>
+
+                      <div>
+                        <span className="request-detail-label">
+                          Travelers
+                        </span>
+
+                        <strong>
+                          {request.travelers || 1}
                         </strong>
                       </div>
 
