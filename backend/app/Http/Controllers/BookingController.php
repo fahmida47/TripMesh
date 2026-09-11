@@ -2,106 +2,238 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Booking;
+
 use Illuminate\Http\Request;
+use App\Services\BookingService;
+
+
 
 class BookingController extends Controller
 {
+
+
+    protected $bookingService;
+
+
+
+    public function __construct(
+        BookingService $bookingService
+    )
+    {
+
+        $this->bookingService =
+            $bookingService;
+
+    }
+
+
+
+
     /**
-     * Get all bookings of the logged-in tourist.
+     * Get all bookings
      */
     public function index(Request $request)
     {
+
+
         $user = auth('api')->user();
 
-        if (!$user) {
+
+
+        if(!$user){
+
             return response()->json([
-                'message' => 'Unauthenticated.'
-            ], 401);
+
+                'message'=>'Unauthenticated.'
+
+            ],401);
+
         }
 
-        if ($user->role !== 'tourist') {
+
+
+        if($user->role !== 'tourist'){
+
+
             return response()->json([
-                'message' => 'Only tourists can view bookings.'
-            ], 403);
+
+                'message'=>
+                'Only tourists can view bookings.'
+
+            ],403);
+
+
         }
 
-        $touristProfile = $user->touristProfile;
 
-        if (!$touristProfile) {
+
+        $touristProfile =
+            $user->touristProfile;
+
+
+
+        if(!$touristProfile){
+
+
             return response()->json([
-                'message' => 'Tourist profile not found.'
-            ], 404);
+
+                'message'=>
+                'Tourist profile not found.'
+
+            ],404);
+
+
         }
 
-        $bookings = Booking::with([
-            'guide',
-            'experience',
-            'payment.payout',
-            'travelRequest'
-        ])
-        ->where(
-            'tourist_profile_id',
-            $touristProfile->id
-        )
-        ->latest()
-        ->get();
+
+
+
+        $bookings =
+            $this->bookingService
+            ->getTouristBookings(
+                $touristProfile
+            );
+
+
+
 
         return response()->json([
-            'message' => 'Bookings retrieved successfully.',
-            'bookings' => $bookings
-        ], 200);
+
+            'message'=>
+            'Bookings retrieved successfully.',
+
+
+            'bookings'=>
+            $bookings
+
+
+        ],200);
+
+
     }
 
+
+
+
+
+
+
     /**
-     * Get one booking of the logged-in tourist.
+     * Get single booking
      */
-    public function show(Request $request, $id)
+    public function show(
+        Request $request,
+        $id
+    )
     {
+
+
         $user = auth('api')->user();
 
-        if (!$user) {
+
+
+        if(!$user){
+
+
             return response()->json([
-                'message' => 'Unauthenticated.'
-            ], 401);
+
+                'message'=>'Unauthenticated.'
+
+            ],401);
+
+
         }
 
-        if ($user->role !== 'tourist') {
+
+
+
+
+        if($user->role !== 'tourist'){
+
+
             return response()->json([
-                'message' => 'Only tourists can view bookings.'
-            ], 403);
+
+                'message'=>
+                'Only tourists can view bookings.'
+
+            ],403);
+
+
         }
 
-        $touristProfile = $user->touristProfile;
 
-        if (!$touristProfile) {
+
+
+
+        $touristProfile =
+            $user->touristProfile;
+
+
+
+
+        if(!$touristProfile){
+
+
             return response()->json([
-                'message' => 'Tourist profile not found.'
-            ], 404);
+
+                'message'=>
+                'Tourist profile not found.'
+
+            ],404);
+
+
         }
 
-        $booking = Booking::with([
-            'guide',
-            'experience',
-            'payment.payout',
-            'travelRequest'
-        ])
-        ->where('id', $id)
-        ->where(
-            'tourist_profile_id',
-            $touristProfile->id
-        )
-        ->first();
 
-        if (!$booking) {
+
+
+
+        $booking =
+            $this->bookingService
+            ->getTouristBooking(
+
+                $touristProfile,
+
+                $id
+
+            );
+
+
+
+
+
+        if(!$booking){
+
+
             return response()->json([
-                'message' => 'Booking not found.'
-            ], 404);
+
+                'message'=>
+                'Booking not found.'
+
+            ],404);
+
+
         }
+
+
+
+
 
         return response()->json([
-            'message' => 'Booking retrieved successfully.',
-            'booking' => $booking
-        ], 200);
+
+
+            'message'=>
+            'Booking retrieved successfully.',
+
+
+
+            'booking'=>
+            $booking
+
+
+
+        ],200);
+
+
     }
 }
