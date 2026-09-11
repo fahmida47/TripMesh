@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Guide\GuideExperienceController;
 use App\Http\Controllers\Guide\GuideProfileController;
@@ -10,8 +12,6 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PayoutController;
 use App\Http\Controllers\ReviewController;
-
-use Illuminate\Support\Facades\Route;
 
 
 /*
@@ -36,14 +36,11 @@ Route::post('/auth/register', [
 ]);
 
 
+
 /*
 |--------------------------------------------------------------------------
 | Explore Guide Services
 |--------------------------------------------------------------------------
-|
-| Public route
-| Server-side search + filtering + sorting + pagination
-|
 */
 
 Route::get('/guides/explore', [
@@ -52,9 +49,10 @@ Route::get('/guides/explore', [
 ]);
 
 
+
 /*
 |--------------------------------------------------------------------------
-| Protected Authentication Routes
+| Protected Auth Routes
 |--------------------------------------------------------------------------
 */
 
@@ -69,49 +67,53 @@ Route::middleware('auth:api')->group(function () {
         AuthController::class,
         'logout'
     ]);
+
 });
+
 
 
 /*
 |--------------------------------------------------------------------------
-| Travel Request Routes
+| Travel Requests
 |--------------------------------------------------------------------------
 */
 
 Route::middleware('auth:api')
-    ->prefix('travel-requests')
-    ->group(function () {
+->prefix('travel-requests')
+->group(function () {
 
-        // Tourist sends a travel request
-        Route::post('/', [
-            TravelRequestController::class,
-            'store'
-        ]);
 
-        // Guide views received requests
-        Route::get('/guide', [
-            TravelRequestController::class,
-            'guideRequests'
-        ]);
+    Route::post('/', [
+        TravelRequestController::class,
+        'store'
+    ]);
 
-        // Guide accepts a request
-        Route::put('/guide/{id}/accept', [
-            TravelRequestController::class,
-            'accept'
-        ]);
 
-        // Guide rejects a request
-        Route::put('/guide/{id}/reject', [
-            TravelRequestController::class,
-            'reject'
-        ]);
+    Route::get('/guide', [
+        TravelRequestController::class,
+        'guideRequests'
+    ]);
 
-        // Guide cancels a request
-        Route::put('/guide/{id}/cancel', [
-            TravelRequestController::class,
-            'cancel'
-        ]);
-    });
+
+    Route::put('/guide/{id}/accept', [
+        TravelRequestController::class,
+        'accept'
+    ]);
+
+
+    Route::put('/guide/{id}/reject', [
+        TravelRequestController::class,
+        'reject'
+    ]);
+
+
+    Route::put('/guide/{id}/cancel', [
+        TravelRequestController::class,
+        'cancel'
+    ]);
+
+});
+
 
 
 /*
@@ -121,35 +123,56 @@ Route::middleware('auth:api')
 */
 
 Route::middleware('auth:api')
-    ->prefix('bookings')
-    ->group(function () {
+->prefix('bookings')
+->group(function () {
 
-        // Tourist sees their own bookings
-        Route::get('/', [
-            BookingController::class,
-            'index'
-        ]);
 
-        // Tourist sees one specific booking
-        Route::get('/{id}', [
-            BookingController::class,
-            'show'
-        ]);
-    });
+    Route::get('/', [
+        BookingController::class,
+        'index'
+    ]);
+
+
+    Route::get('/{id}', [
+        BookingController::class,
+        'show'
+    ]);
+
+});
+
+
 
 /*
 |--------------------------------------------------------------------------
-| Tourist Review Routes
+| Review Routes
 |--------------------------------------------------------------------------
 */
 
 Route::middleware('auth:api')
-    ->prefix('reviews')
-    ->group(function () {
-        Route::get('/eligible', [ReviewController::class, 'eligible']);
-        Route::post('/', [ReviewController::class, 'store']);
-        Route::get('/', [ReviewController::class, 'index']);
-    });
+->prefix('reviews')
+->group(function () {
+
+
+    Route::get('/eligible', [
+        ReviewController::class,
+        'eligible'
+    ]);
+
+
+    Route::post('/', [
+        ReviewController::class,
+        'store'
+    ]);
+
+
+    Route::get('/', [
+        ReviewController::class,
+        'index'
+    ]);
+
+});
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -158,22 +181,36 @@ Route::middleware('auth:api')
 */
 
 Route::middleware('auth:api')
-    ->prefix('payments')
-    ->group(function () {
-        // Fetch (or initialise) the pending payment for a tourist booking.
-        Route::post('/initiate', [PaymentController::class, 'initiate']);
+->prefix('payments')
+->group(function () {
 
-        // Complete a bKash or Nagad payment.
-        Route::post('/complete', [PaymentController::class, 'complete']);
 
-        // Kept as the direct submit endpoint for the current Payment page.
-        Route::post('/', [PaymentController::class, 'complete']);
+    Route::post('/initiate', [
+        PaymentController::class,
+        'initiate'
+    ]);
 
-        Route::get('/booking/{bookingId}', [
-            PaymentController::class,
-            'showByBooking',
-        ]);
-    });
+
+    Route::post('/complete', [
+        PaymentController::class,
+        'complete'
+    ]);
+
+
+    Route::post('/', [
+        PaymentController::class,
+        'complete'
+    ]);
+
+
+    Route::get('/booking/{bookingId}', [
+        PaymentController::class,
+        'showByBooking'
+    ]);
+
+});
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -181,12 +218,35 @@ Route::middleware('auth:api')
 |--------------------------------------------------------------------------
 */
 
-Route::middleware('auth:api')->group(function () {
-    Route::get('/guide/reviews', [GuideReviewController::class, 'index']);
-    Route::get('/guide/payouts', [PayoutController::class, 'guideIndex']);
-    Route::get('/admin/payouts', [PayoutController::class, 'adminIndex']);
-    Route::post('/admin/payouts/{payout}/release', [PayoutController::class, 'release']);
+Route::middleware('auth:api')
+->group(function () {
+
+
+    Route::get('/guide/reviews', [
+        GuideReviewController::class,
+        'index'
+    ]);
+
+
+    Route::get('/guide/payouts', [
+        PayoutController::class,
+        'guideIndex'
+    ]);
+
+
+    Route::get('/admin/payouts', [
+        PayoutController::class,
+        'adminIndex'
+    ]);
+
+
+    Route::post('/admin/payouts/{payout}/release', [
+        PayoutController::class,
+        'release'
+    ]);
+
 });
+
 
 
 /*
@@ -196,44 +256,53 @@ Route::middleware('auth:api')->group(function () {
 */
 
 Route::middleware('auth:api')
-    ->prefix('guide/profile')
-    ->group(function () {
+->prefix('guide/profile')
+->group(function () {
 
-        Route::get('/', [
-            GuideProfileController::class,
-            'show'
-        ]);
 
-        Route::put('/', [
-            GuideProfileController::class,
-            'update'
-        ]);
+    Route::get('/', [
+        GuideProfileController::class,
+        'show'
+    ]);
 
-        Route::post('/profile-picture', [
-            GuideProfileController::class,
-            'uploadProfilePicture'
-        ]);
 
-        Route::post('/cover-photo', [
-            GuideProfileController::class,
-            'uploadCoverPhoto'
-        ]);
+    Route::put('/', [
+        GuideProfileController::class,
+        'update'
+    ]);
 
-        Route::post('/experiences', [
-            GuideExperienceController::class,
-            'store'
-        ]);
 
-        Route::put('/experiences/{id}', [
-            GuideExperienceController::class,
-            'update'
-        ]);
+    Route::post('/profile-picture', [
+        GuideProfileController::class,
+        'uploadProfilePicture'
+    ]);
 
-        Route::delete('/experiences/{id}', [
-            GuideExperienceController::class,
-            'destroy'
-        ]);
-    });
+
+    Route::post('/cover-photo', [
+        GuideProfileController::class,
+        'uploadCoverPhoto'
+    ]);
+
+
+    Route::post('/experiences', [
+        GuideExperienceController::class,
+        'store'
+    ]);
+
+
+    Route::put('/experiences/{id}', [
+        GuideExperienceController::class,
+        'update'
+    ]);
+
+
+    Route::delete('/experiences/{id}', [
+        GuideExperienceController::class,
+        'destroy'
+    ]);
+
+});
+
 
 
 /*
@@ -243,26 +312,31 @@ Route::middleware('auth:api')
 */
 
 Route::middleware('auth:api')
-    ->prefix('tourist/profile')
-    ->group(function () {
+->prefix('tourist/profile')
+->group(function () {
 
-        Route::get('/', [
-            TouristProfileController::class,
-            'show'
-        ]);
 
-        Route::put('/', [
-            TouristProfileController::class,
-            'update'
-        ]);
+    Route::get('/', [
+        TouristProfileController::class,
+        'show'
+    ]);
 
-        Route::post('/profile-picture', [
-            TouristProfileController::class,
-            'uploadProfilePicture'
-        ]);
 
-        Route::post('/cover-photo', [
-            TouristProfileController::class,
-            'uploadCoverPhoto'
-        ]);
-    });
+    Route::put('/', [
+        TouristProfileController::class,
+        'update'
+    ]);
+
+
+    Route::post('/profile-picture', [
+        TouristProfileController::class,
+        'uploadProfilePicture'
+    ]);
+
+
+    Route::post('/cover-photo', [
+        TouristProfileController::class,
+        'uploadCoverPhoto'
+    ]);
+
+});
