@@ -3,8 +3,6 @@
 namespace App\Models\Guide;
 
 use App\Models\User;
-use App\Models\Payout;
-use App\Models\Review;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -22,24 +20,42 @@ class GuideProfile extends Model
         'profile_picture',
         'cover_photo',
         'price',
+        'min_price',
+        'max_price',
         'rating',
         'reviews',
         'popularity',
         'tour_types',
     ];
 
+
     protected $casts = [
+        'tour_types' => 'array',
         'price' => 'float',
+        'min_price' => 'float',
+        'max_price' => 'float',
         'rating' => 'float',
         'reviews' => 'integer',
         'popularity' => 'integer',
-        'tour_types' => 'array',
     ];
+
+
+    protected $appends = [
+        'profile_picture_url',
+        'cover_photo_url',
+    ];
+
+
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(
+            User::class,
+            'user_id'
+        );
     }
+
+
 
     public function experiences(): HasMany
     {
@@ -49,13 +65,29 @@ class GuideProfile extends Model
         );
     }
 
-    public function payouts(): HasMany
+
+
+    public function getProfilePictureUrlAttribute()
     {
-        return $this->hasMany(Payout::class, 'guide_profile_id');
+        if (!$this->profile_picture) {
+            return null;
+        }
+
+        return asset(
+            'storage/' . $this->profile_picture
+        );
     }
 
-    public function reviews(): HasMany
+
+
+    public function getCoverPhotoUrlAttribute()
     {
-        return $this->hasMany(Review::class, 'guide_profile_id');
+        if (!$this->cover_photo) {
+            return null;
+        }
+
+        return asset(
+            'storage/' . $this->cover_photo
+        );
     }
 }

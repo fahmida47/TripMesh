@@ -29,7 +29,8 @@ return new class extends Migration
                 ->constrained('guide_experiences')
                 ->nullOnDelete();
 
-            $table->date('travel_date');
+            $table->date('from_date');
+            $table->date('to_date');
 
             $table->decimal('amount', 10, 2)
                 ->default(0);

@@ -140,10 +140,25 @@ export default function TouristRequestCard({
   |--------------------------------------------------------------------------
   */
 
-  const requestedDate =
+  const requestedFromDate =
+    booking?.from_date ||
+    booking?.fromDate ||
+    travelRequest?.from_date ||
+    travelRequest?.fromDate ||
     booking?.travel_date ||
     travelRequest?.travel_date ||
     null;
+
+  const requestedToDate =
+    booking?.to_date ||
+    booking?.toDate ||
+    travelRequest?.to_date ||
+    travelRequest?.toDate ||
+    null;
+
+  const requestedDate = requestedToDate
+    ? `${requestedFromDate} - ${requestedToDate}`
+    : requestedFromDate;
 
   /*
   |--------------------------------------------------------------------------

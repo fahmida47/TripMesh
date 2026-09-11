@@ -28,6 +28,18 @@ function formatDisplayDate(date) {
   });
 }
 
+function formatDisplayDateRange(fromDate, toDate) {
+  if (!fromDate && !toDate) {
+    return "—";
+  }
+
+  if (!toDate || fromDate === toDate) {
+    return formatDisplayDate(fromDate);
+  }
+
+  return `${formatDisplayDate(fromDate)} - ${formatDisplayDate(toDate)}`;
+}
+
 export default function PaymentBookingSummary({ booking }) {
   const summary = useMemo(() => {
     if (!booking) {
@@ -44,9 +56,12 @@ export default function PaymentBookingSummary({ booking }) {
     const guideProfile =
       booking.guide ||
       booking.guide_profile ||
+      travelRequest.guide ||
+      travelRequest.guide_profile ||
       {};
 
     const tourType =
+      booking.tour_type ||
       experience.title ||
       experience.name ||
       experience.experience_name ||
@@ -55,6 +70,8 @@ export default function PaymentBookingSummary({ booking }) {
       booking.tour_title ||
       booking.tourName ||
       booking.tour_name ||
+      travelRequest.experience_name ||
+      travelRequest.experienceName ||
       travelRequest.title ||
       travelRequest.tour_title ||
       "—";
@@ -72,6 +89,7 @@ export default function PaymentBookingSummary({ booking }) {
       "—";
 
     const companyName =
+      booking.guide_company_name ||
       guideProfile.company_name ||
       guideProfile.companyName ||
       guideProfile.business_name ||
@@ -80,6 +98,8 @@ export default function PaymentBookingSummary({ booking }) {
       booking.companyName ||
       booking.company_name ||
       booking.business_name ||
+      travelRequest.company_name ||
+      travelRequest.companyName ||
       "—";
 
     const rating =
@@ -108,7 +128,11 @@ export default function PaymentBookingSummary({ booking }) {
       travelRequest.numberOfGuests ??
       1;
 
-    const tourDate =
+    const tourFromDate =
+      booking.from_date ||
+      booking.fromDate ||
+      travelRequest.from_date ||
+      travelRequest.fromDate ||
       booking.travel_date ||
       booking.travelDate ||
       travelRequest.travel_date ||
@@ -118,6 +142,14 @@ export default function PaymentBookingSummary({ booking }) {
       booking.bookingDate ||
       booking.booking_date ||
       booking.date;
+
+    const tourToDate =
+      booking.to_date ||
+      booking.toDate ||
+      travelRequest.to_date ||
+      travelRequest.toDate;
+
+    const tourDate = formatDisplayDateRange(tourFromDate, tourToDate);
 
     const tourPrice =
       booking.budget ??
@@ -191,9 +223,11 @@ export default function PaymentBookingSummary({ booking }) {
             )}
 
             <div>
-              <p className="cp-summary-title">
-                {summary.tourType}
-              </p>
+              {summary.tourType !== "—" && (
+                <p className="cp-summary-title">
+                  {summary.tourType}
+                </p>
+              )}
 
               <span className="cp-summary-company">
                 {summary.companyName}
@@ -219,11 +253,13 @@ export default function PaymentBookingSummary({ booking }) {
               <span>{summary.destination}</span>
             </div>
 
-            <div className="cp-summary-row">
-              <span>Tour Type</span>
+            {summary.tourType !== "—" && (
+              <div className="cp-summary-row">
+                <span>Tour Type</span>
 
-              <span>{summary.tourType}</span>
-            </div>
+                <span>{summary.tourType}</span>
+              </div>
+            )}
 
             <div className="cp-summary-row">
               <span>Travelers</span>

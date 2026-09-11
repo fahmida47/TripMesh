@@ -28,7 +28,8 @@ return new class extends Migration
                 ->nullOnDelete();
 
             // Requested travel date
-            $table->date('travel_date');
+            $table->date('from_date');
+            $table->date('to_date');
 
             // Requested tour amount
             $table->decimal('amount', 10, 2)->default(0);
