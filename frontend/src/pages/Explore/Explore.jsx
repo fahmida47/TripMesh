@@ -7,6 +7,17 @@ import ExploreSearch from "./ExploreSearch";
 const API_BASE_URL = "http://127.0.0.1:8000/api";
 const STORAGE_URL = "http://127.0.0.1:8000/storage";
 
+function formatPriceRange(guide) {
+  const minimum = Number(guide.min_price ?? guide.minPrice ?? guide.price ?? 0);
+  const maximum = Number(guide.max_price ?? guide.maxPrice ?? guide.price ?? minimum);
+  const formattedMinimum = minimum.toLocaleString();
+  const formattedMaximum = maximum.toLocaleString();
+
+  return minimum === maximum
+    ? `৳${formattedMinimum}`
+    : `৳${formattedMinimum} - ৳${formattedMaximum}`;
+}
+
 function getLoggedInUser() {
   const isLoggedIn = localStorage.getItem("isLoggedIn");
   const storedUser = localStorage.getItem("user");
@@ -28,7 +39,7 @@ function getLoggedInUser() {
   }
 }
 
-function GuideCard({ guide, onSendRequest }) {
+function GuideCard({ guide, onSendRequest, onViewDetails }) {
   return (
     <article className="explore-guide-card">
       <div className="explore-card-content">
@@ -107,15 +118,19 @@ function GuideCard({ guide, onSendRequest }) {
           </div>
 
           <div className="explore-price">
-            <span>From</span>
+            <span>Price range</span>
 
-            <strong>৳{Number(guide.price || 0).toLocaleString()}</strong>
+            <strong>{formatPriceRange(guide)}</strong>
           </div>
         </div>
 
         {/* Buttons */}
         <div className="explore-card-actions">
-          <button type="button" className="explore-secondary-button">
+          <button
+            type="button"
+            className="explore-secondary-button"
+            onClick={() => onViewDetails(guide)}
+          >
             View Details
           </button>
 
@@ -130,6 +145,20 @@ function GuideCard({ guide, onSendRequest }) {
       </div>
     </article>
   );
+}
+
+function normalizeGuide(guide) {
+  return {
+    ...guide,
+    companyName:
+      guide.company_name || guide.companyName || guide.business_name || "",
+    description: guide.bio || guide.description || "",
+    location: guide.address || guide.location || "",
+    tourTypes: guide.tour_types || guide.tourTypes || [],
+    min_price: guide.min_price ?? guide.price ?? 0,
+    max_price: guide.max_price ?? guide.min_price ?? guide.price ?? 0,
+    price: guide.min_price ?? guide.price ?? 0,
+  };
 }
 
 function Explore({ embedded = false }) {
@@ -157,6 +186,7 @@ function Explore({ embedded = false }) {
 
   // Request Modal
   const [selectedGuide, setSelectedGuide] = useState(null);
+  const [detailsGuide, setDetailsGuide] = useState(null);
 
   // Date Range
   const [fromDate, setFromDate] = useState("");
@@ -164,6 +194,7 @@ function Explore({ embedded = false }) {
 
   const [destination, setDestination] = useState("");
   const [travelers, setTravelers] = useState(1);
+  const [agreedAmount, setAgreedAmount] = useState("");
   const [requestDetails, setRequestDetails] = useState("");
   const [selectedExperience, setSelectedExperience] = useState("");
 
@@ -216,7 +247,7 @@ function Explore({ embedded = false }) {
 
       const data = await response.json();
 
-      setGuides(data.data || []);
+      setGuides((data.data || []).map(normalizeGuide));
       setCurrentPage(data.current_page || 1);
       setLastPage(data.last_page || 1);
       setTotalGuides(data.total || 0);
@@ -309,6 +340,7 @@ function Explore({ embedded = false }) {
     setToDate("");
     setDestination("");
     setTravelers(1);
+    setAgreedAmount(guide.min_price ?? guide.price ?? "");
     setRequestDetails("");
     setSelectedExperience("");
 
@@ -328,11 +360,16 @@ function Explore({ embedded = false }) {
     setToDate("");
     setDestination("");
     setTravelers(1);
+    setAgreedAmount("");
     setRequestDetails("");
     setSelectedExperience("");
 
     setRequestSuccess("");
     setRequestError("");
+  };
+
+  const handleCloseDetails = () => {
+    setDetailsGuide(null);
   };
 
   // Submit Travel Request
@@ -382,6 +419,26 @@ function Explore({ embedded = false }) {
       return;
     }
 
+    const minimumAmount = Number(
+      selectedGuide.min_price ?? selectedGuide.price ?? 0,
+    );
+    const maximumAmount = Number(
+      selectedGuide.max_price ?? selectedGuide.min_price ?? selectedGuide.price ?? minimumAmount,
+    );
+    const requestedAmount = Number(agreedAmount);
+
+    if (!agreedAmount || !Number.isFinite(requestedAmount)) {
+      setRequestError("Please enter the agreed amount.");
+      return;
+    }
+
+    if (requestedAmount < minimumAmount || requestedAmount > maximumAmount) {
+      setRequestError(
+        `Amount must be between ৳${minimumAmount.toLocaleString()} and ৳${maximumAmount.toLocaleString()}.`,
+      );
+      return;
+    }
+
     // From Date validation
     if (!fromDate) {
       setRequestError("Please select a From Date.");
@@ -411,7 +468,7 @@ function Explore({ embedded = false }) {
       return;
     }
 
-    const experienceId = selectedExperience || null;
+    const experienceName = selectedExperience.trim() || null;
 
     /*
       Data sent to Laravel backend.
@@ -419,7 +476,9 @@ function Explore({ embedded = false }) {
     const requestData = {
       guide_profile_id: Number(guideProfileId),
 
-      guide_experience_id: experienceId ? Number(experienceId) : null,
+      guide_experience_id: null,
+
+      experience_name: experienceName,
 
       destination: destination.trim(),
 
@@ -433,7 +492,7 @@ function Explore({ embedded = false }) {
         Keep amount in API payload for backend compatibility.
         It is NOT displayed in the request form UI.
       */
-      amount: Number(selectedGuide.price || 0),
+      amount: requestedAmount,
 
       request_details: requestDetails.trim() || null,
     };
@@ -478,6 +537,7 @@ function Explore({ embedded = false }) {
       setToDate("");
       setDestination("");
       setTravelers(1);
+      setAgreedAmount("");
       setRequestDetails("");
       setSelectedExperience("");
     } catch (err) {
@@ -587,6 +647,7 @@ function Explore({ embedded = false }) {
                     key={guide.id}
                     guide={guide}
                     onSendRequest={handleOpenRequest}
+                    onViewDetails={setDetailsGuide}
                   />
                 ))}
               </div>
@@ -633,6 +694,88 @@ function Explore({ embedded = false }) {
           )}
         </section>
       </main>
+
+      {/* Guide Details Modal */}
+      {detailsGuide && (
+        <div className="request-modal-overlay" onClick={handleCloseDetails}>
+          <div
+            className="request-modal guide-details-modal"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="request-modal-header">
+              <div className="request-modal-heading">
+                <div className="request-modal-icon">▣</div>
+
+                <div>
+                  <h2>{detailsGuide.companyName || "Guide Company"}</h2>
+                  <p>{detailsGuide.location || "Bangladesh"}</p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                className="request-modal-close"
+                onClick={handleCloseDetails}
+                aria-label="Close guide details"
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="guide-details-content">
+              <p className="guide-details-description">
+                {detailsGuide.description ||
+                  "Explore Bangladesh with experienced local guides and discover memorable destinations."}
+              </p>
+
+              <div className="guide-details-summary">
+                <span>★ {Number(detailsGuide.rating || 0).toFixed(1)}</span>
+                <span>{detailsGuide.reviews || 0} reviews</span>
+                <strong>
+                  {formatPriceRange(detailsGuide)}
+                </strong>
+              </div>
+
+              <div className="guide-details-experiences">
+                <div className="experience-heading">
+                  <h4>All Experiences</h4>
+                  <span>{detailsGuide.experiences?.length || 0}</span>
+                </div>
+
+                {detailsGuide.experiences?.length ? (
+                  detailsGuide.experiences.map((experience) => (
+                    <article
+                      className="guide-details-experience"
+                      key={experience.id}
+                    >
+                      {experience.photo ? (
+                        <img
+                          src={`${STORAGE_URL}/${experience.photo}`}
+                          alt={experience.title || "Experience"}
+                        />
+                      ) : (
+                        <div className="experience-placeholder">📷</div>
+                      )}
+
+                      <div>
+                        <strong>{experience.title || "Tour Experience"}</strong>
+                        <p>
+                          {experience.description ||
+                            "Discover amazing places and local experiences."}
+                        </p>
+                      </div>
+                    </article>
+                  ))
+                ) : (
+                  <p className="guide-details-empty">
+                    No completed experiences have been added yet.
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Send Request Modal */}
       {selectedGuide && (
@@ -727,10 +870,32 @@ function Explore({ embedded = false }) {
                     </strong>
 
                     <span className="request-guide-price">
-                      Starting from ৳
-                      {Number(selectedGuide.price || 0).toLocaleString()}
+                      Price range: {formatPriceRange(selectedGuide)}
                     </span>
                   </div>
+                </div>
+
+                <div className="request-form-group">
+                  <label htmlFor="agreed-amount">Agreed Amount (৳)</label>
+
+                  <div className="request-input-wrapper">
+                    <span className="request-input-icon">৳</span>
+
+                    <input
+                      id="agreed-amount"
+                      type="number"
+                      min={selectedGuide.min_price ?? selectedGuide.price ?? 0}
+                      max={selectedGuide.max_price ?? selectedGuide.min_price ?? selectedGuide.price ?? 0}
+                      value={agreedAmount}
+                      onChange={(event) => setAgreedAmount(event.target.value)}
+                      placeholder="Enter agreed amount"
+                      required
+                    />
+                  </div>
+
+                  <small>
+                    Enter an amount between {formatPriceRange(selectedGuide)}.
+                  </small>
                 </div>
 
                 {/* Tour / Experience */}
