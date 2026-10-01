@@ -1,4 +1,4 @@
-import { FiCheckCircle, FiArrowLeft } from "react-icons/fi";
+import { FiCheckCircle, FiX } from "react-icons/fi";
 
 function formatMoney(value) {
   if (value === undefined || value === null || value === "") return "—";
@@ -9,8 +9,7 @@ export default function PaymentSuccess({
   booking,
   method,
   accountNumber,
-  backLabel,
-  onBack,
+  onClose,
 }) {
   const tourName =
     booking?.tourTitle || booking?.tourName || booking?.destination;
@@ -18,6 +17,16 @@ export default function PaymentSuccess({
 
   return (
     <div className="cp-success">
+      <button
+        type="button"
+        className="cp-success-close"
+        onClick={onClose}
+        aria-label="Back to My Requests"
+        title="Back to My Requests"
+      >
+        <FiX aria-hidden="true" />
+      </button>
+
       <div className="cp-success-icon">
         <FiCheckCircle aria-hidden="true" />
       </div>
@@ -48,13 +57,6 @@ export default function PaymentSuccess({
         )}
       </div>
 
-      <button
-        type="button"
-        className="cp-back cp-success-back"
-        onClick={onBack}
-      >
-        <FiArrowLeft aria-hidden="true" /> {backLabel || "Back"}
-      </button>
     </div>
   );
 }
