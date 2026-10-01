@@ -4,17 +4,12 @@ namespace App\Services;
 
 use App\Models\Booking;
 use App\Models\Payment;
-use App\Models\Payout;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 
 class PaymentService
 {
-
-    private const COMMISSION_RATE = 10.00;
-
-
 
     public function findTouristBooking(
         int $bookingId,
@@ -127,6 +122,7 @@ class PaymentService
 
             if(
                 $payment?->status === 'paid'
+                || $payment?->status === 'pending_review'
                 ||
                 $booking->status === 'confirmed'
             ){
@@ -181,62 +177,12 @@ class PaymentService
                     'TRX-'.strtoupper(Str::random(12)),
 
 
-                'status'=>'paid',
+                'status'=>'pending_review',
 
-                'paid_at'=>now()
-
-            ]);
-
-
-
-
-
-            $commission =
-                round(
-                    $payment->amount *
-                    (self::COMMISSION_RATE / 100),
-                    2
-                );
-
-
-
-
-
-            Payout::create([
-
-                'payment_id'=>$payment->id,
-
-                'guide_profile_id'=>
-                    $booking->guide_profile_id,
-
-                'gross_amount'=>
-                    $payment->amount,
-
-                'commission_rate'=>
-                    self::COMMISSION_RATE,
-
-                'commission_amount'=>
-                    $commission,
-
-                'net_amount'=>
-                    round(
-                        $payment->amount-$commission,
-                        2
-                    ),
-
-                'status'=>'pending'
+                'paid_at'=>null
 
             ]);
 
-
-
-
-
-            $booking->update([
-
-                'status'=>'confirmed'
-
-            ]);
 
 
 

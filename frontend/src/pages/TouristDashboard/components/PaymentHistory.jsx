@@ -82,7 +82,11 @@ export default function PaymentHistory({ onPayNow }) {
             companyName: guide.company_name || guide.business_name || "Guide",
             destination: experience.destination || experience.location || request.destination || "—",
             date: payment?.payment_date_time || payment?.paid_at || null,
-            status: payment?.status === "paid"
+            status: payment?.status === "pending_review"
+              ? "Under Review"
+              : payment?.status === "rejected"
+                ? "Rejected"
+                : payment?.status === "paid"
               ? payment?.payout?.status === "pending"
                 ? "Held by Admin"
                 : "Paid"

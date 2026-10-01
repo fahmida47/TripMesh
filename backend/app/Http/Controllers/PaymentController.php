@@ -164,7 +164,7 @@ class PaymentController extends Controller
         return response()->json([
 
             'message'=>
-            'Payment completed successfully.',
+            'Payment submitted and is awaiting admin review.',
 
             'payment'=>$result['payment'],
 

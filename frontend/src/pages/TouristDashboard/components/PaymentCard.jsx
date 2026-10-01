@@ -7,7 +7,7 @@ function badgeClass(status) {
 
 export default function PaymentCard({ payment, onViewDetails, onPayNow }) {
   const { tourName, companyName, destination, date, status } = payment;
-  const canPay = status === "Pending";
+  const canPay = status === "Pending" || status === "Rejected";
 
   return (
     <article className="pm-row">

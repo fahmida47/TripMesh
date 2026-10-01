@@ -31,9 +31,9 @@ export default function PaymentSuccess({
         <FiCheckCircle aria-hidden="true" />
       </div>
 
-      <h2>Payment Completed!</h2>
+      <h2>Payment Submitted</h2>
       <p>
-        Your {method} payment was completed and your booking is confirmed.
+        Your {method} payment details are with the admin for verification. Your booking will be confirmed after approval.
       </p>
 
       <div className="cp-success-recap">
