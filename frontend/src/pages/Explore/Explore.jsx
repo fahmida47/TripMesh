@@ -1,11 +1,41 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { getExperienceAsset } from "../../experienceAssets";
 import "./Explore.css";
 import ExploreHero from "./ExploreHero";
 import ExploreSearch from "./ExploreSearch";
 
 const API_BASE_URL = "http://127.0.0.1:8000/api";
 const STORAGE_URL = "http://127.0.0.1:8000/storage";
+
+function ExperiencePhoto({ experience }) {
+  const fallbackImage = getExperienceAsset(experience.title);
+  const [imageSource, setImageSource] = useState(
+    experience.photo ? "uploaded" : "fallback"
+  );
+
+  const source = imageSource === "uploaded"
+    ? `${STORAGE_URL}/${experience.photo}`
+    : fallbackImage;
+
+  if (!source || imageSource === "unavailable") {
+    return <div className="experience-placeholder">📷</div>;
+  }
+
+  return (
+    <img
+      src={source}
+      alt={experience.title || "Experience"}
+      onError={() => {
+        setImageSource(
+          imageSource === "uploaded" && fallbackImage
+            ? "fallback"
+            : "unavailable"
+        );
+      }}
+    />
+  );
+}
 
 function formatPriceRange(guide) {
   const minimum = Number(guide.min_price ?? guide.minPrice ?? guide.price ?? 0);
@@ -85,14 +115,7 @@ function GuideCard({ guide, onSendRequest, onViewDetails }) {
 
             {guide.experiences.slice(0, 2).map((experience) => (
               <div className="experience-item" key={experience.id}>
-                {experience.photo ? (
-                  <img
-                    src={`${STORAGE_URL}/${experience.photo}`}
-                    alt={experience.title || "Experience"}
-                  />
-                ) : (
-                  <div className="experience-placeholder">📷</div>
-                )}
+                <ExperiencePhoto experience={experience} />
 
                 <div className="experience-text">
                   <strong>{experience.title || "Tour Experience"}</strong>
@@ -748,14 +771,7 @@ function Explore({ embedded = false }) {
                       className="guide-details-experience"
                       key={experience.id}
                     >
-                      {experience.photo ? (
-                        <img
-                          src={`${STORAGE_URL}/${experience.photo}`}
-                          alt={experience.title || "Experience"}
-                        />
-                      ) : (
-                        <div className="experience-placeholder">📷</div>
-                      )}
+                      <ExperiencePhoto experience={experience} />
 
                       <div>
                         <strong>{experience.title || "Tour Experience"}</strong>
