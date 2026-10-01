@@ -22,49 +22,5 @@ services:
       retries: 10
 
 
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-
-    container_name: tripmesh-backend
-    restart: unless-stopped
-
-    working_dir: /var/www
-
-    ports:
-      - "8000:8000"
-
-    volumes:
-      - ./backend:/var/www
-      - tripmesh_backend_vendor:/var/www/vendor
-
-    depends_on:
-      mysql:
-        condition: service_healthy
-
-
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-
-    container_name: tripmesh-frontend
-    restart: unless-stopped
-
-    working_dir: /app
-
-    ports:
-      - "5173:5173"
-
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
-
-    depends_on:
-      - backend
-
-
 volumes:
   tripmesh_mysql_data:
-  tripmesh_backend_vendor:
