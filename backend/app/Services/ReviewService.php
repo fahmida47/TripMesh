@@ -2,10 +2,64 @@
 
 namespace App\Services;
 
+use App\Models\Booking;
 use App\Models\Review;
 
 class ReviewService
 {
+
+    public function getEligibleBookings($touristProfile)
+    {
+        return Booking::with(['guide', 'experience'])
+            ->where('tourist_profile_id', $touristProfile->id)
+            ->whereIn('status', ['confirmed', 'completed'])
+            ->whereHas('payment', function ($query) {
+                $query->where('status', 'paid');
+            })
+            ->whereDoesntHave('review')
+            ->latest()
+            ->get();
+    }
+
+    public function createReview($touristProfile, array $validated)
+    {
+        $booking = Booking::with('payment')
+            ->where('id', $validated['booking_id'])
+            ->where('tourist_profile_id', $touristProfile->id)
+            ->first();
+
+        if (!$booking) {
+            return null;
+        }
+
+        if (
+            !in_array($booking->status, ['confirmed', 'completed'], true)
+            || $booking->payment?->status !== 'paid'
+        ) {
+            return false;
+        }
+
+        if ($booking->review()->exists()) {
+            return 'duplicate';
+        }
+
+        return Review::create([
+            'booking_id' => $booking->id,
+            'tourist_profile_id' => $touristProfile->id,
+            'guide_profile_id' => $booking->guide_profile_id,
+            'rating' => $validated['rating'],
+            'review' => $validated['review'],
+            'submitted_at' => now(),
+        ]);
+    }
+
+    public function getReviews($touristProfile)
+    {
+        return Review::with(['guide', 'booking.guide'])
+            ->where('tourist_profile_id', $touristProfile->id)
+            ->latest('submitted_at')
+            ->get();
+    }
 
     /**
      * Get guide review summary and reviews
