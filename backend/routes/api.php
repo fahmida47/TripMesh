@@ -12,6 +12,8 @@ use App\Http\Controllers\BookingController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PayoutController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\AdminController;
+use App\Http\Middleware\EnsureAdmin;
 
 
 /*
@@ -34,6 +36,28 @@ Route::post('/auth/register', [
     AuthController::class,
     'register'
 ]);
+
+Route::prefix('admin/auth')->group(function () {
+    Route::post('/send-code', [AdminController::class, 'sendCode']);
+    Route::post('/verify-code', [AdminController::class, 'verifyCode']);
+});
+
+Route::middleware(['auth:api', EnsureAdmin::class])->prefix('admin')->group(function () {
+    Route::post('/auth/logout', [AuthController::class, 'logout']);
+    Route::get('/dashboard', [AdminController::class, 'overview']);
+    Route::get('/payments', [AdminController::class, 'payments']);
+    Route::get('/commissions', [AdminController::class, 'commissions']);
+    Route::put('/commission', [AdminController::class, 'updateCommission']);
+    Route::patch('/payments/{payment}', [AdminController::class, 'updatePayment']);
+    Route::get('/bookings', [AdminController::class, 'bookings']);
+    Route::get('/guides', fn () => app(AdminController::class)->people('guide'));
+    Route::get('/tourists', fn () => app(AdminController::class)->people('tourist'));
+    Route::get('/reviews', [AdminController::class, 'reviews']);
+    Route::patch('/reviews/{review}', [AdminController::class, 'updateReview']);
+    Route::get('/profile', [AdminController::class, 'profile']);
+    Route::put('/profile', [AdminController::class, 'updateProfile']);
+    Route::post('/admins', [AdminController::class, 'createAdmin']);
+});
 
 
 

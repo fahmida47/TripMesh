@@ -14,12 +14,16 @@ class Review extends Model
         'guide_profile_id',
         'rating',
         'review',
+        'status',
+        'moderated_by_user_id',
+        'moderated_at',
         'submitted_at',
     ];
 
     protected $casts = [
         'rating' => 'integer',
         'submitted_at' => 'datetime',
+        'moderated_at' => 'datetime',
     ];
 
     public function booking(): BelongsTo

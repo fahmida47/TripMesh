@@ -74,6 +74,8 @@ class ReviewService
                 $guideProfile->id
             )
 
+            ->where('status', 'approved')
+
             ->whereHas('booking', function ($query) {
 
                 $query->whereIn('status', [

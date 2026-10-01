@@ -53,6 +53,16 @@ import PaymentForm from "./pages/TouristDashboard/components/PaymentForm";
 import PaymentPage from "./pages/TouristDashboard/components/PaymentPage";
 
 import ReviewForm from "./pages/TouristDashboard/Reviews/ReviewForm";
+import AdminLogin from "./pages/Admin/AdminLogin";
+import AdminDashboard, {
+  AdminGuard,
+  AdminOverview,
+  AdminList,
+  AdminPayments,
+  AdminCommissions,
+  AdminReviews,
+  AdminProfile,
+} from "./pages/Admin/AdminDashboard";
 
 /* =========================
    AUTH HELPER
@@ -101,6 +111,8 @@ function LandingPageRedirect() {
     return <Navigate to="/tourist-dashboard" replace />;
   }
 
+  if (user.role === "admin") return <Navigate to="/admin/dashboard" replace />;
+
   return <GlobalLandingPage />;
 }
 
@@ -125,6 +137,8 @@ function LoginRedirect() {
   if (user.role === "tourist") {
     return <Navigate to="/tourist-dashboard" replace />;
   }
+
+  if (user.role === "admin") return <Navigate to="/admin/dashboard" replace />;
 
   return <Login />;
 }
@@ -151,6 +165,8 @@ function SignupRedirect() {
     return <Navigate to="/tourist-dashboard" replace />;
   }
 
+  if (user.role === "admin") return <Navigate to="/admin/dashboard" replace />;
+
   return <Signup />;
 }
 
@@ -175,6 +191,8 @@ function ProtectedDashboard({ children, role }) {
     if (user.role === "tourist") {
       return <Navigate to="/tourist-dashboard" replace />;
     }
+
+    if (user.role === "admin") return <Navigate to="/admin/dashboard" replace />;
   }
 
   return children;
@@ -211,6 +229,19 @@ function App() {
 
         {/* Signup */}
         <Route path="/signup" element={<SignupRedirect />} />
+
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/admin" element={<AdminGuard><AdminDashboard /></AdminGuard>}>
+          <Route index element={<Navigate to="dashboard" replace />} />
+          <Route path="dashboard" element={<AdminOverview />} />
+          <Route path="payments" element={<AdminPayments />} />
+          <Route path="commissions" element={<AdminCommissions />} />
+          <Route path="bookings" element={<AdminList kind="bookings" />} />
+          <Route path="guides" element={<AdminList kind="guides" />} />
+          <Route path="tourists" element={<AdminList kind="tourists" />} />
+          <Route path="reviews" element={<AdminReviews />} />
+          <Route path="profile" element={<AdminProfile />} />
+        </Route>
 
         {/* =========================
             GUIDE DASHBOARD

@@ -267,7 +267,9 @@ const Login = () => {
         );
         localStorage.setItem("isLoggedIn", "true");
 
-        if (result.user.role === "guide") {
+        if (result.user.role === "admin") {
+          navigate("/admin/dashboard");
+        } else if (result.user.role === "guide") {
           navigate("/guide-dashboard");
         } else {
           navigate("/tourist-dashboard");
@@ -483,6 +485,9 @@ const Login = () => {
             <p className="footer-text">
               Don't have an account?
               <Link to="/signup">Sign Up</Link>
+            </p>
+            <p className="footer-text">
+              Administrator? <Link to="/admin/login">Admin sign in</Link>
             </p>
           </div>
         </div>
