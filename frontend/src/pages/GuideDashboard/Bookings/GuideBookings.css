@@ -81,7 +81,7 @@
 
   box-shadow: 0 3px 12px rgba(25, 44, 85, 0.05);
 
-  overflow: hidden;
+  overflow-x: auto;
 }
 
 /* =========================
@@ -100,7 +100,8 @@
     minmax(130px, 1fr)
     minmax(100px, 0.7fr)
     minmax(110px, 0.8fr)
-    minmax(110px, 0.8fr);
+    minmax(110px, 0.8fr)
+    minmax(130px, 0.9fr);
 
   align-items: center;
   gap: 16px;
@@ -257,6 +258,16 @@
   color: #a36b00;
 }
 
+.booking-status.pending-payment {
+  background: #fff6dc;
+  color: #a36b00;
+}
+
+.booking-status.confirmed {
+  background: #eaf1ff;
+  color: #2868d9;
+}
+
 /* Completed */
 .booking-status.completed {
   background: #e9f8ef;
@@ -267,6 +278,49 @@
 .booking-status.cancelled {
   background: #fff0f0;
   color: #c63d3d;
+}
+
+.booking-complete-btn {
+  min-height: 34px;
+  padding: 7px 10px;
+  border: 0;
+  border-radius: 7px;
+  background: #2868f4;
+  color: #fff;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.booking-complete-btn:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.booking-action-note {
+  font-size: 11px;
+  color: #7a8699;
+}
+
+.booking-page-message {
+  margin: 0 0 14px;
+  padding: 10px 13px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.booking-page-message.error {
+  border-color: #f3c5c2;
+  background: #fff0f0;
+  color: #a83232;
+}
+
+.booking-page-message.success {
+  border-color: #bee5cd;
+  background: #edf9f1;
+  color: #19763b;
 }
 
 /* =========================
@@ -291,6 +345,10 @@
 ========================= */
 
 @media (max-width: 1150px) {
+  .bookings-list-card {
+    overflow-x: auto;
+  }
+
   .booking-summary-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -303,7 +361,8 @@
       minmax(115px, 0.9fr)
       minmax(90px, 0.7fr)
       minmax(100px, 0.8fr)
-      minmax(100px, 0.8fr);
+      minmax(100px, 0.8fr)
+      minmax(120px, 0.9fr);
   }
 }
 

@@ -7,17 +7,20 @@ const API_BASE_URL = "http://127.0.0.1:8000/api";
 const GuideRequests = () => {
   const [requests, setRequests] = useState([]);
 
-  const [counts, setCounts] = useState({
-    all: 0,
-    pending: 0,
-    accepted: 0,
-    rejected: 0,
-    cancelled: 0,
-  });
-
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [actionLoading, setActionLoading] = useState(null);
+
+  const counts = requests.reduce((summary, request) => {
+    const status = (request.status || "pending").toLowerCase();
+    summary.all += 1;
+
+    if (status === "pending") summary.pending += 1;
+    if (status === "accepted") summary.accepted += 1;
+    if (status === "rejected") summary.rejected += 1;
+
+    return summary;
+  }, { all: 0, pending: 0, accepted: 0, rejected: 0 });
 
   const fetchRequests = async () => {
     try {
@@ -52,15 +55,7 @@ const GuideRequests = () => {
         );
       }
 
-      setRequests(data.requests || []);
-
-      setCounts({
-        all: data.counts?.all || 0,
-        pending: data.counts?.pending || 0,
-        accepted: data.counts?.accepted || 0,
-        rejected: data.counts?.rejected || 0,
-        cancelled: data.counts?.cancelled || 0,
-      });
+      setRequests(Array.isArray(data.requests) ? data.requests : []);
     } catch (err) {
       console.error("Guide requests error:", err);
 
@@ -260,17 +255,6 @@ const GuideRequests = () => {
           <div className="summary-card-content">
             <span>Rejected</span>
             <strong>{counts.rejected}</strong>
-          </div>
-        </div>
-
-        <div className="request-summary-card cancelled-card">
-          <div className="summary-card-icon">
-            <span>↪</span>
-          </div>
-
-          <div className="summary-card-content">
-            <span>Cancelled</span>
-            <strong>{counts.cancelled}</strong>
           </div>
         </div>
 

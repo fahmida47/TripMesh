@@ -65,6 +65,7 @@ function GuideProfile() {
     ownerName: "",
     bio: "",
     phone: "",
+    payoutBkashNumber: "",
     email: "",
     address: "",
     price: "",
@@ -131,6 +132,7 @@ function GuideProfile() {
         ownerName: savedProfile.contact_person || "",
         bio: savedProfile.bio || "",
         phone: savedProfile.phone || "",
+        payoutBkashNumber: savedProfile.payout_bkash_number || "",
         email: savedProfile.email || "",
         address: savedProfile.address || "",
         price: savedProfile.price ?? "",
@@ -414,6 +416,7 @@ function GuideProfile() {
             contact_person: profile.ownerName,
             bio: profile.bio,
             phone: profile.phone,
+            payout_bkash_number: profile.payoutBkashNumber,
             email: profile.email,
             address: profile.address,
             price: profile.price,
@@ -642,6 +645,20 @@ function GuideProfile() {
                 value={profile.phone}
                 onChange={handleChange}
                 placeholder="Enter phone number"
+              />
+            </div>
+
+            <div className="profile-field">
+              <label>bKash Number for Payouts</label>
+
+              <input
+                type="tel"
+                inputMode="tel"
+                name="payoutBkashNumber"
+                value={profile.payoutBkashNumber}
+                onChange={handleChange}
+                placeholder="01XXXXXXXXX"
+                maxLength={20}
               />
             </div>
 

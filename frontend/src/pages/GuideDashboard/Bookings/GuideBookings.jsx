@@ -1,31 +1,111 @@
-import { useState } from "react";
-
+import { useEffect, useState } from "react";
 import "./GuideBookings.css";
 
+const API_BASE_URL = "http://127.0.0.1:8000/api";
+
+function formatDate(value) {
+  if (!value) return "—";
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? value : date.toLocaleDateString();
+}
+
+function formatDateRange(booking) {
+  const start = formatDate(booking.from_date);
+  const end = formatDate(booking.to_date);
+  return start === end ? start : `${start} – ${end}`;
+}
+
+function formatAmount(value) {
+  return `৳${Number(value || 0).toLocaleString("en-BD")}`;
+}
+
 function GuideBookings() {
-  // No mock data
-  const [bookings] = useState([]);
+  const [bookings, setBookings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [updatingId, setUpdatingId] = useState(null);
+  const [error, setError] = useState("");
+  const [notice, setNotice] = useState("");
+
+  const loadBookings = async () => {
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/bookings/guide`, {
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+        },
+      });
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to load bookings.");
+      }
+
+      setBookings(data.bookings || []);
+    } catch (requestError) {
+      setError(requestError.message || "Unable to load bookings.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    loadBookings();
+  }, []);
+
+  const completeBooking = async (booking) => {
+    if (!window.confirm("Mark this paid booking as completed?")) return;
+
+    setUpdatingId(booking.id);
+    setError("");
+    setNotice("");
+
+    try {
+      const response = await fetch(
+        `${API_BASE_URL}/bookings/guide/${booking.id}/complete`,
+        {
+          method: "PUT",
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+          },
+        },
+      );
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Unable to complete this booking.");
+      }
+
+      setBookings((current) =>
+        current.map((item) =>
+          item.id === booking.id ? data.booking : item,
+        ),
+      );
+      setNotice(data.message || "Booking marked as completed.");
+    } catch (requestError) {
+      setError(requestError.message || "Unable to complete this booking.");
+    } finally {
+      setUpdatingId(null);
+    }
+  };
 
   const totalBookings = bookings.length;
-
-  const pendingBookings = bookings.filter(
-    (booking) => booking.status === "Pending",
-  ).length;
-
-  const completedBookings = bookings.filter(
-    (booking) => booking.status === "Completed",
-  ).length;
-
-  const cancelledBookings = bookings.filter(
-    (booking) => booking.status === "Cancelled",
-  ).length;
+  const pendingBookings = bookings.filter((booking) => booking.status === "pending_payment").length;
+  const confirmedBookings = bookings.filter((booking) => booking.status === "confirmed").length;
+  const completedBookings = bookings.filter((booking) => booking.status === "completed").length;
 
   return (
     <main className="guide-bookings-page">
       <div className="guide-bookings-heading">
         <h1>Bookings</h1>
-        <p>View the booking status of your accepted tour requests.</p>
+        <p>Track accepted tour requests, payment status, and completed tours.</p>
       </div>
+
+      {error && <p className="booking-page-message error" role="alert">{error}</p>}
+      {notice && <p className="booking-page-message success" role="status">{notice}</p>}
 
       {/* SUMMARY CARDS */}
       <section className="booking-summary-grid">
@@ -35,18 +115,18 @@ function GuideBookings() {
         </div>
 
         <div className="booking-summary-card">
-          <span>Pending</span>
+          <span>Awaiting Payment</span>
           <h2>{pendingBookings}</h2>
+        </div>
+
+        <div className="booking-summary-card">
+          <span>Confirmed</span>
+          <h2>{confirmedBookings}</h2>
         </div>
 
         <div className="booking-summary-card">
           <span>Completed</span>
           <h2>{completedBookings}</h2>
-        </div>
-
-        <div className="booking-summary-card">
-          <span>Cancelled</span>
-          <h2>{cancelledBookings}</h2>
         </div>
       </section>
 
@@ -59,17 +139,22 @@ function GuideBookings() {
           <span>Travelers</span>
           <span>Amount</span>
           <span>Status</span>
+          <span>Action</span>
         </div>
 
-        {bookings.length === 0 ? (
+        {loading ? (
+          <div className="bookings-empty-state">
+            <h2>Loading bookings…</h2>
+          </div>
+        ) : bookings.length === 0 ? (
           <div className="bookings-empty-state">
             <div className="bookings-empty-icon">📅</div>
 
             <h2>No bookings yet</h2>
 
             <p>
-              Accepted tour requests will appear here when booking activity
-              starts.
+              Accepted tour requests will appear here. Bookings awaiting payment
+              stay pending until the tourist pays and admin approves it.
             </p>
           </div>
         ) : (
@@ -77,27 +162,52 @@ function GuideBookings() {
             {bookings.map((booking) => (
               <div className="booking-row" key={booking.id}>
                 <div className="booking-customer">
-                  <strong>{booking.customerName}</strong>
+                  <strong>
+                    {booking.tourist?.full_name ||
+                      booking.tourist?.user?.name ||
+                      "Tourist"}
+                  </strong>
                 </div>
 
                 <div className="booking-tour">
-                  <strong>{booking.tourTitle}</strong>
-                  <span>{booking.destination}</span>
+                  <strong>
+                    {booking.experience?.title ||
+                      booking.travel_request?.experience_name ||
+                      "Tour booking"}
+                  </strong>
+                  <span>{booking.travel_request?.destination || "—"}</span>
                 </div>
 
-                <span>{booking.tourDate}</span>
+                <span>{formatDateRange(booking)}</span>
 
-                <span>{booking.travelers}</span>
+                <span>{booking.travel_request?.travelers ?? "—"}</span>
 
-                <strong>৳ {booking.amount}</strong>
+                <strong>{formatAmount(booking.amount)}</strong>
 
                 <span
-                  className={`booking-status ${booking.status
-                    .toLowerCase()
-                    .replace(" ", "-")}`}
+                  className={`booking-status ${booking.status.replaceAll("_", "-")}`}
                 >
-                  {booking.status}
+                  {booking.status.replaceAll("_", " ")}
                 </span>
+
+                {booking.status === "confirmed" && booking.payment?.status === "paid" ? (
+                  <button
+                    className="booking-complete-btn"
+                    type="button"
+                    disabled={updatingId === booking.id}
+                    onClick={() => completeBooking(booking)}
+                  >
+                    {updatingId === booking.id ? "Saving…" : "Mark completed"}
+                  </button>
+                ) : (
+                  <span className="booking-action-note">
+                    {booking.status === "pending_payment"
+                      ? "Waiting for payment"
+                      : booking.status === "completed"
+                        ? "Done"
+                        : "—"}
+                  </span>
+                )}
               </div>
             ))}
           </div>
