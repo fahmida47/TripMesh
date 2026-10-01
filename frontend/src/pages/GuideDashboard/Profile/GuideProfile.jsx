@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getExperienceAsset } from "../../../experienceAssets";
 import "./GuideProfile.css";
 
 const API_BASE_URL = "http://127.0.0.1:8000/api";
@@ -841,6 +842,25 @@ function GuideProfile() {
                     <img
                       src={experience.image.preview}
                       alt="Experience preview"
+                      onError={() => {
+                        const fallback = getExperienceAsset(experience.title);
+
+                        setExperiences((currentExperiences) =>
+                          currentExperiences.map((currentExperience) =>
+                            currentExperience.id === experience.id
+                              ? {
+                                  ...currentExperience,
+                                  image: fallback
+                                    ? {
+                                        ...currentExperience.image,
+                                        preview: fallback,
+                                      }
+                                    : null,
+                                }
+                              : currentExperience
+                          )
+                        );
+                      }}
                     />
                   ) : (
                     <>
