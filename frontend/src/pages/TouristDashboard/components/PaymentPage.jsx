@@ -165,11 +165,7 @@ export default function PaymentPage({
               booking={selectedBooking}
               method={methodLabel}
               accountNumber={accountNumber}
-              backLabel={
-                backLabel ||
-                "Back to My Requests"
-              }
-              onBack={handleBack}
+              onClose={handleBack}
             />
           </div>
         </main>

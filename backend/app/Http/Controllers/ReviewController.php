@@ -161,7 +161,7 @@ class ReviewController extends Controller
             return response()->json([
 
                 'message'=>
-                'Reviews can only be submitted for completed, paid bookings.'
+                'Reviews can only be submitted for confirmed or completed, paid bookings.'
 
             ],422);
 
