@@ -62,6 +62,14 @@ class GuideProfileController extends Controller
 
             'phone'=>'nullable|string|max:30',
 
+            'payout_bkash_number'=>[
+                'nullable',
+                'string',
+                'min:10',
+                'max:20',
+                'regex:/^(?:\\+?8801|01)[3-9]\\d{8}$/',
+            ],
+
             'email'=>'nullable|email|max:255',
 
             'address'=>'nullable|string|max:500',

@@ -48,6 +48,8 @@ Route::middleware(['auth:api', EnsureAdmin::class])->prefix('admin')->group(func
     Route::get('/payments', [AdminController::class, 'payments']);
     Route::get('/commissions', [AdminController::class, 'commissions']);
     Route::put('/commission', [AdminController::class, 'updateCommission']);
+    Route::get('/payouts', [AdminController::class, 'payouts']);
+    Route::post('/payouts/{payout}/release', [AdminController::class, 'releasePayout']);
     Route::patch('/payments/{payment}', [AdminController::class, 'updatePayment']);
     Route::get('/bookings', [AdminController::class, 'bookings']);
     Route::get('/guides', fn () => app(AdminController::class)->people('guide'));
@@ -149,6 +151,18 @@ Route::middleware('auth:api')
 Route::middleware('auth:api')
 ->prefix('bookings')
 ->group(function () {
+
+
+    Route::get('/guide', [
+        BookingController::class,
+        'guideIndex'
+    ]);
+
+
+    Route::put('/guide/{id}/complete', [
+        BookingController::class,
+        'completeGuideBooking'
+    ]);
 
 
     Route::get('/', [
@@ -257,17 +271,6 @@ Route::middleware('auth:api')
         'guideIndex'
     ]);
 
-
-    Route::get('/admin/payouts', [
-        PayoutController::class,
-        'adminIndex'
-    ]);
-
-
-    Route::post('/admin/payouts/{payout}/release', [
-        PayoutController::class,
-        'release'
-    ]);
 
 });
 

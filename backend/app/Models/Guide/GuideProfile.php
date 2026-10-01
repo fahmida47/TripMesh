@@ -15,6 +15,7 @@ class GuideProfile extends Model
         'contact_person',
         'bio',
         'phone',
+        'payout_bkash_number',
         'email',
         'address',
         'profile_picture',

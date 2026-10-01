@@ -112,6 +112,56 @@ class BookingController extends Controller
 
     }
 
+    public function guideIndex(Request $request)
+    {
+        $user = auth('api')->user();
+
+        if (!$user) {
+            return response()->json(['message' => 'Unauthenticated.'], 401);
+        }
+
+        if ($user->role !== 'guide') {
+            return response()->json(['message' => 'Only guides can view their bookings.'], 403);
+        }
+
+        if (!$user->guideProfile) {
+            return response()->json(['message' => 'Guide profile not found.'], 404);
+        }
+
+        return response()->json([
+            'message' => 'Guide bookings retrieved successfully.',
+            'bookings' => $this->bookingService->getGuideBookings($user->guideProfile),
+        ]);
+    }
+
+    public function completeGuideBooking(Request $request, $id)
+    {
+        $user = auth('api')->user();
+
+        if (!$user) {
+            return response()->json(['message' => 'Unauthenticated.'], 401);
+        }
+
+        if ($user->role !== 'guide') {
+            return response()->json(['message' => 'Only guides can complete their bookings.'], 403);
+        }
+
+        if (!$user->guideProfile) {
+            return response()->json(['message' => 'Guide profile not found.'], 404);
+        }
+
+        $booking = $this->bookingService->completeGuideBooking($user->guideProfile, $id);
+
+        if (!$booking) {
+            return response()->json(['message' => 'Booking not found or is not eligible for completion.'], 422);
+        }
+
+        return response()->json([
+            'message' => 'Booking marked as completed.',
+            'booking' => $booking,
+        ]);
+    }
+
 
 
 

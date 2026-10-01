@@ -42,3 +42,40 @@
 .admin-avatar{background:#eaf1ff;color:#2563eb}
 @media(max-width:900px){.admin-sidebar{width:240px}}
 @media(max-width:760px){.admin-sidebar{width:260px}.admin-topbar{height:76px}}
+.admin-commission-settings{display:block}
+.admin-tier-intro h2{margin:0;color:#0b1638;font-size:17px}
+.admin-tier-intro p{margin:5px 0 18px;color:#64748b;font-size:12px;line-height:1.55}
+.admin-tier-list{display:grid;gap:10px}
+.admin-tier-row{display:flex;align-items:flex-end;gap:12px;padding:12px;background:#f8faff;border:1px solid #e8edf5;border-radius:12px}
+.admin-tier-index{width:27px;height:27px;display:grid;place-items:center;margin-bottom:6px;flex-shrink:0;border-radius:50%;background:#eaf1ff;color:#2f6df6;font-weight:800;font-size:12px}
+.admin-tier-row label{display:grid;gap:6px;color:#64748b;font-weight:700;font-size:11px;flex:1}
+.admin-tier-row input{width:100%;padding:9px 11px;border:1px solid #dbe2ec;border-radius:8px;background:#fff;color:#172033}
+.admin-tier-row input:disabled{background:#eef3ff;color:#64748b}
+.admin-commission-settings .admin-tier-remove{background:#fff0ef;color:#be4942;padding:10px 12px;margin:0}
+.admin-tier-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px}
+.admin-commission-settings .admin-tier-actions button{margin:0}
+.admin-commission-settings .admin-tier-add{background:#eef3ff;color:#2f6df6}
+.admin-tier-notice{display:block;margin-top:12px;color:#16814b;font-size:12px}
+.admin-payout-release{border:0;border-radius:8px;background:#2f6df6;color:#fff;padding:8px 11px;font-size:11px;font-weight:800;white-space:nowrap;cursor:pointer}
+.admin-payout-release:hover{background:#2458d4}
+.admin-payout-release:disabled{opacity:.5;cursor:not-allowed}
+.admin-modal-backdrop{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:20px;background:rgba(5,20,48,.54);backdrop-filter:blur(3px)}
+.admin-payout-modal{width:min(100%,470px);padding:25px;background:#fff;border:1px solid #e5eaf2;border-radius:18px;box-shadow:0 24px 80px rgba(5,20,48,.25)}
+.admin-payout-modal-head{display:flex;align-items:center;justify-content:space-between}
+.admin-modal-icon{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:#eaf1ff;color:#2f6df6;font-weight:800;font-size:20px}
+.admin-payout-modal-head>button{width:32px;height:32px;border:0;border-radius:50%;background:#f1f4f9;color:#64748b;font-size:22px;line-height:1;cursor:pointer}
+.admin-payout-modal h2{margin:16px 0 6px;color:#0b1638;font-size:20px}
+.admin-payout-modal>p{margin:0 0 18px;color:#64748b;font-size:13px;line-height:1.55}
+.admin-payout-summary{display:grid;grid-template-columns:1fr auto;gap:10px 14px;padding:15px;background:#f4f7fc;border:1px solid #e8edf5;border-radius:12px}
+.admin-payout-summary span{color:#64748b;font-size:12px}.admin-payout-summary b{color:#172033;font-size:12px;text-align:right}
+.admin-transfer-confirm{display:flex;align-items:flex-start;gap:9px;margin-top:16px;color:#344158;font-size:12px;line-height:1.45;cursor:pointer}
+.admin-transfer-confirm input{margin:2px 0 0;accent-color:#2f6df6}
+.admin-payout-modal .admin-error{margin-bottom:0}
+.admin-payout-modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:22px}
+.admin-modal-cancel{border:1px solid #dbe2ec;border-radius:9px;background:#fff;color:#536176;padding:10px 15px;font-weight:700;cursor:pointer}
+.admin-modal-cancel:disabled{opacity:.5;cursor:not-allowed}
+@media(max-width:520px){.admin-tier-row{align-items:stretch;flex-wrap:wrap}.admin-tier-index{align-self:flex-end}.admin-tier-row label{min-width:calc(50% - 26px)}}
+.admin-sidebar{position:fixed;inset:0 auto 0 0;height:100vh;overflow-y:auto;z-index:10}
+.admin-main{width:calc(100% - 280px);margin-left:280px}
+@media(max-width:900px){.admin-main{width:calc(100% - 240px);margin-left:240px}}
+@media(max-width:760px){.admin-main{width:100%;margin-left:0}}
