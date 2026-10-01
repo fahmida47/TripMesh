@@ -8,6 +8,7 @@ use App\Models\TouristProfile;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -15,7 +16,7 @@ class AuthController extends Controller
     /**
      * Send verification code to phone number.
      *
-     * OTP is shown ONLY in Laravel terminal.
+    * OTP is shown ONLY in Laravel terminal.
      * OTP is NOT returned to browser.
      * OTP is NOT stored in database.
      */
@@ -46,15 +47,29 @@ class AuthController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        error_log('');
-        error_log('========================================');
-        error_log('       TripMesh Verification OTP');
-        error_log('========================================');
-        error_log('Phone: ' . $phone);
-        error_log('OTP:   ' . $code);
-        error_log('Expires: 2 minutes');
-        error_log('========================================');
-        error_log('');
+        $otpLog = implode(PHP_EOL, [
+            '',
+            '========================================',
+            '       TripMesh Verification OTP',
+            '========================================',
+            'Phone: ' . $phone,
+            'OTP:   ' . $code,
+            'Expires: 2 minutes',
+            '========================================',
+            '',
+        ]);
+
+        error_log($otpLog);
+        Log::info('TripMesh verification OTP generated', [
+            'phone' => $phone,
+            'otp' => $code,
+            'expires_in_minutes' => 2,
+        ]);
+        Log::channel('stderr')->info('TripMesh verification OTP generated', [
+            'phone' => $phone,
+            'otp' => $code,
+            'expires_in_minutes' => 2,
+        ]);
 
         /*
         |--------------------------------------------------------------------------
@@ -71,7 +86,6 @@ class AuthController extends Controller
             now()->addMinutes(2)
         );
 
-        // OTP is NOT included in this response.
         return response()->json([
             'message' => 'Verification code sent successfully.',
             'phone' => $phone,
