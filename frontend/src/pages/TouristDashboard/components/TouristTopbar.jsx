@@ -2,6 +2,7 @@ import { FiChevronDown, FiMenu, FiUser } from "react-icons/fi";
 
 import "./TouristTopbar.css";
 import { getStoredUser } from "../../../utils/auth.js";
+import NotificationBell from "../../../components/Notifications/NotificationBell";
 
 export default function TouristTopbar({ onMenuClick, onProfileClick }) {
   const user = getStoredUser() || {};
@@ -40,6 +41,8 @@ export default function TouristTopbar({ onMenuClick, onProfileClick }) {
 
       {/* RIGHT SIDE */}
       <div className="ts-dashtopbar-actions">
+        <NotificationBell variant="light" />
+
         <button
           type="button"
           className="ts-dashtopbar-account"

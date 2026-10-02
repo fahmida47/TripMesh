@@ -79,3 +79,7 @@
 .admin-main{width:calc(100% - 280px);margin-left:280px}
 @media(max-width:900px){.admin-main{width:calc(100% - 240px);margin-left:240px}}
 @media(max-width:760px){.admin-main{width:100%;margin-left:0}}
+
+/* Notification bell next to the admin user chip */
+.admin-topbar-right{display:flex;align-items:center;gap:16px}
+@media(max-width:760px){.admin-topbar-right{gap:10px}}

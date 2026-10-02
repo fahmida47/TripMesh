@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import NotificationBell from "../Notifications/NotificationBell";
+import { getLoggedInUser } from "../../utils/auth";
 import "./Navbar.css";
 
 const LogoIcon = () => (
@@ -11,6 +13,12 @@ const LogoIcon = () => (
     <circle cx="20" cy="18" r="10" fill="#03143d" />
   </svg>
 );
+
+const ROLE_HOME = {
+  guide: "/guide-dashboard",
+  tourist: "/tourist-dashboard",
+  admin: "/admin/dashboard",
+};
 
 const SECTION_ROUTES = {
   home: "/",
@@ -36,6 +44,9 @@ function Navbar({ activeSection, onSectionChange }) {
   const navigate = useNavigate();
 
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const user = getLoggedInUser();
+  const dashboardPath = user ? ROLE_HOME[user.role] : null;
 
   const current = activeSection ?? sectionFromPath(pathname);
 
@@ -115,15 +126,32 @@ function Navbar({ activeSection, onSectionChange }) {
 
       {/* LOGIN / SIGNUP / HAMBURGER */}
       <div className="tm-navbar__actions">
-        {/* LOGIN */}
-        <Link className="tm-navbar__login" to="/login">
-          Log In
-        </Link>
+        {dashboardPath ? (
+          <>
+            {/* NOTIFICATIONS (signed-in users) */}
+            <NotificationBell
+              variant="dark"
+              onOpenChange={(open) => open && setMenuOpen(false)}
+            />
 
-        {/* SIGNUP */}
-        <Link className="tm-navbar__signup" to="/signup">
-          Sign Up
-        </Link>
+            {/* DASHBOARD */}
+            <Link className="tm-navbar__signup" to={dashboardPath}>
+              Dashboard
+            </Link>
+          </>
+        ) : (
+          <>
+            {/* LOGIN */}
+            <Link className="tm-navbar__login" to="/login">
+              Log In
+            </Link>
+
+            {/* SIGNUP */}
+            <Link className="tm-navbar__signup" to="/signup">
+              Sign Up
+            </Link>
+          </>
+        )}
 
         {/* MOBILE HAMBURGER */}
         <button
