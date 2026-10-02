@@ -10,6 +10,7 @@ import {
   FiDollarSign,
   FiLogOut,
   FiStar,
+  FiMessageCircle,
   FiX,
 } from "react-icons/fi";
 
@@ -31,7 +32,9 @@ const GuideSidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
   return (
     <aside
-      className={`guide-sidebar ${sidebarOpen ? "guide-sidebar-open" : ""}`}
+      className={`guide-sidebar ${
+        sidebarOpen ? "guide-sidebar-open" : ""
+      }`}
     >
       <div className="guide-sidebar-top">
         <div className="sidebar-logo">
@@ -132,10 +135,25 @@ const GuideSidebar = ({ sidebarOpen, setSidebarOpen }) => {
             <FiStar />
             <span>Reviews and Ratings</span>
           </NavLink>
+
+          <NavLink
+            to="/guide-dashboard/chat"
+            onClick={closeSidebar}
+            className={({ isActive }) =>
+              isActive ? "sidebar-link active" : "sidebar-link"
+            }
+          >
+            <FiMessageCircle />
+            <span>Chat</span>
+          </NavLink>
         </nav>
       </div>
 
-      <button type="button" className="logout-btn" onClick={handleLogout}>
+      <button
+        type="button"
+        className="logout-btn"
+        onClick={handleLogout}
+      >
         <FiLogOut />
         <span>Logout</span>
       </button>

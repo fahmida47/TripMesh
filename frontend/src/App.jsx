@@ -1,17 +1,18 @@
-import { Routes, Route, Link, BrowserRouter, Navigate } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  Link,
+  BrowserRouter,
+  Navigate,
+} from "react-router-dom";
 
 import ScrollToTop from "./ScrollToTop";
 
 import GlobalLandingPage from "./pages/GlobalLandingPage/GlobalLandingPage";
-
 import Explore from "./pages/Explore/Explore";
-
 import Login from "./pages/Login/Login";
-
 import Signup from "./pages/Signup/Signup";
-
 import AboutUs from "./pages/AboutUs/AboutUs";
-
 import Contact from "./pages/Contact/Contact";
 
 /* =========================
@@ -19,21 +20,13 @@ import Contact from "./pages/Contact/Contact";
 ========================= */
 
 import GuideLayout from "./pages/GuideDashboard/GuideLayout";
-
 import GuideDashboard from "./pages/GuideDashboard/GuideDashboard";
-
 import GuideProfile from "./pages/GuideDashboard/Profile/GuideProfile";
-
 import GuideTourServices from "./pages/GuideDashboard/TourServices/GuideTourServices";
-
 import AddTourService from "./pages/GuideDashboard/TourServices/AddTourService";
-
 import GuideRequests from "./pages/GuideDashboard/GuideRequest/GuideRequests";
-
 import GuideBookings from "./pages/GuideDashboard/Bookings/GuideBookings";
-
 import GuidePayouts from "./pages/GuideDashboard/Payouts/GuidePayouts";
-
 import ReviewsRatings from "./pages/GuideDashboard/Rating/ReviewsRatings";
 
 /* =========================
@@ -41,21 +34,27 @@ import ReviewsRatings from "./pages/GuideDashboard/Rating/ReviewsRatings";
 ========================= */
 
 import TouristDashboard from "./pages/TouristDashboard/TouristDashboard";
-
+import TouristLayout from "./pages/TouristDashboard/TouristLayout";
 import TouristProfile from "./pages/TouristDashboard/Profile/TouristProfile";
-
 import TouristReviews from "./pages/TouristDashboard/Reviews/TouristReviews";
-
 import RequestsBookings from "./pages/TouristDashboard/components/RequestsBookings";
-
 import PaymentHistory from "./pages/TouristDashboard/components/PaymentHistory";
-
 import PaymentForm from "./pages/TouristDashboard/components/PaymentForm";
-
 import PaymentPage from "./pages/TouristDashboard/components/PaymentPage";
-
 import ReviewForm from "./pages/TouristDashboard/Reviews/ReviewForm";
+
+/* =========================
+   CHAT
+========================= */
+
+import ChatBox from "./pages/Chat/ChatBox";
+
+/* =========================
+   ADMIN
+========================= */
+
 import AdminLogin from "./pages/Admin/AdminLogin";
+
 import AdminDashboard, {
   AdminGuard,
   AdminOverview,
@@ -98,22 +97,21 @@ function getLoggedInUser() {
 function LandingPageRedirect() {
   const user = getLoggedInUser();
 
-  // User is NOT logged in
   if (!user) {
     return <GlobalLandingPage />;
   }
 
-  // Logged-in Guide
   if (user.role === "guide") {
     return <Navigate to="/guide-dashboard" replace />;
   }
 
-  // Logged-in Tourist
   if (user.role === "tourist") {
     return <Navigate to="/tourist-dashboard" replace />;
   }
 
-  if (user.role === "admin") return <Navigate to="/admin/dashboard" replace />;
+  if (user.role === "admin") {
+    return <Navigate to="/admin/dashboard" replace />;
+  }
 
   return <GlobalLandingPage />;
 }
@@ -125,22 +123,21 @@ function LandingPageRedirect() {
 function LoginRedirect() {
   const user = getLoggedInUser();
 
-  // Not logged in → Login page
   if (!user) {
     return <Login />;
   }
 
-  // Guide → Guide Dashboard
   if (user.role === "guide") {
     return <Navigate to="/guide-dashboard" replace />;
   }
 
-  // Tourist → Tourist Dashboard
   if (user.role === "tourist") {
     return <Navigate to="/tourist-dashboard" replace />;
   }
 
-  if (user.role === "admin") return <Navigate to="/admin/dashboard" replace />;
+  if (user.role === "admin") {
+    return <Navigate to="/admin/dashboard" replace />;
+  }
 
   return <Login />;
 }
@@ -152,22 +149,21 @@ function LoginRedirect() {
 function SignupRedirect() {
   const user = getLoggedInUser();
 
-  // Not logged in → Signup page
   if (!user) {
     return <Signup />;
   }
 
-  // Guide → Guide Dashboard
   if (user.role === "guide") {
     return <Navigate to="/guide-dashboard" replace />;
   }
 
-  // Tourist → Tourist Dashboard
   if (user.role === "tourist") {
     return <Navigate to="/tourist-dashboard" replace />;
   }
 
-  if (user.role === "admin") return <Navigate to="/admin/dashboard" replace />;
+  if (user.role === "admin") {
+    return <Navigate to="/admin/dashboard" replace />;
+  }
 
   return <Signup />;
 }
@@ -179,12 +175,10 @@ function SignupRedirect() {
 function ProtectedDashboard({ children, role }) {
   const user = getLoggedInUser();
 
-  // User is not logged in
   if (!user) {
     return <Navigate to="/login" replace />;
   }
 
-  // Wrong role trying to access dashboard
   if (user.role !== role) {
     if (user.role === "guide") {
       return <Navigate to="/guide-dashboard" replace />;
@@ -194,7 +188,9 @@ function ProtectedDashboard({ children, role }) {
       return <Navigate to="/tourist-dashboard" replace />;
     }
 
-    if (user.role === "admin") return <Navigate to="/admin/dashboard" replace />;
+    if (user.role === "admin") {
+      return <Navigate to="/admin/dashboard" replace />;
+    }
   }
 
   return children;
@@ -214,35 +210,108 @@ function App() {
             PUBLIC PAGES
         ========================= */}
 
-        {/* Landing Page */}
-        <Route path="/" element={<LandingPageRedirect />} />
+        <Route
+          path="/"
+          element={<LandingPageRedirect />}
+        />
 
-        {/* Explore */}
-        <Route path="/explore" element={<Explore />} />
+        <Route
+          path="/explore"
+          element={<Explore />}
+        />
 
-        {/* About */}
-        <Route path="/about" element={<AboutUs />} />
+        <Route
+          path="/about"
+          element={<AboutUs />}
+        />
 
-        {/* Contact */}
-        <Route path="/contact" element={<Contact />} />
+        <Route
+          path="/contact"
+          element={<Contact />}
+        />
 
-        {/* Login */}
-        <Route path="/login" element={<LoginRedirect />} />
+        <Route
+          path="/login"
+          element={<LoginRedirect />}
+        />
 
-        {/* Signup */}
-        <Route path="/signup" element={<SignupRedirect />} />
+        <Route
+          path="/signup"
+          element={<SignupRedirect />}
+        />
 
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin" element={<AdminGuard><AdminDashboard /></AdminGuard>}>
-          <Route index element={<Navigate to="dashboard" replace />} />
-          <Route path="dashboard" element={<AdminOverview />} />
-          <Route path="payments" element={<AdminPayments />} />
-          <Route path="commissions" element={<AdminCommissions />} />
-          <Route path="bookings" element={<AdminList kind="bookings" />} />
-          <Route path="guides" element={<AdminList kind="guides" />} />
-          <Route path="tourists" element={<AdminList kind="tourists" />} />
-          <Route path="reviews" element={<AdminReviews />} />
-          <Route path="profile" element={<AdminProfile />} />
+        {/* =========================
+            ADMIN
+        ========================= */}
+
+        <Route
+          path="/admin/login"
+          element={<AdminLogin />}
+        />
+
+        <Route
+          path="/admin"
+          element={
+            <AdminGuard>
+              <AdminDashboard />
+            </AdminGuard>
+          }
+        >
+          <Route
+            index
+            element={
+              <Navigate
+                to="dashboard"
+                replace
+              />
+            }
+          />
+
+          <Route
+            path="dashboard"
+            element={<AdminOverview />}
+          />
+
+          <Route
+            path="payments"
+            element={<AdminPayments />}
+          />
+
+          <Route
+            path="commissions"
+            element={<AdminCommissions />}
+          />
+
+          <Route
+            path="bookings"
+            element={
+              <AdminList kind="bookings" />
+            }
+          />
+
+          <Route
+            path="guides"
+            element={
+              <AdminList kind="guides" />
+            }
+          />
+
+          <Route
+            path="tourists"
+            element={
+              <AdminList kind="tourists" />
+            }
+          />
+
+          <Route
+            path="reviews"
+            element={<AdminReviews />}
+          />
+
+          <Route
+            path="profile"
+            element={<AdminProfile />}
+          />
         </Route>
 
         {/* =========================
@@ -258,10 +327,16 @@ function App() {
           }
         >
           {/* /guide-dashboard */}
-          <Route index element={<GuideDashboard />} />
+          <Route
+            index
+            element={<GuideDashboard />}
+          />
 
           {/* /guide-dashboard/profile */}
-          <Route path="profile" element={<GuideProfile />} />
+          <Route
+            path="profile"
+            element={<GuideProfile />}
+          />
 
           {/* /guide-dashboard/tour-services */}
           <Route
@@ -297,6 +372,14 @@ function App() {
           <Route
             path="reviews"
             element={<ReviewsRatings />}
+          />
+
+          {/* /guide-dashboard/chat */}
+          <Route
+            path="chat"
+            element={
+              <ChatBox userType="guide" />
+            }
           />
         </Route>
 
@@ -377,6 +460,26 @@ function App() {
         />
 
         {/* =========================
+            TOURIST CHAT
+        ========================= */}
+
+        <Route
+          path="/tourist-dashboard/chat"
+          element={
+            <ProtectedDashboard role="tourist">
+              <TouristLayout />
+            </ProtectedDashboard>
+          }
+        >
+          <Route
+            index
+            element={
+              <ChatBox userType="tourist" />
+            }
+          />
+        </Route>
+
+        {/* =========================
             PAGE NOT FOUND
         ========================= */}
 
@@ -391,7 +494,9 @@ function App() {
             >
               <h2>Page Not Found</h2>
 
-              <Link to="/">Go to Home</Link>
+              <Link to="/">
+                Go to Home
+              </Link>
             </div>
           }
         />
