@@ -109,6 +109,21 @@ const RecentRequests = () => {
     });
   };
 
+  const formatDateRange = (request) => {
+    const fromDate = request?.from_date || request?.fromDate || request?.travel_date;
+    const toDate = request?.to_date || request?.toDate;
+
+    if (!fromDate && !toDate) {
+      return "Not specified";
+    }
+
+    if (!toDate || fromDate === toDate) {
+      return formatDate(fromDate || toDate);
+    }
+
+    return `${formatDate(fromDate)} - ${formatDate(toDate)}`;
+  };
+
   const getTouristName = (request) => {
     const tourist = request?.tourist || {};
 
@@ -134,6 +149,7 @@ const RecentRequests = () => {
       experience.title ||
       experience.name ||
       experience.experience_name ||
+      request?.experience_name ||
       request?.tour_title ||
       request?.tour_name ||
       "General Tour"
@@ -242,9 +258,7 @@ const RecentRequests = () => {
                     </span>
 
                     <span className="recent-request-date">
-                      {formatDate(
-                        request.travel_date
-                      )}
+                      {formatDateRange(request)}
                     </span>
                   </div>
                 </div>

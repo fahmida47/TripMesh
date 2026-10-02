@@ -1,0 +1,53 @@
+.guide-location-map {
+  width: 100%;
+  min-height: 320px;
+  border: 1px solid #dce3ef;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #e7edf0;
+  z-index: 0;
+}
+
+.guide-location-map.is-selectable {
+  cursor: crosshair;
+}
+
+.guide-map-pin {
+  border: 0;
+  background: transparent;
+}
+
+.guide-map-pin-body {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border: 3px solid #fff;
+  border-radius: 50% 50% 50% 0;
+  background: #0767f2;
+  box-shadow: 0 2px 8px rgba(16, 27, 53, 0.35);
+  transform: rotate(-45deg);
+}
+
+.guide-map-pin-body.is-selected {
+  background: #e45436;
+}
+
+.guide-map-pin-initial {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1;
+  transform: rotate(45deg);
+}
+
+.guide-map-pin-body:not(.is-selected):hover {
+  background: #004ebd;
+  transform: rotate(-45deg) scale(1.08);
+}
+
+@media (max-width: 600px) {
+  .guide-location-map {
+    min-height: 270px;
+  }
+}

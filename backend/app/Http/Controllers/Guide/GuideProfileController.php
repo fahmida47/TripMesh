@@ -74,6 +74,10 @@ class GuideProfileController extends Controller
 
             'address'=>'nullable|string|max:500',
 
+            'latitude'=>'nullable|numeric|between:-90,90',
+
+            'longitude'=>'nullable|numeric|between:-180,180',
+
             'price'=>'nullable|numeric|min:0',
 
             'min_price'=>'nullable|numeric|min:0',
