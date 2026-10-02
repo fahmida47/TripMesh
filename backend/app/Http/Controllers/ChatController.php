@@ -100,6 +100,22 @@ class ChatController extends Controller
         ]);
         $message->setRelation('sender', $user);
 
+        $notificationUrl = match ($recipient->role) {
+            'admin' => in_array($user->role, ['guide', 'tourist'], true) ? '/admin/chat' : null,
+            'guide' => $user->role === 'admin' ? '/guide-dashboard/chat' : null,
+            'tourist' => $user->role === 'admin' ? '/tourist-dashboard/chat' : null,
+            default => null,
+        };
+
+        if ($notificationUrl) {
+            $recipient->notifications()->create([
+                'type' => 'message',
+                'title' => 'New chat message',
+                'message' => $user->name.' ('.$user->role.') sent you a message.',
+                'action_url' => $notificationUrl,
+            ]);
+        }
+
         return response()->json(['data' => $this->messagePayload($message, $user)], 201);
     }
 
