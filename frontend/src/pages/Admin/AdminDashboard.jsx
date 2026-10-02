@@ -24,7 +24,11 @@ import {
 import logo from "../../assets/logo.png";
 import "./admin.css";
 import { API_BASE_URL } from "../../config.js";
-import { clearSession, getStoredUser, getToken } from "../../utils/auth.js";
+import {
+  clearSession,
+  getStoredUser,
+  getToken,
+} from "../../utils/auth.js";
 
 const API = `${API_BASE_URL}/admin`;
 
@@ -40,18 +44,12 @@ const links = [
   ["/admin/profile", "Profile settings", Settings],
 ];
 
-function readUser() {
-  try {
-    return getStoredUser?.() || JSON.parse(localStorage.getItem("user") || "null");
-  } catch {
-    return null;
-  }
-}
+const readUser = getStoredUser;
 
 function authHeaders(json = true) {
   const headers = {
     Accept: "application/json",
-    Authorization: `Bearer ${getToken() || localStorage.getItem("token") || ""}`,
+    Authorization: `Bearer ${getToken() || ""}`,
   };
 
   if (json) {
@@ -73,7 +71,9 @@ async function api(path, options = {}) {
   const body = await response.json().catch(() => ({}));
 
   if (!response.ok) {
-    throw new Error(body.message || "Unable to load admin data.");
+    throw new Error(
+      body.message || "Unable to load admin data."
+    );
   }
 
   return body;
@@ -82,8 +82,11 @@ async function api(path, options = {}) {
 export function AdminGuard({ children }) {
   const user = readUser();
 
-  if (localStorage.getItem("isLoggedIn") !== "true" || !getToken()) {
-    return <Navigate to="/login" replace />;
+  if (
+    localStorage.getItem("isLoggedIn") !== "true" ||
+    !getToken()
+  ) {
+    return <Navigate to="/admin/login" replace />;
   }
 
   if (user?.role !== "admin") {
@@ -94,7 +97,7 @@ export function AdminGuard({ children }) {
             ? "/guide-dashboard"
             : user?.role === "tourist"
               ? "/tourist-dashboard"
-              : "/login"
+              : "/admin/login"
         }
         replace
       />
@@ -112,41 +115,52 @@ export default function AdminDashboard() {
 
   const logout = async () => {
     try {
-      await api("/auth/logout", { method: "POST" });
+      await api("/auth/logout", {
+        method: "POST",
+      });
     } catch {
-      // Clear local session even if the token has expired.
+      // Clear local session even if logout API fails.
     }
 
     clearSession();
-    ["token", "user", "isLoggedIn"].forEach((key) =>
-      localStorage.removeItem(key)
-    );
-
     navigate("/", { replace: true });
   };
 
   const currentTitle =
-    links.find(([to]) => to === location.pathname)?.[1] || "Overview";
+    links.find(([to]) => to === location.pathname)?.[1] ||
+    "Overview";
 
   return (
     <div className="admin-shell">
-      <aside className={`admin-sidebar ${menuOpen ? "is-open" : ""}`}>
-        <Link className="admin-brand" to="/admin/dashboard">
+      <aside
+        className={`admin-sidebar ${
+          menuOpen ? "is-open" : ""
+        }`}
+      >
+        <Link
+          className="admin-brand"
+          to="/admin/dashboard"
+        >
           <span>
             <img src={logo} alt="" />
           </span>
+
           <b>
             TripMesh <small>ADMIN</small>
           </b>
         </Link>
 
-        <div className="admin-nav-label">WORKSPACE</div>
+        <div className="admin-nav-label">
+          WORKSPACE
+        </div>
 
         <nav>
           {links.map(([to, label, Icon]) => (
             <Link
               key={to}
-              className={location.pathname === to ? "active" : ""}
+              className={
+                location.pathname === to ? "active" : ""
+              }
               to={to}
               onClick={() => setMenuOpen(false)}
             >
@@ -156,7 +170,10 @@ export default function AdminDashboard() {
           ))}
         </nav>
 
-        <button className="admin-logout" onClick={logout}>
+        <button
+          className="admin-logout"
+          onClick={logout}
+        >
           <LogOut size={18} />
           Sign out
         </button>
@@ -174,7 +191,9 @@ export default function AdminDashboard() {
         <header className="admin-topbar">
           <button
             className="admin-menu-toggle"
-            onClick={() => setMenuOpen((open) => !open)}
+            onClick={() =>
+              setMenuOpen((open) => !open)
+            }
             aria-label="Toggle navigation"
           >
             {menuOpen ? <X /> : <Menu />}
@@ -216,8 +235,8 @@ function useAdminData(path) {
 
     try {
       setData(await api(path));
-    } catch (e) {
-      setError(e.message);
+    } catch (error) {
+      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -236,13 +255,25 @@ function useAdminData(path) {
   };
 }
 
-function PageState({ loading, error, children }) {
+function PageState({
+  loading,
+  error,
+  children,
+}) {
   if (loading) {
-    return <div className="admin-empty">Loading…</div>;
+    return (
+      <div className="admin-empty">
+        Loading…
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="admin-error">{error}</div>;
+    return (
+      <div className="admin-error">
+        {error}
+      </div>
+    );
   }
 
   return children;
@@ -250,7 +281,9 @@ function PageState({ loading, error, children }) {
 
 function Stat({ label, value, tone }) {
   return (
-    <article className={`admin-stat ${tone || ""}`}>
+    <article
+      className={`admin-stat ${tone || ""}`}
+    >
       <span>{label}</span>
       <strong>{value ?? "—"}</strong>
     </article>
@@ -258,10 +291,13 @@ function Stat({ label, value, tone }) {
 }
 
 function currency(value) {
-  return `৳${Number(value || 0).toLocaleString("en-BD", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
+  return `৳${Number(value || 0).toLocaleString(
+    "en-BD",
+    {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }
+  )}`;
 }
 
 function rateFor(amount, slabs = []) {
@@ -286,53 +322,84 @@ function rows(data) {
     return page;
   }
 
-  return Array.isArray(page?.data) ? page.data : [];
+  return Array.isArray(page?.data)
+    ? page.data
+    : [];
 }
 
 export function AdminOverview() {
-  const { data, loading, error } = useAdminData("/dashboard");
+  const { data, loading, error } =
+    useAdminData("/dashboard");
+
   const stats = data?.stats || {};
 
   return (
-    <PageState loading={loading} error={error}>
+    <PageState
+      loading={loading}
+      error={error}
+    >
       <div className="admin-welcome">
         <div>
           <span>LIVE PLATFORM SUMMARY</span>
+
           <h2>
             Good to see you,{" "}
-            {readUser()?.name?.split(" ")[0] || "Admin"}
+            {readUser()?.name?.split(" ")[0] ||
+              "Admin"}
           </h2>
+
           <p>
-            Track TripMesh activity and review the items waiting for your
-            attention.
+            Track TripMesh activity and review the
+            items waiting for your attention.
           </p>
         </div>
 
-        <span className="admin-status-pill">System active</span>
+        <span className="admin-status-pill">
+          System active
+        </span>
       </div>
 
       <div className="admin-stats-grid">
-        <Stat label="Total tourists" value={stats.tourists} />
-        <Stat label="Total guides" value={stats.guides} />
-        <Stat label="Total bookings" value={stats.bookings} />
+        <Stat
+          label="Total tourists"
+          value={stats.tourists}
+        />
+
+        <Stat
+          label="Total guides"
+          value={stats.guides}
+        />
+
+        <Stat
+          label="Total bookings"
+          value={stats.bookings}
+        />
+
         <Stat
           label="Pending reviews"
           value={stats.pending_reviews}
           tone="amber"
         />
+
         <Stat
           label="Pending payments"
           value={stats.pending_payments}
           tone="amber"
         />
+
         <Stat
           label="Payment total"
-          value={currency(stats.payment_total)}
+          value={currency(
+            stats.payment_total
+          )}
           tone="blue"
         />
+
         <Stat
           label="TripMesh commission"
-          value={currency(stats.commission_total)}
+          value={currency(
+            stats.commission_total
+          )}
           tone="green"
         />
       </div>
@@ -340,10 +407,16 @@ export function AdminOverview() {
       <div className="admin-callout">
         <div>
           <b>Moderation queue</b>
-          <p>Tourist reviews are hidden from guides until approved.</p>
+
+          <p>
+            Tourist reviews are hidden from guides
+            until approved.
+          </p>
         </div>
 
-        <Link to="/admin/reviews">Review submissions →</Link>
+        <Link to="/admin/reviews">
+          Review submissions →
+        </Link>
       </div>
     </PageState>
   );
@@ -356,21 +429,41 @@ export function AdminList({ kind }) {
     tourists: "Tourist management",
   };
 
-  const { data, loading, error } = useAdminData(`/${kind}`);
+  const { data, loading, error } =
+    useAdminData(`/${kind}`);
+
   const items = rows(data);
 
-  const cols =
+  const columns =
     kind === "bookings"
-      ? ["Booking", "Tourist", "Guide", "Dates", "Amount", "Status"]
-      : ["Name", "Phone", "Joined", "Role"];
+      ? [
+          "Booking",
+          "Tourist",
+          "Guide",
+          "Dates",
+          "Amount",
+          "Status",
+        ]
+      : [
+          "Name",
+          "Phone",
+          "Joined",
+          "Role",
+        ];
 
   return (
-    <PageState loading={loading} error={error}>
+    <PageState
+      loading={loading}
+      error={error}
+    >
       <div className="admin-panel">
         <div className="admin-panel-heading">
           <div>
             <h2>{titles[kind]}</h2>
-            <p>{data?.total ?? items.length} records</p>
+
+            <p>
+              {data?.total ?? items.length} records
+            </p>
           </div>
         </div>
 
@@ -379,8 +472,10 @@ export function AdminList({ kind }) {
             <table>
               <thead>
                 <tr>
-                  {cols.map((c) => (
-                    <th key={c}>{c}</th>
+                  {columns.map((column) => (
+                    <th key={column}>
+                      {column}
+                    </th>
                   ))}
                 </tr>
               </thead>
@@ -390,18 +485,35 @@ export function AdminList({ kind }) {
                   kind === "bookings" ? (
                     <tr key={item.id}>
                       <td>#{item.id}</td>
-                      <td>{item.tourist?.user?.name || "—"}</td>
+
                       <td>
-                        {item.guide?.company_name ||
-                          item.guide?.user?.name ||
+                        {item.tourist?.user
+                          ?.name || "—"}
+                      </td>
+
+                      <td>
+                        {item.guide
+                          ?.company_name ||
+                          item.guide?.user
+                            ?.name ||
                           "—"}
                       </td>
+
                       <td>
-                        {item.from_date || "—"} – {item.to_date || "—"}
+                        {item.from_date || "—"} –{" "}
+                        {item.to_date || "—"}
                       </td>
-                      <td>{currency(item.amount)}</td>
+
                       <td>
-                        <span className="admin-badge">{item.status}</span>
+                        {currency(
+                          item.amount
+                        )}
+                      </td>
+
+                      <td>
+                        <span className="admin-badge">
+                          {item.status}
+                        </span>
                       </td>
                     </tr>
                   ) : (
@@ -412,13 +524,23 @@ export function AdminList({ kind }) {
                           item.company_name ||
                           "—"}
                       </td>
-                      <td>{item.phone || "—"}</td>
+
                       <td>
-                        {(item.created_at || "").slice(0, 10) || "—"}
+                        {item.phone || "—"}
                       </td>
+
+                      <td>
+                        {(item.created_at ||
+                          "").slice(0, 10) ||
+                          "—"}
+                      </td>
+
                       <td>
                         {item.role ||
-                          (kind === "guides" ? "guide" : "tourist")}
+                          (kind ===
+                          "guides"
+                            ? "guide"
+                            : "tourist")}
                       </td>
                     </tr>
                   )
@@ -427,7 +549,9 @@ export function AdminList({ kind }) {
             </table>
           </div>
         ) : (
-          <div className="admin-empty">No {kind} to show yet.</div>
+          <div className="admin-empty">
+            No {kind} to show yet.
+          </div>
         )}
       </div>
     </PageState>
@@ -435,29 +559,44 @@ export function AdminList({ kind }) {
 }
 
 export function AdminPayments() {
-  const { data, loading, error, refresh } = useAdminData("/payments");
+  const {
+    data,
+    loading,
+    error,
+    refresh,
+  } = useAdminData("/payments");
+
   const payments = rows(data);
 
   const update = async (id, status) => {
     try {
       await api(`/payments/${id}`, {
         method: "PATCH",
-        body: JSON.stringify({ status }),
+        body: JSON.stringify({
+          status,
+        }),
       });
 
       await refresh();
-    } catch (e) {
-      window.alert(e.message);
+    } catch (error) {
+      window.alert(error.message);
     }
   };
 
   return (
-    <PageState loading={loading} error={error}>
+    <PageState
+      loading={loading}
+      error={error}
+    >
       <div className="admin-panel">
         <div className="admin-panel-heading">
           <div>
             <h2>Payment history</h2>
-            <p>Review submitted details and approve or reject payments.</p>
+
+            <p>
+              Review submitted details and approve
+              or reject payments.
+            </p>
           </div>
         </div>
 
@@ -469,7 +608,9 @@ export function AdminPayments() {
                   <th>Booking</th>
                   <th>Tourist</th>
                   <th>Method</th>
-                  <th>Account / transaction</th>
+                  <th>
+                    Account / transaction
+                  </th>
                   <th>Submitted</th>
                   <th>Amount</th>
                   <th>Commission</th>
@@ -479,65 +620,122 @@ export function AdminPayments() {
               </thead>
 
               <tbody>
-                {payments.map((p) => {
+                {payments.map((payment) => {
                   const rate = rateFor(
-                    p.amount,
-                    data?.commission_slabs || []
+                    payment.amount,
+                    data?.commission_slabs ||
+                      []
                   );
 
-                  const reviewable = ["pending", "pending_review"].includes(
-                    p.status
+                  const reviewable = [
+                    "pending",
+                    "pending_review",
+                  ].includes(
+                    payment.status
                   );
 
                   return (
-                    <tr key={p.id}>
-                      <td>#{p.booking_id}</td>
-                      <td>{p.booking?.tourist?.user?.name || "—"}</td>
-                      <td>{p.method || "—"}</td>
+                    <tr key={payment.id}>
                       <td>
-                        {p.account_number || "—"}
+                        #{payment.booking_id}
+                      </td>
+
+                      <td>
+                        {payment.booking
+                          ?.tourist?.user
+                          ?.name || "—"}
+                      </td>
+
+                      <td>
+                        {payment.method ||
+                          "—"}
+                      </td>
+
+                      <td>
+                        {payment.account_number ||
+                          "—"}
+
                         <small className="table-sub">
-                          {p.transaction_reference ||
+                          {payment.transaction_reference ||
                             "No transaction reference"}
                         </small>
                       </td>
+
                       <td>
-                        {p.payment_date_time
-                          ? new Date(p.payment_date_time).toLocaleString()
+                        {payment.payment_date_time
+                          ? new Date(
+                              payment.payment_date_time
+                            ).toLocaleString()
                           : "—"}
                       </td>
-                      <td>{currency(p.amount)}</td>
+
                       <td>
-                        {currency((Number(p.amount || 0) * rate) / 100)}
-                        <small className="table-sub">{rate}%</small>
+                        {currency(
+                          payment.amount
+                        )}
                       </td>
+
+                      <td>
+                        {currency(
+                          (Number(
+                            payment.amount ||
+                              0
+                          ) *
+                            rate) /
+                            100
+                        )}
+
+                        <small className="table-sub">
+                          {rate}%
+                        </small>
+                      </td>
+
                       <td>
                         <span
                           className={`admin-badge ${
-                            p.status === "paid"
+                            payment.status ===
+                            "paid"
                               ? "good"
-                              : p.status === "rejected"
+                              : payment.status ===
+                                  "rejected"
                                 ? "bad"
                                 : "pending"
                           }`}
                         >
-                          {p.status}
+                          {payment.status}
                         </span>
                       </td>
+
                       <td className="admin-actions">
                         {reviewable ? (
                           <>
                             <button
-                              disabled={!p.method}
-                              onClick={() => update(p.id, "paid")}
+                              type="button"
+                              disabled={
+                                !payment.method
+                              }
+                              onClick={() =>
+                                update(
+                                  payment.id,
+                                  "paid"
+                                )
+                              }
                             >
                               Approve
                             </button>
 
                             <button
+                              type="button"
                               className="reject"
-                              disabled={!p.method}
-                              onClick={() => update(p.id, "rejected")}
+                              disabled={
+                                !payment.method
+                              }
+                              onClick={() =>
+                                update(
+                                  payment.id,
+                                  "rejected"
+                                )
+                              }
                             >
                               Reject
                             </button>
@@ -545,10 +743,16 @@ export function AdminPayments() {
                         ) : (
                           <span
                             className={`admin-badge ${
-                              p.status === "paid" ? "good" : "bad"
+                              payment.status ===
+                              "paid"
+                                ? "good"
+                                : "bad"
                             }`}
                           >
-                            {p.status === "paid" ? "Approved" : "Rejected"}
+                            {payment.status ===
+                            "paid"
+                              ? "Approved"
+                              : "Rejected"}
                           </span>
                         )}
                       </td>
@@ -559,7 +763,9 @@ export function AdminPayments() {
             </table>
           </div>
         ) : (
-          <div className="admin-empty">No payment records yet.</div>
+          <div className="admin-empty">
+            No payment records yet.
+          </div>
         )}
       </div>
     </PageState>
@@ -567,20 +773,51 @@ export function AdminPayments() {
 }
 
 export function AdminCommissions() {
-  const { data, loading, error, refresh } = useAdminData("/commissions");
+  const {
+    data,
+    loading,
+    error,
+    refresh,
+  } = useAdminData("/commissions");
+
   const items = rows(data);
 
-  const [slabs, setSlabs] = useState([]);
-  const [notice, setNotice] = useState("");
-  const [releaseNotice, setReleaseNotice] = useState("");
-  const [selectedPayout, setSelectedPayout] = useState(null);
-  const [transferConfirmed, setTransferConfirmed] = useState(false);
-  const [releasing, setReleasing] = useState(false);
-  const [releaseError, setReleaseError] = useState("");
+  const [slabs, setSlabs] =
+    useState([]);
+  const [notice, setNotice] =
+    useState("");
+  const [
+    releaseNotice,
+    setReleaseNotice,
+  ] = useState("");
+  const [
+    selectedPayout,
+    setSelectedPayout,
+  ] = useState(null);
+  const [
+    transferConfirmed,
+    setTransferConfirmed,
+  ] = useState(false);
+  const [releasing, setReleasing] =
+    useState(false);
+  const [
+    releaseError,
+    setReleaseError,
+  ] = useState("");
 
   useEffect(() => {
-    if (Array.isArray(data?.commission_slabs)) {
-      setSlabs(data.commission_slabs.map((slab) => ({ ...slab })));
+    if (
+      Array.isArray(
+        data?.commission_slabs
+      )
+    ) {
+      setSlabs(
+        data.commission_slabs.map(
+          (slab) => ({
+            ...slab,
+          })
+        )
+      );
     }
   }, [data]);
 
@@ -589,20 +826,30 @@ export function AdminCommissions() {
     setNotice("");
 
     try {
-      const payload = slabs.map((slab) => ({
-        max_amount: slab.max_amount === "" ? null : slab.max_amount,
-        rate: Number(slab.rate),
-      }));
+      const payload = slabs.map(
+        (slab) => ({
+          max_amount:
+            slab.max_amount === ""
+              ? null
+              : slab.max_amount,
+          rate: Number(slab.rate),
+        })
+      );
 
-      const result = await api("/commission", {
-        method: "PUT",
-        body: JSON.stringify({ slabs: payload }),
-      });
+      const result = await api(
+        "/commission",
+        {
+          method: "PUT",
+          body: JSON.stringify({
+            slabs: payload,
+          }),
+        }
+      );
 
       setNotice(result.message);
       await refresh();
-    } catch (e) {
-      setNotice(e.message);
+    } catch (error) {
+      setNotice(error.message);
     }
   };
 
@@ -610,17 +857,34 @@ export function AdminCommissions() {
     setSlabs((current) => {
       if (!current.length) {
         return [
-          { max_amount: 5000, rate: 12 },
-          { max_amount: null, rate: 8 },
+          {
+            max_amount: 5000,
+            rate: 12,
+          },
+          {
+            max_amount: null,
+            rate: 8,
+          },
         ];
       }
 
-      const next = current.map((slab) => ({ ...slab }));
-      const last = next[next.length - 1];
+      const next = current.map(
+        (slab) => ({
+          ...slab,
+        })
+      );
 
-      if (last.max_amount === null) {
+      const last =
+        next[next.length - 1];
+
+      if (
+        last.max_amount === null
+      ) {
         last.max_amount =
-          Number(next[next.length - 2]?.max_amount || 0) + 15000;
+          Number(
+            next[next.length - 2]
+              ?.max_amount || 0
+          ) + 15000;
       }
 
       next.push({
@@ -633,24 +897,47 @@ export function AdminCommissions() {
 
   const removeSlab = (index) =>
     setSlabs((current) => {
-      const next = current.filter((_, itemIndex) => itemIndex !== index);
+      const next = current.filter(
+        (_, itemIndex) =>
+          itemIndex !== index
+      );
 
-      if (index === current.length - 1 && next.length) {
-        next[next.length - 1].max_amount = null;
+      if (
+        index ===
+          current.length - 1 &&
+        next.length
+      ) {
+        next[
+          next.length - 1
+        ].max_amount = null;
       }
 
       return next;
     });
 
-  const updateSlab = (index, key, value) =>
+  const updateSlab = (
+    index,
+    key,
+    value
+  ) =>
     setSlabs((current) =>
-      current.map((slab, itemIndex) =>
-        itemIndex === index ? { ...slab, [key]: value } : slab
+      current.map(
+        (slab, itemIndex) =>
+          itemIndex === index
+            ? {
+                ...slab,
+                [key]: value,
+              }
+            : slab
       )
     );
 
   const release = async () => {
-    if (!selectedPayout || !transferConfirmed || releasing) {
+    if (
+      !selectedPayout ||
+      !transferConfirmed ||
+      releasing
+    ) {
       return;
     }
 
@@ -667,101 +954,176 @@ export function AdminCommissions() {
         }
       );
 
-      setReleaseNotice(result.message);
+      setReleaseNotice(
+        result.message
+      );
       setSelectedPayout(null);
       setTransferConfirmed(false);
+
       await refresh();
-    } catch (e) {
-      setReleaseError(e.message);
+    } catch (error) {
+      setReleaseError(
+        error.message
+      );
     } finally {
       setReleasing(false);
     }
   };
 
   return (
-    <PageState loading={loading} error={error}>
-      <form className="admin-commission-settings" onSubmit={saveSlabs}>
+    <PageState
+      loading={loading}
+      error={error}
+    >
+      <form
+        className="admin-commission-settings"
+        onSubmit={saveSlabs}
+      >
         <div className="admin-tier-intro">
-          <h2>Commission by booking price</h2>
+          <h2>
+            Commission by booking price
+          </h2>
+
           <p>
-            Each approved payment uses the rate for its booking amount. Past
-            payouts keep the rate recorded when they were approved.
+            Each approved payment uses the rate
+            for its booking amount. Past payouts
+            keep the rate recorded when they
+            were approved.
           </p>
         </div>
 
         <div className="admin-tier-list">
-          {slabs.map((slab, index) => (
-            <div className="admin-tier-row" key={index}>
-              <span className="admin-tier-index">{index + 1}</span>
+          {slabs.map(
+            (slab, index) => (
+              <div
+                className="admin-tier-row"
+                key={index}
+              >
+                <span className="admin-tier-index">
+                  {index + 1}
+                </span>
 
-              <label>
-                {index === slabs.length - 1 ? "Price range" : "Up to (৳)"}
-                <input
-                  type="number"
-                  min="1"
-                  step="0.01"
-                  required={index !== slabs.length - 1}
-                  disabled={index === slabs.length - 1}
-                  placeholder="No upper limit"
-                  value={
-                    index === slabs.length - 1 ? "" : slab.max_amount ?? ""
-                  }
-                  onChange={(e) =>
-                    updateSlab(index, "max_amount", e.target.value)
-                  }
-                />
-              </label>
+                <label>
+                  {index ===
+                  slabs.length - 1
+                    ? "Price range"
+                    : "Up to (৳)"}
 
-              <label>
-                Commission (%)
-                <input
-                  type="number"
-                  min="0"
-                  max="100"
-                  step="0.01"
-                  required
-                  value={slab.rate}
-                  onChange={(e) => updateSlab(index, "rate", e.target.value)}
-                />
-              </label>
+                  <input
+                    type="number"
+                    min="1"
+                    step="0.01"
+                    required={
+                      index !==
+                      slabs.length - 1
+                    }
+                    disabled={
+                      index ===
+                      slabs.length - 1
+                    }
+                    placeholder="No upper limit"
+                    value={
+                      index ===
+                      slabs.length - 1
+                        ? ""
+                        : slab.max_amount ??
+                          ""
+                    }
+                    onChange={(
+                      event
+                    ) =>
+                      updateSlab(
+                        index,
+                        "max_amount",
+                        event.target
+                          .value
+                      )
+                    }
+                  />
+                </label>
 
-              {slabs.length > 1 && (
-                <button
-                  className="admin-tier-remove"
-                  type="button"
-                  onClick={() => removeSlab(index)}
-                >
-                  Remove
-                </button>
-              )}
-            </div>
-          ))}
+                <label>
+                  Commission (%)
+
+                  <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="0.01"
+                    required
+                    value={slab.rate}
+                    onChange={(
+                      event
+                    ) =>
+                      updateSlab(
+                        index,
+                        "rate",
+                        event.target
+                          .value
+                      )
+                    }
+                  />
+                </label>
+
+                {slabs.length >
+                  1 && (
+                  <button
+                    className="admin-tier-remove"
+                    type="button"
+                    onClick={() =>
+                      removeSlab(
+                        index
+                      )
+                    }
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+            )
+          )}
         </div>
 
         <div className="admin-tier-actions">
-          <button className="admin-tier-add" type="button" onClick={addSlab}>
+          <button
+            className="admin-tier-add"
+            type="button"
+            onClick={addSlab}
+          >
             + Add price tier
           </button>
 
-          <button type="submit">Save commission tiers</button>
+          <button type="submit">
+            Save commission tiers
+          </button>
         </div>
 
-        {notice && <span className="admin-tier-notice">{notice}</span>}
+        {notice && (
+          <span className="admin-tier-notice">
+            {notice}
+          </span>
+        )}
       </form>
 
       <div className="admin-panel">
         <div className="admin-panel-heading">
           <div>
-            <h2>Commission and guide payouts</h2>
+            <h2>
+              Commission and guide payouts
+            </h2>
+
             <p>
-              Transfer the guide net amount to the payout bKash number, then
+              Transfer the guide net amount to
+              the payout bKash number, then
               mark it paid.
             </p>
           </div>
         </div>
 
         {releaseNotice && (
-          <div className="admin-notice">{releaseNotice}</div>
+          <div className="admin-notice">
+            {releaseNotice}
+          </div>
         )}
 
         {items.length ? (
@@ -770,7 +1132,9 @@ export function AdminCommissions() {
               <thead>
                 <tr>
                   <th>Payment</th>
-                  <th>Guide company / bKash</th>
+                  <th>
+                    Guide company / bKash
+                  </th>
                   <th>Gross</th>
                   <th>Rate</th>
                   <th>Commission</th>
@@ -783,27 +1147,57 @@ export function AdminCommissions() {
               <tbody>
                 {items.map((item) => (
                   <tr key={item.id}>
-                    <td>#{item.payment_id}</td>
+                    <td>
+                      #{item.payment_id}
+                    </td>
 
                     <td>
-                      {item.guide?.company_name ||
-                        item.guide?.user?.name ||
+                      {item.guide
+                        ?.company_name ||
+                        item.guide?.user
+                          ?.name ||
                         "—"}
+
                       <small className="table-sub">
                         bKash:{" "}
-                        {item.guide?.payout_bkash_number || "Not set"}
+                        {item.guide
+                          ?.payout_bkash_number ||
+                          "Not set"}
                       </small>
                     </td>
 
-                    <td>{currency(item.gross_amount)}</td>
-                    <td>{item.commission_rate}%</td>
-                    <td>{currency(item.commission_amount)}</td>
-                    <td>{currency(item.net_amount)}</td>
+                    <td>
+                      {currency(
+                        item.gross_amount
+                      )}
+                    </td>
+
+                    <td>
+                      {
+                        item.commission_rate
+                      }
+                      %
+                    </td>
+
+                    <td>
+                      {currency(
+                        item.commission_amount
+                      )}
+                    </td>
+
+                    <td>
+                      {currency(
+                        item.net_amount
+                      )}
+                    </td>
 
                     <td>
                       <span
                         className={`admin-badge ${
-                          item.status === "paid" ? "good" : "pending"
+                          item.status ===
+                          "paid"
+                            ? "good"
+                            : "pending"
                         }`}
                       >
                         {item.status}
@@ -811,14 +1205,21 @@ export function AdminCommissions() {
                     </td>
 
                     <td>
-                      {item.status === "pending" ? (
+                      {item.status ===
+                      "pending" ? (
                         <button
                           className="admin-payout-release"
                           type="button"
                           onClick={() => {
-                            setSelectedPayout(item);
-                            setTransferConfirmed(false);
-                            setReleaseError("");
+                            setSelectedPayout(
+                              item
+                            );
+                            setTransferConfirmed(
+                              false
+                            );
+                            setReleaseError(
+                              ""
+                            );
                           }}
                         >
                           Mark paid
@@ -826,7 +1227,9 @@ export function AdminCommissions() {
                       ) : (
                         <span>
                           {item.paid_at
-                            ? new Date(item.paid_at).toLocaleDateString()
+                            ? new Date(
+                                item.paid_at
+                              ).toLocaleDateString()
                             : "—"}
                         </span>
                       )}
@@ -838,7 +1241,8 @@ export function AdminCommissions() {
           </div>
         ) : (
           <div className="admin-empty">
-            Guide payout records appear after payment approval.
+            Guide payout records appear after
+            payment approval.
           </div>
         )}
       </div>
@@ -849,10 +1253,13 @@ export function AdminCommissions() {
           role="presentation"
           onMouseDown={(event) => {
             if (
-              event.target === event.currentTarget &&
+              event.target ===
+                event.currentTarget &&
               !releasing
             ) {
-              setSelectedPayout(null);
+              setSelectedPayout(
+                null
+              );
             }
           }}
         >
@@ -863,68 +1270,119 @@ export function AdminCommissions() {
             aria-labelledby="payout-modal-title"
           >
             <div className="admin-payout-modal-head">
-              <span className="admin-modal-icon">৳</span>
+              <span className="admin-modal-icon">
+                ৳
+              </span>
 
               <button
                 type="button"
                 aria-label="Close dialog"
-                onClick={() => setSelectedPayout(null)}
+                onClick={() =>
+                  setSelectedPayout(
+                    null
+                  )
+                }
                 disabled={releasing}
               >
                 ×
               </button>
             </div>
 
-            <h2 id="payout-modal-title">Confirm guide payout</h2>
+            <h2 id="payout-modal-title">
+              Confirm guide payout
+            </h2>
 
             <p>
-              Send this amount to the guide's payout bKash number before
+              Send this amount to the guide's
+              payout bKash number before
               confirming.
             </p>
 
             <div className="admin-payout-summary">
-              <span>Guide company</span>
+              <span>
+                Guide company
+              </span>
+
               <b>
-                {selectedPayout.guide?.company_name ||
-                  selectedPayout.guide?.user?.name ||
+                {selectedPayout
+                  .guide
+                  ?.company_name ||
+                  selectedPayout
+                    .guide?.user?.name ||
                   "Guide company"}
               </b>
 
-              <span>Guide bKash number</span>
+              <span>
+                Guide bKash number
+              </span>
+
               <b>
-                {selectedPayout.guide?.payout_bkash_number || "Not set"}
+                {selectedPayout
+                  .guide
+                  ?.payout_bkash_number ||
+                  "Not set"}
               </b>
 
-              <span>Amount to transfer</span>
-              <b>{currency(selectedPayout.net_amount)}</b>
+              <span>
+                Amount to transfer
+              </span>
 
-              <span>TripMesh commission</span>
               <b>
-                {currency(selectedPayout.commission_amount)} (
-                {selectedPayout.commission_rate}%)
+                {currency(
+                  selectedPayout.net_amount
+                )}
+              </b>
+
+              <span>
+                TripMesh commission
+              </span>
+
+              <b>
+                {currency(
+                  selectedPayout.commission_amount
+                )}{" "}
+                (
+                {
+                  selectedPayout.commission_rate
+                }
+                %)
               </b>
             </div>
 
             <label className="admin-transfer-confirm">
               <input
                 type="checkbox"
-                checked={transferConfirmed}
+                checked={
+                  transferConfirmed
+                }
                 onChange={(event) =>
-                  setTransferConfirmed(event.target.checked)
+                  setTransferConfirmed(
+                    event.target.checked
+                  )
                 }
               />
-              <span>I have sent this amount to the guide company.</span>
+
+              <span>
+                I have sent this amount to the
+                guide company.
+              </span>
             </label>
 
             {releaseError && (
-              <div className="admin-error">{releaseError}</div>
+              <div className="admin-error">
+                {releaseError}
+              </div>
             )}
 
             <div className="admin-payout-modal-actions">
               <button
                 type="button"
                 className="admin-modal-cancel"
-                onClick={() => setSelectedPayout(null)}
+                onClick={() =>
+                  setSelectedPayout(
+                    null
+                  )
+                }
                 disabled={releasing}
               >
                 Cancel
@@ -936,11 +1394,15 @@ export function AdminCommissions() {
                 onClick={release}
                 disabled={
                   !transferConfirmed ||
-                  !selectedPayout.guide?.payout_bkash_number ||
+                  !selectedPayout
+                    .guide
+                    ?.payout_bkash_number ||
                   releasing
                 }
               >
-                {releasing ? "Saving…" : "Confirm payout"}
+                {releasing
+                  ? "Saving…"
+                  : "Confirm payout"}
               </button>
             </div>
           </section>
@@ -951,77 +1413,137 @@ export function AdminCommissions() {
 }
 
 export function AdminReviews() {
-  const { data, loading, error, refresh } = useAdminData("/reviews");
+  const {
+    data,
+    loading,
+    error,
+    refresh,
+  } = useAdminData("/reviews");
+
   const reviews = rows(data);
 
-  const update = async (id, status) => {
+  const update = async (
+    id,
+    status
+  ) => {
     try {
       await api(`/reviews/${id}`, {
         method: "PATCH",
-        body: JSON.stringify({ status }),
+        body: JSON.stringify({
+          status,
+        }),
       });
 
       await refresh();
-    } catch (e) {
-      window.alert(e.message);
+    } catch (error) {
+      window.alert(error.message);
     }
   };
 
   return (
-    <PageState loading={loading} error={error}>
+    <PageState
+      loading={loading}
+      error={error}
+    >
       <div className="admin-review-list">
         {reviews.length ? (
-          reviews.map((review) => (
-            <article className="admin-review-card" key={review.id}>
-              <div className="admin-review-head">
-                <div>
-                  <span className="admin-badge pending">
-                    {review.status}
-                  </span>
+          reviews.map(
+            (review) => (
+              <article
+                className="admin-review-card"
+                key={review.id}
+              >
+                <div className="admin-review-head">
+                  <div>
+                    <span className="admin-badge pending">
+                      {
+                        review.status
+                      }
+                    </span>
 
-                  <h3>
-                    {review.tourist?.user?.name ||
-                      review.tourist?.full_name ||
-                      "Tourist"}{" "}
-                    <span>→</span>{" "}
-                    {review.guide?.company_name ||
-                      review.guide?.user?.name ||
-                      "Guide"}
-                  </h3>
+                    <h3>
+                      {review
+                        .tourist
+                        ?.user?.name ||
+                        review
+                          .tourist
+                          ?.full_name ||
+                        "Tourist"}{" "}
+                      <span>→</span>{" "}
+                      {review
+                        .guide
+                        ?.company_name ||
+                        review
+                          .guide
+                          ?.user
+                          ?.name ||
+                        "Guide"}
+                    </h3>
+                  </div>
+
+                  <strong>
+                    ★ {review.rating}
+                    /5
+                  </strong>
                 </div>
 
-                <strong>★ {review.rating}/5</strong>
-              </div>
+                <p>
+                  {review.review}
+                </p>
 
-              <p>{review.review}</p>
+                <footer>
+                  <span>
+                    Booking #
+                    {
+                      review.booking_id
+                    }{" "}
+                    ·{" "}
+                    {(
+                      review.submitted_at ||
+                      ""
+                    ).slice(
+                      0,
+                      10
+                    )}
+                  </span>
 
-              <footer>
-                <span>
-                  Booking #{review.booking_id} ·{" "}
-                  {(review.submitted_at || "").slice(0, 10)}
-                </span>
+                  {review.status ===
+                    "pending" && (
+                    <div className="admin-actions">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          update(
+                            review.id,
+                            "approved"
+                          )
+                        }
+                      >
+                        Approve
+                      </button>
 
-                {review.status === "pending" && (
-                  <div className="admin-actions">
-                    <button
-                      onClick={() => update(review.id, "approved")}
-                    >
-                      Approve
-                    </button>
-
-                    <button
-                      className="reject"
-                      onClick={() => update(review.id, "rejected")}
-                    >
-                      Reject
-                    </button>
-                  </div>
-                )}
-              </footer>
-            </article>
-          ))
+                      <button
+                        type="button"
+                        className="reject"
+                        onClick={() =>
+                          update(
+                            review.id,
+                            "rejected"
+                          )
+                        }
+                      >
+                        Reject
+                      </button>
+                    </div>
+                  )}
+                </footer>
+              </article>
+            )
+          )
         ) : (
-          <div className="admin-empty">No reviews have been submitted.</div>
+          <div className="admin-empty">
+            No reviews have been submitted.
+          </div>
         )}
       </div>
     </PageState>
@@ -1029,61 +1551,93 @@ export function AdminReviews() {
 }
 
 export function AdminProfile() {
-  const { data, loading, error, refresh } = useAdminData("/profile");
+  const {
+    data,
+    loading,
+    error,
+    refresh,
+  } = useAdminData("/profile");
 
-  const [form, setForm] = useState({
-    name: "",
-    phone: "",
-  });
+  const [form, setForm] =
+    useState({
+      name: "",
+      phone: "",
+    });
 
-  const [admin, setAdmin] = useState({
-    name: "",
-    phone: "",
-  });
+  const [admin, setAdmin] =
+    useState({
+      name: "",
+      phone: "",
+    });
 
-  const [notice, setNotice] = useState("");
-  const [failure, setFailure] = useState("");
+  const [notice, setNotice] =
+    useState("");
+  const [failure, setFailure] =
+    useState("");
 
   useEffect(() => {
     if (data?.user) {
       setForm({
-        name: data.user.name || "",
-        phone: data.user.phone || "",
+        name:
+          data.user.name || "",
+        phone:
+          data.user.phone || "",
       });
     }
   }, [data]);
 
-  const save = async (e) => {
-    e.preventDefault();
+  const save = async (event) => {
+    event.preventDefault();
+
     setNotice("");
     setFailure("");
 
     try {
-      const result = await api("/profile", {
-        method: "PUT",
-        body: JSON.stringify(form),
-      });
+      const result = await api(
+        "/profile",
+        {
+          method: "PUT",
+          body: JSON.stringify(
+            form
+          ),
+        }
+      );
 
       setNotice(result.message);
 
-      localStorage.setItem("user", JSON.stringify(result.user));
+      localStorage.setItem(
+        "user",
+        JSON.stringify(
+          result.user
+        )
+      );
 
       await refresh();
-    } catch (err) {
-      setFailure(err.message);
+    } catch (error) {
+      setFailure(
+        error.message
+      );
     }
   };
 
-  const addAdmin = async (e) => {
-    e.preventDefault();
+  const addAdmin = async (
+    event
+  ) => {
+    event.preventDefault();
+
     setNotice("");
     setFailure("");
 
     try {
-      const result = await api("/admins", {
-        method: "POST",
-        body: JSON.stringify(admin),
-      });
+      const result = await api(
+        "/admins",
+        {
+          method: "POST",
+          body: JSON.stringify(
+            admin
+          ),
+        }
+      );
 
       setNotice(
         `${result.message} They can now use Admin sign in.`
@@ -1093,31 +1647,45 @@ export function AdminProfile() {
         name: "",
         phone: "",
       });
-    } catch (err) {
-      setFailure(err.message);
+    } catch (error) {
+      setFailure(
+        error.message
+      );
     }
   };
 
   return (
-    <PageState loading={loading} error={error}>
+    <PageState
+      loading={loading}
+      error={error}
+    >
       <div className="admin-profile-grid">
-        <form className="admin-panel admin-form" onSubmit={save}>
-          <h2>Profile settings</h2>
+        <form
+          className="admin-panel admin-form"
+          onSubmit={save}
+        >
+          <h2>
+            Profile settings
+          </h2>
 
           <p>
-            Update the name and phone number on your admin account.
+            Update the name and phone number on
+            your admin account.
           </p>
 
           <label>
             Name
+
             <input
               required
               maxLength={255}
               value={form.name}
-              onChange={(e) =>
+              onChange={(event) =>
                 setForm({
                   ...form,
-                  name: e.target.value,
+                  name:
+                    event.target
+                      .value,
                 })
               }
             />
@@ -1125,41 +1693,55 @@ export function AdminProfile() {
 
           <label>
             Phone number
+
             <input
               required
               minLength={10}
               maxLength={20}
               value={form.phone}
-              onChange={(e) =>
+              onChange={(event) =>
                 setForm({
                   ...form,
-                  phone: e.target.value,
+                  phone:
+                    event.target
+                      .value,
                 })
               }
             />
           </label>
 
-          <button type="submit">Save profile</button>
+          <button type="submit">
+            Save profile
+          </button>
         </form>
 
-        <form className="admin-panel admin-form" onSubmit={addAdmin}>
-          <h2>Add administrator</h2>
+        <form
+          className="admin-panel admin-form"
+          onSubmit={addAdmin}
+        >
+          <h2>
+            Add administrator
+          </h2>
 
           <p>
-            New administrators can sign in with phone OTP. This action is
-            recorded through the protected admin API.
+            New administrators can sign in with
+            phone OTP. This action is recorded
+            through the protected admin API.
           </p>
 
           <label>
             Name
+
             <input
               required
               maxLength={255}
               value={admin.name}
-              onChange={(e) =>
+              onChange={(event) =>
                 setAdmin({
                   ...admin,
-                  name: e.target.value,
+                  name:
+                    event.target
+                      .value,
                 })
               }
             />
@@ -1167,26 +1749,37 @@ export function AdminProfile() {
 
           <label>
             Phone number
+
             <input
               required
               minLength={10}
               maxLength={20}
               value={admin.phone}
-              onChange={(e) =>
+              onChange={(event) =>
                 setAdmin({
                   ...admin,
-                  phone: e.target.value,
+                  phone:
+                    event.target
+                      .value,
                 })
               }
             />
           </label>
 
-          <button type="submit">Add admin account</button>
+          <button type="submit">
+            Add admin account
+          </button>
         </form>
       </div>
 
       {(notice || failure) && (
-        <div className={failure ? "admin-error" : "admin-notice"}>
+        <div
+          className={
+            failure
+              ? "admin-error"
+              : "admin-notice"
+          }
+        >
           {failure || notice}
         </div>
       )}
