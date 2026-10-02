@@ -319,6 +319,43 @@
   margin-bottom: 12px;
 }
 
+.profile-location-picker {
+  margin-top: 18px;
+}
+
+.profile-location-picker-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.profile-location-picker-heading h3 {
+  margin: 0;
+  color: #12213d;
+  font-size: 14px;
+}
+
+.profile-location-picker-heading p,
+.profile-location-coordinates {
+  margin: 5px 0 0;
+  color: #7a8498;
+  font-size: 12px;
+}
+
+.profile-location-picker-heading button {
+  flex-shrink: 0;
+  padding: 7px 10px;
+  border: 1px solid #dce2ed;
+  border-radius: 6px;
+  background: #fff;
+  color: #34435c;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
 .social-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
