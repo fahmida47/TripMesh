@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Guide;
 
 use App\Http\Controllers\Controller;
 use App\Models\Guide\GuideProfile;
+use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -327,11 +328,72 @@ class GuideProfileController extends Controller
 
         }
 
+        if ($request->filled('tour_type')) {
+            $tourType = trim((string) $request->tour_type);
+
+            if ($tourType !== '') {
+                $query->where(function ($q) use ($tourType) {
+                    $q->whereJsonContains('tour_types', $tourType)
+                        ->orWhere('tour_types', 'like', "%$tourType%");
+                });
+            }
+        }
+
+        if ($request->filled('price_range')) {
+            $priceRange = $request->price_range;
+
+            if ($priceRange === 'low') {
+                $query->where('max_price', '<', 5000);
+            } elseif ($priceRange === 'mid') {
+                $query->whereBetween('max_price', [5000, 15000]);
+            } elseif ($priceRange === 'high') {
+                $query->where('max_price', '>', 15000);
+            }
+        }
+
+        $sort = $request->input('sort', 'popular');
+
+        if ($sort === 'rating') {
+            $query->orderByDesc('rating')->orderByDesc('reviews');
+        } elseif ($sort === 'low-rating') {
+            $query->orderBy('rating')->orderBy('reviews');
+        } else {
+            $query->orderByDesc('popularity')->orderByDesc('rating');
+        }
+
+        $guides = $query->get();
+
+        foreach ($guides as $guide) {
+            $this->syncGuideRating($guide);
+        }
 
         return response()->json(
             $query->paginate(6)
         );
 
+    }
+
+    private function syncGuideRating(GuideProfile $guide): void
+    {
+        $approvedReviews = Review::query()
+            ->where('guide_profile_id', $guide->id)
+            ->where('status', 'approved')
+            ->whereHas('booking', function ($bookingQuery) {
+                $bookingQuery->whereIn('status', ['confirmed', 'completed'])
+                    ->whereHas('payment', function ($paymentQuery) {
+                        $paymentQuery->where('status', 'paid');
+                    });
+            });
+
+        $totalReviews = $approvedReviews->count();
+        $averageRating = $totalReviews > 0
+            ? round((float) $approvedReviews->avg('rating'), 2)
+            : 0;
+
+        $guide->update([
+            'rating' => $averageRating,
+            'reviews' => $totalReviews,
+        ]);
     }
 
 }
