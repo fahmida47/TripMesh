@@ -16,9 +16,10 @@ class AuthController extends Controller
     /**
      * Send verification code to phone number.
      *
-    * OTP is shown ONLY in Laravel terminal.
-     * OTP is NOT returned to browser.
-     * OTP is NOT stored in database.
+     * DEVELOPMENT ONLY:
+     * OTP is returned in the API response for testing.
+     * OTP is also written to Laravel logs.
+     * OTP is NOT stored in the database.
      */
     public function sendCode(Request $request): JsonResponse
     {
@@ -42,8 +43,9 @@ class AuthController extends Controller
         |--------------------------------------------------------------------------
         | DEVELOPMENT ONLY
         |--------------------------------------------------------------------------
-        | OTP is shown ONLY in Laravel terminal.
-        | It is NOT returned in the API response.
+        | OTP is returned in the API response for testing.
+        | It is also written to Laravel logs.
+        | It is NOT stored in the database.
         |--------------------------------------------------------------------------
         */
 
@@ -60,11 +62,13 @@ class AuthController extends Controller
         ]);
 
         error_log($otpLog);
+
         Log::info('TripMesh verification OTP generated', [
             'phone' => $phone,
             'otp' => $code,
             'expires_in_minutes' => 2,
         ]);
+
         Log::channel('stderr')->info('TripMesh verification OTP generated', [
             'phone' => $phone,
             'otp' => $code,
@@ -86,9 +90,17 @@ class AuthController extends Controller
             now()->addMinutes(2)
         );
 
+        /*
+        |--------------------------------------------------------------------------
+        | Return OTP for Development / Testing
+        |--------------------------------------------------------------------------
+        */
+
         return response()->json([
             'message' => 'Verification code sent successfully.',
             'phone' => $phone,
+            'otp' => $code,
+            'expires_in_minutes' => 2,
         ], 200);
     }
 
@@ -112,21 +124,9 @@ class AuthController extends Controller
         $phone = trim($request->phone);
         $code = trim($request->code);
 
-        /*
-        |--------------------------------------------------------------------------
-        | Get OTP from Laravel Cache
-        |--------------------------------------------------------------------------
-        */
-
         $cacheKey = 'verification_code_' . $phone;
 
         $storedCode = Cache::get($cacheKey);
-
-        /*
-        |--------------------------------------------------------------------------
-        | OTP expired or does not exist
-        |--------------------------------------------------------------------------
-        */
 
         if (!$storedCode) {
             return response()->json([
@@ -134,23 +134,11 @@ class AuthController extends Controller
             ], 401);
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | OTP does not match
-        |--------------------------------------------------------------------------
-        */
-
         if ($storedCode !== $code) {
             return response()->json([
                 'message' => 'Invalid verification code.',
             ], 401);
         }
-
-        /*
-        |--------------------------------------------------------------------------
-        | Verification successful
-        |--------------------------------------------------------------------------
-        */
 
         // Delete OTP immediately after successful verification.
         Cache::forget($cacheKey);
