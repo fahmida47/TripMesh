@@ -4,8 +4,10 @@ import "./TouristReviews.css";
 import ReviewForm from "./ReviewForm";
 
 import TouristSidebar from "../components/TouristSidebar";
+import { API_BASE_URL } from "../../../config.js";
+import { getToken } from "../../../utils/auth.js";
 
-const API_BASE_URL = "http://127.0.0.1:8000/api";
+
 
 const formatReview = (review) => ({
   id: review.id,
@@ -29,7 +31,7 @@ function TouristReviews() {
 
   useEffect(() => {
     const loadReviewData = async () => {
-      const token = localStorage.getItem("token");
+      const token = getToken();
 
       if (!token) {
         setLoadError("Please login first.");
@@ -76,7 +78,7 @@ function TouristReviews() {
   }, []);
 
   const handleReviewSubmit = async ({ bookingId, rating, reviewText }) => {
-    const token = localStorage.getItem("token");
+    const token = getToken();
 
     const response = await fetch(`${API_BASE_URL}/reviews`, {
       method: "POST",

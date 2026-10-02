@@ -1,9 +1,12 @@
-import { useEffect, useEffectEvent, useRef } from "react";
+import { useEffect, useRef } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./GuideLocationMap.css";
 
 const BANGLADESH_CENTER = [23.8103, 90.4125];
+
+// Stable default so an omitted `markers` prop does not retrigger the marker effect.
+const NO_MARKERS = [];
 
 function getCoordinate(value) {
   if (value === null || value === undefined || value === "") {
@@ -38,7 +41,7 @@ export default function GuideLocationMap({
   latitude,
   longitude,
   zoom = 7,
-  markers = [],
+  markers = NO_MARKERS,
   selectable = false,
   onLocationSelect,
   onMarkerSelect,
@@ -50,18 +53,26 @@ export default function GuideLocationMap({
   const selectedLatitude = getCoordinate(latitude);
   const selectedLongitude = getCoordinate(longitude);
 
-  const handleMapClick = useEffectEvent((event) => {
-    if (selectable) {
-      onLocationSelect?.(
-        event.latlng.lat.toFixed(7),
-        event.latlng.lng.toFixed(7),
-      );
-    }
+  // Latest callbacks, read by long-lived Leaflet listeners. A ref (rather than
+  // useEffectEvent) keeps this working on React versions before 19.2.
+  const handlersRef = useRef({});
+
+  useEffect(() => {
+    handlersRef.current = { selectable, onLocationSelect, onMarkerSelect };
   });
 
-  const handleMarkerClick = useEffectEvent((marker) => {
-    onMarkerSelect?.(marker.guide || marker);
-  });
+  const handleMapClick = (event) => {
+    const { selectable: canSelect, onLocationSelect: select } =
+      handlersRef.current;
+
+    if (canSelect) {
+      select?.(event.latlng.lat.toFixed(7), event.latlng.lng.toFixed(7));
+    }
+  };
+
+  const handleMarkerClick = (marker) => {
+    handlersRef.current.onMarkerSelect?.(marker.guide || marker);
+  };
 
   useEffect(() => {
     if (!containerRef.current || mapRef.current) {

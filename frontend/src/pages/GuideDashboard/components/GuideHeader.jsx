@@ -1,27 +1,13 @@
 import "./GuideHeader.css";
 import { FiMenu } from "react-icons/fi";
+import { getStoredUser } from "../../../utils/auth.js";
 
 const GuideHeader = ({ sidebarOpen, setSidebarOpen }) => {
-  const user = JSON.parse(localStorage.getItem("user")) || {};
+  const user = getStoredUser() || {};
 
   const guideName = user.name || "Guide";
 
-  let registeredDate;
-
-  if (user.registeredDate) {
-    registeredDate = new Date(user.registeredDate);
-  } else {
-    registeredDate = new Date();
-
-    const updatedUser = {
-      ...user,
-      registeredDate: registeredDate.toISOString(),
-    };
-
-    localStorage.setItem("user", JSON.stringify(updatedUser));
-  }
-
-  const formattedDate = registeredDate.toLocaleDateString("en-US", {
+  const formattedDate = new Date().toLocaleDateString("en-US", {
     weekday: "long",
     day: "numeric",
     month: "long",

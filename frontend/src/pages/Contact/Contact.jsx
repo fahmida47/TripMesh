@@ -4,10 +4,10 @@ import Navbar from "../../components/Navbar/Navbar";
 import ContactInformation from "./components/ContactInformation";
 import ContactForm from "./components/ContactForm";
 
-const Contact = () => {
+const Contact = ({ embedded = false }) => {
   return (
     <div className="contact-page">
-      <Navbar />
+      {!embedded && <Navbar />}
 
       <section
         className="contact-hero"

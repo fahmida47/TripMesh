@@ -1,28 +1,14 @@
 import { FiChevronDown, FiMenu, FiUser } from "react-icons/fi";
 
 import "./TouristTopbar.css";
+import { getStoredUser } from "../../../utils/auth.js";
 
 export default function TouristTopbar({ onMenuClick, onProfileClick }) {
-  const user = JSON.parse(localStorage.getItem("user")) || {};
+  const user = getStoredUser() || {};
 
   const touristName = user.name || "Tourist";
 
-  let registeredDate;
-
-  if (user.registeredDate) {
-    registeredDate = new Date(user.registeredDate);
-  } else {
-    registeredDate = new Date();
-
-    const updatedUser = {
-      ...user,
-      registeredDate: registeredDate.toISOString(),
-    };
-
-    localStorage.setItem("user", JSON.stringify(updatedUser));
-  }
-
-  const formattedDate = registeredDate.toLocaleDateString("en-US", {
+  const formattedDate = new Date().toLocaleDateString("en-US", {
     weekday: "long",
     day: "numeric",
     month: "long",

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { getExperienceAsset } from "../../experienceAssets";
@@ -6,9 +6,8 @@ import GuideLocationMap from "../../components/GuideLocationMap";
 import "./Explore.css";
 import ExploreHero from "./ExploreHero";
 import ExploreSearch from "./ExploreSearch";
-
-const API_BASE_URL = "http://127.0.0.1:8000/api";
-const STORAGE_URL = "http://127.0.0.1:8000/storage";
+import { API_BASE_URL, STORAGE_URL } from "../../config.js";
+import { getLoggedInUser, getToken } from "../../utils/auth.js";
 
 function ExperiencePhoto({ experience }) {
   const fallbackImage = getExperienceAsset(experience.title);
@@ -48,27 +47,6 @@ function formatPriceRange(guide) {
   return minimum === maximum
     ? `৳${formattedMinimum}`
     : `৳${formattedMinimum} - ৳${formattedMaximum}`;
-}
-
-function getLoggedInUser() {
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
-  const storedUser = localStorage.getItem("user");
-
-  if (isLoggedIn !== "true" || !storedUser) {
-    return null;
-  }
-
-  try {
-    return JSON.parse(storedUser);
-  } catch (error) {
-    console.error("Invalid user data:", error);
-
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    localStorage.removeItem("isLoggedIn");
-
-    return null;
-  }
 }
 
 function GuideCard({ guide, onSendRequest, onViewDetails }) {
@@ -197,6 +175,7 @@ function hasCoordinates(guide) {
 
 function Explore({ embedded = false }) {
   const navigate = useNavigate();
+  const latestFetchId = useRef(0);
 
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -236,6 +215,9 @@ function Explore({ embedded = false }) {
   const [requestSuccess, setRequestSuccess] = useState("");
   const [requestError, setRequestError] = useState("");
 
+  // Stable array: GuideLocationMap re-fits the view whenever it changes.
+  const mapMarkers = useMemo(() => guides.filter(hasCoordinates), [guides]);
+
   // Today's date
   const getTodayDate = () => {
     const today = new Date();
@@ -247,27 +229,39 @@ function Explore({ embedded = false }) {
     return `${year}-${month}-${day}`;
   };
 
-  // Fetch Guides
-  const fetchGuides = async (page = 1) => {
+  // Fetch Guides. Filters are passed in explicitly (defaulting to the
+  // applied state) so a search/sort that was just triggered never reads
+  // the previous render's values.
+  const fetchGuides = async (page = 1, filters = {}) => {
+    const {
+      search = searchTerm,
+      tourType = searchTourType,
+      price = searchPriceRange,
+      sort = sortBy,
+    } = filters;
+
+    // Ignore responses from superseded requests.
+    const requestId = ++latestFetchId.current;
+
     try {
       setLoading(true);
       setError("");
 
       const params = new URLSearchParams();
 
-      if (searchTerm) {
-        params.append("search", searchTerm);
+      if (search) {
+        params.append("search", search);
       }
 
-      if (searchTourType) {
-        params.append("tour_type", searchTourType);
+      if (tourType) {
+        params.append("tour_type", tourType);
       }
 
-      if (searchPriceRange) {
-        params.append("price_range", searchPriceRange);
+      if (price) {
+        params.append("price_range", price);
       }
 
-      params.append("sort", sortBy);
+      params.append("sort", sort);
       params.append("page", page);
       params.append("per_page", 6);
 
@@ -281,23 +275,35 @@ function Explore({ embedded = false }) {
 
       const data = await response.json();
 
+      if (requestId !== latestFetchId.current) {
+        return;
+      }
+
       setGuides((data.data || []).map(normalizeGuide));
       setCurrentPage(data.current_page || 1);
       setLastPage(data.last_page || 1);
       setTotalGuides(data.total || 0);
-    } catch (err) {
-      console.error("Explore fetch error:", err);
+    } catch {
+      if (requestId !== latestFetchId.current) {
+        return;
+      }
 
       setError("Unable to load guide services.");
       setGuides([]);
     } finally {
-      setLoading(false);
+      if (requestId === latestFetchId.current) {
+        setLoading(false);
+      }
     }
   };
 
   useEffect(() => {
-    fetchGuides(1);
-  }, []);
+  // Initial API load when the Explore page opens.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  fetchGuides(1);
+  // Initial load only; later fetches are triggered by user actions.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
 
   // Search
   const handleSearch = () => {
@@ -308,9 +314,11 @@ function Explore({ embedded = false }) {
     setSearchPriceRange(priceRange);
     setCurrentPage(1);
 
-    setTimeout(() => {
-      fetchGuides(1);
-    }, 0);
+    fetchGuides(1, {
+      search: newSearch,
+      tourType: selectedTourType,
+      price: priceRange,
+    });
   };
 
   // Sort
@@ -320,9 +328,7 @@ function Explore({ embedded = false }) {
     setSortBy(value);
     setCurrentPage(1);
 
-    setTimeout(() => {
-      fetchGuides(1);
-    }, 0);
+    fetchGuides(1, { sort: value });
   };
 
   // Pagination
@@ -414,7 +420,7 @@ function Explore({ embedded = false }) {
     setRequestSuccess("");
 
     const user = getLoggedInUser();
-    const token = localStorage.getItem("token");
+    const token = getToken();
 
     /*
       Double protection:
@@ -549,8 +555,6 @@ function Explore({ embedded = false }) {
       const data = await response.json();
 
       if (!response.ok) {
-        console.error("Send request error:", data);
-
         if (data.errors) {
           const firstError = Object.values(data.errors)[0];
 
@@ -714,7 +718,7 @@ function Explore({ embedded = false }) {
                       ))}
                     </div>
 
-                    {!guides.some(hasCoordinates) && (
+                    {mapMarkers.length === 0 && (
                       <p className="explore-map-empty">
                         No guide locations have been pinned yet.
                       </p>
@@ -723,7 +727,7 @@ function Explore({ embedded = false }) {
 
                   <div className="explore-map-canvas">
                     <GuideLocationMap
-                      markers={guides.filter(hasCoordinates)}
+                      markers={mapMarkers}
                       onMarkerSelect={setDetailsGuide}
                     />
                   </div>

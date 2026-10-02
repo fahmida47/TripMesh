@@ -19,9 +19,8 @@ export default function PaymentForm({
         </h2>
 
         <p className="cp-note cp-note--info">
-          You will be redirected to {methodLabel} to complete the payment
-          securely. After successful payment, please submit the payment
-          information.
+          Complete the payment in your {methodLabel} app first. After it
+          succeeds, enter the payment information below and submit it.
         </p>
 
         <div className="cp-field">

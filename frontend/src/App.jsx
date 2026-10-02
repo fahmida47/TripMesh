@@ -2,6 +2,8 @@ import { Routes, Route, Link, BrowserRouter, Navigate } from "react-router-dom";
 
 import ScrollToTop from "./ScrollToTop";
 
+import { getLoggedInUser } from "./utils/auth";
+
 import GlobalLandingPage from "./pages/GlobalLandingPage/GlobalLandingPage";
 
 import Explore from "./pages/Explore/Explore";
@@ -50,11 +52,8 @@ import RequestsBookings from "./pages/TouristDashboard/components/RequestsBookin
 
 import PaymentHistory from "./pages/TouristDashboard/components/PaymentHistory";
 
-import PaymentForm from "./pages/TouristDashboard/components/PaymentForm";
-
 import PaymentPage from "./pages/TouristDashboard/components/PaymentPage";
 
-import ReviewForm from "./pages/TouristDashboard/Reviews/ReviewForm";
 import AdminLogin from "./pages/Admin/AdminLogin";
 import AdminDashboard, {
   AdminGuard,
@@ -67,137 +66,40 @@ import AdminDashboard, {
 } from "./pages/Admin/AdminDashboard";
 
 /* =========================
-   AUTH HELPER
+   AUTH / ROLE ROUTING
 ========================= */
 
-function getLoggedInUser() {
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
-  const storedUser = localStorage.getItem("user");
+const ROLE_HOME = {
+  guide: "/guide-dashboard",
+  tourist: "/tourist-dashboard",
+  admin: "/admin/dashboard",
+};
 
-  if (isLoggedIn !== "true" || !storedUser) {
-    return null;
-  }
-
-  try {
-    return JSON.parse(storedUser);
-  } catch (error) {
-    console.error("Invalid user data:", error);
-
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    localStorage.removeItem("isLoggedIn");
-
-    return null;
-  }
-}
-
-/* =========================
-   LANDING PAGE PROTECTION
-========================= */
-
-function LandingPageRedirect() {
+/* Public pages (landing, login, signup): signed-in users go to their dashboard */
+function PublicOnly({ children }) {
   const user = getLoggedInUser();
 
-  // User is NOT logged in
-  if (!user) {
-    return <GlobalLandingPage />;
+  if (user && ROLE_HOME[user.role]) {
+    return <Navigate to={ROLE_HOME[user.role]} replace />;
   }
 
-  // Logged-in Guide
-  if (user.role === "guide") {
-    return <Navigate to="/guide-dashboard" replace />;
-  }
-
-  // Logged-in Tourist
-  if (user.role === "tourist") {
-    return <Navigate to="/tourist-dashboard" replace />;
-  }
-
-  if (user.role === "admin") return <Navigate to="/admin/dashboard" replace />;
-
-  return <GlobalLandingPage />;
+  return children;
 }
 
-/* =========================
-   LOGIN PROTECTION
-========================= */
-
-function LoginRedirect() {
-  const user = getLoggedInUser();
-
-  // Not logged in → Login page
-  if (!user) {
-    return <Login />;
-  }
-
-  // Guide → Guide Dashboard
-  if (user.role === "guide") {
-    return <Navigate to="/guide-dashboard" replace />;
-  }
-
-  // Tourist → Tourist Dashboard
-  if (user.role === "tourist") {
-    return <Navigate to="/tourist-dashboard" replace />;
-  }
-
-  if (user.role === "admin") return <Navigate to="/admin/dashboard" replace />;
-
-  return <Login />;
-}
-
-/* =========================
-   SIGNUP PROTECTION
-========================= */
-
-function SignupRedirect() {
-  const user = getLoggedInUser();
-
-  // Not logged in → Signup page
-  if (!user) {
-    return <Signup />;
-  }
-
-  // Guide → Guide Dashboard
-  if (user.role === "guide") {
-    return <Navigate to="/guide-dashboard" replace />;
-  }
-
-  // Tourist → Tourist Dashboard
-  if (user.role === "tourist") {
-    return <Navigate to="/tourist-dashboard" replace />;
-  }
-
-  if (user.role === "admin") return <Navigate to="/admin/dashboard" replace />;
-
-  return <Signup />;
-}
-
-/* =========================
-   PROTECTED DASHBOARD
-========================= */
-
+/* Dashboards: only the matching role may enter */
 function ProtectedDashboard({ children, role }) {
   const user = getLoggedInUser();
 
-  // User is not logged in
   if (!user) {
     return <Navigate to="/login" replace />;
   }
 
-  // Wrong role trying to access dashboard
-  if (user.role !== role) {
-    if (user.role === "guide") {
-      return <Navigate to="/guide-dashboard" replace />;
-    }
-
-    if (user.role === "tourist") {
-      return <Navigate to="/tourist-dashboard" replace />;
-    }
-
-    if (user.role === "admin") return <Navigate to="/admin/dashboard" replace />;
+  if (user.role === role) {
+    return children;
   }
 
-  return children;
+  // Wrong role -> own dashboard. Unknown role -> login (never the protected page).
+  return <Navigate to={ROLE_HOME[user.role] ?? "/login"} replace />;
 }
 
 /* =========================
@@ -215,7 +117,7 @@ function App() {
         ========================= */}
 
         {/* Landing Page */}
-        <Route path="/" element={<LandingPageRedirect />} />
+        <Route path="/" element={<PublicOnly><GlobalLandingPage /></PublicOnly>} />
 
         {/* Explore */}
         <Route path="/explore" element={<Explore />} />
@@ -227,10 +129,10 @@ function App() {
         <Route path="/contact" element={<Contact />} />
 
         {/* Login */}
-        <Route path="/login" element={<LoginRedirect />} />
+        <Route path="/login" element={<PublicOnly><Login /></PublicOnly>} />
 
         {/* Signup */}
-        <Route path="/signup" element={<SignupRedirect />} />
+        <Route path="/signup" element={<PublicOnly><Signup /></PublicOnly>} />
 
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin" element={<AdminGuard><AdminDashboard /></AdminGuard>}>
@@ -341,15 +243,6 @@ function App() {
         />
 
         <Route
-          path="/tourist-dashboard/payments/form"
-          element={
-            <ProtectedDashboard role="tourist">
-              <PaymentForm />
-            </ProtectedDashboard>
-          }
-        />
-
-        <Route
           path="/tourist-dashboard/payment"
           element={
             <ProtectedDashboard role="tourist">
@@ -363,15 +256,6 @@ function App() {
           element={
             <ProtectedDashboard role="tourist">
               <TouristReviews />
-            </ProtectedDashboard>
-          }
-        />
-
-        <Route
-          path="/tourist-dashboard/reviews/form"
-          element={
-            <ProtectedDashboard role="tourist">
-              <ReviewForm />
             </ProtectedDashboard>
           }
         />

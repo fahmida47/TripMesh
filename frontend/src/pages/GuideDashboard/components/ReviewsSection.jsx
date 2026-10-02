@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { FiStar } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 import "./ReviewsSection.css";
+import { API_BASE_URL } from "../../../config.js";
+import { getToken } from "../../../utils/auth.js";
 
-const API_BASE_URL = "http://127.0.0.1:8000/api";
+
 
 const ReviewsSection = () => {
   const navigate = useNavigate();
@@ -16,7 +18,7 @@ const ReviewsSection = () => {
 
   useEffect(() => {
     const loadReviews = async () => {
-      const token = localStorage.getItem("token");
+      const token = getToken();
 
       if (!token) {
         setLoading(false);

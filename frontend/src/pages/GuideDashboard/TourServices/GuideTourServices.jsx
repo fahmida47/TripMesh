@@ -14,8 +14,6 @@ function GuideTourServices() {
   };
 
   const handleEditService = (id) => {
-    console.log("Edit service:", id);
-
     navigate(`/guide-dashboard/tour-services/edit/${id}`);
   };
 

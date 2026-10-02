@@ -1,4 +1,4 @@
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 import TouristSidebar from "./components/TouristSidebar";
@@ -9,7 +9,6 @@ import "./TouristDashboard.css";
 export default function TouristLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const location = useLocation();
   const navigate = useNavigate();
 
   const handleProfileClick = () => {

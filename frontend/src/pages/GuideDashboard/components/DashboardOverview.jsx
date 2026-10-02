@@ -2,7 +2,6 @@ import RecentRequests from "./RecentRequests";
 import UpcomingBookings from "./UpcomingBookings";
 import TopTourServices from "./TopTourServices";
 import ReviewsSection from "./ReviewsSection";
-import { FiShield } from "react-icons/fi";
 import "./DashboardOverview.css";
 
 const DashboardOverview = () => (

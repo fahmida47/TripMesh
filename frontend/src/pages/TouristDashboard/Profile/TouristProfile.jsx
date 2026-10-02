@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Check, Image as ImageIcon, UserRound, UserCog } from "lucide-react";
+import { Check, Image as ImageIcon, UserCog } from "lucide-react";
 
 import TouristSidebar from "../components/TouristSidebar";
 
 import "./TouristProfile.css";
+import { API_BASE_URL } from "../../../config.js";
+import { getToken, getStoredUser } from "../../../utils/auth.js";
 
 const INITIAL_FORM = {
   fullName: "",
@@ -18,7 +20,7 @@ const INITIAL_FORM = {
   country: "",
 };
 
-const API_BASE_URL = "http://127.0.0.1:8000/api";
+
 
 const COUNTRIES = [
   "Bangladesh",
@@ -46,10 +48,6 @@ const TouristProfile = () => {
   const profileInputRef = useRef(null);
   const coverInputRef = useRef(null);
 
-  useEffect(() => {
-    loadProfile();
-  }, []);
-
   const mapProfileToForm = (profile) => ({
     fullName: profile.full_name || "",
     phone: profile.phone || "",
@@ -64,7 +62,7 @@ const TouristProfile = () => {
   });
 
   const loadProfile = async () => {
-    const token = localStorage.getItem("token");
+    const token = getToken();
 
     if (!token) {
       setError("You are not logged in.");
@@ -99,6 +97,12 @@ const TouristProfile = () => {
       setError(loadError.message || "Unable to load your profile.");
     }
   };
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadProfile();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const profileInitials = useMemo(() => {
     if (!formData.fullName.trim()) {
@@ -152,7 +156,7 @@ const TouristProfile = () => {
     setSaved(false);
     setError("");
 
-    const token = localStorage.getItem("token");
+    const token = getToken();
 
     if (!token) {
       setError("You are not logged in.");
@@ -211,7 +215,7 @@ const TouristProfile = () => {
     setSaved(false);
     setError("");
 
-    const token = localStorage.getItem("token");
+    const token = getToken();
 
     if (!token) {
       setError("You are not logged in.");
@@ -265,7 +269,7 @@ const TouristProfile = () => {
         coverImage,
       );
 
-      const signedInUser = JSON.parse(localStorage.getItem("user") || "{}");
+      const signedInUser = getStoredUser() || {};
       localStorage.setItem(
         "user",
         JSON.stringify({
