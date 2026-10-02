@@ -50,7 +50,6 @@ import ReviewForm from "./pages/TouristDashboard/Reviews/ReviewForm";
    CHAT
 ========================= */
 
-import ChatBox from "./pages/Chat/ChatBox";
 
 /* =========================
    ADMIN
