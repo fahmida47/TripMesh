@@ -83,7 +83,7 @@ export function AdminGuard({ children }) {
   const user = readUser();
 
   if (localStorage.getItem("isLoggedIn") !== "true" || !getToken()) {
-    return <Navigate to="/admin/login" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   if (user?.role !== "admin") {
@@ -94,7 +94,7 @@ export function AdminGuard({ children }) {
             ? "/guide-dashboard"
             : user?.role === "tourist"
               ? "/tourist-dashboard"
-              : "/admin/login"
+              : "/login"
         }
         replace
       />

@@ -59,8 +59,6 @@ import ChatBox from "./pages/Chat/ChatBox";
 ========================= */
 
 
-import AdminLogin from "./pages/Admin/AdminLogin";
-
 import AdminDashboard, {
   AdminGuard,
   AdminOverview,
@@ -229,12 +227,6 @@ function App() {
         {/* =========================
             ADMIN
         ========================= */}
-
-        <Route
-          path="/admin/login"
-          element={<AdminLogin />}
-        />
-
 
         <Route
           path="/admin"
