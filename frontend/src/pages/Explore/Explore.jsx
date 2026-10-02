@@ -584,7 +584,7 @@ function Explore({ embedded = false }) {
   };
 
   return (
-    <div className="explore-page">
+    <div className={`explore-page${viewMode === "map" ? " explore-page--map" : ""}`}>
       <ExploreHero showNavbar={!embedded} />
 
       <main className="explore-main">
@@ -683,15 +683,50 @@ function Explore({ embedded = false }) {
             (guides.length > 0 ? (
               viewMode === "map" ? (
                 <div className="explore-map-view">
-                  <GuideLocationMap
-                    markers={guides.filter(hasCoordinates)}
-                    onMarkerSelect={setDetailsGuide}
-                  />
-                  {!guides.some(hasCoordinates) && (
-                    <p className="explore-map-empty">
-                      These guide profiles have not selected a map location yet.
-                    </p>
-                  )}
+                  <aside className="explore-map-results">
+                    <div className="explore-map-results-header">
+                      <strong>Guide services</strong>
+                      <span>{guides.length} results</span>
+                    </div>
+
+                    <div className="explore-map-guide-list">
+                      {guides.map((guide) => (
+                        <button
+                          type="button"
+                          className="explore-map-guide-item"
+                          key={guide.id}
+                          onClick={() => setDetailsGuide(guide)}
+                        >
+                          <span className="explore-map-guide-avatar">
+                            {guide.companyName?.charAt(0).toUpperCase() || "G"}
+                          </span>
+                          <span className="explore-map-guide-copy">
+                            <strong>{guide.companyName || "Guide Company"}</strong>
+                            <small>{guide.location || "Location not added"}</small>
+                            <span>{guide.tourTypes?.[0] || "Local guide"}</span>
+                          </span>
+                          <MapPin
+                            className={hasCoordinates(guide) ? "has-map-pin" : "no-map-pin"}
+                            size={16}
+                            aria-label={hasCoordinates(guide) ? "Location shown on map" : "No map location"}
+                          />
+                        </button>
+                      ))}
+                    </div>
+
+                    {!guides.some(hasCoordinates) && (
+                      <p className="explore-map-empty">
+                        No guide locations have been pinned yet.
+                      </p>
+                    )}
+                  </aside>
+
+                  <div className="explore-map-canvas">
+                    <GuideLocationMap
+                      markers={guides.filter(hasCoordinates)}
+                      onMarkerSelect={setDetailsGuide}
+                    />
+                  </div>
                 </div>
               ) : (
                 <div

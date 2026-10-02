@@ -32,6 +32,8 @@ import GuideRequests from "./pages/GuideDashboard/GuideRequest/GuideRequests";
 
 import GuideBookings from "./pages/GuideDashboard/Bookings/GuideBookings";
 
+import GuidePayouts from "./pages/GuideDashboard/Payouts/GuidePayouts";
+
 import ReviewsRatings from "./pages/GuideDashboard/Rating/ReviewsRatings";
 
 /* =========================
@@ -283,6 +285,12 @@ function App() {
           <Route
             path="bookings"
             element={<GuideBookings />}
+          />
+
+          {/* /guide-dashboard/payouts */}
+          <Route
+            path="payouts"
+            element={<GuidePayouts />}
           />
 
           {/* /guide-dashboard/reviews */}
