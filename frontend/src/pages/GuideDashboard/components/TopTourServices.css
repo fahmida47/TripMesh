@@ -175,6 +175,19 @@
   object-fit: cover;
 }
 
+.top-tour-service-placeholder {
+  width: 46px;
+  height: 40px;
+  flex: 0 0 46px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  background: #edf4ff;
+  color: #2868f4;
+  font-size: 15px;
+  font-weight: 700;
+}
+
 .top-tour-service-text {
   min-width: 0;
 
