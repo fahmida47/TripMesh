@@ -143,33 +143,6 @@ function GuideCard({
           </div>
         )}
 
-        {guide.tourServices?.length > 0 && (
-          <div className="explore-experiences">
-            <div className="experience-heading">
-              <h4>Services</h4>
-              <span>{guide.tourServices.length}</span>
-            </div>
-            {guide.tourServices.map((service) => (
-              <article className="experience-item service-tile" key={service.id}>
-                {service.image && <img src={`${STORAGE_URL}/${service.image}`} alt={service.title} />}
-                <div className="experience-text">
-                  <strong>{service.title}</strong>
-                  <p>{service.location} · {service.tour_type} · {service.duration}</p>
-                  <p>৳{Number(service.price).toLocaleString()} · Up to {service.max_travelers} travelers</p>
-                  <p>{service.description}</p>
-                  <button
-                    type="button"
-                    className="explore-primary-button service-request-button"
-                    onClick={() => onSendRequest(guide, service)}
-                  >
-                    Send Request
-                  </button>
-                </div>
-              </article>
-            ))}
-          </div>
-        )}
-
         <div className="explore-guide-meta">
           <div className="explore-rating">
             <span className="explore-star">★</span>
@@ -340,9 +313,6 @@ function Explore({ embedded = false }) {
   const [agreedAmount, setAgreedAmount] =
     useState("");
 
-  const [requestDetails, setRequestDetails] =
-    useState("");
-
   const [
     selectedExperience,
     setSelectedExperience,
@@ -358,7 +328,7 @@ function Explore({ embedded = false }) {
     useState("");
 
   const requestAmount = selectedService
-    ? Number(selectedService.price || 0) * Number(travelers || 0)
+    ? Number(selectedService.price || 0)
     : Number(agreedAmount || 0);
 
   const mapMarkers = useMemo(
@@ -597,13 +567,36 @@ function Explore({ embedded = false }) {
     setToDate("");
     setDestination(service?.location || "");
     setTravelers(1);
-
+    setAgreedAmount(guide.min_price ?? guide.price ?? "");
     setAgreedAmount(guide.min_price ?? guide.price ?? "");
 
-    setRequestDetails("");
     setSelectedExperience(service?.title || "");
 
     setRequestSuccess("");
+    setRequestError("");
+  };
+
+  const handleSelectService = (serviceId) => {
+    const service = selectedGuide?.tourServices?.find(
+      (item) => String(item.id) === serviceId
+    ) || null;
+
+    setSelectedService(service);
+    setDestination(service?.location || "");
+    setSelectedExperience(service?.title || "");
+    setAgreedAmount(
+      service
+        ? service.price
+        : selectedGuide?.min_price ?? selectedGuide?.price ?? ""
+    );
+    const packageTravelerCount = Number(service?.max_travelers);
+    setTravelers(
+      service && Number.isInteger(packageTravelerCount) && packageTravelerCount > 0
+        ? packageTravelerCount
+        : 1
+    );
+    setFromDate("");
+    setToDate("");
     setRequestError("");
   };
 
@@ -619,10 +612,9 @@ function Explore({ embedded = false }) {
     setToDate("");
     setDestination("");
     setTravelers(1);
-
+    setAgreedAmount("");
     setAgreedAmount("");
 
-    setRequestDetails("");
     setSelectedExperience("");
 
     setRequestSuccess("");
@@ -734,7 +726,7 @@ function Explore({ embedded = false }) {
       return;
     }
 
-    if (!selectedService && !fromDate) {
+    if (!fromDate) {
       setRequestError(
         "Please select a From Date."
       );
@@ -742,7 +734,7 @@ function Explore({ embedded = false }) {
       return;
     }
 
-    if (!selectedService && !toDate) {
+    if (!toDate) {
       setRequestError(
         "Please select a To Date."
       );
@@ -750,7 +742,7 @@ function Explore({ embedded = false }) {
       return;
     }
 
-    if (!selectedService && toDate < fromDate) {
+    if (toDate < fromDate) {
       setRequestError(
         "To Date cannot be earlier than From Date."
       );
@@ -775,6 +767,8 @@ function Explore({ embedded = false }) {
       guide_profile_id: Number(guideProfileId),
       tour_service_id: selectedService.id,
       travelers: Number(travelers),
+      from_date: fromDate,
+      to_date: toDate,
     } : {
       guide_profile_id:
         Number(guideProfileId),
@@ -797,7 +791,7 @@ function Explore({ embedded = false }) {
 
       amount: requestedAmount,
 
-      request_details: requestDetails.trim() || null,
+      request_details: null,
     };
 
     try {
@@ -864,7 +858,6 @@ function Explore({ embedded = false }) {
       setDestination("");
       setTravelers(1);
       setAgreedAmount("");
-      setRequestDetails("");
       setSelectedExperience("");
     } catch (err) {
       console.error(
@@ -1483,9 +1476,66 @@ function Explore({ embedded = false }) {
                   </div>
                 </div>
 
+                {selectedGuide.tourServices?.length > 0 && (
+                  <div className="request-form-group request-package-group">
+                    <label>
+                      Tour Package (Optional)
+                    </label>
+
+                    <div className="request-package-options" role="listbox" aria-label="Tour packages">
+                      <button
+                        type="button"
+                        className={`request-package-option ${!selectedService ? "is-selected" : ""}`}
+                        onClick={() => handleSelectService("")}
+                      >
+                        <span className="request-package-option__title">No package - fill in manually</span>
+                      </button>
+
+                      {selectedGuide.tourServices.map((service) => (
+                        <button
+                          key={service.id}
+                          type="button"
+                          className={`request-package-option ${selectedService?.id === service.id ? "is-selected" : ""}`}
+                          onClick={() => handleSelectService(String(service.id))}
+                        >
+                          <span className="request-package-option__title">{service.title}</span>
+                          <span className="request-package-option__meta">{service.location}</span>
+                          <span className="request-package-option__price">৳{Number(service.price).toLocaleString()}</span>
+                        </button>
+                      ))}
+                    </div>
+
+                    <small>Select a package to view its details, or keep manual entry.</small>
+                  </div>
+                )}
+
+                {selectedService && (
+                  <section className="request-package-details" aria-live="polite">
+                    <div className="request-package-photo">
+                      <ExperiencePhoto
+                        experience={{
+                          title: selectedService.title,
+                          photo: selectedService.image,
+                        }}
+                      />
+                    </div>
+                    <div className="request-package-details-heading">
+                      <h3>{selectedService.title}</h3>
+                      <span>৳{Number(selectedService.price).toLocaleString()} / person</span>
+                    </div>
+                    <p>{selectedService.description}</p>
+                    <dl>
+                      <div><dt>Destination</dt><dd>{selectedService.location}</dd></div>
+                      <div><dt>Tour type</dt><dd>{selectedService.tour_type}</dd></div>
+                      <div><dt>Duration</dt><dd>{selectedService.duration}</dd></div>
+                      <div><dt>Group limit</dt><dd>Up to {selectedService.max_travelers} travelers</dd></div>
+                    </dl>
+                  </section>
+                )}
+
                 <div className="request-form-group">
                   <label htmlFor="agreed-amount">
-                    {selectedService ? "Total Amount (৳)" : "Agreed Amount (৳)"}
+                    {selectedService ? "Package Amount (৳)" : "Agreed Amount (৳)"}
                   </label>
 
                   <div className="request-input-wrapper">
@@ -1513,7 +1563,7 @@ function Explore({ embedded = false }) {
 
                   <small>
                     {selectedService
-                      ? `৳${Number(selectedService.price).toLocaleString()} per traveler × ${travelers} traveler(s)`
+                      ? "Fixed package price; it does not change with traveler count."
                       : <>Enter an amount between {formatPriceRange(selectedGuide)}.</>}
                   </small>
                 </div>
@@ -1600,27 +1650,22 @@ function Explore({ embedded = false }) {
                       type="number"
                       min="1"
                       max={selectedService?.max_travelers || 100}
-                      value={
-                        travelers
-                      }
-                      onChange={(event) =>
-                        setTravelers(
-                          event.target
-                            .value
-                        )
-                      }
+                      value={travelers}
+                      readOnly={Boolean(selectedService)}
+                      onChange={(event) => setTravelers(event.target.value)}
                       placeholder="Number of travelers"
                       required
                     />
                   </div>
 
                   <small>
-                    Enter the total number of
-                    people joining the tour.
+                    {selectedService
+                      ? `Package group size: ${travelers} travelers. Package price updates automatically.`
+                      : "Enter the total number of people joining the tour."}
                   </small>
                 </div>
 
-                {!selectedService && <div className="request-date-range">
+                <div className="request-date-range">
                   <div className="request-form-group">
                     <label htmlFor="from-date">
                       From Date
@@ -1704,41 +1749,7 @@ function Explore({ embedded = false }) {
                       travel date.
                     </small>
                   </div>
-                </div>}
-
-                {!selectedService && <div className="request-form-group request-details-group">
-                  <div className="request-label-row">
-                    <label htmlFor="request-details">
-                      Request Details
-                    </label>
-
-                    <span>
-                      Optional
-                    </span>
-                  </div>
-
-                  <textarea
-                    id="request-details"
-                    value={
-                      requestDetails
-                    }
-                    onChange={(event) =>
-                      setRequestDetails(
-                        event.target.value
-                      )
-                    }
-                    placeholder="Tell the guide about your preferences or any special requirements."
-                    maxLength={2000}
-                    rows={3}
-                  />
-
-                  <small className="request-character-count">
-                    {
-                      requestDetails.length
-                    }
-                    /2000
-                  </small>
-                </div>}
+                </div>
 
                 <div className="request-form-actions">
                   <button
@@ -1784,4 +1795,3 @@ function Explore({ embedded = false }) {
 }
 
 export default Explore;
-
