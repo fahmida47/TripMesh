@@ -7,7 +7,6 @@ import {
 } from "react-router-dom";
 
 import ScrollToTop from "./ScrollToTop";
-
 import { getLoggedInUser } from "./utils/auth";
 
 import GlobalLandingPage from "./pages/GlobalLandingPage/GlobalLandingPage";
@@ -17,10 +16,7 @@ import Signup from "./pages/Signup/Signup";
 import AboutUs from "./pages/AboutUs/AboutUs";
 import Contact from "./pages/Contact/Contact";
 
-/* =========================
-   GUIDE DASHBOARD
-========================= */
-
+/* GUIDE DASHBOARD */
 import GuideLayout from "./pages/GuideDashboard/GuideLayout";
 import GuideDashboard from "./pages/GuideDashboard/GuideDashboard";
 import GuideProfile from "./pages/GuideDashboard/Profile/GuideProfile";
@@ -31,37 +27,20 @@ import GuideBookings from "./pages/GuideDashboard/Bookings/GuideBookings";
 import GuidePayouts from "./pages/GuideDashboard/Payouts/GuidePayouts";
 import ReviewsRatings from "./pages/GuideDashboard/Rating/ReviewsRatings";
 
-/* =========================
-   TOURIST DASHBOARD
-========================= */
-
+/* TOURIST DASHBOARD */
 import TouristDashboard from "./pages/TouristDashboard/TouristDashboard";
 import TouristLayout from "./pages/TouristDashboard/TouristLayout";
 import TouristProfile from "./pages/TouristDashboard/Profile/TouristProfile";
 import TouristReviews from "./pages/TouristDashboard/Reviews/TouristReviews";
 import RequestsBookings from "./pages/TouristDashboard/components/RequestsBookings";
 import PaymentHistory from "./pages/TouristDashboard/components/PaymentHistory";
-
-
 import PaymentPage from "./pages/TouristDashboard/components/PaymentPage";
 
-import PaymentForm from "./pages/TouristDashboard/components/PaymentForm";
-import PaymentPage from "./pages/TouristDashboard/components/PaymentPage";
-import ReviewForm from "./pages/TouristDashboard/Reviews/ReviewForm";
-
-/* =========================
-   CHAT
-========================= */
-
+/* CHAT */
 import ChatBox from "./pages/Chat/ChatBox";
 
-/* =========================
-   ADMIN
-========================= */
-
-
+/* ADMIN */
 import AdminLogin from "./pages/Admin/AdminLogin";
-
 import AdminDashboard, {
   AdminGuard,
   AdminOverview,
@@ -72,49 +51,21 @@ import AdminDashboard, {
   AdminProfile,
 } from "./pages/Admin/AdminDashboard";
 
-/* =========================
-   AUTH / ROLE ROUTING
-========================= */
-
 const ROLE_HOME = {
   guide: "/guide-dashboard",
   tourist: "/tourist-dashboard",
   admin: "/admin/dashboard",
 };
 
-/* Public pages (landing, login, signup): signed-in users go to their dashboard */
 function PublicOnly({ children }) {
   const user = getLoggedInUser();
-
 
   if (user && ROLE_HOME[user.role]) {
     return <Navigate to={ROLE_HOME[user.role]} replace />;
   }
 
   return children;
-
-  if (!user) {
-    return <GlobalLandingPage />;
-  }
-
-  if (user.role === "guide") {
-    return <Navigate to="/guide-dashboard" replace />;
-  }
-
-  if (user.role === "tourist") {
-    return <Navigate to="/tourist-dashboard" replace />;
-  }
-
-  if (user.role === "admin") {
-    return <Navigate to="/admin/dashboard" replace />;
-  }
-
-  return <GlobalLandingPage />;
 }
-
-/* =========================
-   LOGIN PROTECTION
-========================= */
 
 function LoginRedirect() {
   const user = getLoggedInUser();
@@ -123,24 +74,13 @@ function LoginRedirect() {
     return <Login />;
   }
 
-  if (user.role === "guide") {
-    return <Navigate to="/guide-dashboard" replace />;
-  }
-
-  if (user.role === "tourist") {
-    return <Navigate to="/tourist-dashboard" replace />;
-  }
-
-  if (user.role === "admin") {
-    return <Navigate to="/admin/dashboard" replace />;
-  }
-
-  return <Login />;
+  return (
+    <Navigate
+      to={ROLE_HOME[user.role] || "/"}
+      replace
+    />
+  );
 }
-
-/* =========================
-   SIGNUP PROTECTION
-========================= */
 
 function SignupRedirect() {
   const user = getLoggedInUser();
@@ -149,23 +89,14 @@ function SignupRedirect() {
     return <Signup />;
   }
 
-  if (user.role === "guide") {
-    return <Navigate to="/guide-dashboard" replace />;
-  }
-
-  if (user.role === "tourist") {
-    return <Navigate to="/tourist-dashboard" replace />;
-  }
-
-  if (user.role === "admin") {
-    return <Navigate to="/admin/dashboard" replace />;
-  }
-
-  return <Signup />;
-
+  return (
+    <Navigate
+      to={ROLE_HOME[user.role] || "/"}
+      replace
+    />
+  );
 }
 
-/* Dashboards: only the matching role may enter */
 function ProtectedDashboard({ children, role }) {
   const user = getLoggedInUser();
 
@@ -173,32 +104,17 @@ function ProtectedDashboard({ children, role }) {
     return <Navigate to="/login" replace />;
   }
 
-
   if (user.role === role) {
     return children;
-
-  if (user.role !== role) {
-    if (user.role === "guide") {
-      return <Navigate to="/guide-dashboard" replace />;
-    }
-
-    if (user.role === "tourist") {
-      return <Navigate to="/tourist-dashboard" replace />;
-    }
-
-    if (user.role === "admin") {
-      return <Navigate to="/admin/dashboard" replace />;
-    }
-
   }
 
-  // Wrong role -> own dashboard. Unknown role -> login (never the protected page).
-  return <Navigate to={ROLE_HOME[user.role] ?? "/login"} replace />;
+  return (
+    <Navigate
+      to={ROLE_HOME[user.role] || "/login"}
+      replace
+    />
+  );
 }
-
-/* =========================
-   APP
-========================= */
 
 function App() {
   return (
@@ -206,17 +122,14 @@ function App() {
       <ScrollToTop />
 
       <Routes>
-        {/* =========================
-            PUBLIC PAGES
-        ========================= */}
-
-
-        {/* Landing Page */}
-        <Route path="/" element={<PublicOnly><GlobalLandingPage /></PublicOnly>} />
-
+        {/* PUBLIC */}
         <Route
           path="/"
-          element={<LandingPageRedirect />}
+          element={
+            <PublicOnly>
+              <GlobalLandingPage />
+            </PublicOnly>
+          }
         />
 
         <Route
@@ -228,7 +141,6 @@ function App() {
           path="/about"
           element={<AboutUs />}
         />
-
 
         <Route
           path="/contact"
@@ -245,21 +157,11 @@ function App() {
           element={<SignupRedirect />}
         />
 
-        {/* Login */}
-        <Route path="/login" element={<PublicOnly><Login /></PublicOnly>} />
-
-        {/* Signup */}
-        <Route path="/signup" element={<PublicOnly><Signup /></PublicOnly>} />
-
-        {/* =========================
-            ADMIN
-        ========================= */}
-
+        {/* ADMIN */}
         <Route
           path="/admin/login"
           element={<AdminLogin />}
         />
-
 
         <Route
           path="/admin"
@@ -320,7 +222,6 @@ function App() {
             element={<AdminReviews />}
           />
 
-          {/* ADMIN CHAT */}
           <Route
             path="chat"
             element={
@@ -334,10 +235,7 @@ function App() {
           />
         </Route>
 
-        {/* =========================
-            GUIDE DASHBOARD
-        ========================= */}
-
+        {/* GUIDE DASHBOARD */}
         <Route
           path="/guide-dashboard"
           element={
@@ -394,10 +292,7 @@ function App() {
           />
         </Route>
 
-        {/* =========================
-            TOURIST DASHBOARD
-        ========================= */}
-
+        {/* TOURIST DASHBOARD */}
         <Route
           path="/tourist-dashboard"
           element={
@@ -452,10 +347,7 @@ function App() {
           }
         />
 
-        {/* =========================
-            TOURIST CHAT
-        ========================= */}
-
+        {/* TOURIST CHAT */}
         <Route
           path="/tourist-dashboard/chat"
           element={
@@ -472,10 +364,7 @@ function App() {
           />
         </Route>
 
-        {/* =========================
-            PAGE NOT FOUND
-        ========================= */}
-
+        {/* NOT FOUND */}
         <Route
           path="*"
           element={
@@ -486,10 +375,7 @@ function App() {
               }}
             >
               <h2>Page Not Found</h2>
-
-              <Link to="/">
-                Go to Home
-              </Link>
+              <Link to="/">Go to Home</Link>
             </div>
           }
         />
