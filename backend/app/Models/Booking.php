@@ -25,6 +25,8 @@ class Booking extends Model
 
         'to_date',
 
+        'travel_date',
+
         'amount',
 
         'status',

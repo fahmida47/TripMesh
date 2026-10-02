@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Guide\GuideExperienceController;
 use App\Http\Controllers\Guide\GuideProfileController;
 use App\Http\Controllers\Guide\GuideReviewController;
+use App\Http\Controllers\Guide\TourServiceController;
 use App\Http\Controllers\TouristProfileController;
 use App\Http\Controllers\TravelRequestController;
 use App\Http\Controllers\BookingController;
@@ -96,6 +97,16 @@ Route::get('/guides/explore', [
     'explore'
 ]);
 
+// Public for Explore and tourist service listings; writes require guide auth.
+Route::get('/tour-services', [TourServiceController::class, 'index']);
+Route::get('/tour-services/{tourService}', [TourServiceController::class, 'show'])->whereNumber('tourService');
+Route::middleware('auth:api')->prefix('guide/tour-services')->group(function () {
+    Route::get('/', [TourServiceController::class, 'mine']);
+    Route::post('/', [TourServiceController::class, 'store']);
+    Route::put('/{tourService}', [TourServiceController::class, 'update'])->whereNumber('tourService');
+    Route::delete('/{tourService}', [TourServiceController::class, 'destroy'])->whereNumber('tourService');
+});
+
 
 
 /*
@@ -161,6 +172,11 @@ Route::middleware('auth:api')
     ]);
 
 });
+
+Route::middleware('auth:api')->post('/service-requests', [
+    TravelRequestController::class,
+    'storeService',
+]);
 
 
 

@@ -143,6 +143,33 @@ function GuideCard({
           </div>
         )}
 
+        {guide.tourServices?.length > 0 && (
+          <div className="explore-experiences">
+            <div className="experience-heading">
+              <h4>Services</h4>
+              <span>{guide.tourServices.length}</span>
+            </div>
+            {guide.tourServices.map((service) => (
+              <article className="experience-item service-tile" key={service.id}>
+                {service.image && <img src={`${STORAGE_URL}/${service.image}`} alt={service.title} />}
+                <div className="experience-text">
+                  <strong>{service.title}</strong>
+                  <p>{service.location} · {service.tour_type} · {service.duration}</p>
+                  <p>৳{Number(service.price).toLocaleString()} · Up to {service.max_travelers} travelers</p>
+                  <p>{service.description}</p>
+                  <button
+                    type="button"
+                    className="explore-primary-button service-request-button"
+                    onClick={() => onSendRequest(guide, service)}
+                  >
+                    Send Request
+                  </button>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+
         <div className="explore-guide-meta">
           <div className="explore-rating">
             <span className="explore-star">★</span>
@@ -218,6 +245,9 @@ function normalizeGuide(guide) {
       guide.tourTypes ||
       [],
 
+    tourServices:
+      guide.tour_services || guide.tourServices || [],
+
     min_price:
       guide.min_price ??
       guide.price ??
@@ -292,6 +322,9 @@ function Explore({ embedded = false }) {
   const [selectedGuide, setSelectedGuide] =
     useState(null);
 
+  const [selectedService, setSelectedService] =
+    useState(null);
+
   const [detailsGuide, setDetailsGuide] =
     useState(null);
 
@@ -323,6 +356,10 @@ function Explore({ embedded = false }) {
 
   const [requestError, setRequestError] =
     useState("");
+
+  const requestAmount = selectedService
+    ? Number(selectedService.price || 0) * Number(travelers || 0)
+    : Number(agreedAmount || 0);
 
   const mapMarkers = useMemo(
     () => guides.filter(hasCoordinates),
@@ -535,7 +572,7 @@ function Explore({ embedded = false }) {
     });
   };
 
-  const handleOpenRequest = (guide) => {
+  const handleOpenRequest = (guide, service = null) => {
     const user = getLoggedInUser();
 
     if (!user) {
@@ -554,20 +591,17 @@ function Explore({ embedded = false }) {
     }
 
     setSelectedGuide(guide);
+    setSelectedService(service);
 
     setFromDate("");
     setToDate("");
-    setDestination("");
+    setDestination(service?.location || "");
     setTravelers(1);
 
-    setAgreedAmount(
-      guide.min_price ??
-        guide.price ??
-        ""
-    );
+    setAgreedAmount(guide.min_price ?? guide.price ?? "");
 
     setRequestDetails("");
-    setSelectedExperience("");
+    setSelectedExperience(service?.title || "");
 
     setRequestSuccess("");
     setRequestError("");
@@ -579,6 +613,7 @@ function Explore({ embedded = false }) {
     }
 
     setSelectedGuide(null);
+    setSelectedService(null);
 
     setFromDate("");
     setToDate("");
@@ -670,11 +705,10 @@ function Explore({ embedded = false }) {
         minimumAmount
     );
 
-    const requestedAmount =
-      Number(agreedAmount);
+    const requestedAmount = requestAmount;
 
     if (
-      !agreedAmount ||
+      (!selectedService && !agreedAmount) ||
       !Number.isFinite(requestedAmount)
     ) {
       setRequestError(
@@ -684,10 +718,10 @@ function Explore({ embedded = false }) {
       return;
     }
 
-    if (
+    if (!selectedService && (
       requestedAmount < minimumAmount ||
       requestedAmount > maximumAmount
-    ) {
+    )) {
       setRequestError(
         `Amount must be between ৳${minimumAmount.toLocaleString()} and ৳${maximumAmount.toLocaleString()}.`
       );
@@ -695,7 +729,12 @@ function Explore({ embedded = false }) {
       return;
     }
 
-    if (!fromDate) {
+    if (selectedService && Number(travelers) > Number(selectedService.max_travelers)) {
+      setRequestError(`This service allows up to ${selectedService.max_travelers} travelers.`);
+      return;
+    }
+
+    if (!selectedService && !fromDate) {
       setRequestError(
         "Please select a From Date."
       );
@@ -703,7 +742,7 @@ function Explore({ embedded = false }) {
       return;
     }
 
-    if (!toDate) {
+    if (!selectedService && !toDate) {
       setRequestError(
         "Please select a To Date."
       );
@@ -711,7 +750,7 @@ function Explore({ embedded = false }) {
       return;
     }
 
-    if (toDate < fromDate) {
+    if (!selectedService && toDate < fromDate) {
       setRequestError(
         "To Date cannot be earlier than From Date."
       );
@@ -732,7 +771,11 @@ function Explore({ embedded = false }) {
       return;
     }
 
-    const requestData = {
+    const requestData = selectedService ? {
+      guide_profile_id: Number(guideProfileId),
+      tour_service_id: selectedService.id,
+      travelers: Number(travelers),
+    } : {
       guide_profile_id:
         Number(guideProfileId),
 
@@ -754,16 +797,14 @@ function Explore({ embedded = false }) {
 
       amount: requestedAmount,
 
-      request_details:
-        requestDetails.trim() ||
-        null,
+      request_details: requestDetails.trim() || null,
     };
 
     try {
       setRequestLoading(true);
 
       const response = await fetch(
-        `${API_BASE_URL}/travel-requests`,
+        `${API_BASE_URL}/${selectedService ? "service-requests" : "travel-requests"}`,
         {
           method: "POST",
 
@@ -1343,7 +1384,7 @@ function Explore({ embedded = false }) {
                   </h2>
 
                   <p>
-                    Request a tour from{" "}
+                    Request {selectedExperience ? <strong>{selectedExperience}</strong> : "a tour"} from{" "}
                     <strong>
                       {selectedGuide.companyName ||
                         "Guide Company"}
@@ -1435,17 +1476,16 @@ function Explore({ embedded = false }) {
                     </strong>
 
                     <span className="request-guide-price">
-                      Price range:{" "}
-                      {formatPriceRange(
-                        selectedGuide
-                      )}
+                      {selectedService
+                        ? `Price per traveler: ৳${Number(selectedService.price).toLocaleString()}`
+                        : <>Price range: {formatPriceRange(selectedGuide)}</>}
                     </span>
                   </div>
                 </div>
 
                 <div className="request-form-group">
                   <label htmlFor="agreed-amount">
-                    Agreed Amount (৳)
+                    {selectedService ? "Total Amount (৳)" : "Agreed Amount (৳)"}
                   </label>
 
                   <div className="request-input-wrapper">
@@ -1456,20 +1496,10 @@ function Explore({ embedded = false }) {
                     <input
                       id="agreed-amount"
                       type="number"
-                      min={
-                        selectedGuide.min_price ??
-                        selectedGuide.price ??
-                        0
-                      }
-                      max={
-                        selectedGuide.max_price ??
-                        selectedGuide.min_price ??
-                        selectedGuide.price ??
-                        0
-                      }
-                      value={
-                        agreedAmount
-                      }
+                      min={selectedService ? undefined : selectedGuide.min_price ?? selectedGuide.price ?? 0}
+                      max={selectedService ? undefined : selectedGuide.max_price ?? selectedGuide.min_price ?? selectedGuide.price ?? 0}
+                      value={selectedService ? requestAmount : agreedAmount}
+                      readOnly={Boolean(selectedService)}
                       onChange={(event) =>
                         setAgreedAmount(
                           event.target
@@ -1482,11 +1512,9 @@ function Explore({ embedded = false }) {
                   </div>
 
                   <small>
-                    Enter an amount between{" "}
-                    {formatPriceRange(
-                      selectedGuide
-                    )}
-                    .
+                    {selectedService
+                      ? `৳${Number(selectedService.price).toLocaleString()} per traveler × ${travelers} traveler(s)`
+                      : <>Enter an amount between {formatPriceRange(selectedGuide)}.</>}
                   </small>
                 </div>
 
@@ -1503,9 +1531,8 @@ function Explore({ embedded = false }) {
                     <input
                       id="experience"
                       type="text"
-                      value={
-                        selectedExperience
-                      }
+                      value={selectedExperience}
+                      readOnly={Boolean(selectedService)}
                       onChange={(event) =>
                         setSelectedExperience(
                           event.target
@@ -1545,6 +1572,7 @@ function Explore({ embedded = false }) {
                             .value
                         )
                       }
+                      readOnly={Boolean(selectedService)}
                       placeholder="Where do you want to travel?"
                       maxLength={255}
                       required
@@ -1571,7 +1599,7 @@ function Explore({ embedded = false }) {
                       id="travelers"
                       type="number"
                       min="1"
-                      max="100"
+                      max={selectedService?.max_travelers || 100}
                       value={
                         travelers
                       }
@@ -1592,7 +1620,7 @@ function Explore({ embedded = false }) {
                   </small>
                 </div>
 
-                <div className="request-date-range">
+                {!selectedService && <div className="request-date-range">
                   <div className="request-form-group">
                     <label htmlFor="from-date">
                       From Date
@@ -1676,9 +1704,9 @@ function Explore({ embedded = false }) {
                       travel date.
                     </small>
                   </div>
-                </div>
+                </div>}
 
-                <div className="request-form-group request-details-group">
+                {!selectedService && <div className="request-form-group request-details-group">
                   <div className="request-label-row">
                     <label htmlFor="request-details">
                       Request Details
@@ -1710,7 +1738,7 @@ function Explore({ embedded = false }) {
                     }
                     /2000
                   </small>
-                </div>
+                </div>}
 
                 <div className="request-form-actions">
                   <button
@@ -1756,3 +1784,4 @@ function Explore({ embedded = false }) {
 }
 
 export default Explore;
+
