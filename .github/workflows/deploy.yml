@@ -62,11 +62,11 @@ jobs:
               --exclude='.env.*' \
               -czf release.tar.gz -C backend .
 
-          tar -tzf release.tar.gz | grep -q '^vendor/'
-          tar -tzf release.tar.gz | grep -q '^public/app/index.html$'
+          tar -tzf release.tar.gz | grep -qE '^(\./)?vendor/'
+          tar -tzf release.tar.gz | grep -qE '^(\./)?public/app/index\.html$'
 
           ! tar -tzf release.tar.gz | grep -E '(^|/)\.env($|\.)'
-          ! tar -tzf release.tar.gz | grep -E '(^|/)(node_modules)(/|$)'
+          ! tar -tzf release.tar.gz | grep -E '(^|/)node_modules(/|$)'
           ! tar -tzf release.tar.gz | grep -E '(^|/)\.git(/|$)'
 
       - name: Load deploy key
