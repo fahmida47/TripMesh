@@ -107,6 +107,16 @@ export default function RequestDetailsModal({
     booking.travel_request ||
     {};
 
+  const serviceRequest =
+    booking.serviceRequest ||
+    booking.service_request ||
+    {};
+
+  const tourService =
+    serviceRequest.tourService ||
+    serviceRequest.tour_service ||
+    {};
+
   const payment =
     booking.payment ||
     {};
@@ -149,6 +159,8 @@ export default function RequestDetailsModal({
     experience.name ||
     experience.experience_name ||
     experience.experience_title ||
+    tourService.title ||
+    serviceRequest.experience_name ||
     booking.tour_title ||
     booking.tourTitle ||
     booking.tour_name ||
@@ -168,6 +180,7 @@ export default function RequestDetailsModal({
     travelRequest.destination_name ||
     travelRequest.location ||
     travelRequest.place ||
+    serviceRequest.destination ||
     booking.destination ||
     booking.destination_name ||
     booking.location ||
@@ -270,6 +283,7 @@ export default function RequestDetailsModal({
     travelRequest.guests ??
     travelRequest.no_of_travelers ??
     travelRequest.noOfTravelers ??
+    serviceRequest.travelers ??
     null;
 
   // ----------------------------------------
