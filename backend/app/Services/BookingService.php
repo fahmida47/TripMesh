@@ -16,6 +16,7 @@ class BookingService
             'experience',
             'payment',
             'travelRequest',
+            'serviceRequest.tourService',
         ])
             ->where('guide_profile_id', $guideProfile->id)
             ->latest()
@@ -48,6 +49,7 @@ class BookingService
                 'experience',
                 'payment',
                 'travelRequest',
+                'serviceRequest.tourService',
             ]);
         });
     }
@@ -61,7 +63,8 @@ class BookingService
             'guide',
             'experience',
             'payment.payout',
-            'travelRequest'
+            'travelRequest',
+            'serviceRequest.tourService',
         ])
         ->where(
             'tourist_profile_id',
@@ -86,7 +89,8 @@ class BookingService
             'guide',
             'experience',
             'payment.payout',
-            'travelRequest'
+            'travelRequest',
+            'serviceRequest.tourService',
         ])
         ->where(
             'id',
