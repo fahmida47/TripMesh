@@ -53,6 +53,8 @@ const Login = () => {
   const [success, setSuccess] = useState("");
   const [codeSent, setCodeSent] = useState(false);
 
+  const [otp, setOtp] = useState("");
+
   const [otpTimeLeft, setOtpTimeLeft] = useState(OTP_DURATION);
   const [retryTimeLeft, setRetryTimeLeft] = useState(0);
   const [showRetry, setShowRetry] = useState(false);
@@ -121,6 +123,7 @@ const Login = () => {
   const handleSendCode = async () => {
     setError("");
     setSuccess("");
+    setOtp("");
 
     const phone = formData.phone.trim();
 
@@ -156,6 +159,7 @@ const Login = () => {
         setError(
           result.message || "Failed to send verification code."
         );
+
         setSendingCode(false);
         return;
       }
@@ -166,6 +170,11 @@ const Login = () => {
         ...prev,
         verificationCode: "",
       }));
+
+      // Get OTP returned by backend
+      if (result.otp) {
+        setOtp(String(result.otp));
+      }
 
       setSuccess("Verification code sent successfully.");
 
@@ -220,6 +229,7 @@ const Login = () => {
 
     // OTP expired
     if (otpTimeLeft <= 0) {
+      setError("Verification code has expired. Please request a new code.");
       return;
     }
 
@@ -262,10 +272,12 @@ const Login = () => {
       // Existing user
       if (result.is_new_user === false && result.token) {
         localStorage.setItem("token", result.token);
+
         localStorage.setItem(
           "user",
           JSON.stringify(result.user)
         );
+
         localStorage.setItem("isLoggedIn", "true");
 
         if (result.user.role === "admin") {
@@ -393,6 +405,40 @@ const Login = () => {
                 <p className="login-success">
                   {success}
                 </p>
+              )}
+
+              {/* Development OTP display */}
+              {codeSent && otp && (
+                <div
+                  style={{
+                    marginTop: "12px",
+                    marginBottom: "12px",
+                    padding: "12px 16px",
+                    borderRadius: "10px",
+                    background: "rgba(56, 189, 248, 0.10)",
+                    border: "1px solid rgba(56, 189, 248, 0.35)",
+                    textAlign: "center",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: "12px",
+                      opacity: 0.8,
+                      marginBottom: "5px",
+                    }}
+                  >
+                    Development OTP
+                  </div>
+
+                  <strong
+                    style={{
+                      fontSize: "24px",
+                      letterSpacing: "5px",
+                    }}
+                  >
+                    {otp}
+                  </strong>
+                </div>
               )}
 
               {codeSent && (
