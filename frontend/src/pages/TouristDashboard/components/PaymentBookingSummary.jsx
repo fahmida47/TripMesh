@@ -53,6 +53,16 @@ export default function PaymentBookingSummary({ booking }) {
       booking.travel_request ||
       {};
 
+    const serviceRequest =
+      booking.serviceRequest ||
+      booking.service_request ||
+      {};
+
+    const tourService =
+      serviceRequest.tourService ||
+      serviceRequest.tour_service ||
+      {};
+
     const guideProfile =
       booking.guide ||
       booking.guide_profile ||
@@ -74,6 +84,8 @@ export default function PaymentBookingSummary({ booking }) {
       travelRequest.experienceName ||
       travelRequest.title ||
       travelRequest.tour_title ||
+      tourService.title ||
+      serviceRequest.experience_name ||
       "—";
 
     const destination =
@@ -83,6 +95,7 @@ export default function PaymentBookingSummary({ booking }) {
       travelRequest.destination ||
       travelRequest.destination_name ||
       travelRequest.location ||
+      serviceRequest.destination ||
       booking.destination ||
       booking.destination_name ||
       booking.location ||
@@ -126,6 +139,7 @@ export default function PaymentBookingSummary({ booking }) {
       travelRequest.guests ??
       travelRequest.number_of_guests ??
       travelRequest.numberOfGuests ??
+      serviceRequest.travelers ??
       1;
 
     const tourFromDate =
