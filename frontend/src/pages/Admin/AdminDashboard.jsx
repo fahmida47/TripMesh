@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 
 import logo from "../../assets/logo.png";
+import NotificationBell from "../../components/Notifications/NotificationBell";
 import "./admin.css";
 import { API_BASE_URL } from "../../config.js";
 import {
@@ -86,7 +87,7 @@ export function AdminGuard({ children }) {
     localStorage.getItem("isLoggedIn") !== "true" ||
     !getToken()
   ) {
-    return <Navigate to="/admin/login" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   if (user?.role !== "admin") {
@@ -97,7 +98,7 @@ export function AdminGuard({ children }) {
             ? "/guide-dashboard"
             : user?.role === "tourist"
               ? "/tourist-dashboard"
-              : "/admin/login"
+              : "/login"
         }
         replace
       />
@@ -204,14 +205,18 @@ export default function AdminDashboard() {
             <h1>{currentTitle}</h1>
           </div>
 
-          <div className="admin-user">
-            <span className="admin-avatar">
-              {user?.name?.[0]?.toUpperCase() || "A"}
-            </span>
+          <div className="admin-topbar-right">
+            <NotificationBell variant="light" />
 
-            <div>
-              <b>{user?.name || "Administrator"}</b>
-              <small>Administrator</small>
+            <div className="admin-user">
+              <span className="admin-avatar">
+                {user?.name?.[0]?.toUpperCase() || "A"}
+              </span>
+
+              <div>
+                <b>{user?.name || "Administrator"}</b>
+                <small>Administrator</small>
+              </div>
             </div>
           </div>
         </header>

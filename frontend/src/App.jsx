@@ -41,15 +41,7 @@ import PaymentPage from "./pages/TouristDashboard/components/PaymentPage";
 import ChatBox from "./pages/Chat/ChatBox";
 
 /* ADMIN */
-import AdminLogin from "./pages/Admin/AdminLogin";
-
-
 import ReviewForm from "./pages/TouristDashboard/Reviews/ReviewForm";
-
-/* =========================
-   CHAT
-========================= */
-
 
 /* =========================
    ADMIN
@@ -192,12 +184,6 @@ function App() {
         />
 
         {/* ADMIN */}
-        <Route
-
-          path="/admin/login"
-          element={<AdminLogin />}
-        />
-
         <Route
 
           path="/admin"
