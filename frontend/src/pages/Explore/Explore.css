@@ -496,6 +496,42 @@
   line-height:1.4;
 }
 
+.service-tile{
+  display:grid;
+  grid-template-columns:48px minmax(0,1fr);
+  align-items:start;
+  gap:10px;
+  padding:12px;
+  margin-bottom:10px;
+  border:1px solid #dce6f4;
+  border-radius:10px;
+  background:#fff;
+  box-shadow:0 3px 10px rgba(27,55,96,.05);
+}
+
+.service-tile .experience-text{
+  display:grid;
+  gap:5px;
+}
+
+.service-tile .experience-text strong{
+  font-size:13px;
+}
+
+.service-tile .experience-text p{
+  font-size:11px;
+}
+
+.service-request-button{
+  width:100%;
+  min-height:36px;
+  margin-top:5px;
+  border-radius:7px;
+  font-size:11px;
+  font-weight:700;
+  cursor:pointer;
+}
+
 /* RATING + PRICE */
 .explore-guide-meta{
   display:flex;

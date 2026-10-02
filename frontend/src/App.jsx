@@ -300,6 +300,8 @@ function App() {
             element={<AddTourService />}
           />
 
+          <Route path="tour-services/edit/:id" element={<AddTourService />} />
+
           <Route
             path="requests"
             element={<GuideRequests />}

@@ -1,5 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../../config.js";
+import { getToken } from "../../../utils/auth.js";
 
 import "./GuideTourServices.css";
 
@@ -8,6 +10,20 @@ function GuideTourServices() {
 
   // No mock data
   const [tourServices, setTourServices] = useState([]);
+  const [error, setError] = useState("");
+
+  const loadServices = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/guide/tour-services`, {
+        headers: { Accept: "application/json", Authorization: `Bearer ${getToken()}` },
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "Could not load tour services.");
+      setTourServices(data.services || []);
+    } catch (err) { setError(err.message); }
+  };
+
+  useEffect(() => { loadServices(); }, []);
 
   const handleAddTourService = () => {
     navigate("/guide-dashboard/tour-services/add");
@@ -24,11 +40,19 @@ function GuideTourServices() {
 
     if (!confirmed) return;
 
-    setTourServices((prev) => prev.filter((service) => service.id !== id));
+    fetch(`${API_BASE_URL}/guide/tour-services/${id}`, {
+      method: "DELETE",
+      headers: { Accept: "application/json", Authorization: `Bearer ${getToken()}` },
+    }).then(async (response) => {
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "Could not delete service.");
+      await loadServices();
+    }).catch((err) => setError(err.message));
   };
 
   return (
     <main className="tour-services-page">
+      {error && <p role="alert">{error}</p>}
       {/* PAGE HEADER */}
       <div className="tour-services-header">
         <div>
@@ -124,12 +148,12 @@ function GuideTourServices() {
 
                   <div>
                     <strong>{service.title}</strong>
-                    <span>{service.destination}</span>
+                    <span>{service.location}</span>
                   </div>
                 </div>
 
                 {/* TOUR TYPE */}
-                <span>{service.tourType}</span>
+                <span>{service.tour_type}</span>
 
                 {/* DURATION */}
                 <span>{service.duration}</span>

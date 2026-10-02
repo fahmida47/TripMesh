@@ -206,7 +206,6 @@ export default function MyRequests({
       <div className="rb-col-header">
         <span>Guide / Guide Company</span>
         <span>Tour / Experience</span>
-        <span>Date</span>
         <span>Status</span>
 
         <span style={{ textAlign: "right" }}>

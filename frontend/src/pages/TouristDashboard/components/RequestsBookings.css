@@ -148,7 +148,6 @@
     minmax(0, 1.5fr)
     1fr
     0.9fr
-    0.9fr
     230px;
   align-items: center;
   gap: 16px;
@@ -176,7 +175,6 @@
   grid-template-columns:
     minmax(0, 1.5fr)
     1fr
-    0.9fr
     0.9fr
     230px;
   align-items: center;

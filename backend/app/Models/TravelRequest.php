@@ -4,12 +4,20 @@ namespace App\Models;
 
 use App\Models\Guide\GuideExperience;
 use App\Models\Guide\GuideProfile;
+use App\Models\Guide\TourService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class TravelRequest extends Model
 {
+
+    protected $appends = ['request_type'];
+
+    public function getRequestTypeAttribute(): string
+    {
+        return 'travel';
+    }
 
     protected $fillable = [
 
@@ -18,6 +26,8 @@ class TravelRequest extends Model
         'guide_profile_id',
 
         'guide_experience_id',
+
+        'tour_service_id',
 
         'experience_name',
 
@@ -28,6 +38,8 @@ class TravelRequest extends Model
         'from_date',
 
         'to_date',
+
+        'travel_date',
 
         'amount',
 
@@ -93,6 +105,11 @@ class TravelRequest extends Model
 
         );
 
+    }
+
+    public function tourService(): BelongsTo
+    {
+        return $this->belongsTo(TourService::class, 'tour_service_id');
     }
 
 

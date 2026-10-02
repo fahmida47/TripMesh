@@ -70,6 +70,11 @@ class GuideProfile extends Model
         );
     }
 
+    public function tourServices(): HasMany
+    {
+        return $this->hasMany(TourService::class, 'guide_profile_id');
+    }
+
 
 
     public function getProfilePictureUrlAttribute()

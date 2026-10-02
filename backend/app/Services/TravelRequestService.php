@@ -8,6 +8,7 @@ use App\Models\Payment;
 use App\Models\Guide\GuideProfile;
 use App\Models\Guide\GuideExperience;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class TravelRequestService
 {
@@ -55,7 +56,7 @@ class TravelRequestService
 
 
 
-        return TravelRequest::create([
+        $requestData = [
 
             'tourist_profile_id' =>
                 $touristProfile->id,
@@ -65,6 +66,9 @@ class TravelRequestService
 
             'guide_experience_id' =>
                 $validated['guide_experience_id'] ?? null,
+
+            'tour_service_id' =>
+                $validated['tour_service_id'] ?? null,
 
             'experience_name' =>
                 $validated['experience_name'] ?? null,
@@ -97,7 +101,14 @@ class TravelRequestService
             'status' =>
                 'pending'
 
-        ]);
+        ];
+
+        // Older local databases still have a required legacy travel_date.
+        if (Schema::hasColumn('travel_requests', 'travel_date')) {
+            $requestData['travel_date'] = $validated['from_date'];
+        }
+
+        return TravelRequest::create($requestData);
     }
 
 
@@ -108,10 +119,11 @@ class TravelRequestService
     public function getGuideRequests($guideProfile)
     {
 
-        return TravelRequest::with([
+        $travelRequests = TravelRequest::with([
             'tourist',
             'guide',
-            'experience'
+            'experience',
+            'tourService'
         ])
 
         ->where(
@@ -122,6 +134,12 @@ class TravelRequestService
         ->latest()
 
         ->get();
+
+        $serviceRequests = ServiceRequest::with(['tourist', 'guide', 'tourService'])
+            ->where('guide_profile_id', $guideProfile->id)
+            ->get();
+
+        return $travelRequests->concat($serviceRequests)->sortByDesc('created_at')->values();
 
     }
 
@@ -151,7 +169,7 @@ class TravelRequestService
 
 
 
-            $booking = Booking::create([
+            $bookingData = [
 
 
                 'travel_request_id' =>
@@ -185,7 +203,13 @@ class TravelRequestService
                 'status' =>
                     'pending_payment'
 
-            ]);
+            ];
+
+            if (Schema::hasColumn('bookings', 'travel_date')) {
+                $bookingData['travel_date'] = $travelRequest->from_date;
+            }
+
+            $booking = Booking::create($bookingData);
 
 
 

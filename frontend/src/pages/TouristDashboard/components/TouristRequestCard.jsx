@@ -139,28 +139,6 @@ export default function TouristRequestCard({
   |--------------------------------------------------------------------------
   */
 
-  const requestedFromDate =
-    booking?.from_date ||
-    booking?.fromDate ||
-    travelRequest?.from_date ||
-    travelRequest?.fromDate ||
-    booking?.travel_date ||
-    travelRequest?.travel_date ||
-    null;
-
-  const requestedToDate =
-    booking?.to_date ||
-    booking?.toDate ||
-    travelRequest?.to_date ||
-    travelRequest?.toDate ||
-    null;
-
-  // Format each end of the range separately (a single formatDisplayDate call
-  // on "from - to" would not parse and would print the raw ISO strings).
-  const requestedDate = requestedToDate
-    ? `${formatDisplayDate(requestedFromDate)} - ${formatDisplayDate(requestedToDate)}`
-    : formatDisplayDate(requestedFromDate);
-
   /*
   |--------------------------------------------------------------------------
   | Status
@@ -262,18 +240,6 @@ export default function TouristRequestCard({
             {destination}
           </span>
         )}
-      </div>
-
-      {/* DATE */}
-
-      <div className="rb-cell rb-cell--date">
-        <span className="rb-cell-label">
-          Date
-        </span>
-
-        <span className="rb-date">
-          {requestedDate}
-        </span>
       </div>
 
       {/* STATUS */}

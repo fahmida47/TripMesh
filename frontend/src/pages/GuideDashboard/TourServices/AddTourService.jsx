@@ -1,10 +1,13 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { API_BASE_URL } from "../../../config.js";
+import { getToken } from "../../../utils/auth.js";
 
 import "./AddTourService.css";
 
 function AddTourService() {
   const navigate = useNavigate();
+  const { id } = useParams();
 
   const [formData, setFormData] = useState({
     title: "",
@@ -13,9 +16,27 @@ function AddTourService() {
     duration: "",
     price: "",
     description: "",
+    max_travelers: "",
   });
 
   const [tourImage, setTourImage] = useState(null);
+  const [error, setError] = useState("");
+  const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (!id) return;
+    fetch(`${API_BASE_URL}/guide/tour-services`, {
+      headers: { Accept: "application/json", Authorization: `Bearer ${getToken()}` },
+    }).then(async (response) => {
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || "Could not load service.");
+      const service = data.services.find((item) => String(item.id) === id);
+      if (!service) throw new Error("Tour service not found.");
+      setFormData({ title: service.title, destination: service.location, tourType: service.tour_type,
+        duration: service.duration, price: String(service.price), description: service.description,
+        max_travelers: String(service.max_travelers) });
+    }).catch((err) => setError(err.message));
+  }, [id]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -41,19 +62,36 @@ function AddTourService() {
     navigate("/guide-dashboard/tour-services");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    alert("Tour service form completed!");
-
-    navigate("/guide-dashboard/tour-services");
+    setSaving(true);
+    setError("");
+    const payload = new FormData();
+    payload.append("title", formData.title);
+    payload.append("description", formData.description);
+    payload.append("location", formData.destination);
+    payload.append("tour_type", formData.tourType);
+    payload.append("price", formData.price);
+    payload.append("duration", formData.duration);
+    payload.append("max_travelers", formData.max_travelers);
+    if (tourImage?.file) payload.append("image", tourImage.file);
+    if (id) payload.append("_method", "PUT");
+    try {
+      const response = await fetch(`${API_BASE_URL}/guide/tour-services${id ? `/${id}` : ""}`, {
+        method: "POST", headers: { Accept: "application/json", Authorization: `Bearer ${getToken()}` }, body: payload,
+      });
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.message || Object.values(data.errors || {}).flat().join(" ") || "Could not save tour service.");
+      navigate("/guide-dashboard/tour-services");
+    } catch (err) { setError(err.message); }
+    finally { setSaving(false); }
   };
 
   return (
     <main className="add-tour-service-page">
       <div className="add-tour-service-heading">
         <div>
-          <h1>Add Tour Service</h1>
+          <h1>{id ? "Edit Tour Service" : "Add Tour Service"}</h1>
 
           <p>Create a new tour package for your guide company.</p>
         </div>
@@ -68,6 +106,7 @@ function AddTourService() {
       </div>
 
       <form className="add-tour-service-form" onSubmit={handleSubmit}>
+        {error && <p role="alert">{error}</p>}
         {/* TOUR IMAGE */}
         <section className="tour-form-card">
           <h2>Tour Image</h2>
@@ -181,6 +220,11 @@ function AddTourService() {
             </div>
 
             {/* DESCRIPTION */}
+            <div className="tour-form-field">
+              <label>Maximum Travelers</label>
+              <input type="number" name="max_travelers" value={formData.max_travelers} onChange={handleChange} min="1" required />
+            </div>
+
             <div className="tour-form-field full-width">
               <label>Package Description</label>
 
@@ -210,8 +254,8 @@ function AddTourService() {
             Cancel
           </button>
 
-          <button type="submit" className="save-tour-btn">
-            Add Tour Service
+          <button type="submit" className="save-tour-btn" disabled={saving}>
+            {saving ? "Saving..." : id ? "Save Changes" : "Add Tour Service"}
           </button>
         </div>
       </form>

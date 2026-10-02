@@ -7,6 +7,8 @@ use Illuminate\Http\JsonResponse;
 
 use App\Services\TravelRequestService;
 use App\Models\TravelRequest;
+use App\Models\ServiceRequest;
+use App\Models\Guide\TourService;
 
 
 class TravelRequestController extends Controller
@@ -118,11 +120,7 @@ class TravelRequestController extends Controller
         if ($validated['amount'] < $minimumAmount || $validated['amount'] > $maximumAmount) {
             return response()->json([
                 'message' => 'Amount must be within the guide price range.',
-                'errors' => [
-                    'amount' => [
-                        'Choose an amount between '.$minimumAmount.' and '.$maximumAmount.'.',
-                    ],
-                ],
+                'errors' => ['amount' => ['Choose an amount between '.$minimumAmount.' and '.$maximumAmount.'.']],
             ], 422);
         }
 
@@ -154,13 +152,10 @@ class TravelRequestController extends Controller
 
 
 
-        $travelRequest->load([
-
-            'tourist',
-            'guide',
-            'experience'
-
-        ]);
+        $travelRequest->load(['tourist', 'guide', 'tourService']);
+        if ($travelRequest instanceof TravelRequest) {
+            $travelRequest->load('experience');
+        }
 
 
 
@@ -177,6 +172,44 @@ class TravelRequestController extends Controller
 
         ],201);
 
+    }
+
+    /** Store a service request independently from a dated travel request. */
+    public function storeService(Request $request): JsonResponse
+    {
+        $user = auth('api')->user();
+        if (!$user || $user->role !== 'tourist') {
+            return response()->json(['message' => 'Only tourists can send service requests.'], 403);
+        }
+
+        $validated = $request->validate([
+            'guide_profile_id' => ['required', 'integer', 'exists:guide_profiles,id'],
+            'tour_service_id' => ['required', 'integer', 'exists:tour_services,id'],
+            'travelers' => ['required', 'integer', 'min:1'],
+        ]);
+
+        $service = TourService::where('id', $validated['tour_service_id'])
+            ->where('guide_profile_id', $validated['guide_profile_id'])->first();
+        if (!$service) return response()->json(['message' => 'Selected service does not belong to this guide.'], 422);
+        if ($validated['travelers'] > $service->max_travelers) {
+            return response()->json(['message' => 'Traveler count exceeds this service limit.'], 422);
+        }
+
+        $touristProfile = $user->touristProfile;
+        if (!$touristProfile) return response()->json(['message' => 'Tourist profile not found.'], 404);
+
+        $serviceRequest = ServiceRequest::create([
+            'tourist_profile_id' => $touristProfile->id,
+            'guide_profile_id' => $service->guide_profile_id,
+            'tour_service_id' => $service->id,
+            'experience_name' => $service->title,
+            'destination' => $service->location,
+            'travelers' => $validated['travelers'],
+            'amount' => $service->price * $validated['travelers'],
+            'status' => 'pending',
+        ])->load(['tourist', 'guide', 'tourService']);
+
+        return response()->json(['message' => 'Service request sent successfully.', 'request' => $serviceRequest], 201);
     }
 
 
@@ -286,6 +319,16 @@ class TravelRequestController extends Controller
 
 
 
+        if (request()->query('type') === 'service') {
+            $serviceRequest = ServiceRequest::where('id', $id)
+                ->where('guide_profile_id', $guideProfile->id)->first();
+            if (!$serviceRequest) {
+                return response()->json(['message' => 'Service request not found.'], 404);
+            }
+            $serviceRequest->update(['status' => 'accepted']);
+            return response()->json(['message' => 'Service request accepted.', 'request' => $serviceRequest]);
+        }
+
         $travelRequest =
             TravelRequest::where('id',$id)
 
@@ -360,6 +403,15 @@ class TravelRequestController extends Controller
      */
     public function reject($id): JsonResponse
     {
+        $user = auth('api')->user();
+        $guideProfile = $user?->guideProfile;
+        if (request()->query('type') === 'service') {
+            $serviceRequest = ServiceRequest::where('id', $id)
+                ->where('guide_profile_id', $guideProfile?->id)->first();
+            if (!$serviceRequest) return response()->json(['message' => 'Service request not found.'], 404);
+            $serviceRequest->update(['status' => 'rejected']);
+            return response()->json(['message' => 'Service request rejected successfully.']);
+        }
 
         $travelRequest =
             TravelRequest::find($id);
@@ -414,6 +466,14 @@ class TravelRequestController extends Controller
      */
     public function cancel($id): JsonResponse
     {
+        if (request()->query('type') === 'service') {
+            $user = auth('api')->user();
+            $serviceRequest = ServiceRequest::where('id', $id)
+                ->where('guide_profile_id', $user?->guideProfile?->id)->first();
+            if (!$serviceRequest) return response()->json(['message' => 'Service request not found.'], 404);
+            $serviceRequest->update(['status' => 'cancelled']);
+            return response()->json(['message' => 'Service request cancelled successfully.']);
+        }
 
         $travelRequest =
             TravelRequest::find($id);

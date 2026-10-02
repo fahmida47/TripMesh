@@ -296,7 +296,7 @@ class GuideProfileController extends Controller
     public function explore(Request $request)
     {
 
-        $query = GuideProfile::with('experiences');
+        $query = GuideProfile::with(['experiences', 'tourServices']);
 
 
         if($request->filled('search')){

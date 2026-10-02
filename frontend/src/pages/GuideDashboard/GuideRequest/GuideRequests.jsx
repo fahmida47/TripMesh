@@ -75,9 +75,11 @@ const GuideRequests = () => {
   fetchRequests();
 }, []);
 
-  const handleStatusChange = async (id, action) => {
+  const handleStatusChange = async (request, action) => {
     try {
-      setActionLoading(id);
+      const id = request.id;
+      const requestKey = `${request.request_type || "travel"}:${id}`;
+      setActionLoading(requestKey);
       setError("");
 
       const token = getToken();
@@ -90,7 +92,7 @@ const GuideRequests = () => {
       }
 
       const response = await fetch(
-        `${API_BASE_URL}/travel-requests/guide/${id}/${action}`,
+        `${API_BASE_URL}/travel-requests/guide/${id}/${action}${request.request_type === "service" ? "?type=service" : ""}`,
         {
           method: "PUT",
           headers: {
@@ -344,7 +346,7 @@ const GuideRequests = () => {
                 getStatusClass(status);
 
               const isProcessing =
-                actionLoading === request.id;
+                actionLoading === `${request.request_type || "travel"}:${request.id}`;
 
               return (
                 <article
@@ -363,7 +365,7 @@ const GuideRequests = () => {
 
                       <div>
                         <span className="request-label">
-                          TRAVEL REQUEST
+                          {request.request_type === "service" ? "SERVICE REQUEST" : "TRAVEL REQUEST"}
                         </span>
 
                         <h3>
@@ -535,10 +537,7 @@ const GuideRequests = () => {
                         className="request-action-button reject"
                         disabled={isProcessing}
                         onClick={() =>
-                          handleStatusChange(
-                            request.id,
-                            "reject"
-                          )
+                          handleStatusChange(request, "reject")
                         }
                       >
                         <span>×</span>
@@ -553,10 +552,7 @@ const GuideRequests = () => {
                         className="request-action-button accept"
                         disabled={isProcessing}
                         onClick={() =>
-                          handleStatusChange(
-                            request.id,
-                            "accept"
-                          )
+                          handleStatusChange(request, "accept")
                         }
                       >
                         <span>✓</span>
@@ -578,10 +574,7 @@ const GuideRequests = () => {
                         className="request-action-button cancel"
                         disabled={isProcessing}
                         onClick={() =>
-                          handleStatusChange(
-                            request.id,
-                            "cancel"
-                          )
+                          handleStatusChange(request, "cancel")
                         }
                       >
                         <span>↪</span>
