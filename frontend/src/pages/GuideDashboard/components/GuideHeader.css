@@ -19,9 +19,11 @@
 
   display: flex;
   align-items: center;
+  gap: 12px;
 }
 
 .guide-header-text {
+  min-width: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -39,4 +41,117 @@
   margin: 3px 0 0;
   color: #7b879c;
   font-size: 13px;
+}
+
+.guide-header-account {
+  min-height: 48px;
+  max-width: 260px;
+  padding: 4px 10px 4px 5px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #e4e8f0;
+  border-radius: 12px;
+  background: #ffffff;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.guide-header-account:hover {
+  background: #f8faff;
+  border-color: #d8deea;
+  box-shadow: 0 4px 12px rgba(23, 33, 61, 0.06);
+}
+
+.guide-header-account:focus-visible {
+  outline: 2px solid #2d5cf6;
+  outline-offset: 2px;
+}
+
+.guide-header-avatar {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #2d5cf6;
+  color: #ffffff;
+  font-size: 20px;
+}
+
+.guide-header-profile-info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.guide-header-profile-name {
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #17213d;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.guide-header-profile-role {
+  margin-top: 2px;
+  color: #8b94a8;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.guide-header-chevron {
+  width: 17px;
+  height: 17px;
+  flex-shrink: 0;
+  color: #8b94a8;
+}
+
+@media (max-width: 700px) {
+  .guide-header {
+    padding: 10px 16px;
+  }
+
+  .guide-header-text h2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 16px;
+  }
+
+  .guide-header-text p {
+    font-size: 10px;
+  }
+
+  .guide-header-actions {
+    gap: 8px;
+  }
+
+  .guide-header-account {
+    min-height: 42px;
+    padding: 2px 5px 2px 2px;
+    gap: 6px;
+  }
+
+  .guide-header-avatar {
+    width: 36px;
+    height: 36px;
+  }
+
+  .guide-header-profile-info {
+    display: none;
+  }
+
+  .guide-header-chevron {
+    width: 15px;
+    height: 15px;
+  }
 }
