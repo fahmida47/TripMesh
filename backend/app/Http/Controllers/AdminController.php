@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Booking;
+use App\Models\Guide\GuideProfile;
 use App\Models\Payment;
 use App\Models\Payout;
 use App\Models\Review;
@@ -219,12 +220,16 @@ class AdminController extends Controller
     public function updateReview(Request $request, Review $review): JsonResponse
     {
         $data = $request->validate(['status' => ['required', 'in:approved,rejected']]);
+
         $review->update([
             'status' => $data['status'],
             'moderated_by_user_id' => $request->user('api')->id,
             'moderated_at' => now(),
         ]);
-        return response()->json(['message' => 'Review moderation saved.', 'review' => $review]);
+
+        $this->syncGuideProfileRating($review->guide_profile_id);
+
+        return response()->json(['message' => 'Review moderation saved.', 'review' => $review->fresh()]);
     }
 
     public function profile(Request $request): JsonResponse
@@ -251,6 +256,35 @@ class AdminController extends Controller
         ]);
         $admin = User::create(['name' => trim($data['name']), 'phone' => trim($data['phone']), 'role' => 'admin']);
         return response()->json(['message' => 'Admin account created.', 'user' => $admin->only(['id', 'name', 'phone', 'role'])], 201);
+    }
+
+    private function syncGuideProfileRating(int $guideProfileId): void
+    {
+        $guideProfile = GuideProfile::find($guideProfileId);
+
+        if (!$guideProfile) {
+            return;
+        }
+
+        $approvedReviews = Review::query()
+            ->where('guide_profile_id', $guideProfileId)
+            ->where('status', 'approved')
+            ->whereHas('booking', function ($query) {
+                $query->whereIn('status', ['confirmed', 'completed'])
+                    ->whereHas('payment', function ($paymentQuery) {
+                        $paymentQuery->where('status', 'paid');
+                    });
+            });
+
+        $totalReviews = $approvedReviews->count();
+        $averageRating = $totalReviews > 0
+            ? round((float) $approvedReviews->avg('rating'), 2)
+            : 0;
+
+        $guideProfile->update([
+            'rating' => $averageRating,
+            'reviews' => $totalReviews,
+        ]);
     }
 
     private function commissionSlabs(): array
