@@ -45,8 +45,7 @@ import PaymentHistory from "./pages/TouristDashboard/components/PaymentHistory";
 
 import PaymentPage from "./pages/TouristDashboard/components/PaymentPage";
 
-import PaymentForm from "./pages/TouristDashboard/components/PaymentForm";
-import PaymentPage from "./pages/TouristDashboard/components/PaymentPage";
+
 import ReviewForm from "./pages/TouristDashboard/Reviews/ReviewForm";
 
 /* =========================
@@ -86,30 +85,11 @@ const ROLE_HOME = {
 function PublicOnly({ children }) {
   const user = getLoggedInUser();
 
-
   if (user && ROLE_HOME[user.role]) {
     return <Navigate to={ROLE_HOME[user.role]} replace />;
   }
 
   return children;
-
-  if (!user) {
-    return <GlobalLandingPage />;
-  }
-
-  if (user.role === "guide") {
-    return <Navigate to="/guide-dashboard" replace />;
-  }
-
-  if (user.role === "tourist") {
-    return <Navigate to="/tourist-dashboard" replace />;
-  }
-
-  if (user.role === "admin") {
-    return <Navigate to="/admin/dashboard" replace />;
-  }
-
-  return <GlobalLandingPage />;
 }
 
 /* =========================
@@ -176,7 +156,7 @@ function ProtectedDashboard({ children, role }) {
 
   if (user.role === role) {
     return children;
-
+  }
   if (user.role !== role) {
     if (user.role === "guide") {
       return <Navigate to="/guide-dashboard" replace />;
@@ -213,11 +193,6 @@ function App() {
 
         {/* Landing Page */}
         <Route path="/" element={<PublicOnly><GlobalLandingPage /></PublicOnly>} />
-
-        <Route
-          path="/"
-          element={<LandingPageRedirect />}
-        />
 
         <Route
           path="/explore"
