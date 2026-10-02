@@ -20,8 +20,9 @@ function formatDate(value) {
 }
 
 function formatDateRange(booking) {
-  const fromDate = booking.from_date;
-  const toDate = booking.to_date;
+  const serviceRequest = booking.service_request || booking.serviceRequest;
+  const fromDate = booking.from_date || serviceRequest?.from_date;
+  const toDate = booking.to_date || serviceRequest?.to_date;
 
   if (!fromDate) return "Date not set";
   if (!toDate || fromDate === toDate) return formatDate(fromDate);
@@ -110,11 +111,19 @@ const UpcomingBookings = () => {
       ) : (
         <div className="upcoming-bookings-list">
           {bookings.map((booking) => {
+            const serviceRequest =
+              booking.service_request || booking.serviceRequest;
+            const tourService =
+              serviceRequest?.tour_service || serviceRequest?.tourService;
+            const travelRequest =
+              booking.travel_request || booking.travelRequest;
             const touristName = booking.tourist?.full_name
               || booking.tourist?.user?.name
               || "Tourist";
             const tourName = booking.experience?.title
-              || booking.travel_request?.experience_name
+              || tourService?.title
+              || serviceRequest?.experience_name
+              || travelRequest?.experience_name
               || "Tour booking";
             const status = (booking.status || "pending_payment").replaceAll("_", " ");
 
@@ -131,7 +140,12 @@ const UpcomingBookings = () => {
                   </span>
                 </div>
                 <div className="upcoming-booking-meta">
-                  <span>{booking.travel_request?.destination || "Destination not specified"}</span>
+                  <span>
+                    {tourService?.location
+                      || serviceRequest?.destination
+                      || travelRequest?.destination
+                      || "Destination not specified"}
+                  </span>
                   <strong>
                     ৳{Number(booking.amount || 0).toLocaleString("en-BD")}
                   </strong>
