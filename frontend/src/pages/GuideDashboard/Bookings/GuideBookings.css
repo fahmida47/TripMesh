@@ -169,7 +169,8 @@
     minmax(130px, 1fr)
     minmax(100px, 0.7fr)
     minmax(110px, 0.8fr)
-    minmax(110px, 0.8fr);
+    minmax(110px, 0.8fr)
+    minmax(130px, 0.9fr);
 
   align-items: center;
   gap: 16px;
