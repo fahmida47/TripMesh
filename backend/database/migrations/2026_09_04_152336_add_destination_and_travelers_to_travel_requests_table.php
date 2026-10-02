@@ -10,6 +10,7 @@ return new class extends Migration
     {
         Schema::table('travel_requests', function (Blueprint $table) {
             $table->string('destination')
+                ->nullable()
                 ->after('guide_experience_id');
 
             $table->unsignedInteger('travelers')

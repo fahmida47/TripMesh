@@ -13,7 +13,11 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PayoutController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\AdminController;
+
 use App\Http\Controllers\NotificationController;
+
+use App\Http\Controllers\ChatController;
+
 use App\Http\Middleware\EnsureAdmin;
 
 
@@ -37,6 +41,17 @@ Route::post('/auth/register', [
     AuthController::class,
     'register'
 ]);
+
+Route::middleware('auth:api')->prefix('chat')->group(function () {
+    Route::get('/conversations', [ChatController::class, 'conversations']);
+    Route::post('/conversations', [ChatController::class, 'createConversation']);
+    Route::get('/conversations/{conversationId}/messages', [ChatController::class, 'messages'])
+        ->whereNumber('conversationId');
+    Route::post('/conversations/{conversationId}/messages', [ChatController::class, 'sendMessage'])
+        ->whereNumber('conversationId');
+    Route::patch('/conversations/{conversationId}/read', [ChatController::class, 'markRead'])
+        ->whereNumber('conversationId');
+});
 
 Route::prefix('admin/auth')->group(function () {
     Route::post('/send-code', [AdminController::class, 'sendCode']);
