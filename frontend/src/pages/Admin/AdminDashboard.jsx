@@ -1,6 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 
+
 import { Link, Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
+
+import {
+  Link,
+  Navigate,
+  Outlet,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 
 import {
   LayoutDashboard,
@@ -11,6 +20,9 @@ import {
   Users,
   Star,
   Settings,
+
+  MessageCircle,
+
   LogOut,
   Menu,
   X,
@@ -20,11 +32,15 @@ import logo from "../../assets/logo.png";
 
 import "./admin.css";
 
+
 import { API_BASE_URL } from "../../config.js";
 
 import { clearSession, getStoredUser, getToken } from "../../utils/auth.js";
 
 const API = `${API_BASE_URL}/admin`;
+
+const API = "http://127.0.0.1:8000/api/admin";
+
 
 const links = [
   ["/admin/dashboard", "Overview", LayoutDashboard],
@@ -34,15 +50,30 @@ const links = [
   ["/admin/guides", "Guides", MapPinned],
   ["/admin/tourists", "Tourists", Users],
   ["/admin/reviews", "Review approvals", Star],
+  ["/admin/chat", "Chat", MessageCircle],
   ["/admin/profile", "Profile settings", Settings],
 ];
 
+
 const readUser = getStoredUser;
+
+function readUser() {
+  try {
+    return JSON.parse(localStorage.getItem("user") || "null");
+  } catch {
+    return null;
+  }
+}
+
 
 function authHeaders(json = true) {
   const headers = {
     Accept: "application/json",
+
     Authorization: `Bearer ${getToken() || ""}`,
+
+    Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+
   };
 
   if (json) {
@@ -64,7 +95,13 @@ async function api(path, options = {}) {
   const body = await response.json().catch(() => ({}));
 
   if (!response.ok) {
+
     throw new Error(body.message || "Unable to load admin data.");
+
+    throw new Error(
+      body.message || "Unable to load admin data."
+    );
+
   }
 
   return body;
@@ -73,7 +110,14 @@ async function api(path, options = {}) {
 export function AdminGuard({ children }) {
   const user = readUser();
 
+
   if (localStorage.getItem("isLoggedIn") !== "true" || !getToken()) {
+
+  if (
+    localStorage.getItem("isLoggedIn") !== "true" ||
+    !localStorage.getItem("token")
+  ) {
+
     return <Navigate to="/admin/login" replace />;
   }
 
@@ -84,8 +128,13 @@ export function AdminGuard({ children }) {
           user?.role === "guide"
             ? "/guide-dashboard"
             : user?.role === "tourist"
+
               ? "/tourist-dashboard"
               : "/admin/login"
+
+            ? "/tourist-dashboard"
+            : "/admin/login"
+
         }
         replace
       />
@@ -104,6 +153,7 @@ export default function AdminDashboard() {
 
   const logout = async () => {
     try {
+
       await api("/auth/logout", { method: "POST" });
     } catch {
       // Clear local session even if the token expired.
@@ -111,10 +161,27 @@ export default function AdminDashboard() {
 
     clearSession();
     navigate("/", { replace: true });
+
+      await api("/auth/logout", {
+        method: "POST",
+      });
+    } catch {
+      // Clear session even if token expired
+    }
+
+    ["token", "user", "isLoggedIn"].forEach((key) =>
+      localStorage.removeItem(key)
+    );
+
+    navigate("/", {
+      replace: true,
+    });
+
   };
 
   return (
     <div className="admin-shell">
+
       <aside className={`admin-sidebar ${menuOpen ? "is-open" : ""}`}>
         <Link className="admin-brand" to="/admin/dashboard">
           <span>
@@ -127,11 +194,43 @@ export default function AdminDashboard() {
 
         <div className="admin-nav-label">WORKSPACE</div>
 
+      <aside
+        className={`admin-sidebar ${
+          menuOpen ? "is-open" : ""
+        }`}
+      >
+        <Link
+          className="admin-brand"
+          to="/admin/dashboard"
+        >
+          <span>
+            <img src={logo} alt="" />
+          </span>
+
+          <b>
+            TripMesh
+            <small>ADMIN</small>
+          </b>
+        </Link>
+
+        <div className="admin-nav-label">
+          WORKSPACE
+        </div>
+
+
         <nav>
           {links.map(([to, label, Icon]) => (
             <Link
               key={to}
+
               className={location.pathname === to ? "active" : ""}
+
+              className={
+                location.pathname === to
+                  ? "active"
+                  : ""
+              }
+
               to={to}
               onClick={() => setMenuOpen(false)}
             >
@@ -141,7 +240,14 @@ export default function AdminDashboard() {
           ))}
         </nav>
 
+
         <button className="admin-logout" onClick={logout}>
+
+        <button
+          className="admin-logout"
+          onClick={logout}
+        >
+
           <LogOut size={18} />
           Sign out
         </button>
@@ -159,7 +265,13 @@ export default function AdminDashboard() {
         <header className="admin-topbar">
           <button
             className="admin-menu-toggle"
+
             onClick={() => setMenuOpen(!menuOpen)}
+
+            onClick={() =>
+              setMenuOpen(!menuOpen)
+            }
+
             aria-label="Toggle navigation"
           >
             {menuOpen ? <X /> : <Menu />}
@@ -167,19 +279,44 @@ export default function AdminDashboard() {
 
           <div>
             <span>Admin workspace</span>
+
             <h1>
               {links.find(([to]) => to === location.pathname)?.[1] || "Overview"}
+
+
+            <h1>
+              {links.find(
+                ([to]) =>
+                  to === location.pathname
+              )?.[1] || "Overview"}
+
             </h1>
           </div>
 
           <div className="admin-user">
             <span className="admin-avatar">
+
               {user?.name?.[0]?.toUpperCase() || "A"}
             </span>
 
             <div>
               <b>{user?.name || "Administrator"}</b>
               <small>Administrator</small>
+
+              {user?.name?.[0]?.toUpperCase() ||
+                "A"}
+            </span>
+
+            <div>
+              <b>
+                {user?.name ||
+                  "Administrator"}
+              </b>
+
+              <small>
+                Administrator
+              </small>
+
             </div>
           </div>
         </header>
@@ -195,7 +332,12 @@ export default function AdminDashboard() {
 function useAdminData(path) {
   const [data, setData] = useState(null);
   const [error, setError] = useState("");
+
   const [loading, setLoading] = useState(true);
+
+  const [loading, setLoading] =
+    useState(true);
+
 
   const refresh = useCallback(async () => {
     setLoading(true);
@@ -211,8 +353,10 @@ function useAdminData(path) {
   }, [path]);
 
   useEffect(() => {
+
     // Initial API request when the endpoint changes.
     // eslint-disable-next-line react-hooks/set-state-in-effect
+
     refresh();
   }, [refresh]);
 
@@ -225,6 +369,7 @@ function useAdminData(path) {
   };
 }
 
+
 function PageState({ loading, error, children }) {
   return loading ? (
     <div className="admin-empty">Loading…</div>
@@ -233,11 +378,42 @@ function PageState({ loading, error, children }) {
   ) : (
     children
   );
+
+function PageState({
+  loading,
+  error,
+  children,
+}) {
+  if (loading) {
+    return (
+      <div className="admin-empty">
+        Loading…
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="admin-error">
+        {error}
+      </div>
+    );
+  }
+
+  return children;
+
 }
 
 function Stat({ label, value, tone }) {
   return (
+
     <article className={`admin-stat ${tone || ""}`}>
+
+    <article
+      className={`admin-stat ${
+        tone || ""
+      }`}
+    >
       <span>{label}</span>
       <strong>{value ?? "—"}</strong>
     </article>
@@ -245,7 +421,13 @@ function Stat({ label, value, tone }) {
 }
 
 function currency(value) {
+
   return `৳${Number(value || 0).toLocaleString("en-BD", {
+
+  return `৳${Number(
+    value || 0
+  ).toLocaleString("en-BD", {
+
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })}`;
@@ -255,13 +437,18 @@ function rateFor(amount, slabs = []) {
   const tier = slabs.find(
     (slab) =>
       slab.max_amount === null ||
+
       Number(amount) <= Number(slab.max_amount)
+
+      Number(amount) <=
+        Number(slab.max_amount)
   );
 
   return Number(tier?.rate ?? 10);
 }
 
 function rows(data) {
+
   if (Array.isArray(data)) return data;
 
   const page = data?.data;
@@ -296,16 +483,91 @@ export function AdminOverview() {
         <Stat label="Total tourists" value={stats.tourists} />
         <Stat label="Total guides" value={stats.guides} />
         <Stat label="Total bookings" value={stats.bookings} />
+
+  if (Array.isArray(data)) {
+    return data;
+  }
+
+  const page = data?.data;
+
+  if (Array.isArray(page)) {
+    return page;
+  }
+
+  return Array.isArray(page?.data)
+    ? page.data
+    : [];
+}
+
+export function AdminOverview() {
+  const {
+    data,
+    loading,
+    error,
+  } = useAdminData("/dashboard");
+
+  const stats = data?.stats || {};
+
+  return (
+    <PageState
+      loading={loading}
+      error={error}
+    >
+      <div className="admin-welcome">
+        <div>
+          <span>
+            LIVE PLATFORM SUMMARY
+          </span>
+
+          <h2>
+            Good to see you,{" "}
+            {readUser()?.name?.split(
+              " "
+            )[0] || "Admin"}
+          </h2>
+
+          <p>
+            Track TripMesh activity and
+            review the items waiting for
+            your attention.
+          </p>
+        </div>
+
+        <span className="admin-status-pill">
+          System active
+        </span>
+      </div>
+
+      <div className="admin-stats-grid">
+        <Stat
+          label="Total tourists"
+          value={stats.tourists}
+        />
+
+        <Stat
+          label="Total guides"
+          value={stats.guides}
+        />
+
+        <Stat
+          label="Total bookings"
+          value={stats.bookings}
+        />
+
         <Stat
           label="Pending reviews"
           value={stats.pending_reviews}
           tone="amber"
         />
+
+
+
         <Stat
           label="Pending payments"
           value={stats.pending_payments}
           tone="amber"
         />
+
         <Stat
           label="Payment total"
           value={currency(stats.payment_total)}
@@ -314,6 +576,22 @@ export function AdminOverview() {
         <Stat
           label="TripMesh commission"
           value={currency(stats.commission_total)}
+
+
+        <Stat
+          label="Payment total"
+          value={currency(
+            stats.payment_total
+          )}
+          tone="blue"
+        />
+
+        <Stat
+          label="TripMesh commission"
+          value={currency(
+            stats.commission_total
+          )}
+
           tone="green"
         />
       </div>
@@ -321,10 +599,21 @@ export function AdminOverview() {
       <div className="admin-callout">
         <div>
           <b>Moderation queue</b>
+
           <p>Tourist reviews are hidden from guides until approved.</p>
         </div>
 
         <Link to="/admin/reviews">Review submissions →</Link>
+
+          <p>
+            Tourist reviews are hidden
+            from guides until approved.
+          </p>
+        </div>
+
+        <Link to="/admin/reviews">
+          Review submissions →
+        </Link>
       </div>
     </PageState>
   );
@@ -337,21 +626,57 @@ export function AdminList({ kind }) {
     tourists: "Tourist management",
   };
 
+
   const { data, loading, error } = useAdminData(`/${kind}`);
+
+  const {
+    data,
+    loading,
+    error,
+  } = useAdminData(`/${kind}`);
   const items = rows(data);
 
   const cols =
     kind === "bookings"
+
       ? ["Booking", "Tourist", "Guide", "Dates", "Amount", "Status"]
       : ["Name", "Phone", "Joined", "Role"];
 
   return (
     <PageState loading={loading} error={error}>
+
+      ? [
+          "Booking",
+          "Tourist",
+          "Guide",
+          "Dates",
+          "Amount",
+          "Status",
+        ]
+      : [
+          "Name",
+          "Phone",
+          "Joined",
+          "Role",
+        ];
+
+  return (
+    <PageState
+      loading={loading}
+      error={error}
+    >
       <div className="admin-panel">
         <div className="admin-panel-heading">
           <div>
             <h2>{titles[kind]}</h2>
+
             <p>{data?.total ?? items.length} records</p>
+
+            <p>
+              {data?.total ??
+                items.length}{" "}
+              records
+            </p>
           </div>
         </div>
 
@@ -361,13 +686,19 @@ export function AdminList({ kind }) {
               <thead>
                 <tr>
                   {cols.map((c) => (
+
                     <th key={c}>{c}</th>
+
+                    <th key={c}>
+                      {c}
+                    </th>
                   ))}
                 </tr>
               </thead>
 
               <tbody>
                 {items.map((item) =>
+
                   kind === "bookings" ? (
                     <tr key={item.id}>
                       <td>#{item.id}</td>
@@ -383,6 +714,49 @@ export function AdminList({ kind }) {
                       <td>{currency(item.amount)}</td>
                       <td>
                         <span className="admin-badge">{item.status}</span>
+
+                  kind ===
+                  "bookings" ? (
+                    <tr key={item.id}>
+                      <td>
+                        #{item.id}
+                      </td>
+
+                      <td>
+                        {item.tourist
+                          ?.user?.name ||
+                          "—"}
+                      </td>
+
+                      <td>
+                        {item.guide
+                          ?.company_name ||
+                          item.guide
+                            ?.user?.name ||
+                          "—"}
+                      </td>
+
+                      <td>
+                        {item.from_date ||
+                          "—"}{" "}
+                        –{" "}
+                        {item.to_date ||
+                          "—"}
+                      </td>
+
+                      <td>
+                        {currency(
+                          item.amount
+                        )}
+                      </td>
+
+                      <td>
+                        <span className="admin-badge">
+                          {
+                            item.status
+                          }
+                        </span>
+
                       </td>
                     </tr>
                   ) : (
@@ -393,6 +767,7 @@ export function AdminList({ kind }) {
                           item.company_name ||
                           "—"}
                       </td>
+
                       <td>{item.phone || "—"}</td>
                       <td>
                         {(item.created_at || "").slice(0, 10) || "—"}
@@ -400,6 +775,30 @@ export function AdminList({ kind }) {
                       <td>
                         {item.role ||
                           (kind === "guides" ? "guide" : "tourist")}
+
+
+                      <td>
+                        {item.phone ||
+                          "—"}
+                      </td>
+
+                      <td>
+                        {(
+                          item.created_at ||
+                          ""
+                        ).slice(
+                          0,
+                          10
+                        ) || "—"}
+                      </td>
+
+                      <td>
+                        {item.role ||
+                          (kind ===
+                          "guides"
+                            ? "guide"
+                            : "tourist")}
+
                       </td>
                     </tr>
                   )
@@ -408,7 +807,13 @@ export function AdminList({ kind }) {
             </table>
           </div>
         ) : (
+
           <div className="admin-empty">No {kind} to show yet.</div>
+
+          <div className="admin-empty">
+            No {kind} to show yet.
+          </div>
+
         )}
       </div>
     </PageState>
@@ -416,6 +821,7 @@ export function AdminList({ kind }) {
 }
 
 export function AdminPayments() {
+
   const { data, loading, error, refresh } = useAdminData("/payments");
   const payments = rows(data);
 
@@ -424,6 +830,26 @@ export function AdminPayments() {
       await api(`/payments/${id}`, {
         method: "PATCH",
         body: JSON.stringify({ status }),
+
+  const {
+    data,
+    loading,
+    error,
+    refresh,
+  } = useAdminData("/payments");
+
+  const payments = rows(data);
+
+  const update = async (
+    id,
+    status
+  ) => {
+    try {
+      await api(`/payments/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify({
+          status,
+        }),
       });
 
       await refresh();
@@ -433,6 +859,7 @@ export function AdminPayments() {
   };
 
   return (
+
     <PageState loading={loading} error={error}>
       <div className="admin-panel">
         <div className="admin-panel-heading">
@@ -440,6 +867,22 @@ export function AdminPayments() {
             <h2>Payment history</h2>
             <p>
               Review submitted details and approve or reject payments.
+    <PageState
+      loading={loading}
+      error={error}
+    >
+      <div className="admin-panel">
+        <div className="admin-panel-heading">
+          <div>
+            <h2>
+              Payment history
+            </h2>
+
+            <p>
+              Review submitted details
+              and approve or reject
+              payments.
+
             </p>
           </div>
         </div>
@@ -452,7 +895,13 @@ export function AdminPayments() {
                   <th>Booking</th>
                   <th>Tourist</th>
                   <th>Method</th>
+
                   <th>Account / transaction</th>
+
+                  <th>
+                    Account /
+                    transaction
+                  </th>
                   <th>Submitted</th>
                   <th>Amount</th>
                   <th>Commission</th>
@@ -463,27 +912,66 @@ export function AdminPayments() {
 
               <tbody>
                 {payments.map((p) => {
+
                   const rate = rateFor(
                     p.amount,
                     data?.commission_slabs || []
                   );
 
                   const reviewable = ["pending", "pending_review"].includes(
+
+                  const rate =
+                    rateFor(
+                      p.amount,
+                      data?.commission_slabs ||
+                        []
+                    );
+
+                  const reviewable = [
+                    "pending",
+                    "pending_review",
+                  ].includes(
+
                     p.status
                   );
 
                   return (
                     <tr key={p.id}>
+
                       <td>#{p.booking_id}</td>
                       <td>{p.booking?.tourist?.user?.name || "—"}</td>
                       <td>{p.method || "—"}</td>
                       <td>
                         {p.account_number || "—"}
+
+                      <td>
+                        #
+                        {
+                          p.booking_id
+                        }
+                      </td>
+
+                      <td>
+                        {p.booking
+                          ?.tourist
+                          ?.user?.name ||
+                          "—"}
+                      </td>
+
+                      <td>
+                        {p.method ||
+                          "—"}
+                      </td>
+
+                      <td>
+                        {p.account_number ||
+                          "—"}
                         <small className="table-sub">
                           {p.transaction_reference ||
                             "No transaction reference"}
                         </small>
                       </td>
+
                       <td>
                         {p.payment_date_time
                           ? new Date(p.payment_date_time).toLocaleString()
@@ -502,6 +990,47 @@ export function AdminPayments() {
                               : p.status === "rejected"
                                 ? "bad"
                                 : "pending"
+
+                      <td>
+                        {p.payment_date_time
+                          ? new Date(
+                              p.payment_date_time
+                            ).toLocaleString()
+                          : "—"}
+                      </td>
+
+                      <td>
+                        {currency(
+                          p.amount
+                        )}
+                      </td>
+
+                      <td>
+                        {currency(
+                          (Number(
+                            p.amount ||
+                              0
+                          ) *
+                            rate) /
+                            100
+                        )}
+
+                        <small className="table-sub">
+                          {rate}%
+                        </small>
+                      </td>
+
+                      <td>
+                        <span
+                          className={`admin-badge ${
+                            p.status ===
+                            "paid"
+                              ? "good"
+                              : p.status ===
+                                "rejected"
+                              ? "bad"
+                              : "pending"
+
                           }`}
                         >
                           {p.status}
@@ -511,16 +1040,40 @@ export function AdminPayments() {
                         {reviewable ? (
                           <>
                             <button
+
                               disabled={!p.method}
                               onClick={() => update(p.id, "paid")}
+
+                              disabled={
+                                !p.method
+                              }
+                              onClick={() =>
+                                update(
+                                  p.id,
+                                  "paid"
+                                )
+                              }
+
                             >
                               Approve
                             </button>
 
                             <button
                               className="reject"
+
                               disabled={!p.method}
                               onClick={() => update(p.id, "rejected")}
+
+                              disabled={
+                                !p.method
+                              }
+                              onClick={() =>
+                                update(
+                                  p.id,
+                                  "rejected"
+                                )
+                              }
+
                             >
                               Reject
                             </button>
@@ -528,10 +1081,21 @@ export function AdminPayments() {
                         ) : (
                           <span
                             className={`admin-badge ${
+
                               p.status === "paid" ? "good" : "bad"
                             }`}
                           >
                             {p.status === "paid"
+
+                              p.status ===
+                              "paid"
+                                ? "good"
+                                : "bad"
+                            }`}
+                          >
+                            {p.status ===
+                            "paid"
+
                               ? "Approved"
                               : "Rejected"}
                           </span>
@@ -544,7 +1108,12 @@ export function AdminPayments() {
             </table>
           </div>
         ) : (
+
           <div className="admin-empty">No payment records yet.</div>
+
+          <div className="admin-empty">
+            No payment records yet.
+          </div>
         )}
       </div>
     </PageState>
@@ -552,6 +1121,7 @@ export function AdminPayments() {
 }
 
 export function AdminCommissions() {
+
   const { data, loading, error, refresh } =
     useAdminData("/commissions");
 
@@ -573,15 +1143,78 @@ export function AdminCommissions() {
         data.commission_slabs.map((slab) => ({
           ...slab,
         }))
+
+  const {
+    data,
+    loading,
+    error,
+    refresh,
+  } = useAdminData(
+    "/commissions"
+  );
+
+  const items = rows(data);
+
+  const [slabs, setSlabs] =
+    useState([]);
+
+  const [notice, setNotice] =
+    useState("");
+
+  const [
+    releaseNotice,
+    setReleaseNotice,
+  ] = useState("");
+
+  const [
+    selectedPayout,
+    setSelectedPayout,
+  ] = useState(null);
+
+  const [
+    transferConfirmed,
+    setTransferConfirmed,
+  ] = useState(false);
+
+  const [
+    releasing,
+    setReleasing,
+  ] = useState(false);
+
+  const [
+    releaseError,
+    setReleaseError,
+  ] = useState("");
+
+  useEffect(() => {
+    if (
+      Array.isArray(
+        data?.commission_slabs
+      )
+    ) {
+      setSlabs(
+        data.commission_slabs.map(
+          (slab) => ({
+            ...slab,
+          })
+        )
+
       );
     }
   }, [data]);
 
+
   const saveSlabs = async (event) => {
+
+  const saveSlabs = async (
+    event
+  ) => {
+
     event.preventDefault();
     setNotice("");
 
     try {
+
       const payload = slabs.map((slab) => ({
         max_amount: slab.max_amount === "" ? null : slab.max_amount,
         rate: Number(slab.rate),
@@ -593,6 +1226,34 @@ export function AdminCommissions() {
       });
 
       setNotice(result.message);
+
+      const payload = slabs.map(
+        (slab) => ({
+          max_amount:
+            slab.max_amount === ""
+              ? null
+              : slab.max_amount,
+          rate: Number(
+            slab.rate
+          ),
+        })
+      );
+
+      const result = await api(
+        "/commission",
+        {
+          method: "PUT",
+          body: JSON.stringify({
+            slabs: payload,
+          }),
+        }
+      );
+
+      setNotice(
+        result.message
+      );
+
+
       await refresh();
     } catch (e) {
       setNotice(e.message);
@@ -603,6 +1264,7 @@ export function AdminCommissions() {
     setSlabs((current) => {
       if (!current.length) {
         return [
+
           { max_amount: 5000, rate: 12 },
           { max_amount: null, rate: 8 },
         ];
@@ -614,6 +1276,37 @@ export function AdminCommissions() {
       if (last.max_amount === null) {
         last.max_amount =
           Number(next[next.length - 2]?.max_amount || 0) + 15000;
+
+          {
+            max_amount: 5000,
+            rate: 12,
+          },
+          {
+            max_amount: null,
+            rate: 8,
+          },
+        ];
+      }
+
+      const next = current.map(
+        (slab) => ({
+          ...slab,
+        })
+      );
+
+      const last =
+        next[next.length - 1];
+
+      if (
+        last.max_amount === null
+      ) {
+        last.max_amount =
+          Number(
+            next[
+              next.length - 2
+            ]?.max_amount || 0
+          ) + 15000;
+
       }
 
       next.push({
@@ -624,6 +1317,7 @@ export function AdminCommissions() {
       return next;
     });
 
+
   const removeSlab = (index) =>
     setSlabs((current) => {
       const next = current.filter(
@@ -632,10 +1326,31 @@ export function AdminCommissions() {
 
       if (index === current.length - 1 && next.length) {
         next[next.length - 1].max_amount = null;
+
+  const removeSlab = (
+    index
+  ) =>
+    setSlabs((current) => {
+      const next =
+        current.filter(
+          (_, itemIndex) =>
+            itemIndex !== index
+        );
+
+      if (
+        index ===
+          current.length - 1 &&
+        next.length
+      ) {
+        next[
+          next.length - 1
+        ].max_amount = null;
+
       }
 
       return next;
     });
+
 
   const updateSlab = (index, key, value) =>
     setSlabs((current) =>
@@ -643,11 +1358,34 @@ export function AdminCommissions() {
         itemIndex === index
           ? { ...slab, [key]: value }
           : slab
+
+  const updateSlab = (
+    index,
+    key,
+    value
+  ) =>
+    setSlabs((current) =>
+      current.map(
+        (slab, itemIndex) =>
+          itemIndex === index
+            ? {
+                ...slab,
+                [key]: value,
+              }
+            : slab
       )
     );
 
   const release = async () => {
+
     if (!selectedPayout || !transferConfirmed || releasing) return;
+    if (
+      !selectedPayout ||
+      !transferConfirmed ||
+      releasing
+    ) {
+      return;
+    }
 
     setReleasing(true);
     setReleaseError("");
@@ -658,6 +1396,7 @@ export function AdminCommissions() {
         `/payouts/${selectedPayout.id}/release`,
         {
           method: "POST",
+
           body: JSON.stringify({}),
         }
       );
@@ -669,26 +1408,65 @@ export function AdminCommissions() {
       await refresh();
     } catch (e) {
       setReleaseError(e.message);
+          body: JSON.stringify(
+            {}
+          ),
+        }
+      );
+
+      setReleaseNotice(
+        result.message
+      );
+
+      setSelectedPayout(null);
+      setTransferConfirmed(
+        false
+      );
+
+      await refresh();
+    } catch (e) {
+      setReleaseError(
+        e.message
+      );
     } finally {
       setReleasing(false);
     }
   };
 
   return (
+
     <PageState loading={loading} error={error}>
+    <PageState
+      loading={loading}
+      error={error}
+    >
       <form
         className="admin-commission-settings"
         onSubmit={saveSlabs}
       >
         <div className="admin-tier-intro">
+
           <h2>Commission by booking price</h2>
           <p>
             Each approved payment uses the rate for its booking amount.
             Past payouts keep the rate recorded when they were approved.
+          <h2>
+            Commission by booking
+            price
+          </h2>
+
+          <p>
+            Each approved payment
+            uses the rate for its
+            booking amount. Past
+            payouts keep the rate
+            recorded when they were
+            approved.
           </p>
         </div>
 
         <div className="admin-tier-list">
+
           {slabs.map((slab, index) => (
             <div className="admin-tier-row" key={index}>
               <span className="admin-tier-index">{index + 1}</span>
@@ -747,6 +1525,101 @@ export function AdminCommissions() {
               )}
             </div>
           ))}
+
+          {slabs.map(
+            (slab, index) => (
+              <div
+                className="admin-tier-row"
+                key={index}
+              >
+                <span className="admin-tier-index">
+                  {index + 1}
+                </span>
+
+                <label>
+                  {index ===
+                  slabs.length - 1
+                    ? "Price range"
+                    : "Up to (৳)"}
+
+                  <input
+                    type="number"
+                    min="1"
+                    step="0.01"
+                    required={
+                      index !==
+                      slabs.length -
+                        1
+                    }
+                    disabled={
+                      index ===
+                      slabs.length -
+                        1
+                    }
+                    placeholder="No upper limit"
+                    value={
+                      index ===
+                      slabs.length -
+                        1
+                        ? ""
+                        : slab.max_amount ??
+                          ""
+                    }
+                    onChange={(
+                      e
+                    ) =>
+                      updateSlab(
+                        index,
+                        "max_amount",
+                        e.target
+                          .value
+                      )
+                    }
+                  />
+                </label>
+
+                <label>
+                  Commission (%)
+
+                  <input
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="0.01"
+                    required
+                    value={
+                      slab.rate
+                    }
+                    onChange={(
+                      e
+                    ) =>
+                      updateSlab(
+                        index,
+                        "rate",
+                        e.target
+                          .value
+                      )
+                    }
+                  />
+                </label>
+
+                {slabs.length >
+                  1 && (
+                  <button
+                    className="admin-tier-remove"
+                    type="button"
+                    onClick={() =>
+                      removeSlab(
+                        index
+                      )
+                    }
+                  >
+                    Remove
+                  </button>
+                )}
+              </div>
+            )
+          )}
         </div>
 
         <div className="admin-tier-actions">
@@ -758,27 +1631,54 @@ export function AdminCommissions() {
             + Add price tier
           </button>
 
+
           <button type="submit">Save commission tiers</button>
         </div>
 
         {notice && (
           <span className="admin-tier-notice">{notice}</span>
+
+          <button type="submit">
+            Save commission tiers
+          </button>
+        </div>
+
+        {notice && (
+          <span className="admin-tier-notice">
+            {notice}
+          </span>
+
         )}
       </form>
 
       <div className="admin-panel">
         <div className="admin-panel-heading">
           <div>
+
             <h2>Commission and guide payouts</h2>
             <p>
               Transfer the guide net amount to the payout bKash number,
               then mark it paid.
+            <h2>
+              Commission and guide
+              payouts
+            </h2>
+
+            <p>
+              Transfer the guide net
+              amount to the payout
+              bKash number, then mark
+              it paid.
             </p>
           </div>
         </div>
 
         {releaseNotice && (
+
           <div className="admin-notice">{releaseNotice}</div>
+          <div className="admin-notice">
+            {releaseNotice}
+          </div>
         )}
 
         {items.length ? (
@@ -786,18 +1686,39 @@ export function AdminCommissions() {
             <table>
               <thead>
                 <tr>
+          
                   <th>Payment</th>
                   <th>Guide company / bKash</th>
                   <th>Gross</th>
                   <th>Rate</th>
                   <th>Commission</th>
                   <th>Guide net</th>
+
+                  <th>
+                    Payment
+                  </th>
+
+                  <th>
+                    Guide company /
+                    bKash
+                  </th>
+
+                  <th>Gross</th>
+                  <th>Rate</th>
+                  <th>
+                    Commission
+                  </th>
+                  <th>
+                    Guide net
+                  </th>
+
                   <th>Status</th>
                   <th>Action</th>
                 </tr>
               </thead>
 
               <tbody>
+
                 {items.map((item) => (
                   <tr key={item.id}>
                     <td>#{item.payment_id}</td>
@@ -856,12 +1777,124 @@ export function AdminCommissions() {
                     </td>
                   </tr>
                 ))}
+
+                {items.map(
+                  (item) => (
+                    <tr
+                      key={
+                        item.id
+                      }
+                    >
+                      <td>
+                        #
+                        {
+                          item.payment_id
+                        }
+                      </td>
+
+                      <td>
+                        {item.guide
+                          ?.company_name ||
+                          item.guide
+                            ?.user
+                            ?.name ||
+                          "—"}
+
+                        <small className="table-sub">
+                          bKash:{" "}
+                          {item.guide
+                            ?.payout_bkash_number ||
+                            "Not set"}
+                        </small>
+                      </td>
+
+                      <td>
+                        {currency(
+                          item.gross_amount
+                        )}
+                      </td>
+
+                      <td>
+                        {
+                          item.commission_rate
+                        }
+                        %
+                      </td>
+
+                      <td>
+                        {currency(
+                          item.commission_amount
+                        )}
+                      </td>
+
+                      <td>
+                        {currency(
+                          item.net_amount
+                        )}
+                      </td>
+
+                      <td>
+                        <span
+                          className={`admin-badge ${
+                            item.status ===
+                            "paid"
+                              ? "good"
+                              : "pending"
+                          }`}
+                        >
+                          {
+                            item.status
+                          }
+                        </span>
+                      </td>
+
+                      <td>
+                        {item.status ===
+                        "pending" ? (
+                          <button
+                            className="admin-payout-release"
+                            type="button"
+                            onClick={() => {
+                              setSelectedPayout(
+                                item
+                              );
+
+                              setTransferConfirmed(
+                                false
+                              );
+
+                              setReleaseError(
+                                ""
+                              );
+                            }}
+                          >
+                            Mark paid
+                          </button>
+                        ) : (
+                          <span>
+                            {item.paid_at
+                              ? new Date(
+                                  item.paid_at
+                                ).toLocaleDateString()
+                              : "—"}
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  )
+                )}
+
               </tbody>
             </table>
           </div>
         ) : (
           <div className="admin-empty">
+
             Guide payout records appear after payment approval.
+
+            Guide payout records
+            appear after payment
+            approval.
           </div>
         )}
       </div>
@@ -870,12 +1903,26 @@ export function AdminCommissions() {
         <div
           className="admin-modal-backdrop"
           role="presentation"
+
           onMouseDown={(event) => {
             if (
               event.target === event.currentTarget &&
               !releasing
             ) {
               setSelectedPayout(null);
+
+          onMouseDown={(
+            event
+          ) => {
+            if (
+              event.target ===
+                event.currentTarget &&
+              !releasing
+            ) {
+              setSelectedPayout(
+                null
+              );
+
             }
           }}
         >
@@ -886,13 +1933,29 @@ export function AdminCommissions() {
             aria-labelledby="payout-modal-title"
           >
             <div className="admin-payout-modal-head">
+
               <span className="admin-modal-icon">৳</span>
+
+              <span className="admin-modal-icon">
+                ৳
+              </span>
 
               <button
                 type="button"
                 aria-label="Close dialog"
+
                 onClick={() => setSelectedPayout(null)}
                 disabled={releasing}
+
+                onClick={() =>
+                  setSelectedPayout(
+                    null
+                  )
+                }
+                disabled={
+                  releasing
+                }
+
               >
                 ×
               </button>
@@ -903,6 +1966,7 @@ export function AdminCommissions() {
             </h2>
 
             <p>
+
               Send this amount to the guide's payout bKash number
               before confirming.
             </p>
@@ -928,33 +1992,125 @@ export function AdminCommissions() {
               <b>
                 {currency(selectedPayout.commission_amount)} (
                 {selectedPayout.commission_rate}%)
+
+              Send this amount to the
+              guide's payout bKash
+              number before
+              confirming.
+            </p>
+
+            <div className="admin-payout-summary">
+              <span>
+                Guide company
+              </span>
+
+              <b>
+                {selectedPayout
+                  .guide
+                  ?.company_name ||
+                  selectedPayout
+                    .guide?.user
+                    ?.name ||
+                  "Guide company"}
+              </b>
+
+              <span>
+                Guide bKash number
+              </span>
+
+              <b>
+                {selectedPayout
+                  .guide
+                  ?.payout_bkash_number ||
+                  "Not set"}
+              </b>
+
+              <span>
+                Amount to transfer
+              </span>
+
+              <b>
+                {currency(
+                  selectedPayout.net_amount
+                )}
+              </b>
+
+              <span>
+                TripMesh commission
+              </span>
+
+              <b>
+                {currency(
+                  selectedPayout.commission_amount
+                )}{" "}
+                (
+                {
+                  selectedPayout.commission_rate
+                }
+                %)
+
               </b>
             </div>
 
             <label className="admin-transfer-confirm">
               <input
                 type="checkbox"
+
                 checked={transferConfirmed}
                 onChange={(event) =>
                   setTransferConfirmed(event.target.checked)
+
+                checked={
+                  transferConfirmed
+                }
+                onChange={(
+                  event
+                ) =>
+                  setTransferConfirmed(
+                    event.target
+                      .checked
+                  )
+
                 }
               />
 
               <span>
+
                 I have sent this amount to the guide company.
+
+                I have sent this
+                amount to the guide
+                company.
+
               </span>
             </label>
 
             {releaseError && (
+
               <div className="admin-error">{releaseError}</div>
+
+              <div className="admin-error">
+                {releaseError}
+              </div>
+
             )}
 
             <div className="admin-payout-modal-actions">
               <button
                 type="button"
                 className="admin-modal-cancel"
+
                 onClick={() => setSelectedPayout(null)}
                 disabled={releasing}
+
+                onClick={() =>
+                  setSelectedPayout(
+                    null
+                  )
+                }
+                disabled={
+                  releasing
+                }
               >
                 Cancel
               </button>
@@ -962,6 +2118,7 @@ export function AdminCommissions() {
               <button
                 type="button"
                 className="admin-payout-release"
+
                 onClick={release}
                 disabled={
                   !transferConfirmed ||
@@ -970,6 +2127,22 @@ export function AdminCommissions() {
                 }
               >
                 {releasing ? "Saving…" : "Confirm payout"}
+
+                onClick={
+                  release
+                }
+                disabled={
+                  !transferConfirmed ||
+                  !selectedPayout
+                    .guide
+                    ?.payout_bkash_number ||
+                  releasing
+                }
+              >
+                {releasing
+                  ? "Saving…"
+                  : "Confirm payout"}
+
               </button>
             </div>
           </section>
@@ -980,6 +2153,7 @@ export function AdminCommissions() {
 }
 
 export function AdminReviews() {
+
   const { data, loading, error, refresh } =
     useAdminData("/reviews");
 
@@ -991,6 +2165,29 @@ export function AdminReviews() {
         method: "PATCH",
         body: JSON.stringify({ status }),
       });
+  const {
+    data,
+    loading,
+    error,
+    refresh,
+  } = useAdminData("/reviews");
+
+  const reviews = rows(data);
+
+  const update = async (
+    id,
+    status
+  ) => {
+    try {
+      await api(
+        `/reviews/${id}`,
+        {
+          method: "PATCH",
+          body: JSON.stringify({
+            status,
+          }),
+        }
+      );
 
       await refresh();
     } catch (e) {
@@ -999,6 +2196,7 @@ export function AdminReviews() {
   };
 
   return (
+
     <PageState loading={loading} error={error}>
       <div className="admin-review-list">
         {reviews.length ? (
@@ -1061,6 +2259,113 @@ export function AdminReviews() {
         ) : (
           <div className="admin-empty">
             No reviews have been submitted.
+
+    <PageState
+      loading={loading}
+      error={error}
+    >
+      <div className="admin-review-list">
+        {reviews.length ? (
+          reviews.map(
+            (review) => (
+              <article
+                className="admin-review-card"
+                key={
+                  review.id
+                }
+              >
+                <div className="admin-review-head">
+                  <div>
+                    <span className="admin-badge pending">
+                      {
+                        review.status
+                      }
+                    </span>
+
+                    <h3>
+                      {review.tourist
+                        ?.user
+                        ?.name ||
+                        review.tourist
+                          ?.full_name ||
+                        "Tourist"}{" "}
+                      <span>
+                        →
+                      </span>{" "}
+                      {review.guide
+                        ?.company_name ||
+                        review.guide
+                          ?.user
+                          ?.name ||
+                        "Guide"}
+                    </h3>
+                  </div>
+
+                  <strong>
+                    ★{" "}
+                    {
+                      review.rating
+                    }
+                    /5
+                  </strong>
+                </div>
+
+                <p>
+                  {review.review}
+                </p>
+
+                <footer>
+                  <span>
+                    Booking #
+                    {
+                      review.booking_id
+                    }{" "}
+                    ·{" "}
+                    {(
+                      review.submitted_at ||
+                      ""
+                    ).slice(
+                      0,
+                      10
+                    )}
+                  </span>
+
+                  {review.status ===
+                    "pending" && (
+                    <div className="admin-actions">
+                      <button
+                        onClick={() =>
+                          update(
+                            review.id,
+                            "approved"
+                          )
+                        }
+                      >
+                        Approve
+                      </button>
+
+                      <button
+                        className="reject"
+                        onClick={() =>
+                          update(
+                            review.id,
+                            "rejected"
+                          )
+                        }
+                      >
+                        Reject
+                      </button>
+                    </div>
+                  )}
+                </footer>
+              </article>
+            )
+          )
+        ) : (
+          <div className="admin-empty">
+            No reviews have been
+            submitted.
+
           </div>
         )}
       </div>
@@ -1069,6 +2374,7 @@ export function AdminReviews() {
 }
 
 export function AdminProfile() {
+
   const { data, loading, error, refresh } =
     useAdminData("/profile");
 
@@ -1092,6 +2398,41 @@ export function AdminProfile() {
       setForm({
         name: data.user.name || "",
         phone: data.user.phone || "",
+
+  const {
+    data,
+    loading,
+    error,
+    refresh,
+  } = useAdminData("/profile");
+
+  const [form, setForm] =
+    useState({
+      name: "",
+      phone: "",
+    });
+
+  const [admin, setAdmin] =
+    useState({
+      name: "",
+      phone: "",
+    });
+
+  const [notice, setNotice] =
+    useState("");
+
+  const [failure, setFailure] =
+    useState("");
+
+  useEffect(() => {
+    if (data?.user) {
+      setForm({
+        name:
+          data.user.name || "",
+        phone:
+          data.user.phone ||
+          "",
+
       });
     }
   }, [data]);
@@ -1102,6 +2443,7 @@ export function AdminProfile() {
     setFailure("");
 
     try {
+
       const result = await api("/profile", {
         method: "PUT",
         body: JSON.stringify(form),
@@ -1112,24 +2454,69 @@ export function AdminProfile() {
       localStorage.setItem(
         "user",
         JSON.stringify(result.user)
+
+      const result = await api(
+        "/profile",
+        {
+          method: "PUT",
+          body: JSON.stringify(
+            form
+          ),
+        }
+      );
+
+      setNotice(
+        result.message
+      );
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify(
+          result.user
+        )
+
       );
 
       await refresh();
     } catch (err) {
+
       setFailure(err.message);
     }
   };
 
   const addAdmin = async (e) => {
+
+      setFailure(
+        err.message
+      );
+    }
+  };
+
+  const addAdmin = async (
+    e
+  ) => {
+
     e.preventDefault();
     setNotice("");
     setFailure("");
 
     try {
+
       const result = await api("/admins", {
         method: "POST",
         body: JSON.stringify(admin),
       });
+
+      const result = await api(
+        "/admins",
+        {
+          method: "POST",
+          body: JSON.stringify(
+            admin
+          ),
+        }
+      );
+
 
       setNotice(
         `${result.message} They can now use Admin sign in.`
@@ -1140,22 +2527,46 @@ export function AdminProfile() {
         phone: "",
       });
     } catch (err) {
+
       setFailure(err.message);
+
+      setFailure(
+        err.message
+      );
+
     }
   };
 
   return (
+
     <PageState loading={loading} error={error}>
+
+    <PageState
+      loading={loading}
+      error={error}
+    >
+
       <div className="admin-profile-grid">
         <form
           className="admin-panel admin-form"
           onSubmit={save}
         >
+
           <h2>Profile settings</h2>
 
           <p>
             Update the name and phone number on your admin
             account.
+
+          <h2>
+            Profile settings
+          </h2>
+
+          <p>
+            Update the name and
+            phone number on your
+            admin account.
+
           </p>
 
           <label>
@@ -1163,11 +2574,23 @@ export function AdminProfile() {
             <input
               required
               maxLength={255}
+
               value={form.name}
               onChange={(e) =>
                 setForm({
                   ...form,
                   name: e.target.value,
+
+              value={
+                form.name
+              }
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  name:
+                    e.target
+                      .value,
+
                 })
               }
             />
@@ -1179,28 +2602,58 @@ export function AdminProfile() {
               required
               minLength={10}
               maxLength={20}
+
               value={form.phone}
               onChange={(e) =>
                 setForm({
                   ...form,
                   phone: e.target.value,
+
+              value={
+                form.phone
+              }
+              onChange={(e) =>
+                setForm({
+                  ...form,
+                  phone:
+                    e.target
+                      .value,
+
                 })
               }
             />
           </label>
 
+
           <button>Save profile</button>
+
+          <button>
+            Save profile
+          </button>
         </form>
 
         <form
           className="admin-panel admin-form"
           onSubmit={addAdmin}
         >
+
           <h2>Add administrator</h2>
 
           <p>
             New administrators can sign in with phone OTP. This
             action is recorded through the protected admin API.
+
+          <h2>
+            Add administrator
+          </h2>
+
+          <p>
+            New administrators can
+            sign in with phone OTP.
+            This action is recorded
+            through the protected
+            admin API.
+
           </p>
 
           <label>
@@ -1208,11 +2661,23 @@ export function AdminProfile() {
             <input
               required
               maxLength={255}
+
               value={admin.name}
               onChange={(e) =>
                 setAdmin({
                   ...admin,
                   name: e.target.value,
+
+              value={
+                admin.name
+              }
+              onChange={(e) =>
+                setAdmin({
+                  ...admin,
+                  name:
+                    e.target
+                      .value,
+
                 })
               }
             />
@@ -1224,15 +2689,28 @@ export function AdminProfile() {
               required
               minLength={10}
               maxLength={20}
+
               value={admin.phone}
               onChange={(e) =>
                 setAdmin({
                   ...admin,
                   phone: e.target.value,
+
+              value={
+                admin.phone
+              }
+              onChange={(e) =>
+                setAdmin({
+                  ...admin,
+                  phone:
+                    e.target
+                      .value,
+
                 })
               }
             />
           </label>
+
 
           <button>Add admin account</button>
         </form>
@@ -1245,6 +2723,25 @@ export function AdminProfile() {
           }
         >
           {failure || notice}
+
+          <button>
+            Add admin account
+          </button>
+        </form>
+      </div>
+
+      {(notice ||
+        failure) && (
+        <div
+          className={
+            failure
+              ? "admin-error"
+              : "admin-notice"
+          }
+        >
+          {failure ||
+            notice}
+
         </div>
       )}
     </PageState>

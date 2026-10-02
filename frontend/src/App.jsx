@@ -320,6 +320,14 @@ function App() {
             element={<AdminReviews />}
           />
 
+          {/* ADMIN CHAT */}
+          <Route
+            path="chat"
+            element={
+              <ChatBox userType="admin" />
+            }
+          />
+
           <Route
             path="profile"
             element={<AdminProfile />}
@@ -338,55 +346,46 @@ function App() {
             </ProtectedDashboard>
           }
         >
-          {/* /guide-dashboard */}
           <Route
             index
             element={<GuideDashboard />}
           />
 
-          {/* /guide-dashboard/profile */}
           <Route
             path="profile"
             element={<GuideProfile />}
           />
 
-          {/* /guide-dashboard/tour-services */}
           <Route
             path="tour-services"
             element={<GuideTourServices />}
           />
 
-          {/* /guide-dashboard/tour-services/add */}
           <Route
             path="tour-services/add"
             element={<AddTourService />}
           />
 
-          {/* /guide-dashboard/requests */}
           <Route
             path="requests"
             element={<GuideRequests />}
           />
 
-          {/* /guide-dashboard/bookings */}
           <Route
             path="bookings"
             element={<GuideBookings />}
           />
 
-          {/* /guide-dashboard/payouts */}
           <Route
             path="payouts"
             element={<GuidePayouts />}
           />
 
-          {/* /guide-dashboard/reviews */}
           <Route
             path="reviews"
             element={<ReviewsRatings />}
           />
 
-          {/* /guide-dashboard/chat */}
           <Route
             path="chat"
             element={
