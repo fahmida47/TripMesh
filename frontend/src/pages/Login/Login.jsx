@@ -486,9 +486,6 @@ const Login = () => {
               Don't have an account?
               <Link to="/signup">Sign Up</Link>
             </p>
-            <p className="footer-text">
-              Administrator? <Link to="/admin/login">Admin sign in</Link>
-            </p>
           </div>
         </div>
       </div>
