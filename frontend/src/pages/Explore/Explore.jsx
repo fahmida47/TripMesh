@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import { MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { getExperienceAsset } from "../../experienceAssets";
+import GuideLocationMap from "../../components/GuideLocationMap";
 import "./Explore.css";
 import ExploreHero from "./ExploreHero";
 import ExploreSearch from "./ExploreSearch";
@@ -182,6 +184,15 @@ function normalizeGuide(guide) {
     max_price: guide.max_price ?? guide.min_price ?? guide.price ?? 0,
     price: guide.min_price ?? guide.price ?? 0,
   };
+}
+
+function hasCoordinates(guide) {
+  return guide.latitude !== null
+    && guide.latitude !== undefined
+    && guide.longitude !== null
+    && guide.longitude !== undefined
+    && Number.isFinite(Number(guide.latitude))
+    && Number.isFinite(Number(guide.longitude));
 }
 
 function Explore({ embedded = false }) {
@@ -634,6 +645,18 @@ function Explore({ embedded = false }) {
               >
                 ☷
               </button>
+
+              <button
+                type="button"
+                className={`explore-map-toggle${viewMode === "map" ? " active" : ""}`}
+                onClick={() => setViewMode("map")}
+                aria-label="Map view"
+                aria-pressed={viewMode === "map"}
+                title="Map view"
+              >
+                <MapPin size={17} aria-hidden="true" />
+                <span>Map</span>
+              </button>
             </div>
           </div>
 
@@ -658,22 +681,36 @@ function Explore({ embedded = false }) {
           {!loading &&
             !error &&
             (guides.length > 0 ? (
-              <div
-                className={
-                  viewMode === "list"
-                    ? "explore-guide-grid explore-guide-list"
-                    : "explore-guide-grid"
-                }
-              >
-                {guides.map((guide) => (
-                  <GuideCard
-                    key={guide.id}
-                    guide={guide}
-                    onSendRequest={handleOpenRequest}
-                    onViewDetails={setDetailsGuide}
+              viewMode === "map" ? (
+                <div className="explore-map-view">
+                  <GuideLocationMap
+                    markers={guides.filter(hasCoordinates)}
+                    onMarkerSelect={setDetailsGuide}
                   />
-                ))}
-              </div>
+                  {!guides.some(hasCoordinates) && (
+                    <p className="explore-map-empty">
+                      These guide profiles have not selected a map location yet.
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <div
+                  className={
+                    viewMode === "list"
+                      ? "explore-guide-grid explore-guide-list"
+                      : "explore-guide-grid"
+                  }
+                >
+                  {guides.map((guide) => (
+                    <GuideCard
+                      key={guide.id}
+                      guide={guide}
+                      onSendRequest={handleOpenRequest}
+                      onViewDetails={setDetailsGuide}
+                    />
+                  ))}
+                </div>
+              )
             ) : (
               <div className="explore-no-results">
                 <h3>No guide companies found</h3>
