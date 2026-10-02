@@ -1,10 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getExperienceAsset } from "../../../experienceAssets";
+import GuideLocationMap from "../../../components/GuideLocationMap";
 import "./GuideProfile.css";
 
 const API_BASE_URL = "http://127.0.0.1:8000/api";
 const STORAGE_URL = "http://127.0.0.1:8000/storage";
 const MAX_UPLOAD_SIZE = 5 * 1024 * 1024;
+
+function formatReverseGeocodedAddress(address = {}) {
+  const street = [address.house_number, address.road].filter(Boolean).join(" ");
+  const locality = address.neighbourhood || address.suburb || address.quarter;
+  const city = address.city || address.town || address.village || address.county;
+
+  return [...new Set([street, locality, city, address.state, address.country]
+    .filter(Boolean))]
+    .join(", ");
+}
 
 const compressImage = (file) =>
   new Promise((resolve, reject) => {
@@ -68,6 +79,8 @@ function GuideProfile() {
     payoutBkashNumber: "",
     email: "",
     address: "",
+    latitude: "",
+    longitude: "",
     price: "",
     minPrice: "",
     maxPrice: "",
@@ -80,6 +93,9 @@ function GuideProfile() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
+  const [locationLookupMessage, setLocationLookupMessage] = useState("");
+  const locationLookupController = useRef(null);
+  const locationLookupId = useRef(0);
 
   const tourTypeOptions = [
     "Single Tour",
@@ -90,6 +106,8 @@ function GuideProfile() {
   useEffect(() => {
     loadProfile();
   }, []);
+
+  useEffect(() => () => locationLookupController.current?.abort(), []);
 
   const loadProfile = async () => {
     try {
@@ -135,6 +153,8 @@ function GuideProfile() {
         payoutBkashNumber: savedProfile.payout_bkash_number || "",
         email: savedProfile.email || "",
         address: savedProfile.address || "",
+        latitude: savedProfile.latitude ?? "",
+        longitude: savedProfile.longitude ?? "",
         price: savedProfile.price ?? "",
         minPrice: savedProfile.min_price ?? savedProfile.price ?? "",
         maxPrice: savedProfile.max_price ?? savedProfile.price ?? "",
@@ -180,9 +200,82 @@ function GuideProfile() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
+    if (name === "address") {
+      locationLookupId.current += 1;
+      locationLookupController.current?.abort();
+      setLocationLookupMessage("");
+    }
+
     setProfile((prev) => ({
       ...prev,
       [name]: value,
+    }));
+  };
+
+  const handleLocationSelect = async (latitude, longitude) => {
+    locationLookupId.current += 1;
+    const lookupId = locationLookupId.current;
+    locationLookupController.current?.abort();
+
+    const controller = new AbortController();
+    locationLookupController.current = controller;
+    setProfile((current) => ({ ...current, latitude, longitude }));
+    setLocationLookupMessage("Finding address...");
+
+    try {
+      const params = new URLSearchParams({
+        format: "jsonv2",
+        lat: latitude,
+        lon: longitude,
+        zoom: "18",
+        addressdetails: "1",
+      });
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/reverse?${params.toString()}`,
+        {
+          headers: { Accept: "application/json" },
+          signal: controller.signal,
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error("Address lookup failed.");
+      }
+
+      const result = await response.json();
+      const address = formatReverseGeocodedAddress(result.address)
+        || result.display_name
+        || "";
+
+      if (!address) {
+        throw new Error("No address was found for this point.");
+      }
+
+      if (lookupId === locationLookupId.current) {
+        setProfile((current) => ({
+          ...current,
+          address: address.slice(0, 500),
+          latitude,
+          longitude,
+        }));
+        setLocationLookupMessage("Address updated from the selected map point.");
+      }
+    } catch (error) {
+      if (error.name !== "AbortError" && lookupId === locationLookupId.current) {
+        setLocationLookupMessage("Address lookup failed. You can enter the address manually.");
+      }
+    }
+  };
+
+  const handleClearLocation = () => {
+    locationLookupId.current += 1;
+    locationLookupController.current?.abort();
+    locationLookupController.current = null;
+    setLocationLookupMessage("");
+    setProfile((current) => ({
+      ...current,
+      latitude: "",
+      longitude: "",
     }));
   };
 
@@ -238,6 +331,7 @@ function GuideProfile() {
           ? {
               ...experience,
               [field]: value,
+              isDirty: true,
             }
           : experience
       )
@@ -254,6 +348,7 @@ function GuideProfile() {
           experience.id === id
             ? {
                 ...experience,
+              isDirty: true,
                 image: {
                   file: compressedFile,
                   preview: URL.createObjectURL(compressedFile),
@@ -329,6 +424,57 @@ function GuideProfile() {
     } catch (error) {
       console.error("Experience save error:", error);
       setSuccessMessage("Failed to save experience.");
+      return false;
+    }
+  };
+
+  const saveExistingExperience = async (experience) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        setSuccessMessage("You are not logged in.");
+        return false;
+      }
+
+      const formData = new FormData();
+      formData.append("_method", "PUT");
+      formData.append("title", experience.title.trim());
+      formData.append("description", experience.description.trim());
+
+      if (experience.image?.file) {
+        formData.append("photo", experience.image.file);
+      }
+
+      const response = await fetch(
+        `${API_BASE_URL}/guide/profile/experiences/${experience.id}`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        },
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        const validationErrors = data.errors
+          ? Object.values(data.errors).flat().join("\n")
+          : "";
+
+        setSuccessMessage(
+          validationErrors || data.message || "Failed to update experience.",
+        );
+        return false;
+      }
+
+      return true;
+    } catch (error) {
+      console.error("Experience update error:", error);
+      setSuccessMessage("Failed to update experience.");
       return false;
     }
   };
@@ -419,6 +565,8 @@ function GuideProfile() {
             payout_bkash_number: profile.payoutBkashNumber,
             email: profile.email,
             address: profile.address,
+            latitude: profile.latitude === "" ? null : Number(profile.latitude),
+            longitude: profile.longitude === "" ? null : Number(profile.longitude),
             price: profile.price,
             min_price: profile.minPrice,
             max_price: profile.maxPrice,
@@ -463,6 +611,12 @@ function GuideProfile() {
           }
 
           const saved = await saveNewExperience(experience);
+
+          if (!saved) {
+            return;
+          }
+        } else if (experience.isDirty) {
+          const saved = await saveExistingExperience(experience);
 
           if (!saved) {
             return;
@@ -686,6 +840,40 @@ function GuideProfile() {
               onChange={handleChange}
               placeholder="Enter your address"
             />
+          </div>
+
+          <div className="profile-location-picker">
+            <div className="profile-location-picker-heading">
+              <div>
+                <h3>Map Location</h3>
+                <p>Choose where your guide service is based. This pin appears on Explore.</p>
+              </div>
+
+              {profile.latitude !== "" && profile.longitude !== "" && (
+                <button
+                  type="button"
+                  onClick={handleClearLocation}
+                >
+                  Clear pin
+                </button>
+              )}
+            </div>
+
+            <GuideLocationMap
+              latitude={profile.latitude}
+              longitude={profile.longitude}
+              zoom={profile.latitude !== "" && profile.longitude !== "" ? 13 : 7}
+              selectable
+              onLocationSelect={handleLocationSelect}
+            />
+
+            <p className="profile-location-coordinates" aria-live="polite">
+              {locationLookupMessage || (
+                profile.latitude !== "" && profile.longitude !== ""
+                  ? `Selected: ${Number(profile.latitude).toFixed(6)}, ${Number(profile.longitude).toFixed(6)}`
+                  : "No map point selected"
+              )}
+            </p>
           </div>
         </section>
 
@@ -967,9 +1155,13 @@ function GuideProfile() {
           type="button"
           className="profile-save-btn"
           onClick={handleSave}
-          disabled={saving}
+          disabled={saving || locationLookupMessage === "Finding address..."}
         >
-          {saving ? "Saving..." : "Save Changes"}
+          {saving
+            ? "Saving..."
+            : locationLookupMessage === "Finding address..."
+              ? "Finding address..."
+              : "Save Changes"}
         </button>
 
       </div>
