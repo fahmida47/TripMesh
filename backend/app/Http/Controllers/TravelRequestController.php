@@ -8,7 +8,10 @@ use Illuminate\Http\JsonResponse;
 use App\Services\TravelRequestService;
 use App\Models\TravelRequest;
 use App\Models\ServiceRequest;
+use App\Models\Booking;
+use App\Models\Payment;
 use App\Models\Guide\TourService;
+use Illuminate\Support\Facades\DB;
 
 
 class TravelRequestController extends Controller
@@ -154,6 +157,13 @@ class TravelRequestController extends Controller
             'action_url' => '/guide-dashboard/requests',
         ]);
 
+        $user->notifications()->create([
+            'type' => 'booking',
+            'title' => 'Travel request sent',
+            'message' => 'Your travel request for '.$validated['destination'].' was sent to '.$guideProfile->company_name.'.',
+            'action_url' => '/tourist-dashboard/bookings',
+        ]);
+
 
 
 
@@ -193,6 +203,8 @@ class TravelRequestController extends Controller
             'guide_profile_id' => ['required', 'integer', 'exists:guide_profiles,id'],
             'tour_service_id' => ['required', 'integer', 'exists:tour_services,id'],
             'travelers' => ['required', 'integer', 'min:1'],
+            'from_date' => ['required', 'date', 'after_or_equal:today'],
+            'to_date' => ['required', 'date', 'after_or_equal:from_date'],
         ]);
 
         $service = TourService::where('id', $validated['tour_service_id'])
@@ -212,9 +224,25 @@ class TravelRequestController extends Controller
             'experience_name' => $service->title,
             'destination' => $service->location,
             'travelers' => $validated['travelers'],
-            'amount' => $service->price * $validated['travelers'],
+            'from_date' => $validated['from_date'],
+            'to_date' => $validated['to_date'],
+            'amount' => $service->price,
             'status' => 'pending',
         ])->load(['tourist', 'guide', 'tourService']);
+
+        $service->guideProfile->user->notifications()->create([
+            'type' => 'booking',
+            'title' => 'New tour package request',
+            'message' => $user->name.' requested '.$service->title.' for '.$validated['travelers'].' traveler(s).',
+            'action_url' => '/guide-dashboard/requests',
+        ]);
+
+        $user->notifications()->create([
+            'type' => 'booking',
+            'title' => 'Tour package request sent',
+            'message' => 'Your request for '.$service->title.' was sent to '.$service->guideProfile->company_name.'.',
+            'action_url' => '/tourist-dashboard/bookings',
+        ]);
 
         return response()->json(['message' => 'Service request sent successfully.', 'request' => $serviceRequest], 201);
     }
@@ -327,13 +355,75 @@ class TravelRequestController extends Controller
 
 
         if (request()->query('type') === 'service') {
-            $serviceRequest = ServiceRequest::where('id', $id)
-                ->where('guide_profile_id', $guideProfile->id)->first();
-            if (!$serviceRequest) {
+            if (!$guideProfile) {
+                return response()->json(['message' => 'Guide profile not found.'], 404);
+            }
+
+            $result = DB::transaction(function () use ($id, $guideProfile) {
+                $serviceRequest = ServiceRequest::where('id', $id)
+                    ->where('guide_profile_id', $guideProfile->id)
+                    ->lockForUpdate()
+                    ->first();
+
+                if (!$serviceRequest) {
+                    return null;
+                }
+
+                if ($serviceRequest->status !== 'pending') {
+                    return false;
+                }
+
+                $serviceRequest->update(['status' => 'accepted']);
+
+                $booking = Booking::create([
+                    'travel_request_id' => null,
+                    'service_request_id' => $serviceRequest->id,
+                    'tourist_profile_id' => $serviceRequest->tourist_profile_id,
+                    'guide_profile_id' => $serviceRequest->guide_profile_id,
+                    'guide_experience_id' => null,
+                    'from_date' => $serviceRequest->from_date,
+                    'to_date' => $serviceRequest->to_date,
+                    'amount' => $serviceRequest->amount,
+                    'status' => 'pending_payment',
+                ]);
+
+                $payment = Payment::create([
+                    'booking_id' => $booking->id,
+                    'amount' => $booking->amount,
+                    'status' => 'pending',
+                ]);
+
+                return compact('serviceRequest', 'booking', 'payment');
+            });
+
+            if ($result === null) {
                 return response()->json(['message' => 'Service request not found.'], 404);
             }
-            $serviceRequest->update(['status' => 'accepted']);
-            return response()->json(['message' => 'Service request accepted.', 'request' => $serviceRequest]);
+
+            if ($result === false) {
+                return response()->json(['message' => 'This request has already been handled.'], 422);
+            }
+
+            $result['serviceRequest']->tourist->user->notifications()->create([
+                'type' => 'message',
+                'title' => 'Tour package request accepted',
+                'message' => 'Guide '.$user->name.' accepted your request for '.$result['serviceRequest']->experience_name.'.',
+                'action_url' => '/tourist-dashboard/bookings',
+            ]);
+
+            $result['booking']->load([
+                'guide',
+                'experience',
+                'payment',
+                'serviceRequest.tourService',
+            ]);
+
+            return response()->json([
+                'message' => 'Service request accepted.',
+                'request' => $result['serviceRequest'],
+                'booking' => $result['booking'],
+                'payment' => $result['payment'],
+            ]);
         }
 
         $travelRequest =
