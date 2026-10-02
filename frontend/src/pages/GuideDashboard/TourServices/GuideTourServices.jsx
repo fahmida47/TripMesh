@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { API_BASE_URL } from "../../../config.js";
+import { API_BASE_URL, STORAGE_URL } from "../../../config.js";
 import { getToken } from "../../../utils/auth.js";
 
 import "./GuideTourServices.css";
@@ -11,6 +11,9 @@ function GuideTourServices() {
   // No mock data
   const [tourServices, setTourServices] = useState([]);
   const [error, setError] = useState("");
+  const [bookings, setBookings] = useState([]);
+  const [bookingLoading, setBookingLoading] = useState(true);
+  const [bookingError, setBookingError] = useState("");
 
   const loadServices = async () => {
     try {
@@ -24,6 +27,87 @@ function GuideTourServices() {
   };
 
   useEffect(() => { loadServices(); }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    const loadBookings = async () => {
+      try {
+        const token = getToken();
+        if (!token) {
+          throw new Error("Please sign in again to view your tour bookings.");
+        }
+
+        const response = await fetch(`${API_BASE_URL}/bookings/guide`, {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          signal: controller.signal,
+        });
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || "Could not load tour bookings.");
+        }
+
+        setBookings(Array.isArray(data.bookings) ? data.bookings : []);
+      } catch (err) {
+        if (err.name !== "AbortError") {
+          setBookingError(err.message || "Could not load tour bookings.");
+        }
+      } finally {
+        if (!controller.signal.aborted) {
+          setBookingLoading(false);
+        }
+      }
+    };
+
+    loadBookings();
+    return () => controller.abort();
+  }, []);
+
+  const bookingCounts = new Map();
+  tourServices.forEach((service) => bookingCounts.set(String(service.id), 0));
+
+  bookings.forEach((booking) => {
+    const serviceRequest = booking.service_request || booking.serviceRequest;
+    if (!serviceRequest) return;
+
+    const requestedServiceId =
+      serviceRequest.tour_service_id ?? serviceRequest.tourServiceId;
+    const relatedService =
+      serviceRequest.tour_service || serviceRequest.tourService;
+    const serviceId =
+      requestedServiceId ?? relatedService?.id;
+    let matchingServiceId = serviceId == null ? null : String(serviceId);
+
+    if (!bookingCounts.has(matchingServiceId)) {
+      const requestTitle =
+        relatedService?.title || serviceRequest.experience_name || "";
+      const matchingService = tourServices.find(
+        (service) =>
+          service.title?.trim().toLowerCase() ===
+          requestTitle.trim().toLowerCase(),
+      );
+      matchingServiceId = matchingService ? String(matchingService.id) : null;
+    }
+
+    if (matchingServiceId && bookingCounts.has(matchingServiceId)) {
+      bookingCounts.set(
+        matchingServiceId,
+        bookingCounts.get(matchingServiceId) + 1,
+      );
+    }
+  });
+
+  const topTourService = tourServices
+    .map((service) => ({
+      ...service,
+      bookingCount: bookingCounts.get(String(service.id)) || 0,
+    }))
+    .filter((service) => service.bookingCount > 0)
+    .sort((first, second) => second.bookingCount - first.bookingCount)[0];
 
   const handleAddTourService = () => {
     navigate("/guide-dashboard/tour-services/add");
@@ -89,9 +173,14 @@ function GuideTourServices() {
               <p>Top Tour Service</p>
 
               <h3>
-                {tourServices.length === 0
-                  ? "Not yet available"
-                  : "No booking data yet"}
+                {bookingLoading
+                  ? "Loading bookings..."
+                  : bookingError
+                    ? "Unable to load bookings"
+                    : topTourService?.title ||
+                      (tourServices.length === 0
+                        ? "Not yet available"
+                        : "No booking data yet")}
               </h3>
             </div>
 
@@ -104,8 +193,14 @@ function GuideTourServices() {
             </button>
           </div>
 
-          <p className="top-tour-empty-text">
-            Your most booked tour service will appear here.
+          <p className="top-tour-empty-text" role={bookingError ? "alert" : undefined}>
+            {bookingError
+              ? bookingError
+              : topTourService && !bookingLoading
+                ? `${topTourService.bookingCount} ${
+                    topTourService.bookingCount === 1 ? "booking" : "bookings"
+                  } · ${topTourService.location}`
+                : "Your most booked tour service will appear here."}
           </p>
         </div>
       </section>
@@ -140,7 +235,9 @@ function GuideTourServices() {
                 <div className="tour-service-name">
                   {service.image && (
                     <img
-                      src={service.image}
+                      src={service.image.startsWith("http")
+                        ? service.image
+                        : `${STORAGE_URL}/${service.image.replace(/^\/+/, "")}`}
                       alt={service.title}
                       className="tour-service-list-image"
                     />
