@@ -36,11 +36,28 @@ import RequestsBookings from "./pages/TouristDashboard/components/RequestsBookin
 import PaymentHistory from "./pages/TouristDashboard/components/PaymentHistory";
 import PaymentPage from "./pages/TouristDashboard/components/PaymentPage";
 
+
 /* CHAT */
 import ChatBox from "./pages/Chat/ChatBox";
 
 /* ADMIN */
 import AdminLogin from "./pages/Admin/AdminLogin";
+
+
+import ReviewForm from "./pages/TouristDashboard/Reviews/ReviewForm";
+
+/* =========================
+   CHAT
+========================= */
+
+import ChatBox from "./pages/Chat/ChatBox";
+
+/* =========================
+   ADMIN
+========================= */
+
+
+
 import AdminDashboard, {
   AdminGuard,
   AdminOverview,
@@ -106,6 +123,22 @@ function ProtectedDashboard({ children, role }) {
 
   if (user.role === role) {
     return children;
+
+  }
+  if (user.role !== role) {
+    if (user.role === "guide") {
+      return <Navigate to="/guide-dashboard" replace />;
+    }
+
+    if (user.role === "tourist") {
+      return <Navigate to="/tourist-dashboard" replace />;
+    }
+
+    if (user.role === "admin") {
+      return <Navigate to="/admin/dashboard" replace />;
+    }
+
+
   }
 
   return (
@@ -124,6 +157,7 @@ function App() {
       <Routes>
         {/* PUBLIC */}
         <Route
+
           path="/"
           element={
             <PublicOnly>
@@ -133,6 +167,7 @@ function App() {
         />
 
         <Route
+
           path="/explore"
           element={<Explore />}
         />
@@ -159,11 +194,13 @@ function App() {
 
         {/* ADMIN */}
         <Route
+
           path="/admin/login"
           element={<AdminLogin />}
         />
 
         <Route
+
           path="/admin"
           element={
             <AdminGuard>
