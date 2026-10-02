@@ -6,6 +6,7 @@ import {
   FiCalendar,
   FiDollarSign,
   FiStar,
+  FiMessageCircle,
   FiLogOut,
 } from "react-icons/fi";
 
@@ -38,6 +39,11 @@ const NAV_ITEMS = [
     label: "Reviews & Ratings",
     icon: FiStar,
     path: "/tourist-dashboard/reviews",
+  },
+  {
+    label: "Chat",
+    icon: FiMessageCircle,
+    path: "/tourist-dashboard/chat",
   },
 ];
 
