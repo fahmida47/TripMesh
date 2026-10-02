@@ -15,6 +15,8 @@ class Booking extends Model
 
         'travel_request_id',
 
+        'service_request_id',
+
         'tourist_profile_id',
 
         'guide_profile_id',
@@ -58,6 +60,7 @@ class Booking extends Model
     public function getTourTypeAttribute(): ?string
     {
         return $this->experience?->title
+            ?: $this->serviceRequest?->experience_name
             ?: $this->travelRequest?->experience_name;
     }
 
@@ -75,6 +78,11 @@ class Booking extends Model
 
         );
 
+    }
+
+    public function serviceRequest(): BelongsTo
+    {
+        return $this->belongsTo(ServiceRequest::class, 'service_request_id');
     }
 
 
