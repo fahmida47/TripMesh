@@ -1,0 +1,339 @@
+.guide-payouts-page {
+  width: 100%;
+  min-height: 100vh;
+  padding: 24px;
+  box-sizing: border-box;
+  background: #f6f8fc;
+  color: #10213f;
+}
+
+.guide-payouts-heading {
+  margin-bottom: 22px;
+}
+
+.guide-payouts-heading h1 {
+  margin: 0;
+  color: #0f1f3d;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.guide-payouts-heading p {
+  margin: 6px 0 0;
+  color: #7b8798;
+  font-size: 14px;
+}
+
+.payout-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.payout-summary-card {
+  min-width: 0;
+  min-height: 104px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px;
+  border: 1px solid #e2e7f0;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 3px 12px rgba(25, 44, 85, 0.05);
+}
+
+.payout-summary-icon {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+}
+
+.payout-summary-icon.total {
+  background: #eaf1ff;
+  color: #2868d9;
+}
+
+.payout-summary-icon.paid {
+  background: #e9f8ef;
+  color: #19763b;
+}
+
+.payout-summary-icon.pending {
+  background: #fff5df;
+  color: #a36b00;
+}
+
+.payout-summary-card > div {
+  min-width: 0;
+  display: grid;
+  gap: 7px;
+}
+
+.payout-summary-card > div span {
+  color: #66738b;
+  font-size: 13px;
+}
+
+.payout-summary-card > div strong {
+  overflow-wrap: anywhere;
+  color: #12213f;
+  font-size: 23px;
+  font-variant-numeric: tabular-nums;
+}
+
+.payout-history-section {
+  overflow: hidden;
+  border: 1px solid #e2e7f0;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 3px 12px rgba(25, 44, 85, 0.05);
+}
+
+.payout-history-heading {
+  min-height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 20px;
+  border-bottom: 1px solid #e5e9f1;
+}
+
+.payout-history-heading h2 {
+  margin: 0;
+  color: #172742;
+  font-size: 17px;
+}
+
+.payout-history-heading p {
+  margin: 5px 0 0;
+  color: #7a879b;
+  font-size: 12px;
+}
+
+.payout-history-heading > span {
+  color: #66738b;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.payout-page-message {
+  margin: 0 0 14px;
+  padding: 10px 13px;
+  border: 1px solid #f3c5c2;
+  border-radius: 8px;
+  background: #fff0f0;
+  color: #a83232;
+  font-size: 12px;
+}
+
+.payout-empty-state {
+  min-height: 170px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  color: #77849a;
+  text-align: center;
+  font-size: 13px;
+}
+
+.payout-empty-state h3 {
+  margin: 0;
+  color: #172742;
+  font-size: 16px;
+}
+
+.payout-empty-state p {
+  margin: 7px 0 0;
+}
+
+.payout-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.payout-table {
+  width: 100%;
+  min-width: 850px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.payout-table th,
+.payout-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #edf0f5;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.payout-table th {
+  background: #fbfcff;
+  color: #66738b;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.payout-table td {
+  color: #34435c;
+}
+
+.payout-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.payout-table td:first-child {
+  min-width: 160px;
+}
+
+.payout-table td:first-child strong,
+.payout-table td:first-child small {
+  display: block;
+}
+
+.payout-table td:first-child strong {
+  max-width: 210px;
+  overflow: hidden;
+  color: #172742;
+  text-overflow: ellipsis;
+}
+
+.payout-table td:first-child small {
+  margin-top: 4px;
+  color: #8490a4;
+  font-size: 10px;
+}
+
+.payout-net-amount {
+  color: #176d3b !important;
+  font-weight: 700;
+}
+
+.payout-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 9px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.payout-status.paid {
+  background: #e9f8ef;
+  color: #19763b;
+}
+
+.payout-status.pending {
+  background: #fff5df;
+  color: #946100;
+}
+
+.payout-reference {
+  max-width: 170px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 900px) {
+  .guide-payouts-page {
+    padding: 18px;
+  }
+}
+
+@media (max-width: 700px) {
+  .guide-payouts-page {
+    padding: 14px;
+  }
+
+  .guide-payouts-heading h1 {
+    font-size: 24px;
+  }
+
+  .payout-summary-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .payout-summary-card {
+    min-height: 82px;
+    padding: 14px;
+  }
+
+  .payout-summary-card > div strong {
+    font-size: 20px;
+  }
+
+  .payout-history-heading {
+    align-items: flex-start;
+    padding: 14px;
+  }
+
+  .payout-table {
+    min-width: 0;
+  }
+
+  .payout-table thead {
+    display: none;
+  }
+
+  .payout-table,
+  .payout-table tbody,
+  .payout-table tr,
+  .payout-table td {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .payout-table tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 12px;
+    padding: 8px 14px;
+    border-bottom: 1px solid #edf0f5;
+  }
+
+  .payout-table tbody tr:last-child {
+    border-bottom: 0;
+  }
+
+  .payout-table td {
+    min-width: 0 !important;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 9px 0;
+    border: 0;
+    white-space: normal;
+  }
+
+  .payout-table td::before {
+    content: attr(data-label);
+    color: #8490a4;
+    font-size: 10px;
+    font-weight: 600;
+  }
+
+  .payout-table td:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .payout-table td:first-child strong {
+    max-width: 100%;
+  }
+
+  .payout-table td:first-child small {
+    margin-top: 0;
+  }
+
+  .payout-status {
+    width: fit-content;
+  }
+}

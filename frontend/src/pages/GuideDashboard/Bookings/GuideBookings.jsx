@@ -25,6 +25,7 @@ function GuideBookings() {
   const [updatingId, setUpdatingId] = useState(null);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
+  const [bookingToComplete, setBookingToComplete] = useState(null);
 
   const loadBookings = async () => {
     setLoading(true);
@@ -55,9 +56,22 @@ function GuideBookings() {
     loadBookings();
   }, []);
 
-  const completeBooking = async (booking) => {
-    if (!window.confirm("Mark this paid booking as completed?")) return;
+  useEffect(() => {
+    if (!bookingToComplete || updatingId !== null) {
+      return undefined;
+    }
 
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setBookingToComplete(null);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [bookingToComplete, updatingId]);
+
+  const completeBooking = async (booking) => {
     setUpdatingId(booking.id);
     setError("");
     setNotice("");
@@ -84,6 +98,7 @@ function GuideBookings() {
           item.id === booking.id ? data.booking : item,
         ),
       );
+      setBookingToComplete(null);
       setNotice(data.message || "Booking marked as completed.");
     } catch (requestError) {
       setError(requestError.message || "Unable to complete this booking.");
@@ -195,7 +210,10 @@ function GuideBookings() {
                     className="booking-complete-btn"
                     type="button"
                     disabled={updatingId === booking.id}
-                    onClick={() => completeBooking(booking)}
+                    onClick={() => {
+                      setError("");
+                      setBookingToComplete(booking);
+                    }}
                   >
                     {updatingId === booking.id ? "Saving…" : "Mark completed"}
                   </button>
@@ -213,6 +231,58 @@ function GuideBookings() {
           </div>
         )}
       </section>
+
+      {bookingToComplete && (
+        <div
+          className="booking-confirm-backdrop"
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget && updatingId === null) {
+              setBookingToComplete(null);
+            }
+          }}
+        >
+          <section
+            className="booking-confirm-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="booking-confirm-title"
+            aria-describedby="booking-confirm-description"
+          >
+            <div className="booking-confirm-icon" aria-hidden="true">✓</div>
+            <h2 id="booking-confirm-title">Complete this booking?</h2>
+            <p id="booking-confirm-description">
+              Mark the paid booking for{" "}
+              <strong>
+                {bookingToComplete.tourist?.full_name
+                  || bookingToComplete.tourist?.user?.name
+                  || "this tourist"}
+              </strong>{" "}
+              as completed?
+            </p>
+
+            {error && <p className="booking-confirm-error" role="alert">{error}</p>}
+
+            <div className="booking-confirm-actions">
+              <button
+                type="button"
+                className="booking-confirm-cancel"
+                disabled={updatingId === bookingToComplete.id}
+                onClick={() => setBookingToComplete(null)}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="booking-confirm-submit"
+                disabled={updatingId === bookingToComplete.id}
+                onClick={() => completeBooking(bookingToComplete)}
+              >
+                {updatingId === bookingToComplete.id ? "Updating..." : "Mark completed"}
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
     </main>
   );
 }

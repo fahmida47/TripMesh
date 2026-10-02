@@ -7,6 +7,7 @@ import {
   FiMap,
   FiInbox,
   FiCalendar,
+  FiDollarSign,
   FiLogOut,
   FiStar,
   FiX,
@@ -108,6 +109,17 @@ const GuideSidebar = ({ sidebarOpen, setSidebarOpen }) => {
           >
             <FiCalendar />
             <span>Bookings</span>
+          </NavLink>
+
+          <NavLink
+            to="/guide-dashboard/payouts"
+            onClick={closeSidebar}
+            className={({ isActive }) =>
+              isActive ? "sidebar-link active" : "sidebar-link"
+            }
+          >
+            <FiDollarSign />
+            <span>Payouts</span>
           </NavLink>
 
           <NavLink

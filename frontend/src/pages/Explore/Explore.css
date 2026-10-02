@@ -135,6 +135,7 @@
   border-color:var(--primary-dark);
 }
 
+/* LISTING HEADER */
 .explore-listing-header{
   min-height:65px;
   display:flex;
@@ -189,7 +190,145 @@
   font-weight:700;
 }
 
-.explore-map-view{width:100%}
+/* MAP VIEW */
+.explore-map-view{
+  width:100%;
+  height:min(66vh,700px);
+  min-height:500px;
+  display:grid;
+  grid-template-columns:minmax(250px,.38fr) minmax(0,1fr);
+  overflow:hidden;
+  border:1px solid var(--border);
+  border-radius:8px;
+  background:var(--white);
+}
+
+.explore-page--map .explore-top-section{
+  height:160px;
+  min-height:160px;
+}
+
+.explore-page--map .explore-hero-content h1{
+  max-width:760px;
+  margin-bottom:6px;
+  font-size:clamp(1.65rem,3vw,2.35rem);
+}
+
+.explore-page--map .explore-hero-content p{
+  font-size:.95rem;
+}
+
+.explore-map-results{
+  min-width:0;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  border-right:1px solid var(--border);
+}
+
+.explore-map-results-header{
+  min-height:54px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  padding:0 16px;
+  border-bottom:1px solid var(--border);
+  color:var(--text);
+  font-size:13px;
+}
+
+.explore-map-results-header span{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.explore-map-guide-list{
+  min-height:0;
+  overflow-y:auto;
+}
+
+.explore-map-guide-item{
+  width:100%;
+  min-height:82px;
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:12px 14px;
+  border:0;
+  border-bottom:1px solid #edf0f5;
+  background:#fff;
+  color:var(--text);
+  text-align:left;
+  cursor:pointer;
+  transition:background .15s ease;
+}
+
+.explore-map-guide-item:hover,
+.explore-map-guide-item:focus-visible{
+  background:#f3f8ff;
+}
+
+.explore-map-guide-avatar{
+  width:38px;
+  height:38px;
+  flex:0 0 38px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#e8f0ff;
+  color:var(--primary);
+  font-size:15px;
+  font-weight:800;
+}
+
+.explore-map-guide-copy{
+  min-width:0;
+  flex:1;
+  display:grid;
+  gap:3px;
+}
+
+.explore-map-guide-copy strong,
+.explore-map-guide-copy small,
+.explore-map-guide-copy>span{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.explore-map-guide-copy strong{
+  font-size:13px;
+}
+
+.explore-map-guide-copy small,
+.explore-map-guide-copy>span{
+  color:var(--muted);
+  font-size:11px;
+}
+
+.explore-map-guide-item .has-map-pin{
+  flex:0 0 auto;
+  color:var(--primary);
+}
+
+.explore-map-guide-item .no-map-pin{
+  flex:0 0 auto;
+  color:#a1a9b6;
+}
+
+.explore-map-canvas{
+  min-width:0;
+  min-height:0;
+}
+
+.explore-map-canvas .guide-location-map{
+  width:100%;
+  height:100%;
+  min-height:0;
+  border:0;
+  border-radius:0;
+}
 
 .explore-map-empty{
   margin:10px 0 0;
@@ -197,6 +336,7 @@
   font-size:13px;
 }
 
+/* GUIDE GRID */
 .explore-guide-grid{
   width:100%;
   display:grid;
@@ -284,7 +424,10 @@
   min-height:38px;
 }
 
-.explore-experiences{margin-bottom:16px}
+/* EXPERIENCES */
+.explore-experiences{
+  margin-bottom:16px;
+}
 
 .experience-heading{
   display:flex;
@@ -353,6 +496,7 @@
   line-height:1.4;
 }
 
+/* RATING + PRICE */
 .explore-guide-meta{
   display:flex;
   align-items:center;
@@ -393,6 +537,7 @@
   font-size:16px;
 }
 
+/* CARD BUTTONS */
 .explore-card-actions{
   width:100%;
   display:grid;
@@ -432,6 +577,7 @@
   background:var(--primary-dark);
 }
 
+/* NO RESULTS */
 .explore-no-results{
   grid-column:1/-1;
   padding:60px 20px;
@@ -466,6 +612,7 @@
   to{transform:rotate(360deg)}
 }
 
+/* LIST VIEW */
 .explore-guide-list{
   grid-template-columns:repeat(2,minmax(0,1fr));
 }
@@ -474,6 +621,7 @@
   width:100%;
 }
 
+/* PAGINATION */
 .explore-pagination{
   display:flex;
   justify-content:center;
@@ -536,7 +684,9 @@
   box-shadow:0 20px 60px rgba(0,0,0,.3);
 }
 
-.guide-details-modal{max-width:760px}
+.guide-details-modal{
+  max-width:760px;
+}
 
 .guide-details-content{
   max-height:72vh;
@@ -588,6 +738,12 @@
   border-radius:8px;
 }
 
+.guide-details-experience .experience-placeholder{
+  display:grid;
+  place-items:center;
+  background:#eef2f7;
+}
+
 .guide-details-experience strong{
   display:block;
   margin:2px 0 5px;
@@ -602,6 +758,7 @@
   line-height:1.5;
 }
 
+/* MODAL HEADER */
 .request-modal-header{
   display:flex;
   align-items:center;
@@ -656,6 +813,7 @@
   cursor:pointer;
 }
 
+/* GUIDE INFO */
 .request-guide-info{
   display:flex;
   align-items:center;
@@ -703,6 +861,7 @@
   font-weight:600;
 }
 
+/* FORM */
 .travel-request-form{
   width:100%;
   display:grid;
@@ -840,6 +999,7 @@
   color:#fff;
 }
 
+/* TABLET */
 @media(max-width:1100px){
   .explore-top-section{
     height:300px;
@@ -862,8 +1022,14 @@
   .explore-sort-control{
     justify-content:flex-end;
   }
+
+  .explore-map-view{
+    grid-template-columns:minmax(230px,.42fr) minmax(0,1fr);
+    height:min(62vh,620px);
+  }
 }
 
+/* MOBILE */
 @media(max-width:650px){
   .explore-top-section{
     height:280px;
@@ -877,6 +1043,11 @@
   .explore-guide-grid,
   .explore-guide-list{
     grid-template-columns:1fr;
+    gap:18px;
+  }
+
+  .explore-card-content{
+    padding:17px;
   }
 
   .explore-sort-control{
@@ -891,8 +1062,89 @@
     min-width:0;
   }
 
+  .explore-listing-header{
+    min-height:58px;
+  }
+
+  .explore-page--map .explore-top-section{
+    height:150px;
+    min-height:150px;
+  }
+
+  .explore-page--map .explore-hero-content h1{
+    font-size:1.7rem;
+  }
+
+  .explore-page--map .explore-hero-content p{
+    font-size:.82rem;
+  }
+
+  .explore-map-view{
+    height:auto;
+    min-height:0;
+    grid-template-columns:minmax(0,1fr);
+    grid-template-rows:minmax(300px,46vh) auto;
+  }
+
+  .explore-map-canvas{
+    grid-row:1;
+  }
+
+  .explore-map-results{
+    grid-row:2;
+    border-right:0;
+  }
+
+  .explore-map-guide-list{
+    max-height:230px;
+  }
+
+  .explore-map-empty{
+    padding:0 14px 12px;
+  }
+
+  .explore-card-actions button{
+    height:40px;
+  }
+
+  .request-modal-overlay{
+    padding:8px;
+    align-items:center;
+  }
+
+  .request-modal{
+    width:min(96vw,600px);
+    max-height:94vh;
+    padding:15px;
+    border-radius:12px;
+  }
+
+  .request-modal-header{
+    padding-bottom:10px;
+    margin-bottom:10px;
+  }
+
+  .request-modal-header h2{
+    font-size:17px;
+  }
+
+  .request-modal-header p{
+    font-size:10px;
+  }
+
+  .request-modal-icon{
+    width:35px;
+    height:35px;
+    font-size:16px;
+  }
+
+  .request-modal-heading{
+    gap:8px;
+  }
+
   .travel-request-form{
     grid-template-columns:1fr;
+    gap:9px;
   }
 
   .request-guide-info,
@@ -908,6 +1160,7 @@
   }
 }
 
+/* SMALL MOBILE */
 @media(max-width:380px){
   .explore-top-section{
     height:250px;
