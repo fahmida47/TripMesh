@@ -95,3 +95,96 @@
   font-size: 12px;
   color: #8b95a7;
 }
+
+.upcoming-bookings-list {
+  display: grid;
+  gap: 9px;
+}
+
+.upcoming-booking-item {
+  min-width: 0;
+  padding: 12px 13px;
+  border: 1px solid #e8edf4;
+  border-radius: 8px;
+  background: #fbfcfe;
+}
+
+.upcoming-booking-main,
+.upcoming-booking-meta {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.upcoming-booking-copy {
+  min-width: 0;
+  display: grid;
+  gap: 4px;
+}
+
+.upcoming-booking-copy strong {
+  overflow: hidden;
+  color: #172742;
+  font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.upcoming-booking-copy > span {
+  color: #42516b;
+  font-size: 12px;
+}
+
+.upcoming-booking-copy small {
+  color: #8490a4;
+  font-size: 11px;
+}
+
+.upcoming-booking-status {
+  flex: 0 0 auto;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #fff5df;
+  color: #946100;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.upcoming-booking-status.confirmed {
+  background: #eaf1ff;
+  color: #2868d9;
+}
+
+.upcoming-booking-status.completed {
+  background: #e9f8ef;
+  color: #19763b;
+}
+
+.upcoming-booking-status.cancelled {
+  background: #fff0f0;
+  color: #c63d3d;
+}
+
+.upcoming-booking-meta {
+  align-items: center;
+  margin-top: 9px;
+  padding-top: 8px;
+  border-top: 1px solid #edf0f5;
+}
+
+.upcoming-booking-meta span {
+  overflow: hidden;
+  color: #77849a;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.upcoming-booking-meta strong {
+  flex: 0 0 auto;
+  color: #1757d2;
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
