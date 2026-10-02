@@ -35,6 +35,10 @@
   box-shadow:0 7px 22px rgba(20,40,70,.06);
 }
 
+.chat-container-single{
+  grid-template-columns:minmax(0,1fr);
+}
+
 /* LEFT SIDE */
 .chat-sidebar{
   min-width:0;
@@ -375,6 +379,10 @@
   .chat-container{
     grid-template-columns:285px minmax(0,1fr);
   }
+
+  .chat-container-single{
+    grid-template-columns:minmax(0,1fr);
+  }
 }
 
 @media(max-width:650px){
@@ -385,6 +393,10 @@
   .chat-container{
     height:auto;
     min-height:650px;
+    grid-template-columns:1fr;
+  }
+
+  .chat-container-single{
     grid-template-columns:1fr;
   }
 

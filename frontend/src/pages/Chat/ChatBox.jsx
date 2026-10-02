@@ -1,26 +1,86 @@
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   FiSearch,
   FiMessageCircle,
   FiSend,
 } from "react-icons/fi";
 import "./ChatBox.css";
+import { API_BASE_URL } from "../../config.js";
+import { getToken } from "../../utils/auth.js";
+
+async function chatApi(path, options = {}) {
+  const response = await fetch(`${API_BASE_URL}/chat${path}`, {
+    ...options,
+    headers: {
+      Accept: "application/json",
+      Authorization: `Bearer ${getToken() || ""}`,
+      ...(options.body ? { "Content-Type": "application/json" } : {}),
+      ...options.headers,
+    },
+  });
+  const body = await response.json().catch(() => ({}));
+  if (!response.ok) {
+    throw new Error(body.message || "Unable to load chat.");
+  }
+  return body;
+}
 
 export default function ChatBox({
   userType = "tourist",
-  conversations = [],
-  messages = [],
-  loading = false,
   onSelectConversation,
-  onSendMessage,
 }) {
+  const [conversations, setConversations] = useState([]);
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [chatError, setChatError] = useState("");
   const [selectedId, setSelectedId] = useState(null);
   const [search, setSearch] = useState("");
   const [message, setMessage] = useState("");
 
   const selectedConversation = conversations.find(
-    (item) => item.id === selectedId
+    (item) => Number(item.id) === Number(selectedId)
   );
+
+  const loadConversations = useCallback(async (selectFirst = false) => {
+    setLoading(true);
+    setChatError("");
+    try {
+      const result = await chatApi("/conversations");
+      const items = result.data || [];
+      setConversations(items);
+      if (selectFirst && items.length) {
+        setSelectedId(items[0].id);
+      }
+    } catch (error) {
+      setChatError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadConversations(true);
+  }, [loadConversations]);
+
+  const loadMessages = useCallback(async (conversationId) => {
+    setChatError("");
+    try {
+      const result = await chatApi(`/conversations/${conversationId}/messages`);
+      setMessages(result.data || []);
+      setConversations((items) => items.map((item) =>
+        Number(item.id) === Number(conversationId)
+          ? { ...item, unread_count: 0 }
+          : item
+      ));
+    } catch (error) {
+      setMessages([]);
+      setChatError(error.message);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (selectedId !== null) loadMessages(selectedId);
+  }, [selectedId, loadMessages]);
 
   const filteredConversations = useMemo(() => {
     const value = search.trim().toLowerCase();
@@ -39,19 +99,29 @@ export default function ChatBox({
     onSelectConversation?.(conversation);
   };
 
-  const sendMessage = (e) => {
+  const sendMessage = async (e) => {
     e.preventDefault();
 
     const text = message.trim();
 
     if (!text) return;
 
-    onSendMessage?.({
-      conversationId: selectedConversation?.id || null,
-      message: text,
-    });
-
-    setMessage("");
+    if (!selectedConversation) return;
+    try {
+      const result = await chatApi(
+        `/conversations/${selectedConversation.id}/messages`,
+        { method: "POST", body: JSON.stringify({ message: text }) }
+      );
+      setMessages((items) => [...items, result.data]);
+      setConversations((items) => items.map((item) =>
+        Number(item.id) === Number(selectedConversation.id)
+          ? { ...item, lastMessage: result.data.message, time: result.data.time }
+          : item
+      ));
+      setMessage("");
+    } catch (error) {
+      setChatError(error.message);
+    }
   };
 
   return (
@@ -60,16 +130,16 @@ export default function ChatBox({
         <h1>Chat</h1>
 
         <p>
-          {userType === "guide"
-            ? "Communicate with your tourists."
-            : "Communicate with your guides."}
+          {userType === "admin"
+            ? "Reply to tourists and guides."
+            : "Chat with TripMesh Admin."}
         </p>
       </div>
 
-      <section className="chat-container">
+      <section className={`chat-container ${userType === "admin" ? "" : "chat-container-single"}`}>
 
-        {/* LEFT SIDE */}
-        <aside className="chat-sidebar">
+        {/* Admin can choose between many accounts; guides and tourists have one admin chat. */}
+        {userType === "admin" && <aside className="chat-sidebar">
           <div className="chat-sidebar-header">
             <div>
               <h2>Messages</h2>
@@ -135,17 +205,24 @@ export default function ChatBox({
                         {conversation.lastMessage ||
                           "No messages yet"}
                       </p>
+                      {Number(conversation.unread_count) > 0 && (
+                        <span className="chat-unread">
+                          {conversation.unread_count}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </button>
               ))
             ) : (
               <div className="chat-no-conversations">
-                No conversations yet.
+                {userType === "admin"
+                  ? "No conversations yet."
+                  : "No admin account is configured yet."}
               </div>
             )}
           </div>
-        </aside>
+        </aside>}
 
         {/* RIGHT SIDE */}
         <div className="chat-main">
@@ -164,14 +241,11 @@ export default function ChatBox({
                   <span>{selectedConversation.role}</span>
                 </div>
               </>
-            ) : (
-              <div>
-                <h3>Account</h3>
-              </div>
-            )}
+            ) : null}
           </header>
 
           <div className="chat-messages">
+            {chatError && <div className="chat-no-conversations">{chatError}</div>}
             {messages.length ? (
               messages.map((item) => (
                 <div
@@ -210,12 +284,13 @@ export default function ChatBox({
               type="text"
               value={message}
               placeholder="Type your message..."
+              disabled={!selectedConversation}
               onChange={(e) =>
                 setMessage(e.target.value)
               }
             />
 
-            <button type="submit">
+            <button type="submit" disabled={!selectedConversation}>
               <FiSend />
               <span>Send</span>
             </button>
