@@ -1,0 +1,98 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  DEPLOY_USER: s20230204047
+  DEPLOY_HOST: 187.52.122.100
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v4
+
+      - name: Use PHP 8.4, same as the server
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+
+      - name: Install PHP dependencies
+        working-directory: backend
+        run: |
+          composer install --no-dev --prefer-dist --optimize-autoloader --no-interaction
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Build React app
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run build
+          test -f ../backend/public/app/index.html
+
+      - name: Pack release
+        run: |
+          test -d backend/vendor
+          test -f backend/public/app/index.html
+
+          tar --exclude='.git' \
+              --exclude='node_modules' \
+              --exclude='*/node_modules' \
+              --exclude='.env' \
+              --exclude='.env.*' \
+              -czf release.tar.gz -C backend .
+
+          tar -tzf release.tar.gz | grep -q '^vendor/'
+          tar -tzf release.tar.gz | grep -q '^public/app/index.html$'
+
+          ! tar -tzf release.tar.gz | grep -E '(^|/)\.env($|\.)'
+          ! tar -tzf release.tar.gz | grep -E '(^|/)(node_modules)(/|$)'
+          ! tar -tzf release.tar.gz | grep -E '(^|/)\.git(/|$)'
+
+      - name: Load deploy key
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/cse3100_deploy
+          chmod 600 ~/.ssh/cse3100_deploy
+          ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts
+
+      - name: Copy release
+        run: |
+          scp -i ~/.ssh/cse3100_deploy -o IdentitiesOnly=yes \
+            release.tar.gz \
+            "$DEPLOY_USER@$DEPLOY_HOST:~/release.tar.gz"
+
+      - name: Deploy on server
+        run: |
+          ssh -i ~/.ssh/cse3100_deploy -o IdentitiesOnly=yes \
+            "$DEPLOY_USER@$DEPLOY_HOST" '
+              set -e
+
+              mkdir -p ~/laravel
+
+              tar -xzf ~/release.tar.gz -C ~/laravel
+
+              mkdir -p ~/laravel/storage
+              mkdir -p ~/laravel/bootstrap/cache
+
+              chmod -R u+rwX ~/laravel/storage ~/laravel/bootstrap/cache
+
+              cd ~/laravel
+
+              php artisan migrate --force
+
+              php artisan optimize
+
+              rm ~/release.tar.gz
+            '
