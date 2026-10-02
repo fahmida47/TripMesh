@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   FiBell,
   FiBellOff,
@@ -34,6 +34,7 @@ export default function NotificationBell({
   onOpenChange,
 }) {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   const {
     items,
     loading,
@@ -204,7 +205,13 @@ export default function NotificationBell({
                   <li
                     key={n.id}
                     className={`tm-notif__item ${n.read ? "" : "is-unread"}`}
-                    onClick={() => !n.read && markAsRead(n.id)}
+                    onClick={async () => {
+                      if (!n.read) await markAsRead(n.id);
+                      if (n.actionUrl) {
+                        setOpenPath(null);
+                        navigate(n.actionUrl);
+                      }
+                    }}
                   >
                     <span className="tm-notif__icon">
                       <Icon />

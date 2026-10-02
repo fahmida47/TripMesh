@@ -149,6 +149,13 @@ class TravelRequestController extends Controller
 
         }
 
+        $guideProfile->user->notifications()->create([
+            'type' => 'booking',
+            'title' => 'New travel request',
+            'message' => $user->name.' sent a travel request for '.$validated['destination'].'.',
+            'action_url' => '/guide-dashboard/requests',
+        ]);
+
 
 
 
@@ -310,6 +317,10 @@ class TravelRequestController extends Controller
 
         }
 
+        if ($travelRequest->status !== 'pending') {
+            return response()->json(['message' => 'This request has already been handled.'], 422);
+        }
+
 
 
 
@@ -323,6 +334,13 @@ class TravelRequestController extends Controller
                 $guideProfile
 
             );
+
+        $travelRequest->tourist->user->notifications()->create([
+            'type' => 'message',
+            'title' => 'Request accepted',
+            'message' => 'Guide '.$user->name.' accepted your travel request.',
+            'action_url' => '/tourist-dashboard/bookings',
+        ]);
 
 
 
@@ -361,8 +379,21 @@ class TravelRequestController extends Controller
     public function reject($id): JsonResponse
     {
 
+        $user = auth('api')->user();
+
+        if (!$user || $user->role !== 'guide') {
+            return response()->json(['message' => 'Only guides can reject requests.'], 403);
+        }
+
+        $guideProfile = $user->guideProfile;
+        if (!$guideProfile) {
+            return response()->json(['message' => 'Guide profile not found.'], 404);
+        }
+
         $travelRequest =
-            TravelRequest::find($id);
+            TravelRequest::where('id', $id)
+                ->where('guide_profile_id', $guideProfile->id)
+                ->first();
 
 
 
@@ -377,6 +408,10 @@ class TravelRequestController extends Controller
 
         }
 
+        if ($travelRequest->status !== 'pending') {
+            return response()->json(['message' => 'This request has already been handled.'], 422);
+        }
+
 
 
 
@@ -389,6 +424,13 @@ class TravelRequestController extends Controller
             'rejected'
 
         );
+
+        $travelRequest->tourist->user->notifications()->create([
+            'type' => 'message',
+            'title' => 'Request declined',
+            'message' => 'Guide '.$user->name.' declined your travel request.',
+            'action_url' => '/tourist-dashboard/bookings',
+        ]);
 
 
 

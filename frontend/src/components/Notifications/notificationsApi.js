@@ -1,7 +1,7 @@
 /*
   Notifications API client.
 
-  Backend contract (for whoever builds the Laravel side):
+  Backend contract:
 
     GET   /api/notifications            -> list, newest first
     PATCH /api/notifications/{id}/read  -> mark one as read
@@ -17,6 +17,7 @@
       "type": "booking",              // booking | payment | message | review | system
       "title": "Booking confirmed",
       "message": "Your tour has been confirmed.",
+      "action_url": "/tourist-dashboard/bookings",
       "created_at": "2026-10-02T10:00:00Z",
       "read": false                   // or "read_at": null | "<iso date>"
     }
@@ -39,6 +40,7 @@ function normalize(raw) {
     title: raw.title ?? "",
     message: raw.message ?? raw.body ?? "",
     createdAt: raw.created_at ?? raw.createdAt,
+    actionUrl: raw.action_url ?? raw.actionUrl ?? null,
     read: raw.read !== undefined ? Boolean(raw.read) : Boolean(raw.read_at),
   };
 }
@@ -50,8 +52,6 @@ export async function fetchNotifications() {
     headers: headers(),
   });
 
-  // Endpoint not built yet -> behave like "no notifications".
-  if (res.status === 404) return [];
   if (!res.ok) throw new Error(`Notifications request failed (${res.status})`);
 
   const json = await res.json();

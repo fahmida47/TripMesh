@@ -1,11 +1,8 @@
 /*
   Notification data layer.
 
-  The backend has no notifications endpoint yet, so this module serves
-  role-based sample data and remembers which items were read in
-  localStorage. When the API exists, replace `loadNotifications` with a
-  fetch to `${API_BASE_URL}/notifications` and `persistReadIds` with
-  PATCH calls - the UI components do not need to change.
+  Legacy sample-data helpers. The notification bell now uses the backend
+  API client in notificationsApi.js; this module is retained for reference.
 
   Notification shape:
     { id, type, title, message, createdAt (ISO string), read (boolean) }

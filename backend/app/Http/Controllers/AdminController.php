@@ -115,6 +115,13 @@ class AdminController extends Controller
             return response()->json(['message' => 'This payout has already been processed.'], 422);
         }
 
+        $result->guide->user->notifications()->create([
+            'type' => 'payment',
+            'title' => 'Guide payout sent',
+            'message' => 'Your payout of '.$result->net_amount.' has been marked as paid.',
+            'action_url' => '/guide-dashboard/payouts',
+        ]);
+
         return response()->json([
             'message' => 'Payout marked as paid.',
             'payout' => $result,

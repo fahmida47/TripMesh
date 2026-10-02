@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Services\PaymentService;
+use App\Models\User;
 
 
 class PaymentController extends Controller
@@ -137,6 +138,10 @@ class PaymentController extends Controller
 
         $user=auth('api')->user();
 
+        if (!$user || $user->role !== 'tourist' || !$user->touristProfile) {
+            return response()->json(['message' => 'Only tourists can submit payments.'], 403);
+        }
+
 
 
         $result =
@@ -157,6 +162,15 @@ class PaymentController extends Controller
             ],$result['status']);
 
         }
+
+        User::where('role', 'admin')->get()->each(function (User $admin) use ($user, $result) {
+            $admin->notifications()->create([
+                'type' => 'payment',
+                'title' => 'Tourist payment submitted',
+                'message' => $user->name.' submitted payment details for booking #'.$result['booking']->id.'.',
+                'action_url' => '/admin/payments',
+            ]);
+        });
 
 
 

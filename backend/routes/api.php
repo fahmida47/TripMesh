@@ -13,6 +13,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PayoutController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Middleware\EnsureAdmin;
 
 
@@ -59,6 +60,12 @@ Route::middleware(['auth:api', EnsureAdmin::class])->prefix('admin')->group(func
     Route::get('/profile', [AdminController::class, 'profile']);
     Route::put('/profile', [AdminController::class, 'updateProfile']);
     Route::post('/admins', [AdminController::class, 'createAdmin']);
+});
+
+Route::middleware('auth:api')->prefix('notifications')->group(function () {
+    Route::get('/', [NotificationController::class, 'index']);
+    Route::patch('/{id}/read', [NotificationController::class, 'markRead']);
+    Route::patch('/read-all', [NotificationController::class, 'markAllRead']);
 });
 
 
