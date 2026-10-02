@@ -11,9 +11,9 @@ function formatDate(value) {
   return Number.isNaN(date.getTime()) ? value : date.toLocaleDateString();
 }
 
-function formatDateRange(booking) {
-  const start = formatDate(booking.from_date);
-  const end = formatDate(booking.to_date);
+function formatDateRange(booking, serviceRequest) {
+  const start = formatDate(booking.from_date || serviceRequest?.from_date);
+  const end = formatDate(booking.to_date || serviceRequest?.to_date);
   return start === end ? start : `${start} – ${end}`;
 }
 
@@ -176,60 +176,80 @@ useEffect(() => {
           </div>
         ) : (
           <div className="bookings-list">
-            {bookings.map((booking) => (
-              <div className="booking-row" key={booking.id}>
-                <div className="booking-customer">
-                  <strong>
-                    {booking.tourist?.full_name ||
-                      booking.tourist?.user?.name ||
-                      "Tourist"}
-                  </strong>
-                </div>
+            {bookings.map((booking) => {
+              const serviceRequest =
+                booking.service_request || booking.serviceRequest;
+              const tourService =
+                serviceRequest?.tour_service || serviceRequest?.tourService;
+              const travelRequest =
+                booking.travel_request || booking.travelRequest;
+              const tourName =
+                booking.experience?.title ||
+                tourService?.title ||
+                serviceRequest?.experience_name ||
+                travelRequest?.experience_name ||
+                "Tour booking";
+              const destination =
+                tourService?.location ||
+                serviceRequest?.destination ||
+                travelRequest?.destination ||
+                "—";
+              const travelers =
+                serviceRequest?.travelers ?? travelRequest?.travelers ?? "—";
+              const status = (booking.status || "pending_payment").replaceAll(
+                "_",
+                "-",
+              );
 
-                <div className="booking-tour">
-                  <strong>
-                    {booking.experience?.title ||
-                      booking.travel_request?.experience_name ||
-                      "Tour booking"}
-                  </strong>
-                  <span>{booking.travel_request?.destination || "—"}</span>
-                </div>
+              return (
+                <div className="booking-row" key={booking.id}>
+                  <div className="booking-customer">
+                    <strong>
+                      {booking.tourist?.full_name ||
+                        booking.tourist?.user?.name ||
+                        "Tourist"}
+                    </strong>
+                  </div>
 
-                <span>{formatDateRange(booking)}</span>
+                  <div className="booking-tour">
+                    <strong>{tourName}</strong>
+                    <span>{destination}</span>
+                  </div>
 
-                <span>{booking.travel_request?.travelers ?? "—"}</span>
+                  <span>{formatDateRange(booking, serviceRequest)}</span>
 
-                <strong>{formatAmount(booking.amount)}</strong>
+                  <span>{travelers}</span>
 
-                <span
-                  className={`booking-status ${booking.status.replaceAll("_", "-")}`}
-                >
-                  {booking.status.replaceAll("_", " ")}
-                </span>
+                  <strong>{formatAmount(booking.amount)}</strong>
 
-                {booking.status === "confirmed" && booking.payment?.status === "paid" ? (
-                  <button
-                    className="booking-complete-btn"
-                    type="button"
-                    disabled={updatingId === booking.id}
-                    onClick={() => {
-                      setError("");
-                      setBookingToComplete(booking);
-                    }}
-                  >
-                    {updatingId === booking.id ? "Saving…" : "Mark completed"}
-                  </button>
-                ) : (
-                  <span className="booking-action-note">
-                    {booking.status === "pending_payment"
-                      ? "Waiting for payment"
-                      : booking.status === "completed"
-                        ? "Done"
-                        : "—"}
+                  <span className={`booking-status ${status}`}>
+                    {(booking.status || "pending_payment").replaceAll("_", " ")}
                   </span>
-                )}
-              </div>
-            ))}
+
+                  {booking.status === "confirmed" && booking.payment?.status === "paid" ? (
+                    <button
+                      className="booking-complete-btn"
+                      type="button"
+                      disabled={updatingId === booking.id}
+                      onClick={() => {
+                        setError("");
+                        setBookingToComplete(booking);
+                      }}
+                    >
+                      {updatingId === booking.id ? "Saving…" : "Mark completed"}
+                    </button>
+                  ) : (
+                    <span className="booking-action-note">
+                      {booking.status === "pending_payment"
+                        ? "Waiting for payment"
+                        : booking.status === "completed"
+                          ? "Done"
+                          : "—"}
+                    </span>
+                  )}
+                </div>
+              );
+            })}
           </div>
         )}
       </section>
