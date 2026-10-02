@@ -89,6 +89,10 @@ export default function TouristRequestCard({
   const guideUser = guideProfile?.user;
   const experience = booking?.experience;
   const travelRequest = booking?.travelRequest;
+  const serviceRequest =
+    booking?.serviceRequest || booking?.service_request;
+  const tourService =
+    serviceRequest?.tourService || serviceRequest?.tour_service;
 
   /*
   |--------------------------------------------------------------------------
@@ -125,12 +129,15 @@ export default function TouristRequestCard({
     experience?.name ||
     experience?.experience_name ||
     experience?.experience_title ||
+    tourService?.title ||
+    serviceRequest?.experience_name ||
     "Travel Experience";
 
   const destination =
     experience?.destination ||
     experience?.location ||
     travelRequest?.destination ||
+    serviceRequest?.destination ||
     null;
 
   /*
