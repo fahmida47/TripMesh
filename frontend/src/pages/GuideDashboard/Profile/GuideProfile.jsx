@@ -2,9 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import { getExperienceAsset } from "../../../experienceAssets";
 import GuideLocationMap from "../../../components/GuideLocationMap";
 import "./GuideProfile.css";
+import { API_BASE_URL, STORAGE_URL } from "../../../config.js";
+import { getToken } from "../../../utils/auth.js";
 
-const API_BASE_URL = "http://127.0.0.1:8000/api";
-const STORAGE_URL = "http://127.0.0.1:8000/storage";
+
+
 const MAX_UPLOAD_SIZE = 5 * 1024 * 1024;
 
 function formatReverseGeocodedAddress(address = {}) {
@@ -103,15 +105,11 @@ function GuideProfile() {
     "Group Tour",
   ];
 
-  useEffect(() => {
-    loadProfile();
-  }, []);
-
   useEffect(() => () => locationLookupController.current?.abort(), []);
 
   const loadProfile = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = getToken();
 
       if (!token) {
         setSuccessMessage("You are not logged in.");
@@ -196,6 +194,11 @@ function GuideProfile() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadProfile();
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -376,7 +379,7 @@ function GuideProfile() {
 
   const saveNewExperience = async (experience) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = getToken();
 
       if (!token) {
         setSuccessMessage("You are not logged in.");
@@ -430,7 +433,7 @@ function GuideProfile() {
 
   const saveExistingExperience = async (experience) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = getToken();
 
       if (!token) {
         setSuccessMessage("You are not logged in.");
@@ -541,7 +544,7 @@ function GuideProfile() {
     try {
       setSaving(true);
 
-      const token = localStorage.getItem("token");
+      const token = getToken();
 
       if (!token) {
         setSuccessMessage("You are not logged in.");

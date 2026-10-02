@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { FiStar } from "react-icons/fi";
 
 import "./ReviewsRatings.css";
+import { API_BASE_URL } from "../../../config.js";
+import { getToken } from "../../../utils/auth.js";
 
-const API_BASE_URL = "http://127.0.0.1:8000/api";
+
 
 const ReviewsRatings = () => {
   const [reviewData, setReviewData] = useState({
@@ -16,7 +18,7 @@ const ReviewsRatings = () => {
 
   useEffect(() => {
     const loadReviews = async () => {
-      const token = localStorage.getItem("token");
+      const token = getToken();
 
       if (!token) {
         setError("Please login first.");

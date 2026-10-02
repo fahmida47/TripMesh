@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { FiMapPin, FiStar, FiShield } from "react-icons/fi";
-import { logoColor } from "../mockRequestsBookings";
+import { logoColor } from "../../../utils/logoColor";
 
 function formatMoney(value) {
   if (value === undefined || value === null || value === "") {

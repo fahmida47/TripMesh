@@ -15,13 +15,14 @@ import {
 } from "react-icons/fi";
 
 import logo from "../../../assets/logo.png";
+import { logout } from "../../../utils/auth.js";
 
 const GuideSidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.setItem("isLoggedIn", "false");
-    navigate("/");
+    logout();
+    navigate("/", { replace: true });
   };
 
   const closeSidebar = () => {

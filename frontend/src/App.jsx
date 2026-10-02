@@ -8,6 +8,8 @@ import {
 
 import ScrollToTop from "./ScrollToTop";
 
+import { getLoggedInUser } from "./utils/auth";
+
 import GlobalLandingPage from "./pages/GlobalLandingPage/GlobalLandingPage";
 import Explore from "./pages/Explore/Explore";
 import Login from "./pages/Login/Login";
@@ -39,6 +41,10 @@ import TouristProfile from "./pages/TouristDashboard/Profile/TouristProfile";
 import TouristReviews from "./pages/TouristDashboard/Reviews/TouristReviews";
 import RequestsBookings from "./pages/TouristDashboard/components/RequestsBookings";
 import PaymentHistory from "./pages/TouristDashboard/components/PaymentHistory";
+
+
+import PaymentPage from "./pages/TouristDashboard/components/PaymentPage";
+
 import PaymentForm from "./pages/TouristDashboard/components/PaymentForm";
 import PaymentPage from "./pages/TouristDashboard/components/PaymentPage";
 import ReviewForm from "./pages/TouristDashboard/Reviews/ReviewForm";
@@ -53,6 +59,7 @@ import ChatBox from "./pages/Chat/ChatBox";
    ADMIN
 ========================= */
 
+
 import AdminLogin from "./pages/Admin/AdminLogin";
 
 import AdminDashboard, {
@@ -66,36 +73,25 @@ import AdminDashboard, {
 } from "./pages/Admin/AdminDashboard";
 
 /* =========================
-   AUTH HELPER
+   AUTH / ROLE ROUTING
 ========================= */
 
-function getLoggedInUser() {
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
-  const storedUser = localStorage.getItem("user");
+const ROLE_HOME = {
+  guide: "/guide-dashboard",
+  tourist: "/tourist-dashboard",
+  admin: "/admin/dashboard",
+};
 
-  if (isLoggedIn !== "true" || !storedUser) {
-    return null;
-  }
-
-  try {
-    return JSON.parse(storedUser);
-  } catch (error) {
-    console.error("Invalid user data:", error);
-
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    localStorage.removeItem("isLoggedIn");
-
-    return null;
-  }
-}
-
-/* =========================
-   LANDING PAGE PROTECTION
-========================= */
-
-function LandingPageRedirect() {
+/* Public pages (landing, login, signup): signed-in users go to their dashboard */
+function PublicOnly({ children }) {
   const user = getLoggedInUser();
+
+
+  if (user && ROLE_HOME[user.role]) {
+    return <Navigate to={ROLE_HOME[user.role]} replace />;
+  }
+
+  return children;
 
   if (!user) {
     return <GlobalLandingPage />;
@@ -166,18 +162,20 @@ function SignupRedirect() {
   }
 
   return <Signup />;
+
 }
 
-/* =========================
-   PROTECTED DASHBOARD
-========================= */
-
+/* Dashboards: only the matching role may enter */
 function ProtectedDashboard({ children, role }) {
   const user = getLoggedInUser();
 
   if (!user) {
     return <Navigate to="/login" replace />;
   }
+
+
+  if (user.role === role) {
+    return children;
 
   if (user.role !== role) {
     if (user.role === "guide") {
@@ -191,9 +189,11 @@ function ProtectedDashboard({ children, role }) {
     if (user.role === "admin") {
       return <Navigate to="/admin/dashboard" replace />;
     }
+
   }
 
-  return children;
+  // Wrong role -> own dashboard. Unknown role -> login (never the protected page).
+  return <Navigate to={ROLE_HOME[user.role] ?? "/login"} replace />;
 }
 
 /* =========================
@@ -210,6 +210,10 @@ function App() {
             PUBLIC PAGES
         ========================= */}
 
+
+        {/* Landing Page */}
+        <Route path="/" element={<PublicOnly><GlobalLandingPage /></PublicOnly>} />
+
         <Route
           path="/"
           element={<LandingPageRedirect />}
@@ -224,6 +228,7 @@ function App() {
           path="/about"
           element={<AboutUs />}
         />
+
 
         <Route
           path="/contact"
@@ -240,6 +245,12 @@ function App() {
           element={<SignupRedirect />}
         />
 
+        {/* Login */}
+        <Route path="/login" element={<PublicOnly><Login /></PublicOnly>} />
+
+        {/* Signup */}
+        <Route path="/signup" element={<PublicOnly><Signup /></PublicOnly>} />
+
         {/* =========================
             ADMIN
         ========================= */}
@@ -248,6 +259,7 @@ function App() {
           path="/admin/login"
           element={<AdminLogin />}
         />
+
 
         <Route
           path="/admin"
@@ -423,15 +435,6 @@ function App() {
         />
 
         <Route
-          path="/tourist-dashboard/payments/form"
-          element={
-            <ProtectedDashboard role="tourist">
-              <PaymentForm />
-            </ProtectedDashboard>
-          }
-        />
-
-        <Route
           path="/tourist-dashboard/payment"
           element={
             <ProtectedDashboard role="tourist">
@@ -445,15 +448,6 @@ function App() {
           element={
             <ProtectedDashboard role="tourist">
               <TouristReviews />
-            </ProtectedDashboard>
-          }
-        />
-
-        <Route
-          path="/tourist-dashboard/reviews/form"
-          element={
-            <ProtectedDashboard role="tourist">
-              <ReviewForm />
             </ProtectedDashboard>
           }
         />

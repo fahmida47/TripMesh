@@ -44,13 +44,6 @@ function AddTourService() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const tourServiceData = {
-      ...formData,
-      image: tourImage?.file || null,
-    };
-
-    console.log("Tour Service:", tourServiceData);
-
     alert("Tour service form completed!");
 
     navigate("/guide-dashboard/tour-services");

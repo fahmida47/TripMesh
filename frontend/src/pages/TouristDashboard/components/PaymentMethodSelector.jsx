@@ -1,20 +1,5 @@
 import { FiCheck } from "react-icons/fi";
-import { BkashIcon, NagadIcon } from "./PaymentMethodIcons";
-
-export const PAYMENT_METHODS = [
-  {
-    id: "bkash",
-    label: "bKash",
-    hint: "Pay with bKash",
-    Icon: BkashIcon,
-  },
-  {
-    id: "nagad",
-    label: "Nagad",
-    hint: "Pay with Nagad",
-    Icon: NagadIcon,
-  },
-];
+import { PAYMENT_METHODS } from "./PaymentMethods";
 
 export default function PaymentMethodSelector({ method, onChange }) {
   return (
@@ -24,7 +9,11 @@ export default function PaymentMethodSelector({ method, onChange }) {
         Choose a Payment Method
       </h2>
 
-      <div className="cp-methods" role="radiogroup" aria-label="Payment method">
+      <div
+        className="cp-methods"
+        role="radiogroup"
+        aria-label="Payment method"
+      >
         {PAYMENT_METHODS.map(({ id, label, hint, Icon }) => {
           const active = id === method;
 
@@ -34,7 +23,9 @@ export default function PaymentMethodSelector({ method, onChange }) {
               key={id}
               role="radio"
               aria-checked={active}
-              className={`cp-method ${active ? "cp-method--active" : ""}`}
+              className={`cp-method ${
+                active ? "cp-method--active" : ""
+              }`}
               onClick={() => onChange(id)}
             >
               {active && (
@@ -43,13 +34,11 @@ export default function PaymentMethodSelector({ method, onChange }) {
                 </span>
               )}
 
-              {/* FULL LOGO AREA */}
               <span className="cp-method-icon">
                 <Icon />
               </span>
 
               <span className="cp-method-label">{label}</span>
-
               <span className="cp-method-hint">{hint}</span>
             </button>
           );

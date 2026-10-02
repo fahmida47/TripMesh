@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
 import "./Signup.css";
 import signupBg from "../../assets/login-bg.jpeg";
 import Loading from "../../components/Loading/Loading";
+import { API_BASE_URL } from "../../config.js";
 
-const API_URL = "http://127.0.0.1:8000/api";
+const API_URL = API_BASE_URL;
 
 const LogoIcon = () => (
   <svg viewBox="0 0 80 80" className="trip-logo" fill="none">

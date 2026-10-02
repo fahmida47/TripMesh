@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
+import { API_BASE_URL } from "../../config.js";
+import { getStoredUser } from "../../utils/auth.js";
 
-const API = "http://127.0.0.1:8000/api";
+const API = API_BASE_URL;
 
 export default function AdminLogin() {
   const navigate = useNavigate();
@@ -42,8 +44,7 @@ export default function AdminLogin() {
     }
   };
 
-  let user;
-  try { user = JSON.parse(localStorage.getItem("user") || "null"); } catch { user = null; }
+  const user = getStoredUser();
   if (localStorage.getItem("isLoggedIn") === "true" && user?.role === "admin") return <Navigate to="/admin/dashboard" replace />;
 
   return (

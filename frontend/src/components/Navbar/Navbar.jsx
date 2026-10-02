@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 
 const LogoIcon = () => (
@@ -12,65 +12,42 @@ const LogoIcon = () => (
   </svg>
 );
 
-function Navbar() {
-  const { pathname } = useLocation();
+const SECTION_ROUTES = {
+  home: "/",
+  explore: "/explore",
+  about: "/about",
+  contact: "/contact",
+};
 
-  const [activeSection, setActiveSection] = useState("home");
+function sectionFromPath(pathname) {
+  const match = Object.entries(SECTION_ROUTES).find(
+    ([, route]) => route !== "/" && pathname.startsWith(route),
+  );
+  return match ? match[0] : "home";
+}
+
+/*
+  Landing page: pass `onSectionChange` (scrolls the one-page layout).
+  Standalone pages (/explore, /about, /contact): no callback, so the
+  links use router navigation instead.
+*/
+function Navbar({ activeSection, onSectionChange }) {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+
   const [menuOpen, setMenuOpen] = useState(false);
 
-  /* =========================
-     HOME PAGE SECTION SCROLL
-     ========================= */
+  const current = activeSection ?? sectionFromPath(pathname);
 
   const goToSection = (sectionId) => {
-    const landingPage = document.querySelector(".tm-landing");
-    const section = document.getElementById(sectionId);
+    setMenuOpen(false);
 
-    if (!landingPage || !section) {
+    if (onSectionChange) {
+      onSectionChange(sectionId);
       return;
     }
 
-    /* Active navbar line */
-    setActiveSection(sectionId);
-
-    /* Close mobile menu */
-    setMenuOpen(false);
-
-    /*
-      About Us + Contact Us
-      previous scroll position reset
-    */
-    const sectionContent = section.querySelector(".tm-section-content");
-
-    if (sectionContent) {
-      sectionContent.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "auto",
-      });
-    }
-
-    /*
-      Explore-এর scrollbar
-    */
-    const explorePage = section.querySelector(".explore-page");
-
-    if (explorePage) {
-      explorePage.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "auto",
-      });
-    }
-
-    /*
-      Main landing page selected
-    */
-    landingPage.scrollTo({
-      top: section.offsetTop,
-      left: 0,
-      behavior: "smooth",
-    });
+    navigate(SECTION_ROUTES[sectionId] ?? "/");
   };
 
   /* =========================
@@ -102,7 +79,7 @@ function Navbar() {
         {/* HOME */}
         <button
           type="button"
-          className={activeSection === "home" ? "active" : ""}
+          className={current === "home" ? "active" : ""}
           onClick={() => goToSection("home")}
         >
           Home
@@ -111,7 +88,7 @@ function Navbar() {
         {/* EXPLORE */}
         <button
           type="button"
-          className={activeSection === "explore" ? "active" : ""}
+          className={current === "explore" ? "active" : ""}
           onClick={() => goToSection("explore")}
         >
           Explore
@@ -120,7 +97,7 @@ function Navbar() {
         {/* ABOUT US */}
         <button
           type="button"
-          className={activeSection === "about" ? "active" : ""}
+          className={current === "about" ? "active" : ""}
           onClick={() => goToSection("about")}
         >
           About Us
@@ -129,7 +106,7 @@ function Navbar() {
         {/* CONTACT US */}
         <button
           type="button"
-          className={activeSection === "contact" ? "active" : ""}
+          className={current === "contact" ? "active" : ""}
           onClick={() => goToSection("contact")}
         >
           Contact Us

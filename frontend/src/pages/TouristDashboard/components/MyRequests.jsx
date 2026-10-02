@@ -5,6 +5,8 @@ import { ChevronLeftIcon, ChevronRightIcon } from "./NavIcons";
 import TouristRequestCard from "./TouristRequestCard";
 import RequestDetailsModal from "./RequestDetailsModal";
 import "./RequestsBookings.css";
+import { API_BASE_URL } from "../../../config.js";
+import { getToken } from "../../../utils/auth.js";
 
 const PAGE_SIZE = 5;
 
@@ -20,15 +22,6 @@ export default function MyRequests({
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const getToken = () => {
-    return (
-      localStorage.getItem("token") ||
-      localStorage.getItem("access_token") ||
-      localStorage.getItem("authToken") ||
-      localStorage.getItem("auth_token")
-    );
-  };
-
   useEffect(() => {
     const fetchBookings = async () => {
       try {
@@ -43,7 +36,7 @@ export default function MyRequests({
         }
 
         const response = await fetch(
-          "http://127.0.0.1:8000/api/bookings",
+          `${API_BASE_URL}/bookings`,
           {
             method: "GET",
             headers: {
@@ -60,8 +53,6 @@ export default function MyRequests({
             data?.message || "Failed to load bookings."
           );
         }
-
-        console.log("Bookings API response:", data);
 
         if (Array.isArray(data?.bookings)) {
           setRequests(data.bookings);
@@ -110,13 +101,6 @@ export default function MyRequests({
   );
 
   const handleViewDetails = (booking) => {
-    console.log("View Details booking:", booking);
-
-    console.log(
-      "FULL BOOKING DATA:",
-      JSON.stringify(booking, null, 2)
-    );
-
     setActiveRequest(booking);
   };
 
@@ -139,7 +123,7 @@ export default function MyRequests({
     });
   };
 
-  const handleCancel = (id) => {
+  const handleCancel = () => {
     onToast?.(
       "Cancellation is currently handled by the backend."
     );

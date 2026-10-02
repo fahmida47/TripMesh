@@ -9,6 +9,8 @@ import PaymentDetailsModal from "./PaymentDetailsModal";
 import TouristSidebar from "./TouristSidebar";
 
 import "./PaymentHistory.css";
+import { API_BASE_URL } from "../../../config.js";
+import { getToken } from "../../../utils/auth.js";
 
 const PAGE_SIZE = 5;
 
@@ -48,7 +50,7 @@ export default function PaymentHistory({ onPayNow }) {
 
   useEffect(() => {
     const loadPayments = async () => {
-      const token = localStorage.getItem("token");
+      const token = getToken();
 
       if (!token) {
         setError("Please login first.");
@@ -57,7 +59,7 @@ export default function PaymentHistory({ onPayNow }) {
       }
 
       try {
-        const response = await fetch("http://127.0.0.1:8000/api/bookings", {
+        const response = await fetch(`${API_BASE_URL}/bookings`, {
           headers: {
             Accept: "application/json",
             Authorization: `Bearer ${token}`,

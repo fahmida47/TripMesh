@@ -11,6 +11,7 @@ import {
 } from "react-icons/fi";
 
 import "./TouristSidebar.css";
+import { logout } from "../../../utils/auth.js";
 import logo from "../../../assets/logo.png";
 
 const NAV_ITEMS = [
@@ -54,8 +55,8 @@ export default function TouristSidebar({
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.setItem("isLoggedIn", "false");
-    navigate("/");
+    logout();
+    navigate("/", { replace: true });
   };
 
   return (

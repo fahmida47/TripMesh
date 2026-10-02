@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./UpcomingBookings.css";
+import { API_BASE_URL } from "../../../config.js";
+import { getToken } from "../../../utils/auth.js";
 
-const API_BASE_URL = "http://127.0.0.1:8000/api";
+
 
 function formatDate(value) {
   if (!value) return "Date not set";
@@ -37,7 +39,7 @@ const UpcomingBookings = () => {
 
     const loadBookings = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = getToken();
         if (!token) {
           throw new Error("Please sign in again to view bookings.");
         }

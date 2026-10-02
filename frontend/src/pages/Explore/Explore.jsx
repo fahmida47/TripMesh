@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { MapPin } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { getExperienceAsset } from "../../experienceAssets";
@@ -6,9 +6,8 @@ import GuideLocationMap from "../../components/GuideLocationMap";
 import "./Explore.css";
 import ExploreHero from "./ExploreHero";
 import ExploreSearch from "./ExploreSearch";
-
-const API_BASE_URL = "http://127.0.0.1:8000/api";
-const STORAGE_URL = "http://127.0.0.1:8000/storage";
+import { API_BASE_URL, STORAGE_URL } from "../../config.js";
+import { getLoggedInUser, getToken } from "../../utils/auth.js";
 
 function ExperiencePhoto({ experience }) {
   const fallbackImage = getExperienceAsset(experience.title);
@@ -60,6 +59,9 @@ function formatPriceRange(guide) {
     : `৳${min} - ৳${max}`;
 }
 
+
+function GuideCard({ guide, onSendRequest, onViewDetails }) {
+
 function getLoggedInUser() {
   const isLoggedIn = localStorage.getItem("isLoggedIn");
   const storedUser = localStorage.getItem("user");
@@ -82,6 +84,7 @@ function GuideCard({
   onSendRequest,
   onViewDetails,
 }) {
+
   return (
     <article className="explore-guide-card">
       <div className="explore-card-content">
@@ -249,6 +252,7 @@ function hasCoordinates(guide) {
 
 function Explore({ embedded = false }) {
   const navigate = useNavigate();
+  const latestFetchId = useRef(0);
 
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
@@ -312,6 +316,41 @@ function Explore({ embedded = false }) {
   const [requestError, setRequestError] =
     useState("");
 
+
+  const [sortBy, setSortBy] = useState("popular");
+  const [viewMode, setViewMode] = useState("grid");
+
+  const [guides, setGuides] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [lastPage, setLastPage] = useState(1);
+  const [totalGuides, setTotalGuides] = useState(0);
+
+  // Request Modal
+  const [selectedGuide, setSelectedGuide] = useState(null);
+  const [detailsGuide, setDetailsGuide] = useState(null);
+
+  // Date Range
+  const [fromDate, setFromDate] = useState("");
+  const [toDate, setToDate] = useState("");
+
+  const [destination, setDestination] = useState("");
+  const [travelers, setTravelers] = useState(1);
+  const [agreedAmount, setAgreedAmount] = useState("");
+  const [requestDetails, setRequestDetails] = useState("");
+  const [selectedExperience, setSelectedExperience] = useState("");
+
+  const [requestLoading, setRequestLoading] = useState(false);
+  const [requestSuccess, setRequestSuccess] = useState("");
+  const [requestError, setRequestError] = useState("");
+
+  // Stable array: GuideLocationMap re-fits the view whenever it changes.
+  const mapMarkers = useMemo(() => guides.filter(hasCoordinates), [guides]);
+
+  // Today's date
+
   const getTodayDate = () => {
     const today = new Date();
     const year = today.getFullYear();
@@ -327,16 +366,50 @@ function Explore({ embedded = false }) {
     return `${year}-${month}-${day}`;
   };
 
+
+  // Fetch Guides. Filters are passed in explicitly (defaulting to the
+  // applied state) so a search/sort that was just triggered never reads
+  // the previous render's values.
+  const fetchGuides = async (page = 1, filters = {}) => {
+    const {
+      search = searchTerm,
+      tourType = searchTourType,
+      price = searchPriceRange,
+      sort = sortBy,
+    } = filters;
+
+    // Ignore responses from superseded requests.
+    const requestId = ++latestFetchId.current;
+
+
   const fetchGuides = async (
     page = 1,
     selectedSort = sortBy
   ) => {
+
     try {
       setLoading(true);
       setError("");
 
       const params =
         new URLSearchParams();
+
+
+      if (search) {
+        params.append("search", search);
+      }
+
+      if (tourType) {
+        params.append("tour_type", tourType);
+      }
+
+      if (price) {
+        params.append("price_range", price);
+      }
+
+      params.append("sort", sort);
+      params.append("page", page);
+      params.append("per_page", 6);
 
       if (searchTerm) {
         params.append(
@@ -363,6 +436,7 @@ function Explore({ embedded = false }) {
         "sort",
         selectedSort || "popular"
       );
+
 
       params.append(
         "page",
@@ -398,6 +472,19 @@ function Explore({ embedded = false }) {
         data.current_page || 1
       );
 
+
+      if (requestId !== latestFetchId.current) {
+        return;
+      }
+
+      setGuides((data.data || []).map(normalizeGuide));
+      setCurrentPage(data.current_page || 1);
+      setLastPage(data.last_page || 1);
+      setTotalGuides(data.total || 0);
+    } catch {
+      if (requestId !== latestFetchId.current) {
+        return;
+      }
       setLastPage(
         data.last_page || 1
       );
@@ -415,15 +502,22 @@ function Explore({ embedded = false }) {
         "Unable to load guide services."
       );
 
+
       setGuides([]);
     } finally {
-      setLoading(false);
+      if (requestId === latestFetchId.current) {
+        setLoading(false);
+      }
     }
   };
 
   useEffect(() => {
-    fetchGuides(1);
-  }, []);
+  // Initial API load when the Explore page opens.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  fetchGuides(1);
+  // Initial load only; later fetches are triggered by user actions.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, []);
 
   const handleSearch = () => {
     const newSearch =
@@ -436,9 +530,11 @@ function Explore({ embedded = false }) {
     setSearchPriceRange(priceRange);
     setCurrentPage(1);
 
-    setTimeout(() => {
-      fetchGuides(1);
-    }, 0);
+    fetchGuides(1, {
+      search: newSearch,
+      tourType: selectedTourType,
+      price: priceRange,
+    });
   };
 
   const handleSortApply = () => {
@@ -467,6 +563,9 @@ function Explore({ embedded = false }) {
     setSortBy(selectedSort);
     setCurrentPage(1);
 
+
+    fetchGuides(1, { sort: value });
+
     fetchGuides(
       1,
       selectedSort
@@ -480,6 +579,7 @@ function Explore({ embedded = false }) {
       event.preventDefault();
       handleSortApply();
     }
+
   };
 
   const handlePageChange = (
@@ -584,6 +684,10 @@ function Explore({ embedded = false }) {
           "token"
         );
 
+
+    const user = getLoggedInUser();
+    const token = getToken();
+
       if (
         !user ||
         !token
@@ -591,6 +695,7 @@ function Explore({ embedded = false }) {
         setRequestError(
           "Please login first to send a travel request."
         );
+
 
         setTimeout(() => {
           navigate("/login");
@@ -755,6 +860,11 @@ function Explore({ embedded = false }) {
         amount:
           requestedAmount,
 
+
+      if (!response.ok) {
+        if (data.errors) {
+          const firstError = Object.values(data.errors)[0];
+
         request_details:
           requestDetails.trim() ||
           null,
@@ -770,6 +880,7 @@ function Explore({ embedded = false }) {
             `${API_BASE_URL}/travel-requests`,
             {
               method: "POST",
+
 
               headers: {
                 "Content-Type":
@@ -1109,9 +1220,13 @@ function Explore({ embedded = false }) {
                       )}
                     </div>
 
+
+                    {mapMarkers.length === 0 && (
+
                     {!guides.some(
                       hasCoordinates
                     ) && (
+
                       <p className="explore-map-empty">
                         No guide locations have been pinned yet.
                       </p>
@@ -1120,12 +1235,15 @@ function Explore({ embedded = false }) {
 
                   <div className="explore-map-canvas">
                     <GuideLocationMap
+
+                      markers={mapMarkers}
+
                       markers={guides.filter(
                         hasCoordinates
                       )}
                       onMarkerSelect={
                         setDetailsGuide
-                      }
+
                     />
                   </div>
                 </div>

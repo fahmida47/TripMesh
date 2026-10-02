@@ -1,10 +1,8 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
-
-import PaymentMethodSelector, {
-  PAYMENT_METHODS,
-} from "./PaymentMethodSelector";
+import PaymentMethodSelector from "./PaymentMethodSelector";
+import { PAYMENT_METHODS } from "./PaymentMethods";
 
 import PaymentForm from "./PaymentForm";
 import PaymentBookingSummary from "./PaymentBookingSummary";
@@ -12,6 +10,8 @@ import PaymentSuccess from "./PaymentSuccess";
 import TouristSidebar from "./TouristSidebar";
 
 import "./PaymentPage.css";
+import { API_BASE_URL } from "../../../config.js";
+import { getToken } from "../../../utils/auth.js";
 
 export default function PaymentPage({
   booking,
@@ -63,10 +63,10 @@ export default function PaymentPage({
     paymentData
   ) => {
     const token =
-      localStorage.getItem("token");
+      getToken();
 
     const response = await fetch(
-      "http://127.0.0.1:8000/api/payments/complete",
+      `${API_BASE_URL}/payments/complete`,
       {
         method: "POST",
 

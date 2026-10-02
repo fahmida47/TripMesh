@@ -2,8 +2,10 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import "./RecentRequests.css";
+import { API_BASE_URL } from "../../../config.js";
+import { getToken } from "../../../utils/auth.js";
 
-const API_BASE_URL = "http://127.0.0.1:8000/api";
+
 
 const RecentRequests = () => {
   const navigate = useNavigate();
@@ -17,7 +19,7 @@ const RecentRequests = () => {
       setLoading(true);
       setError("");
 
-      const token = localStorage.getItem("token");
+      const token = getToken();
 
       if (!token) {
         setError("Authentication token not found.");
@@ -44,8 +46,6 @@ const RecentRequests = () => {
             "Failed to fetch requests."
         );
       }
-
-      console.log("Dashboard Requests:", data);
 
       const requestList = Array.isArray(data?.requests)
         ? data.requests
@@ -84,8 +84,10 @@ const RecentRequests = () => {
   };
 
   useEffect(() => {
-    fetchRecentRequests();
-  }, []);
+  // Initial API load when the dashboard component opens.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  fetchRecentRequests();
+}, []);
 
   const handleViewAll = () => {
     navigate("/guide-dashboard/requests");

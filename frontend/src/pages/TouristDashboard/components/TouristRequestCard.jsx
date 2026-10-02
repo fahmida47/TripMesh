@@ -89,7 +89,6 @@ export default function TouristRequestCard({
   const guideUser = guideProfile?.user;
   const experience = booking?.experience;
   const travelRequest = booking?.travelRequest;
-  const payment = booking?.payment;
 
   /*
   |--------------------------------------------------------------------------
@@ -156,9 +155,11 @@ export default function TouristRequestCard({
     travelRequest?.toDate ||
     null;
 
+  // Format each end of the range separately (a single formatDisplayDate call
+  // on "from - to" would not parse and would print the raw ISO strings).
   const requestedDate = requestedToDate
-    ? `${requestedFromDate} - ${requestedToDate}`
-    : requestedFromDate;
+    ? `${formatDisplayDate(requestedFromDate)} - ${formatDisplayDate(requestedToDate)}`
+    : formatDisplayDate(requestedFromDate);
 
   /*
   |--------------------------------------------------------------------------
@@ -271,7 +272,7 @@ export default function TouristRequestCard({
         </span>
 
         <span className="rb-date">
-          {formatDisplayDate(requestedDate)}
+          {requestedDate}
         </span>
       </div>
 

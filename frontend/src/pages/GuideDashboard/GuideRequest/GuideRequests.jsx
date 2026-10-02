@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 
 import "./GuideRequests.css";
+import { API_BASE_URL } from "../../../config.js";
+import { getToken } from "../../../utils/auth.js";
 
-const API_BASE_URL = "http://127.0.0.1:8000/api";
+
 
 const GuideRequests = () => {
   const [requests, setRequests] = useState([]);
@@ -27,7 +29,7 @@ const GuideRequests = () => {
       setLoading(true);
       setError("");
 
-      const token = localStorage.getItem("token");
+      const token = getToken();
 
       if (!token) {
         setError("Authentication token not found. Please login again.");
@@ -68,15 +70,17 @@ const GuideRequests = () => {
   };
 
   useEffect(() => {
-    fetchRequests();
-  }, []);
+  // Initial API load when the requests page opens.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  fetchRequests();
+}, []);
 
   const handleStatusChange = async (id, action) => {
     try {
       setActionLoading(id);
       setError("");
 
-      const token = localStorage.getItem("token");
+      const token = getToken();
 
       if (!token) {
         setError(

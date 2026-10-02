@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import "./GuideBookings.css";
+import { API_BASE_URL } from "../../../config.js";
+import { getToken } from "../../../utils/auth.js";
 
-const API_BASE_URL = "http://127.0.0.1:8000/api";
+
 
 function formatDate(value) {
   if (!value) return "—";
@@ -35,7 +37,7 @@ function GuideBookings() {
       const response = await fetch(`${API_BASE_URL}/bookings/guide`, {
         headers: {
           Accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+          Authorization: `Bearer ${getToken() || ""}`,
         },
       });
       const data = await response.json();
@@ -51,11 +53,11 @@ function GuideBookings() {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    loadBookings();
-  }, []);
-
+useEffect(() => {
+  // Initial API load when the bookings page opens.
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  loadBookings();
+}, []);
   useEffect(() => {
     if (!bookingToComplete || updatingId !== null) {
       return undefined;
@@ -83,7 +85,7 @@ function GuideBookings() {
           method: "PUT",
           headers: {
             Accept: "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token") || ""}`,
+            Authorization: `Bearer ${getToken() || ""}`,
           },
         },
       );

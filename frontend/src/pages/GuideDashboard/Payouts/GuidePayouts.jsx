@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { BadgeCheck, CircleDollarSign, Clock3 } from "lucide-react";
 import "./GuidePayouts.css";
+import { API_BASE_URL } from "../../../config.js";
+import { getToken } from "../../../utils/auth.js";
 
-const API_BASE_URL = "http://127.0.0.1:8000/api";
+
 
 function formatAmount(value) {
   return `৳${Number(value || 0).toLocaleString("en-BD", {
@@ -34,7 +36,7 @@ function GuidePayouts() {
 
     const fetchPayouts = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = getToken();
         if (!token) {
           throw new Error("Please sign in again to view your payouts.");
         }

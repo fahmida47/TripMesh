@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 import loginBg from "../../assets/login-bg.jpeg";
 import Loading from "../../components/Loading/Loading";
+import { API_BASE_URL } from "../../config.js";
 
-const API_URL = "http://127.0.0.1:8000/api";
+const API_URL = API_BASE_URL;
 
 const OTP_DURATION = 120;
 const RETRY_DELAY = 20;
