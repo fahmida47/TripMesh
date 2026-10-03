@@ -70,28 +70,53 @@ jobs:
           ! tar -tzf release.tar.gz | grep -E '(^|/)\.git(/|$)'
 
       - name: Load deploy key
+        shell: bash
         run: |
-          mkdir -p ~/.ssh
+          set -euo pipefail
 
-          printf '%s\n' "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/cse3100_deploy
+          echo "HOME=$HOME"
+          echo "Creating SSH directory..."
 
-          chmod 600 ~/.ssh/cse3100_deploy
+          mkdir -p "$HOME/.ssh"
+          chmod 700 "$HOME/.ssh"
 
-          ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts
+          test -d "$HOME/.ssh"
+
+          printf '%s\n' "${{ secrets.SSH_PRIVATE_KEY }}" > "$HOME/.ssh/cse3100_deploy"
+
+          test -s "$HOME/.ssh/cse3100_deploy"
+
+          chmod 600 "$HOME/.ssh/cse3100_deploy"
+
+          ssh-keyscan -H "$DEPLOY_HOST" > "$HOME/.ssh/known_hosts"
+
+          chmod 644 "$HOME/.ssh/known_hosts"
+
+          test -s "$HOME/.ssh/known_hosts"
+
+          echo "SSH setup completed."
 
       - name: Copy release
+        shell: bash
         run: |
+          set -euo pipefail
+
           scp \
-            -i ~/.ssh/cse3100_deploy \
+            -i "$HOME/.ssh/cse3100_deploy" \
             -o IdentitiesOnly=yes \
+            -o StrictHostKeyChecking=yes \
             release.tar.gz \
             "$DEPLOY_USER@$DEPLOY_HOST:~/release.tar.gz"
 
       - name: Deploy on server
+        shell: bash
         run: |
+          set -euo pipefail
+
           ssh \
-            -i ~/.ssh/cse3100_deploy \
+            -i "$HOME/.ssh/cse3100_deploy" \
             -o IdentitiesOnly=yes \
+            -o StrictHostKeyChecking=yes \
             "$DEPLOY_USER@$DEPLOY_HOST" '
               set -e
 
