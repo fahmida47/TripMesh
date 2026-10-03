@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Check, Image as ImageIcon, UserCog } from "lucide-react";
 
-import TouristSidebar from "../components/TouristSidebar";
 
 import "./TouristProfile.css";
 import { API_BASE_URL } from "../../../config.js";
@@ -291,9 +290,6 @@ const TouristProfile = () => {
 
   return (
     <div className="tourist-profile-layout">
-      {/* FIXED TOURIST SIDEBAR */}
-      <TouristSidebar />
-
       {/* MAIN PROFILE CONTENT */}
       <main className="tourist-profile-page">
         {/* PAGE HEADING */}

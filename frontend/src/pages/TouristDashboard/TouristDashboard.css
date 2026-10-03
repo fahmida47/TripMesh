@@ -160,6 +160,29 @@
   }
 }
 
+/* All tourist routes share TouristLayout, so child pages must not reserve
+   space for their former standalone fixed sidebars. */
+.ts-shell-content .tourist-profile-layout,
+.ts-shell-content .tourist-profile-page,
+.ts-shell-content .tourist-reviews-layout,
+.ts-shell-content .tourist-reviews-page,
+.ts-shell-content .rb-page,
+.ts-shell-content .pm-page,
+.ts-shell-content .cp-shell,
+.ts-shell-content .cp-content {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-left: 0 !important;
+}
+
+.ts-shell-content .tourist-profile-page,
+.ts-shell-content .tourist-reviews-page,
+.ts-shell-content .rb-page,
+.ts-shell-content .pm-page,
+.ts-shell-content .cp-content {
+  min-height: 0;
+}
+
 @media (max-width: 700px) {
   .ts-shell-body,
   .ts-shell-main,

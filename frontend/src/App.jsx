@@ -321,71 +321,17 @@ function App() {
           path="/tourist-dashboard"
           element={
             <ProtectedDashboard role="tourist">
-              <TouristDashboard />
-            </ProtectedDashboard>
-          }
-        />
-
-        <Route
-          path="/tourist-dashboard/profile"
-          element={
-            <ProtectedDashboard role="tourist">
-              <TouristProfile />
-            </ProtectedDashboard>
-          }
-        />
-
-        <Route
-          path="/tourist-dashboard/bookings"
-          element={
-            <ProtectedDashboard role="tourist">
-              <RequestsBookings />
-            </ProtectedDashboard>
-          }
-        />
-
-        <Route
-          path="/tourist-dashboard/payments"
-          element={
-            <ProtectedDashboard role="tourist">
-              <PaymentHistory />
-            </ProtectedDashboard>
-          }
-        />
-
-        <Route
-          path="/tourist-dashboard/payment"
-          element={
-            <ProtectedDashboard role="tourist">
-              <PaymentPage />
-            </ProtectedDashboard>
-          }
-        />
-
-        <Route
-          path="/tourist-dashboard/reviews"
-          element={
-            <ProtectedDashboard role="tourist">
-              <TouristReviews />
-            </ProtectedDashboard>
-          }
-        />
-
-        {/* TOURIST CHAT */}
-        <Route
-          path="/tourist-dashboard/chat"
-          element={
-            <ProtectedDashboard role="tourist">
               <TouristLayout />
             </ProtectedDashboard>
           }
         >
-          <Route
-            index
-            element={
-              <ChatBox userType="tourist" />
-            }
-          />
+          <Route index element={<TouristDashboard />} />
+          <Route path="profile" element={<TouristProfile />} />
+          <Route path="bookings" element={<RequestsBookings />} />
+          <Route path="payments" element={<PaymentHistory />} />
+          <Route path="payment" element={<PaymentPage />} />
+          <Route path="reviews" element={<TouristReviews />} />
+          <Route path="chat" element={<ChatBox userType="tourist" />} />
         </Route>
 
         {/* NOT FOUND */}

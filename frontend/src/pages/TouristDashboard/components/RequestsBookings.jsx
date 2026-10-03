@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
 import MyRequests from "./MyRequests";
-import TouristSidebar from "./TouristSidebar";
 
 import "./RequestsBookings.css";
 
@@ -25,8 +24,6 @@ export default function RequestsBookings({ onProceedToPayment }) {
 
   return (
     <>
-      <TouristSidebar />
-
       <div className="rb-page">
         <div className="rb-header">
           <h1>My Requests</h1>

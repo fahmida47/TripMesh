@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import "./TouristReviews.css";
 import ReviewForm from "./ReviewForm";
 
-import TouristSidebar from "../components/TouristSidebar";
 import { API_BASE_URL } from "../../../config.js";
 import { getToken } from "../../../utils/auth.js";
 
@@ -108,9 +107,6 @@ function TouristReviews() {
 
   return (
     <div className="tourist-reviews-layout">
-      {/* SIDEBAR */}
-      <TouristSidebar activeKey="reviews" />
-
       {/* MAIN CONTENT */}
       <main className="tourist-reviews-page">
         {/* PAGE HEADING */}

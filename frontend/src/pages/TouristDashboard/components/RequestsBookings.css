@@ -820,7 +820,11 @@
   }
 
   .rb-cell--actions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
     justify-content: flex-start;
+    gap: 6px;
   }
 
   .rb-actions {
@@ -831,6 +835,10 @@
   .rb-btn {
     flex: 1;
     justify-content: center;
+  }
+
+  .rb-cell--actions .rb-cell-label {
+    margin-bottom: 0;
   }
 }
 
@@ -877,7 +885,35 @@
   }
 
   .rb-list {
-    min-height: 180px;
+    min-height: 0;
+  }
+
+  .rb-row {
+    gap: 14px;
+    padding: 18px 16px;
+  }
+
+  .rb-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3px;
+  }
+
+  .rb-company,
+  .rb-actions {
+    width: 100%;
+  }
+
+  .rb-cell--actions .rb-btn {
+    width: 100%;
+    min-height: 42px;
+  }
+
+  .rb-tour-name {
+    max-width: 100%;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 
   .rb-empty {

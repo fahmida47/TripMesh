@@ -6,7 +6,6 @@ import { ChevronLeftIcon, ChevronRightIcon } from "./NavIcons";
 import TouristStatCard from "./TouristStatCard";
 import PaymentCard from "./PaymentCard";
 import PaymentDetailsModal from "./PaymentDetailsModal";
-import TouristSidebar from "./TouristSidebar";
 
 import "./PaymentHistory.css";
 import { API_BASE_URL } from "../../../config.js";
@@ -173,8 +172,6 @@ export default function PaymentHistory({ onPayNow }) {
 
   return (
     <>
-      <TouristSidebar />
-
       {/* PAYMENT CONTENT */}
       <div className="pm-page">
         {/* ==============================

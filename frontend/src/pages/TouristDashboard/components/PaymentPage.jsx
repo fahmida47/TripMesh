@@ -7,7 +7,6 @@ import { PAYMENT_METHODS } from "./PaymentMethods";
 import PaymentForm from "./PaymentForm";
 import PaymentBookingSummary from "./PaymentBookingSummary";
 import PaymentSuccess from "./PaymentSuccess";
-import TouristSidebar from "./TouristSidebar";
 
 import "./PaymentPage.css";
 import { API_BASE_URL } from "../../../config.js";
@@ -36,8 +35,6 @@ export default function PaymentPage({
   const [submitting, setSubmitting] =
     useState(false);
   const [submitted, setSubmitted] =
-    useState(false);
-  const [sidebarOpen, setSidebarOpen] =
     useState(false);
 
   // ================================
@@ -152,13 +149,6 @@ export default function PaymentPage({
   if (submitted) {
     return (
       <div className="cp-shell">
-        <TouristSidebar
-          isOpen={sidebarOpen}
-          onClose={() =>
-            setSidebarOpen(false)
-          }
-        />
-
         <main className="cp-content">
           <div className="cp-page">
             <PaymentSuccess
@@ -178,13 +168,6 @@ export default function PaymentPage({
   // ================================
   return (
     <div className="cp-shell">
-      <TouristSidebar
-        isOpen={sidebarOpen}
-        onClose={() =>
-          setSidebarOpen(false)
-        }
-      />
-
       <main className="cp-content">
         <div className="cp-page">
 
