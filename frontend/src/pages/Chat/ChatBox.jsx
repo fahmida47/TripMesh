@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
+  FiArrowLeft,
   FiSearch,
   FiMessageCircle,
   FiSend,
@@ -136,7 +137,7 @@ export default function ChatBox({
         </p>
       </div>
 
-      <section className={`chat-container ${userType === "admin" ? "" : "chat-container-single"}`}>
+      <section className={`chat-container ${userType === "admin" ? `chat-container-admin ${selectedId !== null ? "chat-has-selection" : ""}` : "chat-container-single"}`}>
 
         {/* Admin can choose between many accounts; guides and tourists have one admin chat. */}
         {userType === "admin" && <aside className="chat-sidebar">
@@ -230,6 +231,19 @@ export default function ChatBox({
           <header className="chat-main-header">
             {selectedConversation ? (
               <>
+                {userType === "admin" && (
+                  <button
+                    type="button"
+                    className="chat-mobile-back"
+                    onClick={() => {
+                      setSelectedId(null);
+                      setMessages([]);
+                    }}
+                    aria-label="Back to conversations"
+                  >
+                    <FiArrowLeft />
+                  </button>
+                )}
                 <div className="chat-avatar">
                   {(selectedConversation.name || "U")
                     .charAt(0)

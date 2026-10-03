@@ -115,16 +115,21 @@ export default function AdminDashboard() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const logout = async () => {
-    try {
-      await api("/auth/logout", {
-        method: "POST",
-      });
-    } catch {
-      // Clear local session even if logout API fails.
-    }
-
+    const token = getToken();
     clearSession();
     navigate("/", { replace: true });
+
+    if (token) {
+      fetch(`${API}/auth/logout`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }).catch(() => {
+        // The local session is already cleared if the API is unavailable.
+      });
+    }
   };
 
   const currentTitle =
@@ -134,10 +139,19 @@ export default function AdminDashboard() {
   return (
     <div className="admin-shell">
       <aside
+        id="admin-navigation"
         className={`admin-sidebar ${
           menuOpen ? "is-open" : ""
         }`}
       >
+        <button
+          type="button"
+          className="admin-sidebar-close"
+          onClick={() => setMenuOpen(false)}
+          aria-label="Close navigation"
+        >
+          <X size={20} />
+        </button>
         <Link
           className="admin-brand"
           to="/admin/dashboard"
@@ -196,6 +210,8 @@ export default function AdminDashboard() {
               setMenuOpen((open) => !open)
             }
             aria-label="Toggle navigation"
+            aria-expanded={menuOpen}
+            aria-controls="admin-navigation"
           >
             {menuOpen ? <X /> : <Menu />}
           </button>
