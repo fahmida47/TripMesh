@@ -18,6 +18,7 @@ The platform provides location-based discovery, guide/company profiles, travel r
 * Track travel request status
 * Make payments after request approval
 * View tourist dashboard
+* Chat Option
 
 ### 🧭 Guide
 
@@ -27,6 +28,7 @@ The platform provides location-based discovery, guide/company profiles, travel r
 * Accept or manage requests
 * Receive payment-related updates
 * Manage guide dashboard
+* Chat Option
 
 ### 🏢 Guide Company
 
@@ -42,6 +44,7 @@ The platform provides location-based discovery, guide/company profiles, travel r
 * Review guide/company information
 * Manage users and administrative operations
 * Monitor platform data
+* Chat Option
 
 ---
 
