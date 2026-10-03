@@ -25,6 +25,10 @@ body {
   flex-direction: column;
 }
 
+.guide-dashboard > .dashboard-content {
+  width: calc(100% - 280px);
+}
+
 .dashboard-body {
   padding: 18px 22px;
 
@@ -84,6 +88,12 @@ body {
     margin-left: 0;
   }
 
+  .guide-dashboard > .dashboard-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+  }
+
   .dashboard-body {
     width: 100%;
     padding: 16px;
@@ -92,7 +102,7 @@ body {
   }
 
   .guide-menu-btn {
-    display: flex;
+    display: flex !important;
   }
 
   .sidebar-overlay {
@@ -137,6 +147,15 @@ body {
     max-width: 100% !important;
     margin-left: 0 !important;
     box-sizing: border-box !important;
+  }
+
+  .guide-header-text {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .guide-header-actions {
+    flex-shrink: 0;
   }
 
   .dashboard-body {

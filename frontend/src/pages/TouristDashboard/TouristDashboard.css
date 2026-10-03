@@ -185,3 +185,11 @@
     overflow-x: auto;
   }
 }
+
+@media (max-width: 1024px) {
+  .ts-shell-content .tourist-reviews-page {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-left: 0 !important;
+  }
+}

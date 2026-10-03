@@ -467,6 +467,10 @@
 }
 
 @media (max-width: 760px) {
+  .bookings-list-card {
+    overflow-x: auto;
+  }
+
   .booking-summary-grid {
     grid-template-columns: 1fr 1fr;
   }
