@@ -19,6 +19,7 @@
   background:var(--background);
   color:var(--text);
   overflow-x:clip;
+  overscroll-behavior-y:contain;
 }
 
 .explore-top-section{
@@ -468,6 +469,13 @@
   flex-shrink:0;
   border-radius:6px;
   object-fit:cover;
+}
+
+.experience-item img,
+.guide-details-experience img,
+.request-package-photo img {
+  object-fit: contain;
+  background: #f1f5f9;
 }
 
 .experience-placeholder{
@@ -1239,6 +1247,34 @@
 
 /* MOBILE */
 @media(max-width:650px){
+  .explore-page {
+    min-height: 100svh;
+    height: auto;
+    overflow-y: visible;
+  }
+
+  .explore-main {
+    flex: 1 0 auto;
+  }
+
+  .explore-map-view {
+    overflow: visible;
+    border-radius: 8px;
+  }
+
+  .explore-map-results {
+    overflow: visible;
+  }
+
+  .explore-map-guide-list {
+    max-height: none;
+    overflow: visible;
+  }
+
+  .experience-item img {
+    object-fit: contain;
+  }
+
   .explore-top-section{
     height:280px;
     min-height:280px;
@@ -1304,7 +1340,12 @@
   }
 
   .explore-map-guide-list{
-    max-height:230px;
+    max-height:none;
+    overflow:visible;
+  }
+
+  .request-package-photo img {
+    object-fit: contain;
   }
 
   .explore-map-empty{

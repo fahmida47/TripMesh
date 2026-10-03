@@ -168,7 +168,7 @@
   height: 22px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .guide-sidebar {
     width: min(280px, 85vw);
     height: 100vh;

@@ -337,8 +337,9 @@ body {
         rgba(1, 10, 35, 0.72)
       ),
       var(--tm-hero-image);
-    background-size: 100% 100%, 100% auto;
+    background-size: 100% 100%, contain;
     background-position: center, center bottom;
+    background-color: #020d2d;
   }
 
   .tm-hero__inner {

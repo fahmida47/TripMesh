@@ -17,6 +17,8 @@ body {
 
 .dashboard-content {
   flex: 1;
+  min-width: 0;
+  margin-left: 280px;
 
   display: flex;
 
@@ -70,7 +72,7 @@ body {
    MOBILE
    ============================== */
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .guide-dashboard {
     width: 100%;
     min-height: 100vh;
@@ -79,6 +81,7 @@ body {
   .dashboard-content {
     width: 100%;
     min-width: 0;
+    margin-left: 0;
   }
 
   .dashboard-body {
@@ -111,7 +114,7 @@ body {
    GUIDE MOBILE WIDTH FIX
    ============================== */
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .guide-dashboard {
     display: block !important;
     width: 100% !important;
@@ -165,5 +168,24 @@ body {
     width: 100% !important;
     max-width: 100% !important;
     min-width: 0 !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard-body {
+    padding: 12px !important;
+  }
+
+  .dashboard-body > *,
+  .dashboard-body section,
+  .dashboard-body article {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .dashboard-body table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
   }
 }

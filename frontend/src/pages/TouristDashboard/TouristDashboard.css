@@ -159,3 +159,29 @@
     font-size: 15px;
   }
 }
+
+@media (max-width: 700px) {
+  .ts-shell-body,
+  .ts-shell-main,
+  .ts-shell-content {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .ts-shell-content {
+    padding: 14px 12px;
+  }
+
+  .ts-shell-content > *,
+  .ts-shell-content section,
+  .ts-shell-content article {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .ts-shell-content table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+  }
+}
