@@ -12,13 +12,13 @@
 
 .explore-page{
   width:100%;
-  height:100%;
-  min-height:0;
+  min-height:100vh;
+  min-height:100svh;
   display:flex;
   flex-direction:column;
   background:var(--background);
   color:var(--text);
-  overflow:hidden;
+  overflow-x:clip;
 }
 
 .explore-top-section{
@@ -62,13 +62,10 @@
 
 .explore-main{
   width:100%;
-  flex:1;
-  min-height:0;
+  flex:initial;
+  min-height:auto;
   margin:0;
   padding:30px max(40px,calc((100% - 1500px)/2)) 60px;
-  overflow-x:hidden;
-  overflow-y:auto;
-  overscroll-behavior:contain;
 }
 
 .explore-listing-section{width:100%}

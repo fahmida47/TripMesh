@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { useLocation } from "react-router-dom";
 
@@ -47,8 +47,6 @@ function FeatureItem({ icon, title, subtitle }) {
 }
 
 function GlobalLandingPage() {
-  const pageRef = useRef(null);
-
   const location = useLocation();
 
   const [activeSection, setActiveSection] = useState("home");
@@ -56,34 +54,13 @@ function GlobalLandingPage() {
   /* Navbar click করলে section change */
 
   const goToSection = (sectionId) => {
-    const page = pageRef.current;
-
     const section = document.getElementById(sectionId);
 
-    if (!page || !section) return;
+    if (!section) return;
 
     setActiveSection(sectionId);
 
-    /*
-      Explore / About / Contact section-এর
-      নিজের scroll থাকলে আগে top-এ যাবে
-    */
-
-    const sectionContent = section.querySelector(".tm-section-content");
-
-    if (sectionContent) {
-      sectionContent.scrollTop = 0;
-    }
-
-    /*
-      তারপর Home container smooth scroll করে
-      section-এর শুরুতে যাবে
-    */
-
-    page.scrollTo({
-      top: section.offsetTop,
-      behavior: "smooth",
-    });
+    section.scrollIntoView({ behavior: "smooth", block: "start" });
 
     /*
       URL hash update
@@ -110,19 +87,8 @@ function GlobalLandingPage() {
     return () => clearTimeout(timer);
   }, [location.hash]);
 
-  /* Home page open থাকলে browser body scroll বন্ধ */
-
-  useEffect(() => {
-    document.body.classList.add("tripmesh-home-open");
-
-    return () => {
-      document.body.classList.remove("tripmesh-home-open");
-    };
-  }, []);
-
   return (
     <main
-      ref={pageRef}
       className="tm-landing"
       style={{
         "--tm-hero-image": `url(${heroImage})`,
