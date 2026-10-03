@@ -337,8 +337,8 @@ body {
         rgba(1, 10, 35, 0.72)
       ),
       var(--tm-hero-image);
-    background-size: 100% 100%, contain;
-    background-position: center, center bottom;
+    background-size: 100% 100%, cover;
+    background-position: center, 68% center;
     background-color: #020d2d;
   }
 
@@ -347,6 +347,8 @@ body {
     min-height: calc(100vh - 60px);
     min-height: calc(100svh - 60px);
     margin: 0 12px;
+    align-items: start;
+    padding-top: clamp(34px, 6vh, 58px);
   }
 
   .tm-hero h1 {
