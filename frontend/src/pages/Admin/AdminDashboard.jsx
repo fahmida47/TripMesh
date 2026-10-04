@@ -20,6 +20,7 @@ import {
   Menu,
   X,
 } from "lucide-react";
+import { FiChevronDown, FiUser } from "react-icons/fi";
 
 import logo from "../../assets/logo.png";
 import NotificationBell from "../../components/Notifications/NotificationBell";
@@ -132,10 +133,6 @@ export default function AdminDashboard() {
     }
   };
 
-  const currentTitle =
-    links.find(([to]) => to === location.pathname)?.[1] ||
-    "Overview";
-
   return (
     <div className="admin-shell">
       <aside
@@ -216,24 +213,38 @@ export default function AdminDashboard() {
             {menuOpen ? <X /> : <Menu />}
           </button>
 
-          <div>
-            <span>Admin workspace</span>
-            <h1>{currentTitle}</h1>
+          <div className="admin-welcome-heading">
+            <h1>
+              Welcome back, {user?.name?.split(" ")[0] || "Admin"}!
+              <span aria-hidden="true"> 👋</span>
+            </h1>
+            <p>{new Date().toLocaleDateString("en-US", {
+              weekday: "long",
+              day: "numeric",
+              month: "long",
+              year: "numeric",
+            })}</p>
           </div>
 
           <div className="admin-topbar-right">
             <NotificationBell variant="light" />
 
-            <div className="admin-user">
+            <button
+              type="button"
+              className="admin-user"
+              onClick={() => navigate("/admin/profile")}
+              aria-label="Open administrator profile"
+            >
               <span className="admin-avatar">
-                {user?.name?.[0]?.toUpperCase() || "A"}
+                <FiUser />
               </span>
 
               <div>
                 <b>{user?.name || "Administrator"}</b>
                 <small>Administrator</small>
               </div>
-            </div>
+              <FiChevronDown className="admin-user-chevron" />
+            </button>
           </div>
         </header>
 
