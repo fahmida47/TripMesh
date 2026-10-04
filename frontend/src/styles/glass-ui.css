@@ -1,0 +1,75 @@
+/* App-wide glass language for public pages and all dashboard routes. */
+:root {
+  --tm-glass-surface: rgba(255, 255, 255, 0.76);
+  --tm-glass-border: rgba(224, 232, 243, 0.88);
+  --tm-glass-shadow: 0 12px 34px rgba(29, 52, 89, 0.075);
+  --tm-glass-blur: 16px;
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 4% 3%, rgba(222, 235, 255, 0.48), transparent 28rem),
+    radial-gradient(ellipse at 96% 18%, rgba(232, 241, 255, 0.42), transparent 32rem),
+    #f4f6fb;
+}
+
+/* Semantic cards and named card/panel surfaces across every app page. */
+#root :is(
+  article,
+  [class*="-card"],
+  [class$="card"],
+  [class*="-panel"],
+  [class$="panel"],
+  [class*="-modal"],
+  [class$="modal"],
+  [class*="-sheet"],
+  [class$="sheet"]
+) {
+  background-color: var(--tm-glass-surface);
+  border-color: var(--tm-glass-border);
+  box-shadow: var(--tm-glass-shadow);
+  -webkit-backdrop-filter: blur(var(--tm-glass-blur)) saturate(140%);
+  backdrop-filter: blur(var(--tm-glass-blur)) saturate(140%);
+}
+
+#root :is(
+  .explore-advanced-search,
+  .explore-filter-panel,
+  .explore-search-panel,
+  .contact-information,
+  .contact-form-card
+) {
+  background-color: var(--tm-glass-surface);
+  border-color: var(--tm-glass-border);
+  box-shadow: var(--tm-glass-shadow);
+  -webkit-backdrop-filter: blur(var(--tm-glass-blur)) saturate(140%);
+  backdrop-filter: blur(var(--tm-glass-blur)) saturate(140%);
+}
+
+#root :is(
+  article,
+  [class*="-card"],
+  [class$="card"],
+  [class*="-panel"],
+  [class$="panel"]
+):hover {
+  border-color: rgba(197, 215, 243, 0.96);
+  box-shadow: 0 16px 40px rgba(29, 52, 89, 0.105);
+}
+
+/* Retain explicit artwork, gradients, and media surfaces inside cards. */
+#root :is([class*="hero-card"], [class*="image-card"], [class*="map-card"]) {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+@media (max-width: 700px) {
+  :root {
+    --tm-glass-blur: 12px;
+    --tm-glass-shadow: 0 8px 24px rgba(29, 52, 89, 0.07);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  :root { --tm-glass-surface: rgba(255, 255, 255, 0.94); }
+}

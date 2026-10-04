@@ -4,6 +4,7 @@ import './index.css'
 import App from './App.jsx'
 
 import "./styles/responsive.css";
+import "./styles/glass-ui.css";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

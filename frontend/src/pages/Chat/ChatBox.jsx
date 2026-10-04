@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   FiArrowLeft,
   FiSearch,
@@ -37,6 +37,8 @@ export default function ChatBox({
   const [selectedId, setSelectedId] = useState(null);
   const [search, setSearch] = useState("");
   const [message, setMessage] = useState("");
+  const [messagesLoading, setMessagesLoading] = useState(false);
+  const messagesEndRef = useRef(null);
 
   const selectedConversation = conversations.find(
     (item) => Number(item.id) === Number(selectedId)
@@ -65,6 +67,7 @@ export default function ChatBox({
 
   const loadMessages = useCallback(async (conversationId) => {
     setChatError("");
+    setMessagesLoading(true);
     try {
       const result = await chatApi(`/conversations/${conversationId}/messages`);
       setMessages(result.data || []);
@@ -76,12 +79,18 @@ export default function ChatBox({
     } catch (error) {
       setMessages([]);
       setChatError(error.message);
+    } finally {
+      setMessagesLoading(false);
     }
   }, []);
 
   useEffect(() => {
     if (selectedId !== null) loadMessages(selectedId);
   }, [selectedId, loadMessages]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+  }, [messages]);
 
   const filteredConversations = useMemo(() => {
     const value = search.trim().toLowerCase();
@@ -128,13 +137,16 @@ export default function ChatBox({
   return (
     <div className="chat-page">
       <div className="chat-page-heading">
-        <h1>Chat</h1>
-
-        <p>
+        <div>
+          <span className="chat-heading-eyebrow">TRIPMESH MESSAGES</span>
+          <h1>Chat</h1>
+          <p>
           {userType === "admin"
             ? "Reply to tourists and guides."
             : "Chat with TripMesh Admin."}
-        </p>
+          </p>
+        </div>
+        <span className="chat-secure-label"><span /> Secure conversation</span>
       </div>
 
       <section className={`chat-container ${userType === "admin" ? `chat-container-admin ${selectedId !== null ? "chat-has-selection" : ""}` : "chat-container-single"}`}>
@@ -255,12 +267,22 @@ export default function ChatBox({
                   <span>{selectedConversation.role}</span>
                 </div>
               </>
-            ) : null}
+            ) : (
+              <div className="chat-header-placeholder">
+                <span className="chat-avatar chat-avatar-placeholder"><FiMessageCircle /></span>
+                <div>
+                  <h3>{userType === "admin" ? "Select a conversation" : "TripMesh support"}</h3>
+                  <span>{userType === "admin" ? "Choose a person from your inbox to start replying." : "Your conversations with the TripMesh team will appear here."}</span>
+                </div>
+              </div>
+            )}
           </header>
 
           <div className="chat-messages">
-            {chatError && <div className="chat-no-conversations">{chatError}</div>}
-            {messages.length ? (
+            {chatError && <div className="chat-inline-error" role="alert">{chatError}</div>}
+            {messagesLoading ? (
+              <div className="chat-loading-state"><span className="chat-loading-dots" />Loading messages...</div>
+            ) : messages.length ? (
               messages.map((item) => (
                 <div
                   key={item.id}
@@ -285,9 +307,11 @@ export default function ChatBox({
                   <FiMessageCircle />
                 </div>
 
-                <h2>No messages yet</h2>
+                <h2>{selectedConversation ? "Start the conversation" : "Your inbox is ready"}</h2>
+                <p>{selectedConversation ? "Send a message to begin chatting. Your messages will appear here." : "When you connect with TripMesh, your messages will show up here."}</p>
               </div>
             )}
+            <div ref={messagesEndRef} />
           </div>
 
           <form
