@@ -139,8 +139,8 @@
   width: 100%;
   max-width: 430px;
   padding: 38px 45px;
-  background: rgba(255, 255, 255, 0.93);
-  backdrop-filter: blur(25px);
+  background: #ffffff;
+  backdrop-filter: none;
   border-radius: 30px;
   border: 1px solid rgba(255, 255, 255, 0.6);
   box-shadow: 0 40px 100px rgba(0, 0, 0, 0.35);
@@ -215,7 +215,7 @@
   margin-bottom: 14px;
   border-radius: 15px;
   border: 1px solid #cbd5e1;
-  background: #f8fafc;
+  background: #ffffff;
   font-size: 16px;
   color: #0f172a;
   transition: 0.3s;
@@ -231,6 +231,68 @@
   border-color: #1552d7;
   background: white;
   box-shadow: 0 0 0 5px rgba(37, 99, 235, 0.15);
+}
+
+.otp-preview {
+  margin: 4px 0 15px;
+  padding: 14px 15px 12px;
+  border: 1px solid #dce7f8;
+  border-radius: 15px;
+  background: #ffffff;
+  box-shadow: 0 7px 20px rgba(37, 83, 153, 0.07);
+  text-align: center;
+}
+
+.otp-preview-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 11px;
+}
+
+.otp-preview-label {
+  color: #40516c;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.otp-preview-badge {
+  padding: 4px 7px;
+  border: 1px solid #dbeafe;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: .09em;
+}
+
+.otp-preview-code {
+  display: flex;
+  justify-content: center;
+  gap: 7px;
+}
+
+.otp-preview-code span {
+  width: 36px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #e4ebf5;
+  border-radius: 10px;
+  background: #f8fbff;
+  color: #14233e;
+  font-size: 21px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  box-shadow: inset 0 1px 0 #fff;
+}
+
+.otp-preview > p {
+  margin: 9px 0 0;
+  color: #8290a5;
+  font-size: 10px;
 }
 
 .forgot-password {
@@ -470,6 +532,10 @@
     padding: 30px 22px;
     border-radius: 22px;
   }
+
+  .otp-preview { padding: 12px 10px 10px; }
+  .otp-preview-code { gap: 5px; }
+  .otp-preview-code span { width: 34px; height: 40px; font-size: 19px; }
 
   .auth-card h2 {
     font-size: 32px;

@@ -84,3 +84,10 @@
   backdrop-filter: none;
 }
 #root .tm-landing .tm-nearby-card:hover { box-shadow: none; }
+
+/* Keep the login card white and opaque over the login background photo. */
+#root .auth-card {
+  background-color: #ffffff;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
