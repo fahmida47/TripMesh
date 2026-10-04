@@ -6,13 +6,6 @@
   --tm-glass-blur: 16px;
 }
 
-body {
-  background:
-    radial-gradient(ellipse at 4% 3%, rgba(222, 235, 255, 0.48), transparent 28rem),
-    radial-gradient(ellipse at 96% 18%, rgba(232, 241, 255, 0.42), transparent 32rem),
-    #f4f6fb;
-}
-
 /* Semantic cards and named card/panel surfaces across every app page. */
 #root :is(
   article,
@@ -73,3 +66,21 @@ body {
 @media (prefers-reduced-transparency: reduce) {
   :root { --tm-glass-surface: rgba(255, 255, 255, 0.94); }
 }
+
+/* Preserve the established dark landing hero and its original callout card. */
+#root .tm-landing { background: #020d2d; }
+#root .tm-landing .tm-nearby-card {
+  background-color: rgba(5, 29, 77, 0.93);
+  border-color: rgba(105, 157, 239, 0.35);
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+#root .tm-landing .tm-nearby-card__icon {
+  background-color: #1678ed;
+  border-color: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+#root .tm-landing .tm-nearby-card:hover { box-shadow: none; }
