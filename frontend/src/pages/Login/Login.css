@@ -234,65 +234,33 @@
 }
 
 .otp-preview {
-  margin: 4px 0 15px;
-  padding: 14px 15px 12px;
-  border: 1px solid #dce7f8;
-  border-radius: 15px;
-  background: #ffffff;
-  box-shadow: 0 7px 20px rgba(37, 83, 153, 0.07);
+  margin: 4px 0 14px;
+  padding: 12px 16px;
+  border: 1px solid rgba(56, 189, 248, 0.42);
+  border-radius: 12px;
+  background: rgba(239, 248, 255, 0.9);
   text-align: center;
 }
 
-.otp-preview-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 11px;
-}
-
 .otp-preview-label {
-  color: #40516c;
+  margin-bottom: 5px;
+  color: #64748b;
   font-size: 12px;
-  font-weight: 700;
-}
-
-.otp-preview-badge {
-  padding: 4px 7px;
-  border: 1px solid #dbeafe;
-  border-radius: 999px;
-  background: #eff6ff;
-  color: #2563eb;
-  font-size: 8px;
-  font-weight: 800;
-  letter-spacing: .09em;
+  font-weight: 600;
 }
 
 .otp-preview-code {
-  display: flex;
-  justify-content: center;
-  gap: 7px;
-}
-
-.otp-preview-code span {
-  width: 36px;
-  height: 42px;
-  display: grid;
-  place-items: center;
-  border: 1px solid #e4ebf5;
-  border-radius: 10px;
-  background: #f8fbff;
-  color: #14233e;
-  font-size: 21px;
+  color: #101827;
+  font-size: 24px;
   font-weight: 800;
+  letter-spacing: 5px;
   font-variant-numeric: tabular-nums;
-  box-shadow: inset 0 1px 0 #fff;
 }
 
-.otp-preview > p {
-  margin: 9px 0 0;
+.otp-preview-hint {
+  margin-top: 5px;
   color: #8290a5;
-  font-size: 10px;
+  font-size: 11px;
 }
 
 .forgot-password {
@@ -533,9 +501,8 @@
     border-radius: 22px;
   }
 
-  .otp-preview { padding: 12px 10px 10px; }
-  .otp-preview-code { gap: 5px; }
-  .otp-preview-code span { width: 34px; height: 40px; font-size: 19px; }
+  .otp-preview { padding: 11px 10px; }
+  .otp-preview-code { font-size: 22px; letter-spacing: 4px; }
 
   .auth-card h2 {
     font-size: 32px;

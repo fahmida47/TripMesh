@@ -85,9 +85,11 @@
 }
 #root .tm-landing .tm-nearby-card:hover { box-shadow: none; }
 
-/* Keep the login card white and opaque over the login background photo. */
-#root .auth-card {
-  background-color: #ffffff;
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
+/* Auth cards retain a bright white glass finish over their photo backgrounds. */
+#root .auth-card,
+#root .signup-card {
+  background-color: rgba(255, 255, 255, 0.93);
+  -webkit-backdrop-filter: blur(25px) saturate(145%);
+  backdrop-filter: blur(25px) saturate(145%);
+  border-color: rgba(255, 255, 255, 0.72);
 }

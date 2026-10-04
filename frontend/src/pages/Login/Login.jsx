@@ -409,17 +409,10 @@ const Login = () => {
 
               {/* Development OTP display */}
               {codeSent && otp && (
-                <div className="otp-preview" role="status" aria-label={`Development verification code: ${otp.split("").join(" ")}`}>
-                  <div className="otp-preview-heading">
-                    <span className="otp-preview-label">Development OTP</span>
-                    <span className="otp-preview-badge">TEST CODE</span>
-                  </div>
-                  <div className="otp-preview-code" aria-hidden="true">
-                    {otp.split("").map((digit, index) => (
-                      <span key={`${digit}-${index}`}>{digit}</span>
-                    ))}
-                  </div>
-                  <p>Enter this 6-digit code to continue</p>
+                <div className="otp-preview" role="status" aria-label={`Development verification code: ${otp}`}>
+                  <div className="otp-preview-label">Development OTP</div>
+                  <div className="otp-preview-code">{otp}</div>
+                  <div className="otp-preview-hint">Enter this code to continue</div>
                 </div>
               )}
 
