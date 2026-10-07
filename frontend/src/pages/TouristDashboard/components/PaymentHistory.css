@@ -8,7 +8,7 @@
   margin-left: 280px;
   padding: 28px;
   box-sizing: border-box;
-  background: #f8fafc;
+  background: #eaf2ff;
 }
 
 /* ========================================
@@ -101,7 +101,7 @@
 .pm-panel {
   width: 100%;
   background: #ffffff;
-  border: 1px solid #e6eaf1;
+  border: 1px solid #bfdbfe;
   border-radius: 16px;
   overflow: hidden;
   box-sizing: border-box;
@@ -194,10 +194,10 @@
   align-items: center;
   gap: 16px;
   padding: 13px 22px;
-  background: #f8fafc;
-  border-top: 1px solid #e6eaf1;
-  border-bottom: 1px solid #e6eaf1;
-  color: #64748b;
+  background: #dbeafe;
+  border-top: 1px solid #bfdbfe;
+  border-bottom: 1px solid #bfdbfe;
+  color: #1e40af;
   font-size: 12px;
   font-weight: 700;
 }
@@ -217,7 +217,8 @@
   align-items: center;
   gap: 16px;
   padding: 16px 22px;
-  border-bottom: 1px solid #eef1f6;
+  border-bottom: 1px solid #e5edff;
+  background: #ffffff;
 }
 
 .pm-row:last-child {

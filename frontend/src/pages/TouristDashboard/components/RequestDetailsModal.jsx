@@ -422,7 +422,7 @@ export default function RequestDetailsModal({
             <div className="rb-modal-field">
               <span>Travel Date</span>
               <span>
-                {formatDate(travelDate)}
+                {travelDate}
               </span>
             </div>
 

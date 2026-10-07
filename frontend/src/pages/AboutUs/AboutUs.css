@@ -141,6 +141,11 @@
   display: flex;
   align-items: flex-start;
   gap: 14px;
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 14px;
+  background: rgba(7, 24, 63, 0.38);
 }
 
 .tm-hero-feature-icon {
@@ -168,7 +173,7 @@
 }
 
 .tm-hero-feature-card p {
-  color: #b9c6e8;
+  color: #d5e0f8;
   font-size: 13.5px;
   line-height: 1.6;
   margin: 0;

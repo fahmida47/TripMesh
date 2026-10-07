@@ -223,7 +223,7 @@
     radial-gradient(ellipse at 92% 0%, rgba(219, 232, 255, .48), transparent 34%),
     #f4f6fb;
 }
-.ts-shell-content :is(article, [class*="card"], [class*="panel"], [class*="stat"]) {
+.ts-shell-content :is(.ts-stat-card, .rb-panel, .pm-panel, .pm-pay-card, .cp-section, .cp-summary) {
   background-color: rgba(255, 255, 255, .82);
   border-color: rgba(225, 232, 243, .92);
   box-shadow: 0 9px 28px rgba(34, 58, 98, .055);
@@ -231,7 +231,7 @@
   -webkit-backdrop-filter: blur(12px) saturate(135%);
   backdrop-filter: blur(12px) saturate(135%);
 }
-.ts-shell-content :is(article, [class*="card"], [class*="panel"], [class*="stat"]):hover {
+.ts-shell-content :is(.ts-stat-card, .rb-panel, .pm-panel, .pm-pay-card, .cp-section, .cp-summary):hover {
   border-color: rgba(207, 222, 245, .95);
   box-shadow: 0 13px 32px rgba(34, 58, 98, .085);
 }

@@ -15,7 +15,7 @@ function ExperiencePhoto({ experience }) {
   const fallbackImage = getExperienceAsset(experience?.title || "");
 
   const [imageSource, setImageSource] = useState(
-    experience?.photo ? "uploaded" : "fallback"
+    experience?.photo ? "uploaded" : "fallback",
   );
 
   const source =
@@ -35,7 +35,7 @@ function ExperiencePhoto({ experience }) {
         setImageSource(
           imageSource === "uploaded" && fallbackImage
             ? "fallback"
-            : "unavailable"
+            : "unavailable",
         )
       }
     />
@@ -44,32 +44,20 @@ function ExperiencePhoto({ experience }) {
 
 function formatPriceRange(guide) {
   const minimum = Number(
-    guide?.min_price ??
-      guide?.minPrice ??
-      guide?.price ??
-      0
+    guide?.min_price ?? guide?.minPrice ?? guide?.price ?? 0,
   );
 
   const maximum = Number(
-    guide?.max_price ??
-      guide?.maxPrice ??
-      guide?.price ??
-      minimum
+    guide?.max_price ?? guide?.maxPrice ?? guide?.price ?? minimum,
   );
 
   const min = minimum.toLocaleString();
   const max = maximum.toLocaleString();
 
-  return minimum === maximum
-    ? `৳${min}`
-    : `৳${min} - ৳${max}`;
+  return minimum === maximum ? `৳${min}` : `৳${min} - ৳${max}`;
 }
 
-function GuideCard({
-  guide,
-  onSendRequest,
-  onViewDetails,
-}) {
+function GuideCard({ guide, onSendRequest, onViewDetails }) {
   return (
     <article className="explore-guide-card">
       <div className="explore-card-content">
@@ -81,23 +69,16 @@ function GuideCard({
           </div>
 
           <div className="explore-company-title">
-            <h3>
-              {guide.companyName || "Guide Company"}
-            </h3>
+            <h3>{guide.companyName || "Guide Company"}</h3>
 
-            <p className="explore-location">
-              {guide.location || "Bangladesh"}
-            </p>
+            <p className="explore-location">{guide.location || "Bangladesh"}</p>
           </div>
         </div>
 
         {guide.tourTypes?.length > 0 && (
           <div className="explore-tour-badges">
             {guide.tourTypes.map((type, index) => (
-              <span
-                className="explore-tour-badge"
-                key={`${type}-${index}`}
-              >
+              <span className="explore-tour-badge" key={`${type}-${index}`}>
                 {type}
               </span>
             ))}
@@ -116,30 +97,20 @@ function GuideCard({
               <span>{guide.experiences.length}</span>
             </div>
 
-            {guide.experiences
-              .slice(0, 2)
-              .map((experience) => (
-                <div
-                  className="experience-item"
-                  key={experience.id}
-                >
-                  <ExperiencePhoto
-                    experience={experience}
-                  />
+            {guide.experiences.slice(0, 2).map((experience) => (
+              <div className="experience-item" key={experience.id}>
+                <ExperiencePhoto experience={experience} />
 
-                  <div className="experience-text">
-                    <strong>
-                      {experience.title ||
-                        "Tour Experience"}
-                    </strong>
+                <div className="experience-text">
+                  <strong>{experience.title || "Tour Experience"}</strong>
 
-                    <p>
-                      {experience.description ||
-                        "Discover amazing places and local experiences."}
-                    </p>
-                  </div>
+                  <p>
+                    {experience.description ||
+                      "Discover amazing places and local experiences."}
+                  </p>
                 </div>
-              ))}
+              </div>
+            ))}
           </div>
         )}
 
@@ -147,21 +118,15 @@ function GuideCard({
           <div className="explore-rating">
             <span className="explore-star">★</span>
 
-            <strong>
-              {Number(guide.rating || 0).toFixed(1)}
-            </strong>
+            <strong>{Number(guide.rating || 0).toFixed(1)}</strong>
 
-            <span>
-              ({guide.reviews || 0} reviews)
-            </span>
+            <span>({guide.reviews || 0} reviews)</span>
           </div>
 
           <div className="explore-price">
             <span>Price range</span>
 
-            <strong>
-              {formatPriceRange(guide)}
-            </strong>
+            <strong>{formatPriceRange(guide)}</strong>
           </div>
         </div>
 
@@ -198,44 +163,21 @@ function normalizeGuide(guide) {
       crypto.randomUUID(),
 
     companyName:
-      guide.company_name ||
-      guide.companyName ||
-      guide.business_name ||
-      "",
+      guide.company_name || guide.companyName || guide.business_name || "",
 
-    description:
-      guide.bio ||
-      guide.description ||
-      "",
+    description: guide.bio || guide.description || "",
 
-    location:
-      guide.address ||
-      guide.location ||
-      "",
+    location: guide.address || guide.location || "",
 
-    tourTypes:
-      guide.tour_types ||
-      guide.tourTypes ||
-      [],
+    tourTypes: guide.tour_types || guide.tourTypes || [],
 
-    tourServices:
-      guide.tour_services || guide.tourServices || [],
+    tourServices: guide.tour_services || guide.tourServices || [],
 
-    min_price:
-      guide.min_price ??
-      guide.price ??
-      0,
+    min_price: guide.min_price ?? guide.price ?? 0,
 
-    max_price:
-      guide.max_price ??
-      guide.min_price ??
-      guide.price ??
-      0,
+    max_price: guide.max_price ?? guide.min_price ?? guide.price ?? 0,
 
-    price:
-      guide.min_price ??
-      guide.price ??
-      0,
+    price: guide.min_price ?? guide.price ?? 0,
   };
 }
 
@@ -261,16 +203,13 @@ function Explore({ embedded = false }) {
   const [searchInput, setSearchInput] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
 
-  const [selectedTourType, setSelectedTourType] =
-    useState("");
+  const [selectedTourType, setSelectedTourType] = useState("");
 
-  const [searchTourType, setSearchTourType] =
-    useState("");
+  const [searchTourType, setSearchTourType] = useState("");
 
   const [priceRange, setPriceRange] = useState("");
 
-  const [searchPriceRange, setSearchPriceRange] =
-    useState("");
+  const [searchPriceRange, setSearchPriceRange] = useState("");
 
   const [sortBy, setSortBy] = useState("popular");
 
@@ -284,78 +223,55 @@ function Explore({ embedded = false }) {
 
   const [error, setError] = useState("");
 
-  const [currentPage, setCurrentPage] =
-    useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const [lastPage, setLastPage] = useState(1);
 
-  const [totalGuides, setTotalGuides] =
-    useState(0);
+  const [totalGuides, setTotalGuides] = useState(0);
 
-  const [selectedGuide, setSelectedGuide] =
-    useState(null);
+  const [selectedGuide, setSelectedGuide] = useState(null);
 
-  const [selectedService, setSelectedService] =
-    useState(null);
+  const [selectedService, setSelectedService] = useState(null);
 
-  const [detailsGuide, setDetailsGuide] =
-    useState(null);
+  const [detailsGuide, setDetailsGuide] = useState(null);
 
   const [fromDate, setFromDate] = useState("");
 
   const [toDate, setToDate] = useState("");
 
-  const [destination, setDestination] =
-    useState("");
+  const [destination, setDestination] = useState("");
 
   const [travelers, setTravelers] = useState(1);
 
-  const [agreedAmount, setAgreedAmount] =
-    useState("");
+  const [agreedAmount, setAgreedAmount] = useState("");
 
-  const [
-    selectedExperience,
-    setSelectedExperience,
-  ] = useState("");
+  const [selectedExperience, setSelectedExperience] = useState("");
 
-  const [requestLoading, setRequestLoading] =
-    useState(false);
+  const [requestLoading, setRequestLoading] = useState(false);
 
-  const [requestSuccess, setRequestSuccess] =
-    useState("");
+  const [requestSuccess, setRequestSuccess] = useState("");
 
-  const [requestError, setRequestError] =
-    useState("");
+  const [requestError, setRequestError] = useState("");
 
   const requestAmount = selectedService
     ? Number(selectedService.price || 0)
     : Number(agreedAmount || 0);
 
-  const mapMarkers = useMemo(
-    () => guides.filter(hasCoordinates),
-    [guides]
-  );
+  const mapMarkers = useMemo(() => guides.filter(hasCoordinates), [guides]);
 
   const getTodayDate = () => {
     const today = new Date();
 
     const year = today.getFullYear();
 
-    const month = String(
-      today.getMonth() + 1
-    ).padStart(2, "0");
+    const month = String(today.getMonth() + 1).padStart(2, "0");
 
-    const day = String(
-      today.getDate()
-    ).padStart(2, "0");
+    const day = String(today.getDate()).padStart(2, "0");
 
     return `${year}-${month}-${day}`;
   };
 
-  const fetchGuides = async (
-    page = 1,
-    filters = {}
-  ) => {
+  const fetchGuides = async (page = 1, filters = {}) => {
     const {
       search = searchTerm,
       tourType = searchTourType,
@@ -391,59 +307,38 @@ function Explore({ embedded = false }) {
       params.append("per_page", "6");
 
       const response = await fetch(
-        `${API_BASE_URL}/guides/explore?${params.toString()}`
+        `${API_BASE_URL}/guides/explore?${params.toString()}`,
       );
 
       if (!response.ok) {
-        throw new Error(
-          `API Error: ${response.status}`
-        );
+        throw new Error(`API Error: ${response.status}`);
       }
 
       const data = await response.json();
 
-      if (
-        requestId !== latestFetchId.current
-      ) {
+      if (requestId !== latestFetchId.current) {
         return;
       }
 
-      setGuides(
-        (data.data || []).map(normalizeGuide)
-      );
+      setGuides((data.data || []).map(normalizeGuide));
 
-      setCurrentPage(
-        data.current_page || 1
-      );
+      setCurrentPage(data.current_page || 1);
 
-      setLastPage(
-        data.last_page || 1
-      );
+      setLastPage(data.last_page || 1);
 
-      setTotalGuides(
-        data.total || 0
-      );
+      setTotalGuides(data.total || 0);
     } catch (err) {
-      console.error(
-        "Explore fetch error:",
-        err
-      );
+      console.error("Explore fetch error:", err);
 
-      if (
-        requestId !== latestFetchId.current
-      ) {
+      if (requestId !== latestFetchId.current) {
         return;
       }
 
-      setError(
-        "Unable to load guide services."
-      );
+      setError("Unable to load guide services.");
 
       setGuides([]);
     } finally {
-      if (
-        requestId === latestFetchId.current
-      ) {
+      if (requestId === latestFetchId.current) {
         setLoading(false);
       }
     }
@@ -457,19 +352,13 @@ function Explore({ embedded = false }) {
   }, []);
 
   const handleSearch = () => {
-    const newSearch = searchInput
-      .trim()
-      .toLowerCase();
+    const newSearch = searchInput.trim().toLowerCase();
 
     setSearchTerm(newSearch);
 
-    setSearchTourType(
-      selectedTourType
-    );
+    setSearchTourType(selectedTourType);
 
-    setSearchPriceRange(
-      priceRange
-    );
+    setSearchPriceRange(priceRange);
 
     setCurrentPage(1);
 
@@ -482,17 +371,13 @@ function Explore({ embedded = false }) {
   };
 
   const handleSortApply = () => {
-    const typedValue = sortInput
-      .trim()
-      .toLowerCase();
+    const typedValue = sortInput.trim().toLowerCase();
 
     let nextSort = "popular";
 
     if (typedValue === "highest rated") {
       nextSort = "rating";
-    } else if (
-      typedValue === "lowest rated"
-    ) {
+    } else if (typedValue === "lowest rated") {
       nextSort = "low-rating";
     } else if (typedValue === "") {
       nextSort = "popular";
@@ -520,10 +405,7 @@ function Explore({ embedded = false }) {
   };
 
   const handlePageChange = (page) => {
-    if (
-      page < 1 ||
-      page > lastPage
-    ) {
+    if (page < 1 || page > lastPage) {
       return;
     }
 
@@ -577,9 +459,10 @@ function Explore({ embedded = false }) {
   };
 
   const handleSelectService = (serviceId) => {
-    const service = selectedGuide?.tourServices?.find(
-      (item) => String(item.id) === serviceId
-    ) || null;
+    const service =
+      selectedGuide?.tourServices?.find(
+        (item) => String(item.id) === serviceId,
+      ) || null;
 
     setSelectedService(service);
     setDestination(service?.location || "");
@@ -587,13 +470,15 @@ function Explore({ embedded = false }) {
     setAgreedAmount(
       service
         ? service.price
-        : selectedGuide?.min_price ?? selectedGuide?.price ?? ""
+        : (selectedGuide?.min_price ?? selectedGuide?.price ?? ""),
     );
     const packageTravelerCount = Number(service?.max_travelers);
     setTravelers(
-      service && Number.isInteger(packageTravelerCount) && packageTravelerCount > 0
+      service &&
+        Number.isInteger(packageTravelerCount) &&
+        packageTravelerCount > 0
         ? packageTravelerCount
-        : 1
+        : 1,
     );
     setFromDate("");
     setToDate("");
@@ -625,9 +510,7 @@ function Explore({ embedded = false }) {
     setDetailsGuide(null);
   };
 
-  const handleSubmitRequest = async (
-    event
-  ) => {
+  const handleSubmitRequest = async (event) => {
     event.preventDefault();
 
     setRequestError("");
@@ -638,9 +521,7 @@ function Explore({ embedded = false }) {
     const token = getToken();
 
     if (!user || !token) {
-      setRequestError(
-        "Please login first to send a travel request."
-      );
+      setRequestError("Please login first to send a travel request.");
 
       setTimeout(() => {
         navigate("/login");
@@ -650,51 +531,38 @@ function Explore({ embedded = false }) {
     }
 
     if (user.role !== "tourist") {
-      setRequestError(
-        "Only tourists can send travel requests."
-      );
+      setRequestError("Only tourists can send travel requests.");
 
       return;
     }
 
     if (!selectedGuide) {
-      setRequestError(
-        "Guide information is missing."
-      );
+      setRequestError("Guide information is missing.");
 
       return;
     }
 
     if (!destination.trim()) {
-      setRequestError(
-        "Please enter your destination."
-      );
+      setRequestError("Please enter your destination.");
 
       return;
     }
 
-    if (
-      !travelers ||
-      Number(travelers) < 1
-    ) {
-      setRequestError(
-        "Please enter at least 1 traveler."
-      );
+    if (!travelers || Number(travelers) < 1) {
+      setRequestError("Please enter at least 1 traveler.");
 
       return;
     }
 
     const minimumAmount = Number(
-      selectedGuide.min_price ??
-        selectedGuide.price ??
-        0
+      selectedGuide.min_price ?? selectedGuide.price ?? 0,
     );
 
     const maximumAmount = Number(
       selectedGuide.max_price ??
         selectedGuide.min_price ??
         selectedGuide.price ??
-        minimumAmount
+        minimumAmount,
     );
 
     const requestedAmount = requestAmount;
@@ -703,49 +571,46 @@ function Explore({ embedded = false }) {
       (!selectedService && !agreedAmount) ||
       !Number.isFinite(requestedAmount)
     ) {
+      setRequestError("Please enter the agreed amount.");
+
+      return;
+    }
+
+    if (
+      !selectedService &&
+      (requestedAmount < minimumAmount || requestedAmount > maximumAmount)
+    ) {
       setRequestError(
-        "Please enter the agreed amount."
+        `Amount must be between ৳${minimumAmount.toLocaleString()} and ৳${maximumAmount.toLocaleString()}.`,
       );
 
       return;
     }
 
-    if (!selectedService && (
-      requestedAmount < minimumAmount ||
-      requestedAmount > maximumAmount
-    )) {
+    if (
+      selectedService &&
+      Number(travelers) > Number(selectedService.max_travelers)
+    ) {
       setRequestError(
-        `Amount must be between ৳${minimumAmount.toLocaleString()} and ৳${maximumAmount.toLocaleString()}.`
+        `This service allows up to ${selectedService.max_travelers} travelers.`,
       );
-
-      return;
-    }
-
-    if (selectedService && Number(travelers) > Number(selectedService.max_travelers)) {
-      setRequestError(`This service allows up to ${selectedService.max_travelers} travelers.`);
       return;
     }
 
     if (!fromDate) {
-      setRequestError(
-        "Please select a From Date."
-      );
+      setRequestError("Please select a From Date.");
 
       return;
     }
 
     if (!toDate) {
-      setRequestError(
-        "Please select a To Date."
-      );
+      setRequestError("Please select a To Date.");
 
       return;
     }
 
     if (toDate < fromDate) {
-      setRequestError(
-        "To Date cannot be earlier than From Date."
-      );
+      setRequestError("To Date cannot be earlier than From Date.");
 
       return;
     }
@@ -756,43 +621,38 @@ function Explore({ embedded = false }) {
       selectedGuide.id;
 
     if (!guideProfileId) {
-      setRequestError(
-        "Guide profile ID is missing."
-      );
+      setRequestError("Guide profile ID is missing.");
 
       return;
     }
 
-    const requestData = selectedService ? {
-      guide_profile_id: Number(guideProfileId),
-      tour_service_id: selectedService.id,
-      travelers: Number(travelers),
-      from_date: fromDate,
-      to_date: toDate,
-    } : {
-      guide_profile_id:
-        Number(guideProfileId),
+    const requestData = selectedService
+      ? {
+          guide_profile_id: Number(guideProfileId),
+          tour_service_id: selectedService.id,
+          travelers: Number(travelers),
+          from_date: fromDate,
+          to_date: toDate,
+        }
+      : {
+          guide_profile_id: Number(guideProfileId),
 
-      guide_experience_id: null,
+          guide_experience_id: null,
 
-      experience_name:
-        selectedExperience.trim() ||
-        null,
+          experience_name: selectedExperience.trim() || null,
 
-      destination:
-        destination.trim(),
+          destination: destination.trim(),
 
-      travelers:
-        Number(travelers),
+          travelers: Number(travelers),
 
-      from_date: fromDate,
+          from_date: fromDate,
 
-      to_date: toDate,
+          to_date: toDate,
 
-      amount: requestedAmount,
+          amount: requestedAmount,
 
-      request_details: null,
-    };
+          request_details: null,
+        };
 
     try {
       setRequestLoading(true);
@@ -803,55 +663,36 @@ function Explore({ embedded = false }) {
           method: "POST",
 
           headers: {
-            "Content-Type":
-              "application/json",
+            "Content-Type": "application/json",
 
-            Accept:
-              "application/json",
+            Accept: "application/json",
 
-            Authorization:
-              `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
 
-          body: JSON.stringify(
-            requestData
-          ),
-        }
+          body: JSON.stringify(requestData),
+        },
       );
 
-      const data =
-        await response.json();
+      const data = await response.json();
 
       if (!response.ok) {
-        console.error(
-          "Send request error:",
-          data
-        );
+        console.error("Send request error:", data);
 
         if (data.errors) {
-          const firstError =
-            Object.values(
-              data.errors
-            )[0];
+          const firstError = Object.values(data.errors)[0];
 
           setRequestError(
-            Array.isArray(firstError)
-              ? firstError[0]
-              : "Validation error."
+            Array.isArray(firstError) ? firstError[0] : "Validation error.",
           );
         } else {
-          setRequestError(
-            data.message ||
-              "Failed to send travel request."
-          );
+          setRequestError(data.message || "Failed to send travel request.");
         }
 
         return;
       }
 
-      setRequestSuccess(
-        "Travel request sent successfully!"
-      );
+      setRequestSuccess("Travel request sent successfully!");
 
       setFromDate("");
       setToDate("");
@@ -860,14 +701,9 @@ function Explore({ embedded = false }) {
       setAgreedAmount("");
       setSelectedExperience("");
     } catch (err) {
-      console.error(
-        "Send request error:",
-        err
-      );
+      console.error("Send request error:", err);
 
-      setRequestError(
-        "Unable to send request. Please try again."
-      );
+      setRequestError("Unable to send request. Please try again.");
     } finally {
       setRequestLoading(false);
     }
@@ -876,53 +712,33 @@ function Explore({ embedded = false }) {
   return (
     <div
       className={`explore-page${
-        viewMode === "map"
-          ? " explore-page--map"
-          : ""
+        viewMode === "map" ? " explore-page--map" : ""
       }`}
     >
-      <ExploreHero
-        showNavbar={!embedded}
-      />
+      <ExploreHero showNavbar={!embedded} />
 
       <main className="explore-main">
         <section className="explore-listing-section">
           <div className="explore-search-sort-row">
             <ExploreSearch
               searchInput={searchInput}
-              onSearchInputChange={
-                setSearchInput
-              }
+              onSearchInputChange={setSearchInput}
               onSearch={handleSearch}
-              tourType={
-                selectedTourType
-              }
-              onTourTypeChange={
-                setSelectedTourType
-              }
+              tourType={selectedTourType}
+              onTourTypeChange={setSelectedTourType}
               priceRange={priceRange}
-              onPriceRangeChange={
-                setPriceRange
-              }
+              onPriceRangeChange={setPriceRange}
             />
 
             <div className="explore-sort-control">
-              <label htmlFor="guide-sort">
-                Sort by:
-              </label>
+              <label htmlFor="guide-sort">Sort by:</label>
 
               <input
                 id="guide-sort"
                 type="text"
                 value={sortInput}
-                onChange={(event) =>
-                  setSortInput(
-                    event.target.value
-                  )
-                }
-                onKeyDown={
-                  handleSortKeyDown
-                }
+                onChange={(event) => setSortInput(event.target.value)}
+                onKeyDown={handleSortKeyDown}
                 placeholder="Highest Rated, Lowest Rated"
                 autoComplete="off"
               />
@@ -930,9 +746,7 @@ function Explore({ embedded = false }) {
               <button
                 type="button"
                 className="explore-sort-button"
-                onClick={
-                  handleSortApply
-                }
+                onClick={handleSortApply}
               >
                 Sort
               </button>
@@ -941,28 +755,15 @@ function Explore({ embedded = false }) {
 
           <div className="explore-listing-header">
             <p>
-              Showing{" "}
-              <strong>
-                {guides.length}
-              </strong>{" "}
-              of{" "}
-              <strong>
-                {totalGuides}
-              </strong>{" "}
-              guide services
+              Showing <strong>{guides.length}</strong> of{" "}
+              <strong>{totalGuides}</strong> guide services
             </p>
 
             <div className="explore-view-buttons">
               <button
                 type="button"
-                className={
-                  viewMode === "grid"
-                    ? "active"
-                    : ""
-                }
-                onClick={() =>
-                  setViewMode("grid")
-                }
+                className={viewMode === "grid" ? "active" : ""}
+                onClick={() => setViewMode("grid")}
                 aria-label="Grid view"
               >
                 ▦
@@ -970,14 +771,8 @@ function Explore({ embedded = false }) {
 
               <button
                 type="button"
-                className={
-                  viewMode === "list"
-                    ? "active"
-                    : ""
-                }
-                onClick={() =>
-                  setViewMode("list")
-                }
+                className={viewMode === "list" ? "active" : ""}
+                onClick={() => setViewMode("list")}
                 aria-label="List view"
               >
                 ☷
@@ -986,23 +781,14 @@ function Explore({ embedded = false }) {
               <button
                 type="button"
                 className={`explore-map-toggle${
-                  viewMode === "map"
-                    ? " active"
-                    : ""
+                  viewMode === "map" ? " active" : ""
                 }`}
-                onClick={() =>
-                  setViewMode("map")
-                }
+                onClick={() => setViewMode("map")}
                 aria-label="Map view"
-                aria-pressed={
-                  viewMode === "map"
-                }
+                aria-pressed={viewMode === "map"}
                 title="Map view"
               >
-                <MapPin
-                  size={17}
-                  aria-hidden="true"
-                />
+                <MapPin size={17} aria-hidden="true" />
 
                 <span>Map</span>
               </button>
@@ -1012,9 +798,7 @@ function Explore({ embedded = false }) {
           {error && (
             <div className="explore-no-results">
               <h3>{error}</h3>
-              <p>
-                Please try again.
-              </p>
+              <p>Please try again.</p>
             </div>
           )}
 
@@ -1022,9 +806,7 @@ function Explore({ embedded = false }) {
             <div className="explore-no-results">
               <div className="explore-loader" />
 
-              <h3>
-                Loading guide services...
-              </h3>
+              <h3>Loading guide services...</h3>
             </div>
           )}
 
@@ -1035,92 +817,63 @@ function Explore({ embedded = false }) {
                 <div className="explore-map-view">
                   <aside className="explore-map-results">
                     <div className="explore-map-results-header">
-                      <strong>
-                        Guide services
-                      </strong>
+                      <strong>Guide services</strong>
 
-                      <span>
-                        {guides.length} results
-                      </span>
+                      <span>{guides.length} results</span>
                     </div>
 
                     <div className="explore-map-guide-list">
-                      {guides.map(
-                        (guide) => (
-                          <button
-                            type="button"
-                            className="explore-map-guide-item"
-                            key={guide.id}
-                            onClick={() =>
-                              setDetailsGuide(
-                                guide
-                              )
+                      {guides.map((guide) => (
+                        <button
+                          type="button"
+                          className="explore-map-guide-item"
+                          key={guide.id}
+                          onClick={() => setDetailsGuide(guide)}
+                        >
+                          <span className="explore-map-guide-avatar">
+                            {guide.companyName?.charAt(0).toUpperCase() || "G"}
+                          </span>
+
+                          <span className="explore-map-guide-copy">
+                            <strong>
+                              {guide.companyName || "Guide Company"}
+                            </strong>
+
+                            <small>
+                              {guide.location || "Location not added"}
+                            </small>
+
+                            <span>{guide.tourTypes?.[0] || "Local guide"}</span>
+                          </span>
+
+                          <MapPin
+                            className={
+                              hasCoordinates(guide)
+                                ? "has-map-pin"
+                                : "no-map-pin"
                             }
-                          >
-                            <span className="explore-map-guide-avatar">
-                              {guide.companyName
-                                ?.charAt(0)
-                                .toUpperCase() ||
-                                "G"}
-                            </span>
-
-                            <span className="explore-map-guide-copy">
-                              <strong>
-                                {guide.companyName ||
-                                  "Guide Company"}
-                              </strong>
-
-                              <small>
-                                {guide.location ||
-                                  "Location not added"}
-                              </small>
-
-                              <span>
-                                {guide
-                                  .tourTypes?.[0] ||
-                                  "Local guide"}
-                              </span>
-                            </span>
-
-                            <MapPin
-                              className={
-                                hasCoordinates(
-                                  guide
-                                )
-                                  ? "has-map-pin"
-                                  : "no-map-pin"
-                              }
-                              size={16}
-                              aria-label={
-                                hasCoordinates(
-                                  guide
-                                )
-                                  ? "Location shown on map"
-                                  : "No map location"
-                              }
-                            />
-                          </button>
-                        )
-                      )}
+                            size={16}
+                            aria-label={
+                              hasCoordinates(guide)
+                                ? "Location shown on map"
+                                : "No map location"
+                            }
+                          />
+                        </button>
+                      ))}
                     </div>
 
-                    {mapMarkers.length ===
-                      0 && (
+                    {mapMarkers.length === 0 && (
                       <p className="explore-map-empty">
-                        No guide locations have
-                        been pinned yet.
+                        No guide locations have been pinned yet.
                       </p>
                     )}
                   </aside>
 
                   <div className="explore-map-canvas">
                     <GuideLocationMap
-                      markers={
-                        mapMarkers
-                      }
-                      onMarkerSelect={
-                        setDetailsGuide
-                      }
+                      markers={mapMarkers}
+                      onMarkerSelect={setDetailsGuide}
                     />
                   </div>
                 </div>
@@ -1132,136 +885,83 @@ function Explore({ embedded = false }) {
                       : "explore-guide-grid"
                   }
                 >
-                  {guides.map(
-                    (guide) => (
-                      <GuideCard
-                        key={guide.id}
-                        guide={guide}
-                        onSendRequest={
-                          handleOpenRequest
-                        }
-                        onViewDetails={
-                          setDetailsGuide
-                        }
-                      />
-                    )
-                  )}
+                  {guides.map((guide) => (
+                    <GuideCard
+                      key={guide.id}
+                      guide={guide}
+                      onSendRequest={handleOpenRequest}
+                      onViewDetails={setDetailsGuide}
+                    />
+                  ))}
                 </div>
               )
             ) : (
               <div className="explore-no-results">
-                <h3>
-                  No guide companies found
-                </h3>
+                <h3>No guide companies found</h3>
 
-                <p>
-                  Try another destination, price
-                  range, or tour type.
-                </p>
+                <p>Try another destination, price range, or tour type.</p>
               </div>
             ))}
 
-          {!loading &&
-            lastPage > 1 && (
-              <div className="explore-pagination">
-                <button
-                  type="button"
-                  disabled={
-                    currentPage === 1
-                  }
-                  onClick={() =>
-                    handlePageChange(
-                      currentPage - 1
-                    )
-                  }
-                >
-                  Previous
-                </button>
+          {!loading && lastPage > 1 && (
+            <div className="explore-pagination">
+              <button
+                type="button"
+                disabled={currentPage === 1}
+                onClick={() => handlePageChange(currentPage - 1)}
+              >
+                Previous
+              </button>
 
-                {Array.from(
-                  {
-                    length:
-                      lastPage,
-                  },
-                  (_, index) =>
-                    index + 1
-                ).map((page) => (
-                  <button
-                    key={page}
-                    type="button"
-                    className={
-                      currentPage ===
-                      page
-                        ? "active"
-                        : ""
-                    }
-                    onClick={() =>
-                      handlePageChange(
-                        page
-                      )
-                    }
-                  >
-                    {page}
-                  </button>
-                ))}
-
+              {Array.from(
+                {
+                  length: lastPage,
+                },
+                (_, index) => index + 1,
+              ).map((page) => (
                 <button
+                  key={page}
                   type="button"
-                  disabled={
-                    currentPage ===
-                    lastPage
-                  }
-                  onClick={() =>
-                    handlePageChange(
-                      currentPage + 1
-                    )
-                  }
+                  className={currentPage === page ? "active" : ""}
+                  onClick={() => handlePageChange(page)}
                 >
-                  Next
+                  {page}
                 </button>
-              </div>
-            )}
+              ))}
+
+              <button
+                type="button"
+                disabled={currentPage === lastPage}
+                onClick={() => handlePageChange(currentPage + 1)}
+              >
+                Next
+              </button>
+            </div>
+          )}
         </section>
       </main>
 
       {detailsGuide && (
-        <div
-          className="request-modal-overlay"
-          onClick={
-            handleCloseDetails
-          }
-        >
+        <div className="request-modal-overlay" onClick={handleCloseDetails}>
           <div
             className="request-modal guide-details-modal"
-            onClick={(event) =>
-              event.stopPropagation()
-            }
+            onClick={(event) => event.stopPropagation()}
           >
             <div className="request-modal-header">
               <div className="request-modal-heading">
-                <div className="request-modal-icon">
-                  ▣
-                </div>
+                <div className="request-modal-icon">▣</div>
 
                 <div>
-                  <h2>
-                    {detailsGuide.companyName ||
-                      "Guide Company"}
-                  </h2>
+                  <h2>{detailsGuide.companyName || "Guide Company"}</h2>
 
-                  <p>
-                    {detailsGuide.location ||
-                      "Bangladesh"}
-                  </p>
+                  <p>{detailsGuide.location || "Bangladesh"}</p>
                 </div>
               </div>
 
               <button
                 type="button"
                 className="request-modal-close"
-                onClick={
-                  handleCloseDetails
-                }
+                onClick={handleCloseDetails}
                 aria-label="Close guide details"
               >
                 ×
@@ -1275,75 +975,41 @@ function Explore({ embedded = false }) {
               </p>
 
               <div className="guide-details-summary">
-                <span>
-                  ★{" "}
-                  {Number(
-                    detailsGuide.rating ||
-                      0
-                  ).toFixed(1)}
-                </span>
+                <span>★ {Number(detailsGuide.rating || 0).toFixed(1)}</span>
 
-                <span>
-                  {detailsGuide.reviews ||
-                    0}{" "}
-                  reviews
-                </span>
+                <span>{detailsGuide.reviews || 0} reviews</span>
 
-                <strong>
-                  {formatPriceRange(
-                    detailsGuide
-                  )}
-                </strong>
+                <strong>{formatPriceRange(detailsGuide)}</strong>
               </div>
 
               <div className="guide-details-experiences">
                 <div className="experience-heading">
-                  <h4>
-                    All Experiences
-                  </h4>
+                  <h4>All Experiences</h4>
 
-                  <span>
-                    {detailsGuide
-                      .experiences
-                      ?.length || 0}
-                  </span>
+                  <span>{detailsGuide.experiences?.length || 0}</span>
                 </div>
 
-                {detailsGuide
-                  .experiences
-                  ?.length ? (
-                  detailsGuide.experiences.map(
-                    (experience) => (
-                      <article
-                        className="guide-details-experience"
-                        key={
-                          experience.id
-                        }
-                      >
-                        <ExperiencePhoto
-                          experience={
-                            experience
-                          }
-                        />
+                {detailsGuide.experiences?.length ? (
+                  detailsGuide.experiences.map((experience) => (
+                    <article
+                      className="guide-details-experience"
+                      key={experience.id}
+                    >
+                      <ExperiencePhoto experience={experience} />
 
-                        <div>
-                          <strong>
-                            {experience.title ||
-                              "Tour Experience"}
-                          </strong>
+                      <div>
+                        <strong>{experience.title || "Tour Experience"}</strong>
 
-                          <p>
-                            {experience.description ||
-                              "Discover amazing places and local experiences."}
-                          </p>
-                        </div>
-                      </article>
-                    )
-                  )
+                        <p>
+                          {experience.description ||
+                            "Discover amazing places and local experiences."}
+                        </p>
+                      </div>
+                    </article>
+                  ))
                 ) : (
                   <p className="guide-details-empty">
-                    No completed experiences
-                    have been added yet.
+                    No completed experiences have been added yet.
                   </p>
                 )}
               </div>
@@ -1353,34 +1019,28 @@ function Explore({ embedded = false }) {
       )}
 
       {selectedGuide && (
-        <div
-          className="request-modal-overlay"
-          onClick={
-            handleCloseRequest
-          }
-        >
+        <div className="request-modal-overlay" onClick={handleCloseRequest}>
           <div
             className="request-modal"
-            onClick={(event) =>
-              event.stopPropagation()
-            }
+            onClick={(event) => event.stopPropagation()}
           >
             <div className="request-modal-header">
               <div className="request-modal-heading">
-                <div className="request-modal-icon">
-                  ✈
-                </div>
+                <div className="request-modal-icon">✈</div>
 
                 <div>
-                  <h2>
-                    Send Travel Request
-                  </h2>
+                  <h2>Send Travel Request</h2>
 
                   <p>
-                    Request {selectedExperience ? <strong>{selectedExperience}</strong> : "a tour"} from{" "}
+                    Request{" "}
+                    {selectedExperience ? (
+                      <strong>{selectedExperience}</strong>
+                    ) : (
+                      "a tour"
+                    )}{" "}
+                    from{" "}
                     <strong>
-                      {selectedGuide.companyName ||
-                        "Guide Company"}
+                      {selectedGuide.companyName || "Guide Company"}
                     </strong>
                   </p>
                 </div>
@@ -1389,12 +1049,8 @@ function Explore({ embedded = false }) {
               <button
                 type="button"
                 className="request-modal-close"
-                onClick={
-                  handleCloseRequest
-                }
-                disabled={
-                  requestLoading
-                }
+                onClick={handleCloseRequest}
+                disabled={requestLoading}
                 aria-label="Close"
               >
                 ×
@@ -1404,21 +1060,14 @@ function Explore({ embedded = false }) {
             {requestSuccess && (
               <div className="request-success-wrapper">
                 <div className="request-success-message">
-                  <div className="success-icon">
-                    ✓
-                  </div>
+                  <div className="success-icon">✓</div>
 
                   <div>
-                    <strong>
-                      Request Sent Successfully!
-                    </strong>
+                    <strong>Request Sent Successfully!</strong>
 
                     <p>
-                      Your travel request has
-                      been sent to{" "}
-                      {selectedGuide.companyName ||
-                        "the guide"}
-                      .
+                      Your travel request has been sent to{" "}
+                      {selectedGuide.companyName || "the guide"}.
                     </p>
                   </div>
                 </div>
@@ -1426,9 +1075,7 @@ function Explore({ embedded = false }) {
                 <button
                   type="button"
                   className="request-done-button"
-                  onClick={
-                    handleCloseRequest
-                  }
+                  onClick={handleCloseRequest}
                 >
                   Done
                 </button>
@@ -1444,17 +1091,13 @@ function Explore({ embedded = false }) {
 
             {!requestSuccess && (
               <form
-                onSubmit={
-                  handleSubmitRequest
-                }
+                onSubmit={handleSubmitRequest}
                 className="travel-request-form"
               >
                 <div className="request-guide-info">
                   <div className="request-guide-avatar">
                     {selectedGuide.companyName
-                      ? selectedGuide.companyName
-                          .charAt(0)
-                          .toUpperCase()
+                      ? selectedGuide.companyName.charAt(0).toUpperCase()
                       : "G"}
                   </div>
 
@@ -1464,31 +1107,36 @@ function Explore({ embedded = false }) {
                     </span>
 
                     <strong>
-                      {selectedGuide.companyName ||
-                        "Guide Company"}
+                      {selectedGuide.companyName || "Guide Company"}
                     </strong>
 
                     <span className="request-guide-price">
-                      {selectedService
-                        ? `Price per traveler: ৳${Number(selectedService.price).toLocaleString()}`
-                        : <>Price range: {formatPriceRange(selectedGuide)}</>}
+                      {selectedService ? (
+                        `Price per traveler: ৳${Number(selectedService.price).toLocaleString()}`
+                      ) : (
+                        <>Price range: {formatPriceRange(selectedGuide)}</>
+                      )}
                     </span>
                   </div>
                 </div>
 
                 {selectedGuide.tourServices?.length > 0 && (
                   <div className="request-form-group request-package-group">
-                    <label>
-                      Tour Package (Optional)
-                    </label>
+                    <label>Tour Package (Optional)</label>
 
-                    <div className="request-package-options" role="listbox" aria-label="Tour packages">
+                    <div
+                      className="request-package-options"
+                      role="listbox"
+                      aria-label="Tour packages"
+                    >
                       <button
                         type="button"
                         className={`request-package-option ${!selectedService ? "is-selected" : ""}`}
                         onClick={() => handleSelectService("")}
                       >
-                        <span className="request-package-option__title">No package - fill in manually</span>
+                        <span className="request-package-option__title">
+                          No package - fill in manually
+                        </span>
                       </button>
 
                       {selectedGuide.tourServices.map((service) => (
@@ -1496,21 +1144,35 @@ function Explore({ embedded = false }) {
                           key={service.id}
                           type="button"
                           className={`request-package-option ${selectedService?.id === service.id ? "is-selected" : ""}`}
-                          onClick={() => handleSelectService(String(service.id))}
+                          onClick={() =>
+                            handleSelectService(String(service.id))
+                          }
                         >
-                          <span className="request-package-option__title">{service.title}</span>
-                          <span className="request-package-option__meta">{service.location}</span>
-                          <span className="request-package-option__price">৳{Number(service.price).toLocaleString()}</span>
+                          <span className="request-package-option__title">
+                            {service.title}
+                          </span>
+                          <span className="request-package-option__meta">
+                            {service.location}
+                          </span>
+                          <span className="request-package-option__price">
+                            ৳{Number(service.price).toLocaleString()}
+                          </span>
                         </button>
                       ))}
                     </div>
 
-                    <small>Select a package to view its details, or keep manual entry.</small>
+                    <small>
+                      Select a package to view its details, or keep manual
+                      entry.
+                    </small>
                   </div>
                 )}
 
                 {selectedService && (
-                  <section className="request-package-details" aria-live="polite">
+                  <section
+                    className="request-package-details"
+                    aria-live="polite"
+                  >
                     <div className="request-package-photo">
                       <ExperiencePhoto
                         experience={{
@@ -1521,62 +1183,86 @@ function Explore({ embedded = false }) {
                     </div>
                     <div className="request-package-details-heading">
                       <h3>{selectedService.title}</h3>
-                      <span>৳{Number(selectedService.price).toLocaleString()} / person</span>
+                      <span>
+                        ৳{Number(selectedService.price).toLocaleString()} /
+                        person
+                      </span>
                     </div>
                     <p>{selectedService.description}</p>
                     <dl>
-                      <div><dt>Destination</dt><dd>{selectedService.location}</dd></div>
-                      <div><dt>Tour type</dt><dd>{selectedService.tour_type}</dd></div>
-                      <div><dt>Duration</dt><dd>{selectedService.duration}</dd></div>
-                      <div><dt>Group limit</dt><dd>Up to {selectedService.max_travelers} travelers</dd></div>
+                      <div>
+                        <dt>Destination</dt>
+                        <dd>{selectedService.location}</dd>
+                      </div>
+                      <div>
+                        <dt>Tour type</dt>
+                        <dd>{selectedService.tour_type}</dd>
+                      </div>
+                      <div>
+                        <dt>Duration</dt>
+                        <dd>{selectedService.duration}</dd>
+                      </div>
+                      <div>
+                        <dt>Group limit</dt>
+                        <dd>Up to {selectedService.max_travelers} travelers</dd>
+                      </div>
                     </dl>
                   </section>
                 )}
 
                 <div className="request-form-group">
                   <label htmlFor="agreed-amount">
-                    {selectedService ? "Package Amount (৳)" : "Agreed Amount (৳)"}
+                    {selectedService
+                      ? "Package Amount (৳)"
+                      : "Agreed Amount (৳)"}
                   </label>
 
                   <div className="request-input-wrapper">
-                    <span className="request-input-icon">
-                      ৳
-                    </span>
+                    <span className="request-input-icon">৳</span>
 
                     <input
                       id="agreed-amount"
                       type="number"
-                      min={selectedService ? undefined : selectedGuide.min_price ?? selectedGuide.price ?? 0}
-                      max={selectedService ? undefined : selectedGuide.max_price ?? selectedGuide.min_price ?? selectedGuide.price ?? 0}
+                      min={
+                        selectedService
+                          ? undefined
+                          : (selectedGuide.min_price ??
+                            selectedGuide.price ??
+                            0)
+                      }
+                      max={
+                        selectedService
+                          ? undefined
+                          : (selectedGuide.max_price ??
+                            selectedGuide.min_price ??
+                            selectedGuide.price ??
+                            0)
+                      }
                       value={selectedService ? requestAmount : agreedAmount}
                       readOnly={Boolean(selectedService)}
-                      onChange={(event) =>
-                        setAgreedAmount(
-                          event.target
-                            .value
-                        )
-                      }
+                      onChange={(event) => setAgreedAmount(event.target.value)}
                       placeholder="Enter agreed amount"
                       required
                     />
                   </div>
 
                   <small>
-                    {selectedService
-                      ? "Fixed package price; it does not change with traveler count."
-                      : <>Enter an amount between {formatPriceRange(selectedGuide)}.</>}
+                    {selectedService ? (
+                      "Fixed package price; it does not change with traveler count."
+                    ) : (
+                      <>
+                        Enter an amount between{" "}
+                        {formatPriceRange(selectedGuide)}.
+                      </>
+                    )}
                   </small>
                 </div>
 
                 <div className="request-form-group request-experience-group">
-                  <label htmlFor="experience">
-                    Which Tour / Experience?
-                  </label>
+                  <label htmlFor="experience">Which Tour / Experience?</label>
 
                   <div className="request-input-wrapper">
-                    <span className="request-input-icon">
-                      🗺️
-                    </span>
+                    <span className="request-input-icon">🗺️</span>
 
                     <input
                       id="experience"
@@ -1584,44 +1270,27 @@ function Explore({ embedded = false }) {
                       value={selectedExperience}
                       readOnly={Boolean(selectedService)}
                       onChange={(event) =>
-                        setSelectedExperience(
-                          event.target
-                            .value
-                        )
+                        setSelectedExperience(event.target.value)
                       }
                       placeholder="Enter tour experience"
                       maxLength={255}
                     />
                   </div>
 
-                  <small>
-                    Enter your preferred tour
-                    experience.
-                  </small>
+                  <small>Enter your preferred tour experience.</small>
                 </div>
 
                 <div className="request-form-group">
-                  <label htmlFor="destination">
-                    Destination
-                  </label>
+                  <label htmlFor="destination">Destination</label>
 
                   <div className="request-input-wrapper">
-                    <span className="request-input-icon">
-                      📍
-                    </span>
+                    <span className="request-input-icon">📍</span>
 
                     <input
                       id="destination"
                       type="text"
-                      value={
-                        destination
-                      }
-                      onChange={(event) =>
-                        setDestination(
-                          event.target
-                            .value
-                        )
-                      }
+                      value={destination}
+                      onChange={(event) => setDestination(event.target.value)}
                       readOnly={Boolean(selectedService)}
                       placeholder="Where do you want to travel?"
                       maxLength={255}
@@ -1629,21 +1298,14 @@ function Explore({ embedded = false }) {
                     />
                   </div>
 
-                  <small>
-                    Enter the destination you
-                    want to visit.
-                  </small>
+                  <small>Enter the destination you want to visit.</small>
                 </div>
 
                 <div className="request-form-group">
-                  <label htmlFor="travelers">
-                    Number of Travelers
-                  </label>
+                  <label htmlFor="travelers">Number of Travelers</label>
 
                   <div className="request-input-wrapper">
-                    <span className="request-input-icon">
-                      👥
-                    </span>
+                    <span className="request-input-icon">👥</span>
 
                     <input
                       id="travelers"
@@ -1667,87 +1329,49 @@ function Explore({ embedded = false }) {
 
                 <div className="request-date-range">
                   <div className="request-form-group">
-                    <label htmlFor="from-date">
-                      From Date
-                    </label>
+                    <label htmlFor="from-date">From Date</label>
 
                     <div className="request-input-wrapper">
-                      <span className="request-input-icon">
-                        📅
-                      </span>
+                      <span className="request-input-icon">📅</span>
 
                       <input
                         id="from-date"
                         type="date"
-                        value={
-                          fromDate
-                        }
-                        min={
-                          getTodayDate()
-                        }
-                        onChange={(
-                          event
-                        ) => {
-                          const value =
-                            event.target
-                              .value;
+                        value={fromDate}
+                        min={getTodayDate()}
+                        onChange={(event) => {
+                          const value = event.target.value;
 
-                          setFromDate(
-                            value
-                          );
+                          setFromDate(value);
 
-                          if (
-                            toDate &&
-                            value >
-                              toDate
-                          ) {
-                            setToDate(
-                              ""
-                            );
+                          if (toDate && value > toDate) {
+                            setToDate("");
                           }
                         }}
                         required
                       />
                     </div>
 
-                    <small>
-                      Select your starting
-                      travel date.
-                    </small>
+                    <small>Select your starting travel date.</small>
                   </div>
 
                   <div className="request-form-group">
-                    <label htmlFor="to-date">
-                      To Date
-                    </label>
+                    <label htmlFor="to-date">To Date</label>
 
                     <div className="request-input-wrapper">
-                      <span className="request-input-icon">
-                        📅
-                      </span>
+                      <span className="request-input-icon">📅</span>
 
                       <input
                         id="to-date"
                         type="date"
                         value={toDate}
-                        min={
-                          fromDate ||
-                          getTodayDate()
-                        }
-                        onChange={(event) =>
-                          setToDate(
-                            event.target
-                              .value
-                          )
-                        }
+                        min={fromDate || getTodayDate()}
+                        onChange={(event) => setToDate(event.target.value)}
                         required
                       />
                     </div>
 
-                    <small>
-                      Select your ending
-                      travel date.
-                    </small>
+                    <small>Select your ending travel date.</small>
                   </div>
                 </div>
 
@@ -1755,12 +1379,8 @@ function Explore({ embedded = false }) {
                   <button
                     type="button"
                     className="request-cancel-button"
-                    onClick={
-                      handleCloseRequest
-                    }
-                    disabled={
-                      requestLoading
-                    }
+                    onClick={handleCloseRequest}
+                    disabled={requestLoading}
                   >
                     Cancel
                   </button>
@@ -1768,9 +1388,7 @@ function Explore({ embedded = false }) {
                   <button
                     type="submit"
                     className="request-submit-button"
-                    disabled={
-                      requestLoading
-                    }
+                    disabled={requestLoading}
                   >
                     {requestLoading ? (
                       <>

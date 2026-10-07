@@ -13,6 +13,18 @@ import { getToken } from "../../../utils/auth.js";
 
 const PAGE_SIZE = 5;
 
+function formatPaymentDate(value) {
+  if (!value) return null;
+  const parsed = new Date(value);
+  return Number.isNaN(parsed.getTime())
+    ? value
+    : parsed.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      });
+}
+
 export default function PaymentHistory({ onPayNow }) {
   const navigate = useNavigate();
   const [payments, setPayments] = useState([]);
@@ -75,14 +87,26 @@ export default function PaymentHistory({ onPayNow }) {
           const guide = booking.guide || {};
           const experience = booking.experience || {};
           const request = booking.travel_request || booking.travelRequest || {};
+          const serviceRequest = booking.service_request || booking.serviceRequest || {};
+          const tourService = serviceRequest.tour_service || serviceRequest.tourService || {};
 
           return {
             id: payment?.id || `booking-${booking.id}`,
             booking,
             tourName: experience.title || experience.name || "Travel Experience",
             companyName: guide.company_name || guide.business_name || "Guide",
-            destination: experience.destination || experience.location || request.destination || "—",
-            date: payment?.payment_date_time || payment?.paid_at || null,
+            destination:
+              experience.destination ||
+              experience.destination_name ||
+              experience.location ||
+              request.destination ||
+              request.destination_name ||
+              request.location ||
+              serviceRequest.destination ||
+              tourService.destination ||
+              tourService.location ||
+              "—",
+            date: formatPaymentDate(payment?.payment_date_time || payment?.paid_at),
             status: payment?.status === "pending_review"
               ? "Under Review"
               : payment?.status === "rejected"
