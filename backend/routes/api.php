@@ -240,6 +240,11 @@ Route::middleware('auth:api')
         'store'
     ]);
 
+    Route::patch('/{review}', [
+        ReviewController::class,
+        'update'
+    ]);
+
 
     Route::get('/', [
         ReviewController::class,

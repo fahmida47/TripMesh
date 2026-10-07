@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use App\Models\Review;
 use App\Services\ReviewService;
 
 
@@ -214,6 +215,45 @@ class ReviewController extends Controller
 
 
 
+
+
+    public function update(Request $request, Review $review): JsonResponse
+    {
+        $touristProfile = $this->touristProfile();
+
+        if ($touristProfile instanceof JsonResponse) {
+            return $touristProfile;
+        }
+
+        $validated = $request->validate([
+            'rating' => ['required', 'integer', 'between:1,5'],
+            'review' => ['required', 'string', 'min:3', 'max:2000'],
+        ]);
+
+        if ((int) $review->tourist_profile_id !== (int) $touristProfile->id) {
+            return response()->json(['message' => 'Review not found.'], 404);
+        }
+
+        $review->update([
+            'rating' => $validated['rating'],
+            'review' => $validated['review'],
+            'status' => 'pending',
+            'moderated_by_user_id' => null,
+            'moderated_at' => null,
+            'submitted_at' => now(),
+        ]);
+
+        $review->load([
+            'booking.experience',
+            'booking.serviceRequest.tourService',
+            'guide.user',
+        ]);
+
+        return response()->json([
+            'message' => 'Review updated successfully and is awaiting moderation.',
+            'review' => $review,
+        ]);
+    }
 
 
     public function index(

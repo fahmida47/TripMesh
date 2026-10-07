@@ -17,6 +17,13 @@ const formatReview = (review) => ({
     "Guide company",
   rating: review.rating,
   reviewText: review.review,
+  experienceName:
+    review.booking?.experience?.title ||
+    review.booking?.experience?.name ||
+    review.booking?.service_request?.experience_name ||
+    review.booking?.serviceRequest?.experience_name ||
+    review.booking?.tour_type ||
+    "",
   submittedDate: review.submitted_at
     ? new Date(review.submitted_at).toLocaleDateString()
     : "",
@@ -27,6 +34,7 @@ function TouristReviews() {
   const [submittedReviews, setSubmittedReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     const loadReviewData = async () => {
@@ -60,12 +68,29 @@ function TouristReviews() {
           throw new Error(reviewsData.message || "Failed to load your reviews.");
         }
 
-        setGuideCompanies((eligibleData.bookings || []).map((booking) => ({
+        const eligibleCompanies = (eligibleData.bookings || []).map((booking) => ({
           id: booking.id,
           companyName: booking.guide?.company_name || "Guide company",
-          experienceName: booking.experience?.title || booking.experience?.name,
-        })));
-        setSubmittedReviews((reviewsData.reviews || []).map(formatReview));
+          experienceName:
+            booking.experience?.title ||
+            booking.experience?.name ||
+            booking.service_request?.experience_name ||
+            booking.serviceRequest?.experience_name ||
+            booking.tour_type,
+        }));
+        const reviews = (reviewsData.reviews || []).map(formatReview);
+        const editableReviews = reviews.map((review) => ({
+          id: review.bookingId,
+          reviewId: review.id,
+          companyName: review.companyName,
+          experienceName: review.experienceName,
+          rating: review.rating,
+          reviewText: review.reviewText,
+        }));
+        const choices = new Map(eligibleCompanies.map((company) => [company.id, company]));
+        editableReviews.forEach((review) => choices.set(review.id, review));
+        setGuideCompanies([...choices.values()]);
+        setSubmittedReviews(reviews);
       } catch (error) {
         setLoadError(error.message || "Unable to load reviews.");
       } finally {
@@ -76,33 +101,50 @@ function TouristReviews() {
     loadReviewData();
   }, []);
 
-  const handleReviewSubmit = async ({ bookingId, rating, reviewText }) => {
+  const handleReviewSubmit = async ({ bookingId, reviewId, rating, reviewText }) => {
     const token = getToken();
+    setSaving(true);
+    try {
+      const response = await fetch(
+        reviewId ? `${API_BASE_URL}/reviews/${reviewId}` : `${API_BASE_URL}/reviews`,
+        {
+          method: reviewId ? "PATCH" : "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            ...(!reviewId ? { booking_id: bookingId } : {}),
+            rating,
+            review: reviewText,
+          }),
+        },
+      );
+      const data = await response.json();
 
-    const response = await fetch(`${API_BASE_URL}/reviews`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        booking_id: bookingId,
-        rating,
-        review: reviewText,
-      }),
-    });
-    const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.message || "Unable to save review.");
+      }
 
-    if (!response.ok) {
-      throw new Error(data.message || "Unable to submit review.");
+      const savedReview = formatReview(data.review);
+      setSubmittedReviews((prev) => reviewId
+        ? prev.map((item) => item.id === reviewId ? savedReview : item)
+        : [savedReview, ...prev]);
+      setGuideCompanies((prev) => {
+        const company = prev.find((item) => item.id === bookingId);
+        const editable = {
+          ...company,
+          id: bookingId,
+          reviewId: data.review.id,
+          rating,
+          reviewText,
+        };
+        return [...prev.filter((item) => item.id !== bookingId), editable];
+      });
+    } finally {
+      setSaving(false);
     }
-
-    setSubmittedReviews((prev) => [
-      formatReview(data.review),
-      ...prev,
-    ]);
-    setGuideCompanies((prev) => prev.filter((company) => company.id !== bookingId));
   };
 
   return (
@@ -124,6 +166,7 @@ function TouristReviews() {
           guideCompanies={guideCompanies}
           onSubmitReview={handleReviewSubmit}
           loading={loading}
+          saving={saving}
         />
 
         {loadError && <p className="review-form-message">{loadError}</p>}

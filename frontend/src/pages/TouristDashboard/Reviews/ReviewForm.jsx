@@ -1,10 +1,14 @@
 import { useState } from "react";
 
-function ReviewForm({ guideCompanies, onSubmitReview, loading }) {
+function ReviewForm({ guideCompanies, onSubmitReview, loading, saving = false }) {
   const [selectedCompany, setSelectedCompany] = useState("");
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState("");
   const [message, setMessage] = useState("");
+  const selectedGuide = guideCompanies.find(
+    (company) => String(company.id) === selectedCompany,
+  );
+  const isEditing = Boolean(selectedGuide?.reviewId);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,10 +28,6 @@ function ReviewForm({ guideCompanies, onSubmitReview, loading }) {
       return;
     }
 
-    const selectedGuide = guideCompanies.find(
-      (company) => String(company.id) === selectedCompany,
-    );
-
     if (!selectedGuide) {
       setMessage("Selected guide company is not available.");
       return;
@@ -36,6 +36,7 @@ function ReviewForm({ guideCompanies, onSubmitReview, loading }) {
     try {
       await onSubmitReview({
         bookingId: selectedGuide.id,
+        reviewId: selectedGuide.reviewId,
         rating,
         reviewText: reviewText.trim(),
       });
@@ -43,7 +44,7 @@ function ReviewForm({ guideCompanies, onSubmitReview, loading }) {
       setSelectedCompany("");
       setRating(0);
       setReviewText("");
-      setMessage("Review submitted successfully.");
+      setMessage(isEditing ? "Review updated successfully." : "Review submitted successfully.");
     } catch (error) {
       setMessage(error.message || "Unable to submit review.");
     }
@@ -62,7 +63,7 @@ function ReviewForm({ guideCompanies, onSubmitReview, loading }) {
         <div className="write-review-icon">✎</div>
 
         <div>
-          <h2>Write a Review</h2>
+          <h2>{isEditing ? "Edit Your Review" : "Write a Review"}</h2>
           <p>Select a guide company and share your experience.</p>
         </div>
       </div>
@@ -76,7 +77,11 @@ function ReviewForm({ guideCompanies, onSubmitReview, loading }) {
             id="guide-company"
             value={selectedCompany}
             onChange={(e) => {
-              setSelectedCompany(e.target.value);
+              const value = e.target.value;
+              const company = guideCompanies.find((item) => String(item.id) === value);
+              setSelectedCompany(value);
+              setRating(company?.rating || 0);
+              setReviewText(company?.reviewText || "");
               setMessage("");
             }}
             disabled={loading || guideCompanies.length === 0}
@@ -93,6 +98,7 @@ function ReviewForm({ guideCompanies, onSubmitReview, loading }) {
               <option key={company.id} value={company.id}>
                 {company.companyName}
                 {company.experienceName ? ` — ${company.experienceName}` : ""}
+                {company.reviewId ? " (Edit review)" : ""}
               </option>
             ))}
           </select>
@@ -153,7 +159,7 @@ function ReviewForm({ guideCompanies, onSubmitReview, loading }) {
         {message && (
           <p
             className={`review-form-message${
-              message === "Review submitted successfully." ? " success" : ""
+              message.includes("successfully.") ? " success" : ""
             }`}
           >
             {message}
@@ -170,8 +176,8 @@ function ReviewForm({ guideCompanies, onSubmitReview, loading }) {
             Cancel
           </button>
 
-          <button type="submit" className="review-submit-btn" disabled={loading}>
-            {loading ? "Loading..." : "Submit Review"}
+          <button type="submit" className="review-submit-btn" disabled={loading || saving}>
+            {saving ? (isEditing ? "Saving..." : "Submitting...") : isEditing ? "Save Changes" : "Submit Review"}
           </button>
         </div>
       </form>

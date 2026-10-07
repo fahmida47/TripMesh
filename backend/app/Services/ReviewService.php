@@ -55,7 +55,12 @@ class ReviewService
 
     public function getReviews($touristProfile)
     {
-        return Review::with(['guide', 'booking.guide'])
+        return Review::with([
+            'guide',
+            'booking.guide',
+            'booking.experience',
+            'booking.serviceRequest.tourService',
+        ])
             ->where('tourist_profile_id', $touristProfile->id)
             ->latest('submitted_at')
             ->get();
