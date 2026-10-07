@@ -9,11 +9,8 @@
 /* Semantic cards and named card/panel surfaces across every app page. */
 #root :is(
   article,
-  [class*="-card"],
   [class$="card"],
-  [class*="-panel"],
   [class$="panel"],
-  [class*="-modal"],
   [class$="modal"],
   [class*="-sheet"],
   [class$="sheet"]
@@ -41,9 +38,7 @@
 
 #root :is(
   article,
-  [class*="-card"],
   [class$="card"],
-  [class*="-panel"],
   [class$="panel"]
 ):hover {
   border-color: rgba(197, 215, 243, 0.96);

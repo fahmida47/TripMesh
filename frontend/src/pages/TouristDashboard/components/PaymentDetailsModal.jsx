@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { FiX, FiCreditCard, FiMapPin } from "react-icons/fi";
+import { logoColor } from "../../../utils/logoColor";
 
 function badgeClass(status) {
   return `pm-badge pm-badge--${status.toLowerCase().replace(/\s+/g, "")}`;
@@ -19,7 +20,7 @@ export default function PaymentDetailsModal({ payment, onClose, onPayNow }) {
 
   if (!payment) return null;
 
-  const { tourName, companyName, destination, date, status, transactionId } =
+  const { tourName, companyName, destination, date, status, transactionId, image } =
     payment;
   const canPay = status === "Pending";
 
@@ -34,7 +35,23 @@ export default function PaymentDetailsModal({ payment, onClose, onPayNow }) {
       >
         <div className="pm-modal-head">
           <div className="pm-modal-head-info">
-            <div className="pm-thumb" aria-hidden="true" />
+            <div
+              className={`pm-thumb${image ? " pm-thumb--photo" : " pm-thumb--initial"}`}
+              aria-hidden="true"
+              style={!image ? { background: logoColor(companyName) } : undefined}
+            >
+              {image ? (
+                <img
+                  src={image}
+                  alt=""
+                  onError={(event) => {
+                    event.currentTarget.style.display = "none";
+                  }}
+                />
+              ) : (
+                companyName?.charAt(0)?.toUpperCase() || "T"
+              )}
+            </div>
             <div>
               <h3 id="pm-modal-title">{tourName}</h3>
               <p>{companyName}</p>
