@@ -173,10 +173,25 @@
 }
 
 .tm-hero-feature-card p {
-  color: #d5e0f8;
+  color: #dce7ff;
   font-size: 13.5px;
   line-height: 1.6;
   margin: 0;
+}
+
+/* The app-wide glass rule also targets every class ending in "-card".
+   Keep these cards dark so their light copy stays readable on the hero. */
+#root .tm-about-page .tm-hero-feature-card {
+  background: rgba(7, 24, 63, 0.72);
+  border-color: rgba(135, 176, 245, 0.24);
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+#root .tm-about-page .tm-hero-feature-card:hover {
+  border-color: rgba(135, 176, 245, 0.4);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
 }
 
 /* ================= MISSION SECTION ================= */

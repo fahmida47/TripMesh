@@ -1,4 +1,5 @@
 import { FiEye, FiCreditCard, FiMapPin } from "react-icons/fi";
+import { logoColor } from "../../../utils/logoColor";
 
 // "Held by Admin" -> "pm-badge--heldbyadmin"
 function badgeClass(status) {
@@ -6,7 +7,7 @@ function badgeClass(status) {
 }
 
 export default function PaymentCard({ payment, onViewDetails, onPayNow }) {
-  const { tourName, companyName, destination, date, status } = payment;
+  const { tourName, companyName, destination, date, status, image } = payment;
   const canPay = status === "Pending" || status === "Rejected";
 
   return (
@@ -14,7 +15,23 @@ export default function PaymentCard({ payment, onViewDetails, onPayNow }) {
       <div className="pm-cell pm-cell--tour">
         <span className="pm-cell-label">Tour & Company</span>
         <div className="pm-tour">
-          <div className="pm-thumb" aria-hidden="true" />
+          <div
+            className={`pm-thumb${image ? " pm-thumb--photo" : " pm-thumb--initial"}`}
+            aria-hidden="true"
+            style={!image ? { background: logoColor(companyName) } : undefined}
+          >
+            {image ? (
+              <img
+                src={image}
+                alt=""
+                onError={(event) => {
+                  event.currentTarget.style.display = "none";
+                }}
+              />
+            ) : (
+              companyName?.charAt(0)?.toUpperCase() || "T"
+            )}
+          </div>
           <div>
             <p className="pm-tour-name">{tourName}</p>
             <span className="pm-company-name">{companyName}</span>

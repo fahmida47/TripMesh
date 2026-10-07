@@ -8,7 +8,7 @@ import PaymentCard from "./PaymentCard";
 import PaymentDetailsModal from "./PaymentDetailsModal";
 
 import "./PaymentHistory.css";
-import { API_BASE_URL } from "../../../config.js";
+import { API_BASE_URL, STORAGE_URL } from "../../../config.js";
 import { getToken } from "../../../utils/auth.js";
 
 const PAGE_SIZE = 5;
@@ -23,6 +23,12 @@ function formatPaymentDate(value) {
         month: "short",
         year: "numeric",
       });
+}
+
+function storageImageUrl(path) {
+  if (!path) return null;
+  if (/^(https?:|data:|blob:)/i.test(path)) return path;
+  return `${STORAGE_URL}/${String(path).replace(/^\/+|^storage\//, "")}`;
 }
 
 export default function PaymentHistory({ onPayNow }) {
@@ -93,8 +99,23 @@ export default function PaymentHistory({ onPayNow }) {
           return {
             id: payment?.id || `booking-${booking.id}`,
             booking,
-            tourName: experience.title || experience.name || "Travel Experience",
+            tourName:
+              experience.title ||
+              experience.name ||
+              serviceRequest.experience_name ||
+              serviceRequest.experienceName ||
+              tourService.title ||
+              booking.tour_title ||
+              booking.tourTitle ||
+              "Travel Experience",
             companyName: guide.company_name || guide.business_name || "Guide",
+            image:
+              experience.photo_url ||
+              experience.image_url ||
+              storageImageUrl(tourService.image_url || tourService.image) ||
+              guide.profile_picture_url ||
+              guide.cover_photo_url ||
+              null,
             destination:
               experience.destination ||
               experience.destination_name ||

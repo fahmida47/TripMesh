@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { createPortal } from "react-dom";
 import {
   FiX,
   FiStar,
@@ -296,7 +297,7 @@ export default function RequestDetailsModal({
   const canPay =
     bookingStatus === "pending_payment";
 
-  return (
+  return createPortal(
     <div
       className="rb-modal-backdrop"
       onClick={onClose}
@@ -525,6 +526,7 @@ export default function RequestDetailsModal({
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

@@ -85,7 +85,7 @@ function ReviewForm({ guideCompanies, onSubmitReview, loading }) {
               {loading
                 ? "Loading eligible guide companies..."
                 : guideCompanies.length === 0
-                ? "No guide companies available yet"
+                ? "No eligible bookings available"
                 : "Select Guide Company"}
             </option>
 
@@ -99,7 +99,7 @@ function ReviewForm({ guideCompanies, onSubmitReview, loading }) {
 
           {!loading && guideCompanies.length === 0 && (
             <span className="review-form-hint">
-              Registered guide companies will appear here.
+              A guide appears after a booking is confirmed or completed, paid, and not reviewed yet.
             </span>
           )}
         </div>

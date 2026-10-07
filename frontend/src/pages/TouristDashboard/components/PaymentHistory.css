@@ -252,6 +252,26 @@
   background: linear-gradient(135deg, #93c5fd, #2563eb);
 }
 
+.pm-thumb--initial {
+  display: grid;
+  place-items: center;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.pm-thumb--photo {
+  overflow: hidden;
+}
+
+.pm-thumb--photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .pm-tour-name {
   margin: 0 0 2px;
   font-size: 14px;
